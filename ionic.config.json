@@ -1,0 +1,8 @@
+{
+  "name": "syncstuff",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite",
+  "id": "7524ceb1"
+}
