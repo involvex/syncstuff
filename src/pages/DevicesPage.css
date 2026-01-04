@@ -19,3 +19,19 @@
 ion-segment {
   margin: 16px 0;
 }
+
+/* Styles for when the barcode scanner is active */
+body.scanner-active ion-page {
+  --background: transparent;
+  --ion-background-color: transparent;
+}
+
+body.scanner-active ion-content {
+  --background: transparent;
+  --ion-background-color: transparent;
+}
+
+body.scanner-active .devices-page-container {
+  opacity: 0;
+  visibility: hidden;
+}

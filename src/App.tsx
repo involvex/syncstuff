@@ -21,8 +21,8 @@ import TransfersPage from "./pages/TransfersPage";
 import ClipboardPage from "./pages/ClipboardPage";
 import SettingsPage from "./pages/SettingsPage";
 import { useTheme } from "./hooks/useTheme";
-import { localStorageService } from "./services/storage/local-storage.service";
 import { useEffect } from "react";
+import { useSettingsStore } from "./store/settings.store"; // Import useSettingsStore
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -58,9 +58,13 @@ const App: React.FC = () => {
   // Initialize theme
   useTheme();
 
-  // Initialize storage
+  // Initialize storage and settings
   useEffect(() => {
-    localStorageService.init();
+    const initializeAppSettings = async () => {
+      await useSettingsStore.getState().initialize();
+      // Additional setup after settings are ready could go here
+    };
+    initializeAppSettings();
   }, []);
 
   return (

@@ -19,12 +19,15 @@
     "lint:fix": "eslint --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prebuild": "bun run format && bun run lint:fix",
+    "typecheck": "tsc --noEmit",
+    "prebuild": "bun run format && bun run lint:fix && bun run typecheck",
     "serve": "ionic serve",
-    "start:signaling": "node signaling-server.js"
+    "start:signaling": "node signaling-server.js",
+    "run:android": " ionic cap run android -l --external"
   },
   "dependencies": {
     "@capacitor-community/barcode-scanner": "^4.0.1",
+    "@capacitor-mlkit/barcode-scanning": "6.2.0",
     "@capacitor/android": "^6.0.0",
     "@capacitor/app": "^6.0.0",
     "@capacitor/clipboard": "^6.0.0",

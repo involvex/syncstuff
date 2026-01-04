@@ -33,7 +33,7 @@ import { useTransfer } from "../hooks/useTransfer";
 import { DeviceList } from "../components/device/DeviceList";
 import { PairingModal } from "../components/device/PairingModal";
 import { QrCodeModal } from "../components/device/QrCodeModal";
-import { BarcodeScanner } from "@capacitor-community/barcode-scanner";
+import { BarcodeScanner } from "@capacitor-mlkit/barcode-scanning";
 import type { Device } from "../types/device.types";
 import "./DevicesPage.css";
 
@@ -62,6 +62,9 @@ const DevicesPage: React.FC = () => {
   useEffect(() => {
     return () => {
       stopDiscovery();
+      // Ensure scanner is stopped if component unmounts during scan
+      BarcodeScanner.stopScan();
+      document.querySelector("body")?.classList.remove("scanner-active");
     };
   }, [stopDiscovery]);
 
@@ -95,37 +98,46 @@ const DevicesPage: React.FC = () => {
   };
 
   const startScan = async () => {
-    // Check camera permission
-    const status = await BarcodeScanner.checkPermission({ force: true });
+    // Before starting a scan, remove the background
+    // This allows the native camera view to show through
+    // For ML Kit scanner, we actually want the UI to be hidden
+    // The previous CSS for `body.scanner-active` makes the IonPage transparent.
+    document.querySelector("body")?.classList.add("scanner-active");
 
-    if (status.granted) {
-      // make background of WebView transparent
-      await BarcodeScanner.hideBackground();
-      document.querySelector("body")?.classList.add("scanner-active");
-
-      const result = await BarcodeScanner.startScan();
-
-      // if the result has content
-      if (result.hasContent) {
+    // Check permission
+    const { camera } = await BarcodeScanner.checkPermissions();
+    if (camera !== "granted") {
+      const { camera: newPerm } = await BarcodeScanner.requestPermissions();
+      if (newPerm !== "granted") {
+        alert("Camera permission is required to scan QR codes.");
         document.querySelector("body")?.classList.remove("scanner-active");
-        await BarcodeScanner.showBackground();
-
-        // The result will be the deviceId of the other device
-        const scannedDeviceId = result.content;
-
-        // We need to create a temporary device object to pair with
-        const tempDevice: Device = {
-          id: scannedDeviceId,
-          name: `Device ${scannedDeviceId.substring(0, 6)}`, // Create a temporary name
-          platform: "web", // Assume web or unknown
-          status: "discovered",
-          lastSeen: new Date(),
-        };
-        await pairDevice(tempDevice);
-        connectToDevice(scannedDeviceId);
+        return;
       }
+    }
+
+    // Start scanning
+    // ML Kit BarcodeScanner.scan() has its own UI
+    const { barcodes } = await BarcodeScanner.scan();
+
+    // After scanning, restore the background
+    document.querySelector("body")?.classList.remove("scanner-active");
+
+    if (barcodes.length > 0 && barcodes[0].rawValue) {
+      const scannedDeviceId = barcodes[0].rawValue;
+
+      // We need to create a temporary device object to pair with if not already paired
+      const tempDevice: Device = {
+        id: scannedDeviceId,
+        name: `Device ${scannedDeviceId.substring(0, 6)}`, // Create a temporary name
+        platform: "web", // Platform info unknown from QR, default to unknown
+        status: "discovered",
+        lastSeen: new Date(),
+      };
+      // Pair and connect
+      await pairDevice(tempDevice);
+      connectToDevice(scannedDeviceId);
     } else {
-      alert("Camera permission is required for scanning QR codes.");
+      alert("No QR code found or scanned.");
     }
   };
 

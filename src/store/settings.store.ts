@@ -2,6 +2,8 @@ import { create } from "zustand";
 import type { ThemeMode } from "../types/storage.types";
 import { Device } from "@capacitor/device";
 import { v4 as uuidv4 } from "uuid";
+import { localStorageService } from "../services/storage/local-storage.service";
+import { STORAGE_KEYS } from "../types/storage.types";
 
 interface SettingsStore {
   // Theme
@@ -39,22 +41,42 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
   initialize: async () => {
     if (get().initialized) return;
 
-    // Get device info from Capacitor
+    // Ensure local storage is initialized first
+    await localStorageService.init();
+
+    // Load stored settings
+    const storedTheme = await localStorageService.get<ThemeMode>(
+      STORAGE_KEYS.THEME,
+    );
+    const storedDeviceId = await localStorageService.get<string>(
+      STORAGE_KEYS.DEVICE_ID,
+    );
+    const storedDeviceName = await localStorageService.get<string>(
+      STORAGE_KEYS.DEVICE_NAME,
+    );
+    const storedAutoAcceptFiles = await localStorageService.get<boolean>(
+      STORAGE_KEYS.AUTO_ACCEPT_FILES,
+    );
+
+    // Get device info from Capacitor for defaults if not stored
     const info = await Device.getInfo();
     const id = await Device.getId();
 
-    // Generate a friendly device name based on model/manufacturer
-    const model = info.model || "Unknown";
-    const manufacturer = info.manufacturer || "Device";
-    const defaultName = `${manufacturer} ${model}`.trim();
-
-    // Generate a unique device ID if not available
-    const deviceId = id.identifier || uuidv4();
+    const currentDeviceId = storedDeviceId || id.identifier || uuidv4();
+    const defaultName = `${info.manufacturer || ""} ${info.model || ""}`.trim();
+    const currentDeviceName =
+      storedDeviceName || defaultName || "Syncstuff Device";
 
     set({
-      deviceName: defaultName,
-      deviceId,
+      theme: storedTheme || "system",
+      deviceName: currentDeviceName,
+      deviceId: currentDeviceId,
+      autoAcceptFiles: storedAutoAcceptFiles ?? false,
       initialized: true,
     });
+
+    // Save newly generated/default values to storage for persistence
+    await localStorageService.set(STORAGE_KEYS.DEVICE_ID, currentDeviceId);
+    await localStorageService.set(STORAGE_KEYS.DEVICE_NAME, currentDeviceName);
   },
 }));
