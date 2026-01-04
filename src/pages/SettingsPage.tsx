@@ -18,6 +18,7 @@ import { ThemeToggle } from "../components/common/ThemeToggle";
 import { useSettingsStore } from "../store/settings.store";
 import { getPlatform } from "../utils/platform.utils";
 import "./SettingsPage.css";
+import pkg from "../../package.json";
 
 const SettingsPage: React.FC = () => {
   const { deviceName, deviceId, initialize } = useSettingsStore();
@@ -96,11 +97,26 @@ const SettingsPage: React.FC = () => {
             <IonCardContent>
               <IonText>
                 <p>
-                  <strong>Syncstuff MVP</strong>
+                  <strong>Syncstuff</strong>
                 </p>
-                <p>Version 0.1.0 - Phase 1: Foundation</p>
+                <p>Version {pkg.version}</p>
+                <p style={{ marginTop: "10px" }}>{pkg.description}</p>
                 <p style={{ marginTop: "10px" }}>
-                  A local-first file synchronization app built with Ionic React.
+                  <a
+                    href={pkg.repository.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Learn more
+                  </a>
+                </p>
+                <p
+                  style={{
+                    marginTop: "10px",
+                    color: "var(--ion-color-medium)",
+                  }}
+                >
+                  Author: {pkg.author.name}
                 </p>
               </IonText>
             </IonCardContent>

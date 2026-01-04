@@ -20,9 +20,11 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prebuild": "bun run format && bun run lint:fix",
-    "serve": "ionic serve"
+    "serve": "ionic serve",
+    "start:signaling": "node signaling-server.js"
   },
   "dependencies": {
+    "@capacitor-community/barcode-scanner": "^4.0.1",
     "@capacitor/android": "^6.0.0",
     "@capacitor/app": "^6.0.0",
     "@capacitor/clipboard": "^6.0.0",
@@ -42,11 +44,14 @@
     "capacitor-zeroconf": "^3.0.0",
     "crypto-js": "^4.2.0",
     "ionicons": "^7.4.0",
+    "qrcode.react": "^4.2.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-router": "5",
     "react-router-dom": "5",
     "simple-peer": "^9.11.1",
+    "socket.io": "^4.8.3",
+    "socket.io-client": "^4.8.3",
     "uuid": "^13.0.0",
     "zustand": "^5.0.9"
   },
@@ -79,5 +84,5 @@
     "vite-plugin-node-polyfills": "^0.24.0",
     "vitest": "^0.34.6"
   },
-  "description": "An App to synchronize your files to all your devices"
+  "description": "An App to synchronize your files to all your devices."
 }

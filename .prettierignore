@@ -1,0 +1,21 @@
+# Ignore artifacts:
+build/
+dist/
+coverage/
+
+# Ignore platforms
+android/
+ios/
+
+# Ignore dependencies
+node_modules/
+
+# Ignore locks
+bun.lockb
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# IDE settings
+.vscode/
+.idea/

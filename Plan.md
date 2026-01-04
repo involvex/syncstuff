@@ -97,3 +97,6 @@ Local Network Synchronization:
 
 - Add Accountservice and add Accountlinking to Cloud / Drive providers like Google drive / Mega cloud
 - Account Login to auto detect connected devices and share via cloud or local
+
+- Quick Pairing with QR Code Scan
+- or URL share to pair/sync/share content
