@@ -3,7 +3,7 @@
 ## Plan
 
 - Appname: Syncstuff (to be changed)
-- Appicon: to be changed !
+- Appicon: new is provided in resources\icon.png (needs to be applied to android\ic launcher)
 
 - Using ionicframework
 - ionic cli
