@@ -1,0 +1,13 @@
+.device-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.device-list-empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  text-align: center;
+  padding: 20px;
+}

@@ -1,4 +1,21 @@
-.devices-container {
-  padding: 20px;
-  text-align: center;
+.devices-page-container {
+  padding: 16px;
+}
+
+.current-device-card {
+  margin-bottom: 16px;
+}
+
+.current-device-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.discovery-controls {
+  margin: 16px 0;
+}
+
+ion-segment {
+  margin: 16px 0;
 }

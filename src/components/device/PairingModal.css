@@ -1,0 +1,53 @@
+.pairing-modal-content {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+}
+
+.pairing-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 20px;
+}
+
+.pairing-device-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+}
+
+.pairing-device-icon {
+  color: var(--ion-color-primary);
+}
+
+.device-platform {
+  color: var(--ion-color-medium);
+  margin-top: 4px;
+}
+
+.pairing-message {
+  text-align: center;
+  max-width: 400px;
+}
+
+.pairing-details {
+  width: 100%;
+  max-width: 400px;
+  padding: 16px;
+  background: var(--ion-color-light);
+  border-radius: 8px;
+}
+
+.pairing-actions {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}

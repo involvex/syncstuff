@@ -1,0 +1,39 @@
+.device-card {
+  margin: 16px;
+}
+
+.device-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.device-icon {
+  flex-shrink: 0;
+  color: var(--ion-color-primary);
+}
+
+.device-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.device-badge {
+  flex-shrink: 0;
+}
+
+.device-details {
+  margin-bottom: 12px;
+}
+
+.device-detail {
+  margin: 4px 0;
+  font-size: 0.875rem;
+}
+
+.device-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
