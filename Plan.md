@@ -91,5 +91,4 @@ Local Network Synchronization:
 
 - Dark/Light mode theme support with modern color scheme
 
-
 -- using ionic free tier only !

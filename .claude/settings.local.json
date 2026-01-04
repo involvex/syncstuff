@@ -90,7 +90,8 @@
       "Bash(bun add:*)",
       "Bash(npm run typecheck:*)",
       "Bash(tree:*)",
-      "Bash(npx wrangler pages deploy:*)"
+      "Bash(npx wrangler pages deploy:*)",
+      "WebSearch"
     ]
   },
   "hooks": {

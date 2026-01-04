@@ -1,0 +1,9 @@
+.settings-container {
+  padding: 16px;
+}
+
+.device-id {
+  font-family: monospace;
+  font-size: 0.875rem;
+  word-break: break-all;
+}

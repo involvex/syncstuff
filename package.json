@@ -1,5 +1,11 @@
 {
   "name": "syncstuff",
+  "author": {
+    "name": "Involvex"
+  },
+  "repository": {
+    "url": "https://github.com/involvex/syncstuff.git"
+  },
   "private": true,
   "version": "0.0.1",
   "type": "module",
@@ -19,20 +25,27 @@
   "dependencies": {
     "@capacitor/android": "8.0.0",
     "@capacitor/app": "8.0.0",
+    "@capacitor/clipboard": "^8.0.0",
     "@capacitor/core": "8.0.0",
+    "@capacitor/device": "^8.0.0",
+    "@capacitor/filesystem": "^8.0.0",
     "@capacitor/haptics": "8.0.0",
     "@capacitor/ios": "8.0.0",
     "@capacitor/keyboard": "8.0.0",
+    "@capacitor/network": "^8.0.0",
     "@capacitor/status-bar": "8.0.0",
     "@ionic/react": "^8.5.0",
     "@ionic/react-router": "^8.5.0",
+    "@ionic/storage": "^4.0.0",
     "@types/react-router": "^5.1.20",
     "@types/react-router-dom": "^5.3.3",
     "ionicons": "^7.4.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-router": "^5.3.4",
-    "react-router-dom": "^5.3.4"
+    "react-router-dom": "^5.3.4",
+    "uuid": "^13.0.0",
+    "zustand": "^5.0.9"
   },
   "devDependencies": {
     "@capacitor/cli": "8.0.0",
@@ -42,6 +55,7 @@
     "@testing-library/user-event": "^14.4.3",
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
+    "@types/uuid": "^11.0.0",
     "@vitejs/plugin-legacy": "^5.0.0",
     "@vitejs/plugin-react": "^4.0.1",
     "cypress": "^13.5.0",
@@ -58,5 +72,5 @@
     "vite": "^5.0.0",
     "vitest": "^0.34.6"
   },
-  "description": "An Ionic project"
+  "description": "An App to synchronize your files to all your devices"
 }
