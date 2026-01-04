@@ -1,6 +1,10 @@
 import { create } from "zustand";
 import type { Device } from "../types/device.types";
-import type { PairingRequest, DiscoveredDevice } from "../types/network.types";
+import type {
+  PairingRequest,
+  DiscoveredDevice,
+  SignalMessage,
+} from "../types/network.types";
 import { localStorageService } from "../services/storage/local-storage.service";
 import { STORAGE_KEYS } from "../types/storage.types";
 

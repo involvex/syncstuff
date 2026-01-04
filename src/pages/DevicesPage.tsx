@@ -24,6 +24,8 @@ import {
   checkmarkCircle,
 } from "ionicons/icons";
 import { useDeviceDiscovery } from "../hooks/useDeviceDiscovery";
+import { useTransfer } from "../hooks/useTransfer";
+import { SignalModal } from "../components/device/SignalModal";
 import { DeviceList } from "../components/device/DeviceList";
 import { PairingModal } from "../components/device/PairingModal";
 import type { Device } from "../types/device.types";
@@ -41,7 +43,11 @@ const DevicesPage: React.FC = () => {
     pairDevice,
     unpairDevice,
     connectToDevice,
+    signalingData,
+    submitSignal,
+    setSignalingData,
   } = useDeviceDiscovery();
+  const { sendFile } = useTransfer();
 
   const [selectedTab, setSelectedTab] = useState<"discovered" | "paired">(
     "discovered",
@@ -50,14 +56,21 @@ const DevicesPage: React.FC = () => {
 
   // Start discovery on mount
   useEffect(() => {
-    if (isSupported && currentDevice) {
-      startDiscovery();
-    }
+    let cleanup: (() => void) | undefined;
+
+    const run = async () => {
+      const result = await startDiscovery();
+      if (typeof result === "function") {
+        cleanup = result;
+      }
+    };
+    run();
 
     return () => {
       stopDiscovery();
+      cleanup?.();
     };
-  }, [isSupported, currentDevice, startDiscovery, stopDiscovery]);
+  }, [startDiscovery, stopDiscovery]);
 
   const handleStartDiscovery = async () => {
     await startDiscovery();
@@ -80,6 +93,11 @@ const DevicesPage: React.FC = () => {
 
   const handleRejectPairing = () => {
     setPairingDevice(null);
+  };
+
+  const handleSignalSubmit = (pastedSignal: string) => {
+    submitSignal(pastedSignal);
+    setSignalingData(null);
   };
 
   const handleRefresh = async (event: CustomEvent<RefresherEventDetail>) => {
@@ -132,11 +150,9 @@ const DevicesPage: React.FC = () => {
               <IonCardContent>
                 <IonText>
                   <p>
-                    <strong>Web Platform Limitation:</strong> Device discovery
-                    via mDNS is not supported on web browsers. Please use the
-                    Android or iOS app for automatic device discovery, or
-                    manually connect devices via pairing codes (coming in Phase
-                    3).
+                    <strong>Web Platform Limitation:</strong> Automatic device
+                    discovery is not supported on web. Please use manual
+                    connection.
                   </p>
                 </IonText>
               </IonCardContent>
@@ -202,6 +218,7 @@ const DevicesPage: React.FC = () => {
               pairedDeviceIds={pairedDeviceIds}
               onUnpair={unpairDevice}
               onConnect={connectToDevice}
+              onSendFile={sendFile}
               emptyMessage="No paired devices. Pair with a discovered device to get started."
             />
           )}
@@ -214,6 +231,14 @@ const DevicesPage: React.FC = () => {
           onAccept={handleAcceptPairing}
           onReject={handleRejectPairing}
           onDismiss={handleRejectPairing}
+        />
+
+        {/* Manual Signaling Modal */}
+        <SignalModal
+          isOpen={signalingData !== null}
+          signalToShow={signalingData?.signal ?? null}
+          onDismiss={() => setSignalingData(null)}
+          onSignalSubmit={handleSignalSubmit}
         />
       </IonContent>
     </IonPage>

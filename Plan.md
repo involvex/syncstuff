@@ -92,3 +92,8 @@ Local Network Synchronization:
 - Dark/Light mode theme support with modern color scheme
 
 -- using ionic free tier only !
+
+## Futureplan
+
+- Add Accountservice and add Accountlinking to Cloud / Drive providers like Google drive / Mega cloud
+- Account Login to auto detect connected devices and share via cloud or local

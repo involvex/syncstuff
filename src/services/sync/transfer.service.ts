@@ -1,5 +1,6 @@
 import { useTransferStore } from "../../store/transfer.store";
 import { webrtcService } from "../network/webrtc.service";
+import { fileManagerService } from "../storage/file-manager.service";
 import type {
   FileTransfer,
   TransferMessage,
@@ -206,25 +207,46 @@ class TransferService {
   /**
    * Handle incoming file chunk
    */
-  private handleFileChunk(message: TransferMessage) {
+  private async handleFileChunk(message: TransferMessage) {
+    const { getState } = useTransferStore;
+    const transfer = getState().activeTransfers.find(
+      t => t.id === message.transferId,
+    );
+    if (!transfer) return;
+
     const payload = message.payload as FileChunkPayload;
 
-    // For MVP, we aren't stitching files yet (need FileManagerService properly connected)
-    // We update progress to show it works
+    try {
+      // Data is a data URL (data:mime/type;base64,...), extract base64 part
+      const base64Data = payload.data.split(",")[1];
+      if (!base64Data) {
+        throw new Error("Invalid chunk data format");
+      }
 
-    // In real impl: Write chunk to disk/blob
-    // const blobChunk = dataURLToBlob(payload.data);
-    // ...
+      await fileManagerService.writeFileChunk(
+        transfer.file.name,
+        base64Data,
+        true, // append
+      );
 
-    // Simulating progress update based on chunk
-    // Since we don't know the exact size of base64 chunk decoded without overhead,
-    // we assume CHUNK_SIZE or calculate
+      const newTransferredBytes =
+        transfer.progress.transferredBytes + atob(base64Data).length;
 
-    // Just blindly accept for MVP UI demo
-    if (payload.isLast) {
-      useTransferStore
-        .getState()
-        .updateTransferStatus(message.transferId, "completed");
+      getState().updateTransferProgress(
+        message.transferId,
+        newTransferredBytes,
+      );
+
+      if (payload.isLast) {
+        getState().updateTransferStatus(message.transferId, "completed");
+      }
+    } catch (e) {
+      console.error("Failed to handle file chunk", e);
+      getState().updateTransferStatus(
+        message.transferId,
+        "failed",
+        "Failed to write file chunk",
+      );
     }
   }
 

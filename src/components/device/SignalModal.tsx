@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   IonModal,
   IonHeader,
@@ -10,8 +10,8 @@ import {
   IonItem,
   IonLabel,
   IonButtons,
-} from '@ionic/react';
-import type { SignalMessage } from '../../types/network.types';
+} from "@ionic/react";
+import type { SignalMessage } from "../../types/network.types";
 
 interface SignalModalProps {
   isOpen: boolean;
@@ -26,12 +26,12 @@ export const SignalModal: React.FC<SignalModalProps> = ({
   onDismiss,
   onSignalSubmit,
 }) => {
-  const [pastedSignal, setPastedSignal] = useState('');
+  const [pastedSignal, setPastedSignal] = useState("");
 
   useEffect(() => {
     // Clear pasted signal when modal re-opens
     if (isOpen) {
-      setPastedSignal('');
+      setPastedSignal("");
     }
   }, [isOpen]);
 
@@ -41,7 +41,7 @@ export const SignalModal: React.FC<SignalModalProps> = ({
     }
   };
 
-  const signalString = signalToShow ? JSON.stringify(signalToShow.data) : '';
+  const signalString = signalToShow ? JSON.stringify(signalToShow.data) : "";
 
   return (
     <IonModal isOpen={isOpen} onDidDismiss={onDismiss}>

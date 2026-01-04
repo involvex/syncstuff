@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   IonCard,
   IonCardHeader,
@@ -8,14 +8,17 @@ import {
   IonButton,
   IonIcon,
   IonBadge,
-  IonText,
 } from "@ionic/react";
 import {
-  phonePortrait,
   laptop,
+  desktop,
+  logoAndroid,
+  logoApple,
+  globe,
   checkmarkCircle,
-  linkOutline,
-  removeCircleOutline,
+  wifi,
+  closeCircle,
+  documentAttach,
 } from "ionicons/icons";
 import type { Device } from "../../types/device.types";
 import "./DeviceCard.css";
@@ -23,9 +26,10 @@ import "./DeviceCard.css";
 interface DeviceCardProps {
   device: Device;
   isPaired: boolean;
-  onPair?: () => void;
-  onUnpair?: () => void;
-  onConnect?: () => void;
+  onPair?: (device: Device) => void;
+  onUnpair?: (deviceId: string) => void;
+  onConnect?: (deviceId: string) => void;
+  onSendFile?: (file: File, deviceId: string) => void;
 }
 
 export const DeviceCard: React.FC<DeviceCardProps> = ({
@@ -34,118 +38,99 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
   onPair,
   onUnpair,
   onConnect,
+  onSendFile,
 }) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const getPlatformIcon = () => {
     switch (device.platform) {
       case "android":
+        return logoAndroid;
       case "ios":
-        return phonePortrait;
-      case "desktop":
+        return logoApple;
       case "web":
+        return globe;
+      case "desktop":
+        return desktop;
+      default:
         return laptop;
-      default:
-        return phonePortrait;
     }
   };
 
-  const getStatusColor = () => {
-    switch (device.status) {
-      case "connected":
-        return "success";
-      case "paired":
-        return "primary";
-      case "discovered":
-        return "medium";
-      case "disconnected":
-        return "warning";
-      default:
-        return "medium";
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && onSendFile) {
+      onSendFile(file, device.id);
     }
   };
 
-  const getStatusText = () => {
-    if (isPaired) {
-      return device.status === "connected" ? "Connected" : "Paired";
-    }
-    return "Discovered";
+  const triggerFileSelect = () => {
+    fileInputRef.current?.click();
   };
 
   return (
-    <IonCard className="device-card">
-      <IonCardHeader>
-        <div className="device-card-header">
-          <IonIcon
-            icon={getPlatformIcon()}
-            size="large"
-            className="device-icon"
-          />
-          <div className="device-info">
-            <IonCardTitle>{device.name}</IonCardTitle>
-            <IonCardSubtitle>
-              {device.platform.charAt(0).toUpperCase() +
-                device.platform.slice(1)}
-            </IonCardSubtitle>
+    <>
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleFileSelect}
+        style={{ display: "none" }}
+      />
+      <IonCard className="device-card">
+        <IonCardHeader>
+          <div className="device-card-header">
+            <IonIcon icon={getPlatformIcon()} size="large" />
+            <div>
+              <IonCardTitle>{device.name}</IonCardTitle>
+              <IonCardSubtitle>{device.id}</IonCardSubtitle>
+            </div>
           </div>
-          <IonBadge color={getStatusColor()} className="device-badge">
-            {getStatusText()}
-          </IonBadge>
-        </div>
-      </IonCardHeader>
+        </IonCardHeader>
+        <IonCardContent>
+          <div className="status-row">
+            {isPaired ? (
+              <IonBadge color="success">
+                <IonIcon icon={checkmarkCircle} />
+                Paired
+              </IonBadge>
+            ) : (
+              <IonBadge color="medium">Discovered</IonBadge>
+            )}
+            <IonBadge color="primary">
+              <IonIcon icon={wifi} />
+              {device.status}
+            </IonBadge>
+          </div>
 
-      <IonCardContent>
-        <div className="device-details">
-          {device.ipAddress && (
-            <IonText color="medium">
-              <p className="device-detail">
-                <strong>IP:</strong> {device.ipAddress}
-              </p>
-            </IonText>
-          )}
-          <IonText color="medium">
-            <p className="device-detail">
-              <strong>Last seen:</strong> {device.lastSeen.toLocaleTimeString()}
-            </p>
-          </IonText>
-        </div>
-
-        <div className="device-actions">
-          {!isPaired && onPair && (
-            <IonButton onClick={onPair} size="small" expand="block">
-              <IonIcon slot="start" icon={checkmarkCircle} />
-              Pair Device
-            </IonButton>
-          )}
-
-          {isPaired && (
-            <>
-              {onConnect && device.status !== "connected" && (
-                <IonButton
-                  onClick={onConnect}
-                  size="small"
-                  expand="block"
-                  color="primary"
-                >
-                  <IonIcon slot="start" icon={linkOutline} />
-                  Connect
-                </IonButton>
-              )}
-
-              {onUnpair && (
-                <IonButton
-                  onClick={onUnpair}
-                  size="small"
-                  expand="block"
-                  color="danger"
-                  fill="outline"
-                >
-                  <IonIcon slot="start" icon={removeCircleOutline} />
-                  Unpair
-                </IonButton>
-              )}
-            </>
-          )}
-        </div>
-      </IonCardContent>
-    </IonCard>
+          <div className="action-buttons">
+            {!isPaired && onPair && (
+              <IonButton fill="outline" onClick={() => onPair(device)}>
+                Pair
+              </IonButton>
+            )}
+            {isPaired && onConnect && (
+              <IonButton fill="outline" onClick={() => onConnect(device.id)}>
+                Connect
+              </IonButton>
+            )}
+            {isPaired && onSendFile && (
+              <IonButton fill="outline" onClick={triggerFileSelect}>
+                <IonIcon slot="start" icon={documentAttach} />
+                Send File
+              </IonButton>
+            )}
+            {isPaired && onUnpair && (
+              <IonButton
+                color="danger"
+                fill="clear"
+                onClick={() => onUnpair(device.id)}
+              >
+                <IonIcon slot="icon-only" icon={closeCircle} />
+              </IonButton>
+            )}
+          </div>
+        </IonCardContent>
+      </IonCard>
+    </>
   );
 };

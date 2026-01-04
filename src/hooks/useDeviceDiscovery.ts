@@ -25,6 +25,8 @@ export const useDeviceDiscovery = () => {
     loadPairedDevices,
     isDiscovering,
     setIsDiscovering,
+    signalingData,
+    setSignalingData,
   } = useDeviceStore();
 
   const { deviceName, deviceId, initialized } = useSettingsStore();
@@ -57,7 +59,6 @@ export const useDeviceDiscovery = () => {
       if (device.id === deviceId) return;
 
       addDiscoveredDevice(device);
-      console.log("Device found:", device.name);
     },
     [deviceId, addDiscoveredDevice],
   );
@@ -66,61 +67,53 @@ export const useDeviceDiscovery = () => {
   const handleDeviceLost = useCallback(
     (deviceId: string) => {
       removeDiscoveredDevice(deviceId);
-      console.log("Device lost:", deviceId);
     },
     [removeDiscoveredDevice],
   );
 
-  // Handle WebRTC signals
-  const handleSignal = useCallback((signal: SignalMessage) => {
-    // In MVP, we'll handle signaling manually through pairing
-    // In production, this would go through a signaling server
-    console.log("WebRTC signal:", signal);
+  // Handle outgoing WebRTC signals
+  const handleSignal = useCallback(
+    (signal: SignalMessage) => {
+      // Show the signal to the user to be manually transferred
+      setSignalingData({ deviceId: signal.to, signal });
+    },
+    [setSignalingData],
+  );
 
-    // For now, just log. In Phase 3, we'll implement actual file transfer
-    // which will require proper signaling
-  }, []);
-
-  // Start discovery
+  // Start discovery and listen for signals
   const startDiscovery = useCallback(async () => {
     if (!currentDevice) {
       console.warn("Current device not initialized");
       return;
     }
 
-    if (!discoveryService.isSupported()) {
-      console.warn("Discovery not supported on this platform");
-      // On web, we could show a manual pairing option
-      return;
+    // Subscribe to WebRTC signal events
+    const unsubscribeSignal = webrtcService.onSignal(handleSignal);
+
+    if (discoveryService.isSupported()) {
+      try {
+        setIsDiscovering(true);
+        await discoveryService.registerDevice(currentDevice);
+        await discoveryService.startDiscovery();
+        const unsubscribeFound =
+          discoveryService.onDeviceFound(handleDeviceFound);
+        const unsubscribeLost = discoveryService.onDeviceLost(handleDeviceLost);
+
+        // Return cleanup function
+        return () => {
+          unsubscribeFound();
+          unsubscribeLost();
+          unsubscribeSignal();
+        };
+      } catch (error) {
+        console.error("Failed to start discovery:", error);
+        setIsDiscovering(false);
+      }
     }
-
-    try {
-      setIsDiscovering(true);
-
-      // Register this device
-      await discoveryService.registerDevice(currentDevice);
-
-      // Start discovering other devices
-      await discoveryService.startDiscovery();
-
-      // Subscribe to discovery events
-      const unsubscribeFound =
-        discoveryService.onDeviceFound(handleDeviceFound);
-      const unsubscribeLost = discoveryService.onDeviceLost(handleDeviceLost);
-
-      // Subscribe to WebRTC signal events
-      const unsubscribeSignal = webrtcService.onSignal(handleSignal);
-
-      // Cleanup function
-      return () => {
-        unsubscribeFound();
-        unsubscribeLost();
-        unsubscribeSignal();
-      };
-    } catch (error) {
-      console.error("Failed to start discovery:", error);
-      setIsDiscovering(false);
-    }
+    // Return cleanup for signal listener even if discovery isn't supported
+    return () => {
+      unsubscribeSignal();
+    };
   }, [
     currentDevice,
     setIsDiscovering,
@@ -132,8 +125,10 @@ export const useDeviceDiscovery = () => {
   // Stop discovery
   const stopDiscovery = useCallback(async () => {
     try {
-      await discoveryService.stopDiscovery();
-      await discoveryService.unregisterDevice();
+      if (discoveryService.isSupported()) {
+        await discoveryService.stopDiscovery();
+        await discoveryService.unregisterDevice();
+      }
       clearDiscoveredDevices();
       setIsDiscovering(false);
     } catch (error) {
@@ -145,7 +140,6 @@ export const useDeviceDiscovery = () => {
   const pairDevice = useCallback(
     async (device: Device) => {
       await addPairedDevice(device);
-      console.log("Device paired:", device.name);
     },
     [addPairedDevice],
   );
@@ -154,25 +148,46 @@ export const useDeviceDiscovery = () => {
   const unpairDevice = useCallback(
     async (deviceId: string) => {
       await removePairedDevice(deviceId);
-      // Also close any WebRTC connection
       webrtcService.closeConnection(deviceId);
-      console.log("Device unpaired:", deviceId);
     },
     [removePairedDevice],
   );
 
-  // Connect to a device
+  // Initiate a connection to a device
   const connectToDevice = useCallback(
     (deviceId: string) => {
       if (!isPaired(deviceId)) {
         console.warn("Device not paired:", deviceId);
         return;
       }
-
       webrtcService.createOffer(deviceId);
-      console.log("Connecting to device:", deviceId);
     },
     [isPaired],
+  );
+
+  // Handle a signal submitted by the user
+  const submitSignal = useCallback(
+    (pastedSignal: string) => {
+      try {
+        const signalData = JSON.parse(pastedSignal);
+        // We need to know who this signal is from to handle it.
+        // For this MVP, we assume the signal is for the device currently in the signaling modal.
+        if (signalingData) {
+          const fullSignal: SignalMessage = {
+            from: signalingData.deviceId, // The other device's ID
+            to: currentDevice!.id,
+            type: signalData.type === "offer" ? "offer" : "answer", // Infer type
+            data: signalData,
+            timestamp: new Date(),
+          };
+          webrtcService.handleSignal(fullSignal);
+        }
+      } catch (e) {
+        console.error("Invalid signal data pasted:", e);
+        alert("Invalid signal data. Please copy the entire JSON text.");
+      }
+    },
+    [signalingData, currentDevice],
   );
 
   return {
@@ -182,6 +197,7 @@ export const useDeviceDiscovery = () => {
     pairedDevices,
     isDiscovering,
     isSupported: discoveryService.isSupported(),
+    signalingData,
 
     // Actions
     startDiscovery,
@@ -189,6 +205,8 @@ export const useDeviceDiscovery = () => {
     pairDevice,
     unpairDevice,
     connectToDevice,
+    submitSignal,
+    setSignalingData,
     isPaired,
   };
 };

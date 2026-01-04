@@ -11,6 +11,7 @@ interface DeviceListProps {
   onPair?: (device: Device) => void;
   onUnpair?: (deviceId: string) => void;
   onConnect?: (deviceId: string) => void;
+  onSendFile?: (file: File, deviceId: string) => void;
   emptyMessage?: string;
 }
 
@@ -20,6 +21,7 @@ export const DeviceList: React.FC<DeviceListProps> = ({
   onPair,
   onUnpair,
   onConnect,
+  onSendFile,
   emptyMessage = "No devices found",
 }) => {
   if (devices.length === 0) {
@@ -45,6 +47,7 @@ export const DeviceList: React.FC<DeviceListProps> = ({
             onPair={onPair ? () => onPair(device) : undefined}
             onUnpair={onUnpair ? () => onUnpair(device.id) : undefined}
             onConnect={onConnect ? () => onConnect(device.id) : undefined}
+            onSendFile={onSendFile}
           />
         );
       })}
