@@ -40,6 +40,12 @@ interface DeviceStore {
   // Discovery state
   isDiscovering: boolean;
   setIsDiscovering: (discovering: boolean) => void;
+
+  // Signaling state for manual connection
+  signalingData: { deviceId: string; signal: SignalMessage } | null;
+  setSignalingData: (
+    data: { deviceId: string; signal: SignalMessage } | null,
+  ) => void;
 }
 
 export const useDeviceStore = create<DeviceStore>((set, get) => ({
@@ -146,4 +152,8 @@ export const useDeviceStore = create<DeviceStore>((set, get) => ({
   // Discovery state
   isDiscovering: false,
   setIsDiscovering: discovering => set({ isDiscovering: discovering }),
+
+  // Signaling state
+  signalingData: null,
+  setSignalingData: data => set({ signalingData: data }),
 }));
