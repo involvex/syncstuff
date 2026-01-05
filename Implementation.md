@@ -22,7 +22,7 @@ The project has been stabilized on a compatible set of technologies to ensure a 
 - `react-router-dom: ^5.3.4`
 - `simple-peer: ^9.11.1` (for WebRTC)
 - `capacitor-zeroconf: ^3.0.0` (for mDNS discovery)
-- `@capacitor-community/barcode-scanner: ^4.0.1` (for QR code scanning)
+- `@capacitor-mlkit/barcode-scanning: ^6.2.0` (for QR code scanning)
 - `qrcode.react: ^4.2.0` (for QR code generation)
 - `socket.io-client: ^4.8.3` (for WebSocket signaling client)
 - `socket.io: ^4.8.3` (for WebSocket signaling server)
