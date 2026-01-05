@@ -21,7 +21,10 @@ Object.defineProperty(window, "matchMedia", {
 
 // Mock react-router-dom (v5)
 vi.mock("react-router-dom", async () => {
-  const actual = await vi.importActual("react-router-dom");
+  const actual = (await vi.importActual("react-router-dom")) as Record<
+    string,
+    unknown
+  >;
   return {
     ...actual,
     BrowserRouter: ({ children }: { children: React.ReactNode }) =>
@@ -43,13 +46,16 @@ vi.mock("react-router-dom", async () => {
       isExact: true,
       params: {},
     }),
-    withRouter: (component: any) => component,
+    withRouter: <T>(component: T): T => component,
   };
 });
 
 // Mock react-router (v5)
 vi.mock("react-router", async () => {
-  const actual = await vi.importActual("react-router");
+  const actual = (await vi.importActual("react-router")) as Record<
+    string,
+    unknown
+  >;
   return {
     ...actual,
     Router: ({ children }: { children: React.ReactNode }) =>
@@ -70,13 +76,16 @@ vi.mock("react-router", async () => {
       isExact: true,
       params: {},
     }),
-    withRouter: (component: any) => component,
+    withRouter: <T>(component: T): T => component,
   };
 });
 
 // Mock @ionic/react-router
 vi.mock("@ionic/react-router", async () => {
-  const actual = await vi.importActual("@ionic/react-router");
+  const actual = (await vi.importActual("@ionic/react-router")) as Record<
+    string,
+    unknown
+  >;
   return {
     ...actual,
     IonReactRouter: ({ children }: { children: React.ReactNode }) =>
@@ -140,7 +149,10 @@ vi.mock("@capacitor/filesystem", () => ({
 
 // Mock @capacitor/core
 vi.mock("@capacitor/core", async () => {
-  const actual = await vi.importActual("@capacitor/core");
+  const actual = (await vi.importActual("@capacitor/core")) as Record<
+    string,
+    unknown
+  >;
   return {
     ...actual,
     Capacitor: {
@@ -153,24 +165,31 @@ vi.mock("@capacitor/core", async () => {
 // Mock @ionic/storage
 vi.mock("@ionic/storage", () => {
   const mockStorageStore: { [key: string]: unknown } = {};
+
   const mockStorageInstance = {
-    create: vi.fn(async () => mockStorageInstance), // Return self
-    get: vi.fn(async (key: string) => mockStorageStore[key]),
-    set: vi.fn(async (key: string, value: unknown) => {
+    create: vi.fn().mockImplementation(async () => mockStorageInstance),
+    get: vi
+      .fn()
+      .mockImplementation(async (key: string) => mockStorageStore[key]),
+    set: vi.fn().mockImplementation(async (key: string, value: unknown) => {
       mockStorageStore[key] = value;
       return true;
     }),
-    remove: vi.fn(async (key: string) => {
+    remove: vi.fn().mockImplementation(async (key: string) => {
       delete mockStorageStore[key];
       return true;
     }),
-    clear: vi.fn(async () => {
-      Object.keys(mockStorageStore).forEach(key => delete mockStorageStore[key]);
+    clear: vi.fn().mockImplementation(async () => {
+      Object.keys(mockStorageStore).forEach(
+        key => delete mockStorageStore[key],
+      );
       return true;
     }),
     forEach: vi.fn(),
-    length: vi.fn(async () => Object.keys(mockStorageStore).length),
-    keys: vi.fn(async () => Object.keys(mockStorageStore)),
+    length: vi
+      .fn()
+      .mockImplementation(async () => Object.keys(mockStorageStore).length),
+    keys: vi.fn().mockImplementation(async () => Object.keys(mockStorageStore)),
     setMany: vi.fn(),
     getMany: vi.fn(),
     removeMany: vi.fn(),

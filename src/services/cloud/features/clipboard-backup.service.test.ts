@@ -1,41 +1,50 @@
-import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { CloudClipboardBackupService } from './clipboard-backup.service';
-import { cloudManagerService } from '../cloud-manager.service';
-import { useCloudStore } from '../../../store/cloud.store';
-import type { CloudAccount, CloudProvider } from '../../../types/cloud.types';
-import type { ClipboardContent } from '../../../types/clipboard.types';
+import { vi, describe, it, expect, beforeEach } from "vitest";
+import { CloudClipboardBackupService } from "./clipboard-backup.service";
+import { cloudManagerService } from "../cloud-manager.service";
+import { useCloudStore } from "../../../store/cloud.store";
+import type { CloudAccount, CloudProvider } from "../../../types/cloud.types";
+import type { ClipboardContent } from "../../../types/clipboard.types";
 
 // Mock dependencies
-vi.mock('../cloud-manager.service', () => ({
+vi.mock("../cloud-manager.service", () => ({
   cloudManagerService: {
     getProvider: vi.fn(),
   },
 }));
 
-vi.mock('../../../store/cloud.store', () => ({
+vi.mock("../../../store/cloud.store", () => ({
   useCloudStore: {
     getState: vi.fn(),
   },
 }));
 
-describe('CloudClipboardBackupService', () => {
+describe("CloudClipboardBackupService", () => {
   let service: CloudClipboardBackupService;
-  
+
   beforeEach(() => {
     service = new CloudClipboardBackupService();
     vi.clearAllMocks();
   });
 
-  it('should not backup if no accounts are connected', async () => {
-    (useCloudStore.getState as any).mockReturnValue({ accounts: [] });
-    
+  it("should not backup if no accounts are connected", async () => {
+    vi.mocked(useCloudStore.getState).mockReturnValue({
+      accounts: [],
+      isLoading: false,
+      error: null,
+      addAccount: vi.fn(),
+      removeAccount: vi.fn(),
+      updateAccount: vi.fn(),
+      setLoading: vi.fn(),
+      setError: vi.fn(),
+    });
+
     const content: ClipboardContent = {
-      id: '1',
-      type: 'text',
-      content: 'test content',
+      id: "1",
+      type: "text",
+      content: "test content",
       size: 12,
-      deviceId: 'device1',
-      deviceName: 'Device 1',
+      deviceId: "device1",
+      deviceName: "Device 1",
       timestamp: new Date(),
       synced: false,
     };
@@ -44,80 +53,100 @@ describe('CloudClipboardBackupService', () => {
     expect(cloudManagerService.getProvider).not.toHaveBeenCalled();
   });
 
-  it('should backup text content to connected accounts', async () => {
+  it("should backup text content to connected accounts", async () => {
     const mockAccount: CloudAccount = {
-      id: 'acc1',
-      provider: 'mock',
-      name: 'Test',
-      email: 'test@example.com',
+      id: "acc1",
+      provider: "mock",
+      name: "Test",
+      email: "test@example.com",
       isAuthenticated: true,
     };
 
-    (useCloudStore.getState as any).mockReturnValue({ accounts: [mockAccount] });
-    
+    vi.mocked(useCloudStore.getState).mockReturnValue({
+      accounts: [mockAccount],
+      isLoading: false,
+      error: null,
+      addAccount: vi.fn(),
+      removeAccount: vi.fn(),
+      updateAccount: vi.fn(),
+      setLoading: vi.fn(),
+      setError: vi.fn(),
+    });
+
     const mockProvider = {
-      uploadFile: vi.fn().mockResolvedValue({ id: 'file1' }),
+      uploadFile: vi.fn().mockResolvedValue({ id: "file1" }),
     } as unknown as CloudProvider;
 
-    (cloudManagerService.getProvider as any).mockReturnValue(mockProvider);
+    vi.mocked(cloudManagerService.getProvider).mockReturnValue(mockProvider);
 
     const content: ClipboardContent = {
-      id: '1',
-      type: 'text',
-      content: 'test content',
+      id: "1",
+      type: "text",
+      content: "test content",
       size: 12,
-      deviceId: 'device1',
-      deviceName: 'Device 1',
+      deviceId: "device1",
+      deviceName: "Device 1",
       timestamp: new Date(),
       synced: false,
     };
 
     await service.backupToCloud(content);
 
-    expect(cloudManagerService.getProvider).toHaveBeenCalledWith('mock');
+    expect(cloudManagerService.getProvider).toHaveBeenCalledWith("mock");
     expect(mockProvider.uploadFile).toHaveBeenCalled();
-    const uploadedFile = (mockProvider.uploadFile as any).mock.calls[0][0] as File;
+    const uploadedFile = vi.mocked(mockProvider.uploadFile).mock
+      .calls[0][0] as File;
     expect(uploadedFile).toBeInstanceOf(File);
     expect(uploadedFile.name).toMatch(/^clipboard-.*\.txt$/);
   });
 
-  it('should backup image content to connected accounts', async () => {
+  it("should backup image content to connected accounts", async () => {
     const mockAccount: CloudAccount = {
-      id: 'acc1',
-      provider: 'mock',
-      name: 'Test',
-      email: 'test@example.com',
+      id: "acc1",
+      provider: "mock",
+      name: "Test",
+      email: "test@example.com",
       isAuthenticated: true,
     };
 
-    (useCloudStore.getState as any).mockReturnValue({ accounts: [mockAccount] });
-    
+    vi.mocked(useCloudStore.getState).mockReturnValue({
+      accounts: [mockAccount],
+      isLoading: false,
+      error: null,
+      addAccount: vi.fn(),
+      removeAccount: vi.fn(),
+      updateAccount: vi.fn(),
+      setLoading: vi.fn(),
+      setError: vi.fn(),
+    });
+
     const mockProvider = {
-      uploadFile: vi.fn().mockResolvedValue({ id: 'file1' }),
+      uploadFile: vi.fn().mockResolvedValue({ id: "file1" }),
     } as unknown as CloudProvider;
 
-    (cloudManagerService.getProvider as any).mockReturnValue(mockProvider);
+    vi.mocked(cloudManagerService.getProvider).mockReturnValue(mockProvider);
 
     // Base64 encoded "Hello"
     const content: ClipboardContent = {
-      id: '1',
-      type: 'image',
-      content: 'SGVsbG8=',
-      mimeType: 'image/png',
+      id: "1",
+      type: "image",
+      content: "SGVsbG8=",
+      mimeType: "image/png",
       size: 5,
-      deviceId: 'device1',
-      deviceName: 'Device 1',
+      deviceId: "device1",
+      deviceName: "Device 1",
       timestamp: new Date(),
       synced: false,
     };
 
     await service.backupToCloud(content);
 
-    expect(cloudManagerService.getProvider).toHaveBeenCalledWith('mock');
+    expect(cloudManagerService.getProvider).toHaveBeenCalledWith("mock");
     expect(mockProvider.uploadFile).toHaveBeenCalled();
-    const uploadedFile = (mockProvider.uploadFile as any).mock.calls[0][0] as File;
+    const uploadedFile = vi.mocked(mockProvider.uploadFile).mock
+      .calls[0][0] as File;
     expect(uploadedFile).toBeInstanceOf(File);
     expect(uploadedFile.name).toMatch(/^clipboard-.*\.png$/);
-    expect(uploadedFile.type).toBe('image/png');
+    expect(uploadedFile.type).toBe("image/png");
   });
 });

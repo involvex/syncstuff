@@ -126,25 +126,29 @@ export const CloudAccounts: React.FC = () => {
           <IonButton
             expand="block"
             fill="outline"
-            onClick={() => handleAddAccount('google')}
+            onClick={() => handleAddAccount("google")}
             disabled={isAuthenticating}
           >
             <IonIcon slot="start" icon={logoGoogle} />
-            {isAuthenticating ? <IonSpinner name="dots" /> : 'Connect Google Drive'}
+            {isAuthenticating ? (
+              <IonSpinner name="dots" />
+            ) : (
+              "Connect Google Drive"
+            )}
           </IonButton>
 
           <IonButton
             expand="block"
             fill="outline"
-            onClick={() => handleAddAccount('mega')}
+            onClick={() => handleAddAccount("mega")}
             disabled={isAuthenticating}
             color="danger"
           >
             <IonIcon slot="start" icon={cloudOutline} />
             Connect Mega
           </IonButton>
-          
-           {/* Mock Provider for Testing */}
+
+          {/* Mock Provider for Testing */}
           <IonButton
             expand="block"
             fill="clear"

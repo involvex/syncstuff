@@ -23,6 +23,7 @@ import SettingsPage from "./pages/SettingsPage";
 import { useTheme } from "./hooks/useTheme";
 import { useEffect } from "react";
 import { useSettingsStore } from "./store/settings.store"; // Import useSettingsStore
+import { deepLinkService } from "./services/network/deeplink.service";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -62,7 +63,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const initializeAppSettings = async () => {
       await useSettingsStore.getState().initialize();
-      // Additional setup after settings are ready could go here
+      await deepLinkService.initialize();
     };
     initializeAppSettings();
   }, []);
