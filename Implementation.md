@@ -64,6 +64,8 @@ The MVP implementation is complete, covering the first three phases of the proje
 - **Mock Cloud Provider:** Added a mock provider to demonstrate and test the UI and authentication flows without external API keys.
 - **Google Drive Stub:** Created a structure for Google Drive integration, ready for Client ID configuration.
 - **Settings UI:** Added a "Cloud Accounts" section in the Settings page to manage connected accounts.
+- **Cloud File Browser:** Implemented a functional `CloudFileBrowser` component integrated into the **Transfers** page (via segments).
+- **Cloud Upload/Download:** Added support for uploading local files to the cloud and downloading files from the cloud via the unified interface.
 
 ## 3. How to Run & Test the App
 
@@ -85,7 +87,11 @@ bun run dev
 ```
 
 Navigate to `http://localhost:5173`. The web version will automatically connect to the signaling server.
-To test Cloud Integration, go to **Settings** and click **"Connect Mock Cloud (Test)"**.
+To test Cloud Integration:
+
+1. Go to **Settings** and click **"Connect Mock Cloud (Test)"**.
+2. Go to **Transfers** and switch to the **"Cloud"** segment.
+3. You can now browse mock files, download them, or upload new ones.
 
 ### C. Run the App on Android
 
