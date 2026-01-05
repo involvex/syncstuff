@@ -1,18 +1,15 @@
-import { cloudManagerService } from '../cloud-manager.service';
-import { useCloudStore } from '../../../store/cloud.store';
-import { useSettingsStore } from '../../../store/settings.store';
-import { useClipboardStore } from '../../../store/clipboard.store';
-import type { ClipboardContent } from '../../../types/clipboard.types';
+import { cloudManagerService } from "../cloud-manager.service";
+import { useCloudStore } from "../../../store/cloud.store";
+import type { ClipboardContent } from "../../../types/clipboard.types";
 
 export class CloudClipboardBackupService {
-  private static readonly BACKUP_FOLDER_NAME = 'Syncstuff Clipboard History';
+  private static readonly BACKUP_FOLDER_NAME = "Syncstuff Clipboard History";
 
   /**
    * Backup clipboard item to all connected cloud accounts
    */
   async backupToCloud(item: ClipboardContent): Promise<void> {
     const { accounts } = useCloudStore.getState();
-    const settings = useSettingsStore.getState();
 
     // Check if cloud backup is enabled (we need to add this setting)
     // For now, assume if an account exists, we might want to back up
@@ -34,7 +31,7 @@ export class CloudClipboardBackupService {
         // In a real app, we'd check/create the folder here.
         // For Mock/MVP, we just upload to root or a specific folder ID if we knew it.
         // Let's assume root for now or simulate folder creation logic in the provider.
-        
+
         await provider.uploadFile(file);
         console.log(`Backed up to ${account.name} (${account.provider})`);
       } catch (error) {
@@ -42,14 +39,13 @@ export class CloudClipboardBackupService {
       }
     }
   }
-
   private convertClipboardToFile(item: ClipboardContent): File | null {
     try {
-      if (item.type === 'text') {
-        const blob = new Blob([item.content], { type: 'text/plain' });
-        const filename = `clipboard-${new Date(item.timestamp).toISOString().replace(/[:.]/g, '-')}.txt`;
-        return new File([blob], filename, { type: 'text/plain' });
-      } else if (item.type === 'image') {
+      if (item.type === "text") {
+        const blob = new Blob([item.content], { type: "text/plain" });
+        const filename = `clipboard-${new Date(item.timestamp).toISOString().replace(/[:.]/g, "-")}.txt`;
+        return new File([blob], filename, { type: "text/plain" });
+      } else if (item.type === "image") {
         // Content is base64
         const byteString = atob(item.content);
         const ab = new ArrayBuffer(byteString.length);
@@ -57,13 +53,15 @@ export class CloudClipboardBackupService {
         for (let i = 0; i < byteString.length; i++) {
           ia[i] = byteString.charCodeAt(i);
         }
-        const blob = new Blob([ab], { type: item.mimeType || 'image/png' });
-        const ext = item.mimeType?.split('/')[1] || 'png';
-        const filename = `clipboard-${new Date(item.timestamp).toISOString().replace(/[:.]/g, '-')}.${ext}`;
-        return new File([blob], filename, { type: item.mimeType || 'image/png' });
+        const blob = new Blob([ab], { type: item.mimeType || "image/png" });
+        const ext = item.mimeType?.split("/")[1] || "png";
+        const filename = `clipboard-${new Date(item.timestamp).toISOString().replace(/[:.]/g, "-")}.${ext}`;
+        return new File([blob], filename, {
+          type: item.mimeType || "image/png",
+        });
       }
     } catch (e) {
-      console.error('Failed to convert clipboard content to file:', e);
+      console.error("Failed to convert clipboard content to file:", e);
     }
     return null;
   }

@@ -4,6 +4,7 @@ import type {
   ClipboardSync,
   ClipboardSyncStatus,
 } from "../types/clipboard.types";
+import { useSettingsStore } from "./settings.store";
 
 interface ClipboardStore {
   clipboardHistory: ClipboardContent[];

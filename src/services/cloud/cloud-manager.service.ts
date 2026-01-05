@@ -1,6 +1,7 @@
 import type { CloudProvider, CloudProviderType } from "../../types/cloud.types";
 import { GoogleDriveService } from "./providers/google-drive.service";
 import { MockCloudService } from "./providers/mock-cloud.service";
+import { MegaService } from "./providers/mega.service";
 
 class CloudManagerService {
   private providers: Map<CloudProviderType, CloudProvider> = new Map();
@@ -8,6 +9,7 @@ class CloudManagerService {
   constructor() {
     this.registerProvider(new MockCloudService());
     this.registerProvider(new GoogleDriveService());
+    this.registerProvider(new MegaService());
   }
 
   registerProvider(provider: CloudProvider) {

@@ -20,63 +20,75 @@ Object.defineProperty(window, "matchMedia", {
 });
 
 // Mock react-router-dom (v5)
-vi.mock("react-router-dom", () => ({
-  ...vi.importActual("react-router-dom"), // Use actual for things like `useLocation`
-  BrowserRouter: vi.fn(({ children }) =>
-    React.createElement("div", null, children),
-  ),
-  Route: vi.fn(({ children }) => React.createElement("div", null, children)),
-  Redirect: vi.fn(() => null),
-  useHistory: vi.fn(() => ({ push: vi.fn(), replace: vi.fn() })),
-  useLocation: vi.fn(() => ({
-    pathname: "/",
-    search: "",
-    hash: "",
-    state: undefined,
-  })),
-  useParams: vi.fn(() => ({})),
-  useRouteMatch: vi.fn(() => ({
-    url: "/",
-    path: "/",
-    isExact: true,
-    params: {},
-  })),
-}));
+vi.mock("react-router-dom", async () => {
+  const actual = await vi.importActual("react-router-dom");
+  return {
+    ...actual,
+    BrowserRouter: ({ children }: { children: React.ReactNode }) =>
+      React.createElement("div", null, children),
+    Route: ({ children }: { children: React.ReactNode }) =>
+      React.createElement("div", null, children),
+    Redirect: () => null,
+    useHistory: () => ({ push: vi.fn(), replace: vi.fn(), listen: vi.fn() }),
+    useLocation: () => ({
+      pathname: "/",
+      search: "",
+      hash: "",
+      state: undefined,
+    }),
+    useParams: () => ({}),
+    useRouteMatch: () => ({
+      url: "/",
+      path: "/",
+      isExact: true,
+      params: {},
+    }),
+    withRouter: (component: any) => component,
+  };
+});
 
 // Mock react-router (v5)
-vi.mock("react-router", () => ({
-  ...vi.importActual("react-router"),
-  Router: vi.fn(({ children }) => React.createElement("div", null, children)),
-  Route: vi.fn(({ children }) => React.createElement("div", null, children)),
-  useHistory: vi.fn(() => ({ push: vi.fn(), replace: vi.fn() })),
-  useLocation: vi.fn(() => ({
-    pathname: "/",
-    search: "",
-    hash: "",
-    state: undefined,
-  })),
-  useParams: vi.fn(() => ({})),
-  useRouteMatch: vi.fn(() => ({
-    url: "/",
-    path: "/",
-    isExact: true,
-    params: {},
-  })),
-}));
+vi.mock("react-router", async () => {
+  const actual = await vi.importActual("react-router");
+  return {
+    ...actual,
+    Router: ({ children }: { children: React.ReactNode }) =>
+      React.createElement("div", null, children),
+    Route: ({ children }: { children: React.ReactNode }) =>
+      React.createElement("div", null, children),
+    useHistory: () => ({ push: vi.fn(), replace: vi.fn(), listen: vi.fn() }),
+    useLocation: () => ({
+      pathname: "/",
+      search: "",
+      hash: "",
+      state: undefined,
+    }),
+    useParams: () => ({}),
+    useRouteMatch: () => ({
+      url: "/",
+      path: "/",
+      isExact: true,
+      params: {},
+    }),
+    withRouter: (component: any) => component,
+  };
+});
 
 // Mock @ionic/react-router
-vi.mock("@ionic/react-router", () => ({
-  ...vi.importActual("@ionic/react-router"),
-  IonReactRouter: vi.fn(({ children }) =>
-    React.createElement("div", null, children),
-  ),
-  IonRouterOutlet: vi.fn(({ children }) =>
-    React.createElement("div", null, children),
-  ),
-  IonRoute: vi.fn(({ children }) => React.createElement("div", null, children)),
-}));
+vi.mock("@ionic/react-router", async () => {
+  const actual = await vi.importActual("@ionic/react-router");
+  return {
+    ...actual,
+    IonReactRouter: ({ children }: { children: React.ReactNode }) =>
+      React.createElement("div", null, children),
+    IonRouterOutlet: ({ children }: { children: React.ReactNode }) =>
+      React.createElement("div", null, children),
+    IonRoute: ({ children }: { children: React.ReactNode }) =>
+      React.createElement("div", null, children),
+  };
+});
 
-// Mock BarcodeScanner for non-native test environment
+// Mock BarcodeScanner
 vi.mock("@capacitor-mlkit/barcode-scanning", () => ({
   BarcodeScanner: {
     checkPermissions: vi.fn(() => Promise.resolve({ camera: "granted" })),
@@ -86,35 +98,97 @@ vi.mock("@capacitor-mlkit/barcode-scanning", () => ({
     ),
     hideBackground: vi.fn(() => Promise.resolve()),
     showBackground: vi.fn(() => Promise.resolve()),
-    stopScan: vi.fn(() => Promise.resolve()), // Added stopScan mock
+    stopScan: vi.fn(() => Promise.resolve()),
   },
 }));
 
-// Mock @ionic/storage for non-browser test environment
-vi.mock("@ionic/storage", () => {
-  const mockStorage: { [key: string]: unknown } = {};
+// Mock @capacitor/device
+vi.mock("@capacitor/device", () => ({
+  Device: {
+    getInfo: vi.fn(() =>
+      Promise.resolve({ manufacturer: "Test", model: "Device" }),
+    ),
+    getId: vi.fn(() => Promise.resolve({ identifier: "test-device-id" })),
+  },
+}));
+
+// Mock @capacitor/clipboard
+vi.mock("@capacitor/clipboard", () => ({
+  Clipboard: {
+    write: vi.fn(() => Promise.resolve()),
+    read: vi.fn(() => Promise.resolve({ value: "test clipboard" })),
+  },
+}));
+
+// Mock @capacitor/filesystem
+vi.mock("@capacitor/filesystem", () => ({
+  Filesystem: {
+    readFile: vi.fn(() => Promise.resolve({ data: "test data" })),
+    writeFile: vi.fn(() => Promise.resolve()),
+    appendFile: vi.fn(() => Promise.resolve()),
+    deleteFile: vi.fn(() => Promise.resolve()),
+    stat: vi.fn(() => Promise.resolve({ size: 100 })),
+    Directory: {
+      Documents: "DOCUMENTS",
+      Cache: "CACHE",
+    },
+    Encoding: {
+      UTF8: "utf8",
+    },
+  },
+}));
+
+// Mock @capacitor/core
+vi.mock("@capacitor/core", async () => {
+  const actual = await vi.importActual("@capacitor/core");
   return {
-    Storage: vi.fn().mockImplementation(() => ({
-      create: vi.fn(() => Promise.resolve()),
-      get: vi.fn(async (key: string) => mockStorage[key]),
-      set: vi.fn((key: string, value: unknown) => {
-        mockStorage[key] = value;
-        return true;
-      }),
-      remove: vi.fn(async (key: string) => {
-        delete mockStorage[key];
-        return true;
-      }),
-      clear: vi.fn(async () => {
-        Object.keys(mockStorage).forEach(key => delete mockStorage[key]);
-        return true;
-      }),
-      forEach: vi.fn(),
-      length: vi.fn(() => Object.keys(mockStorage).length),
-      keys: vi.fn(() => Object.keys(mockStorage)),
-      setMany: vi.fn(),
-      getMany: vi.fn(),
-      removeMany: vi.fn(),
-    })),
+    ...actual,
+    Capacitor: {
+      isNativePlatform: () => false,
+      getPlatform: () => "web",
+    },
   };
 });
+
+// Mock @ionic/storage
+vi.mock("@ionic/storage", () => {
+  const mockStorageStore: { [key: string]: unknown } = {};
+  const mockStorageInstance = {
+    create: vi.fn(async () => mockStorageInstance), // Return self
+    get: vi.fn(async (key: string) => mockStorageStore[key]),
+    set: vi.fn(async (key: string, value: unknown) => {
+      mockStorageStore[key] = value;
+      return true;
+    }),
+    remove: vi.fn(async (key: string) => {
+      delete mockStorageStore[key];
+      return true;
+    }),
+    clear: vi.fn(async () => {
+      Object.keys(mockStorageStore).forEach(key => delete mockStorageStore[key]);
+      return true;
+    }),
+    forEach: vi.fn(),
+    length: vi.fn(async () => Object.keys(mockStorageStore).length),
+    keys: vi.fn(async () => Object.keys(mockStorageStore)),
+    setMany: vi.fn(),
+    getMany: vi.fn(),
+    removeMany: vi.fn(),
+  };
+
+  return {
+    Storage: vi.fn(() => mockStorageInstance),
+  };
+});
+
+// Mock capacitor-zeroconf
+vi.mock("capacitor-zeroconf", () => ({
+  ZeroConf: {
+    watch: vi.fn(() => Promise.resolve()),
+    unwatch: vi.fn(() => Promise.resolve()),
+    close: vi.fn(() => Promise.resolve()),
+    register: vi.fn(() => Promise.resolve()),
+    stop: vi.fn(() => Promise.resolve()),
+    addListener: vi.fn(),
+  },
+}));
