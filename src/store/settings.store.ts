@@ -23,9 +23,11 @@ interface SettingsStore {
   clipboardAutoSync: boolean;
   clipboardSyncImages: boolean;
   clipboardShowPreview: boolean;
+  clipboardCloudBackup: boolean;
   setClipboardAutoSync: (value: boolean) => void;
   setClipboardSyncImages: (value: boolean) => void;
   setClipboardShowPreview: (value: boolean) => void;
+  setClipboardCloudBackup: (value: boolean) => void;
 
   // Initialization
   initialized: boolean;
@@ -41,6 +43,7 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
   clipboardAutoSync: false, // Default to manual approval for privacy
   clipboardSyncImages: true,
   clipboardShowPreview: true,
+  clipboardCloudBackup: false,
   initialized: false,
 
   setTheme: theme => set({ theme }),
@@ -54,6 +57,8 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
   setClipboardSyncImages: value => set({ clipboardSyncImages: value }),
 
   setClipboardShowPreview: value => set({ clipboardShowPreview: value }),
+
+  setClipboardCloudBackup: value => set({ clipboardCloudBackup: value }),
 
   initialize: async () => {
     if (get().initialized) return;
@@ -83,6 +88,9 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
     const storedClipboardShowPreview = await localStorageService.get<boolean>(
       STORAGE_KEYS.CLIPBOARD_SHOW_PREVIEW,
     );
+    const storedClipboardCloudBackup = await localStorageService.get<boolean>(
+      "clipboardCloudBackup", // Use string key directly for now or add to STORAGE_KEYS
+    );
 
     // Get device info from Capacitor for defaults if not stored
     const info = await Device.getInfo();
@@ -101,6 +109,7 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
       clipboardAutoSync: storedClipboardAutoSync ?? false,
       clipboardSyncImages: storedClipboardSyncImages ?? true,
       clipboardShowPreview: storedClipboardShowPreview ?? true,
+      clipboardCloudBackup: storedClipboardCloudBackup ?? false,
       initialized: true,
     });
 

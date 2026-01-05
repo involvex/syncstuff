@@ -20,6 +20,7 @@ import {
   playCircleOutline,
   pauseCircleOutline,
   warningOutline,
+  cloudUploadOutline,
 } from "ionicons/icons";
 import { ClipboardList } from "../components/clipboard/ClipboardList";
 import { ClipboardSyncModal } from "../components/clipboard/ClipboardSyncModal";
@@ -40,9 +41,11 @@ const ClipboardPage: React.FC = () => {
     clipboardAutoSync,
     clipboardSyncImages,
     clipboardShowPreview,
+    clipboardCloudBackup,
     setClipboardAutoSync,
     setClipboardSyncImages,
     setClipboardShowPreview,
+    setClipboardCloudBackup,
   } = useSettingsStore();
 
   // Show modal for first pending approval
@@ -84,6 +87,11 @@ const ClipboardPage: React.FC = () => {
   const handleShowPreviewToggle = async (enabled: boolean) => {
     setClipboardShowPreview(enabled);
     await localStorageService.set(STORAGE_KEYS.CLIPBOARD_SHOW_PREVIEW, enabled);
+  };
+
+  const handleCloudBackupToggle = async (enabled: boolean) => {
+    setClipboardCloudBackup(enabled);
+    await localStorageService.set("clipboardCloudBackup", enabled);
   };
 
   return (
@@ -193,6 +201,18 @@ const ClipboardPage: React.FC = () => {
                 <IonToggle
                   checked={clipboardShowPreview}
                   onIonChange={e => handleShowPreviewToggle(e.detail.checked)}
+                />
+              </IonItem>
+
+              <IonItem>
+                <IonLabel>
+                  <h2>Backup to Cloud</h2>
+                  <p>Save clipboard history to connected cloud accounts</p>
+                </IonLabel>
+                <IonIcon icon={cloudUploadOutline} slot="start" />
+                <IonToggle
+                  checked={clipboardCloudBackup}
+                  onIonChange={e => handleCloudBackupToggle(e.detail.checked)}
                 />
               </IonItem>
             </IonList>

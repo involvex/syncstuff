@@ -45,6 +45,16 @@ export const useClipboardStore = create<ClipboardStore>(set => ({
 
   addToHistory: content =>
     set(state => {
+      // Trigger cloud backup if enabled
+      const settings = useSettingsStore.getState();
+      if (settings.clipboardCloudBackup) {
+        import("../services/cloud/features/clipboard-backup.service").then(
+          module => {
+            module.cloudClipboardBackupService.backupToCloud(content);
+          },
+        );
+      }
+
       // Limit history to 50 items (configurable)
       const maxItems = 50;
       const newHistory = [content, ...state.clipboardHistory];
