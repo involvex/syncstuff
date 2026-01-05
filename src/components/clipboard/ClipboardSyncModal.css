@@ -1,0 +1,123 @@
+.clipboard-sync-modal-content {
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+}
+
+.clipboard-sync-info {
+  margin-bottom: 80px; /* Space for fixed action buttons */
+}
+
+.clipboard-sync-info h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: var(--ion-color-step-850);
+}
+
+.clipboard-sync-info .device-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ion-color-primary);
+  margin: 0 0 24px 0;
+}
+
+.content-info {
+  margin-bottom: 24px;
+}
+
+.clipboard-sync-preview {
+  margin: 24px 0;
+  padding: 16px;
+  background: var(--ion-color-step-50);
+  border-radius: 8px;
+  border: 1px solid var(--ion-color-step-150);
+}
+
+.clipboard-sync-preview h3 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+  color: var(--ion-color-step-650);
+}
+
+.clipboard-sync-preview-text {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.clipboard-sync-preview-text .preview-icon {
+  font-size: 24px;
+  color: var(--ion-color-medium);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.clipboard-sync-preview-text p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--ion-color-step-650);
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.5;
+}
+
+.clipboard-sync-preview-image {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+}
+
+.clipboard-sync-preview-image .preview-icon-large {
+  font-size: 48px;
+  color: var(--ion-color-medium);
+  margin-bottom: 12px;
+}
+
+.clipboard-sync-preview-image p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--ion-color-medium);
+}
+
+.auto-sync-checkbox {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  margin-top: 16px;
+}
+
+.auto-sync-checkbox ion-checkbox {
+  margin-right: 12px;
+}
+
+.auto-sync-checkbox h3 {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0 0 4px 0;
+}
+
+.auto-sync-checkbox p {
+  font-size: 13px;
+  color: var(--ion-color-medium);
+  margin: 0;
+}
+
+.clipboard-sync-actions {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  background: var(--ion-background-color);
+  border-top: 1px solid var(--ion-color-step-150);
+  display: flex;
+  gap: 12px;
+}
+
+.clipboard-sync-actions ion-button {
+  flex: 1;
+  margin: 0;
+}

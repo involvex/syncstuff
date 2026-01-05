@@ -19,6 +19,14 @@ interface SettingsStore {
   autoAcceptFiles: boolean;
   setAutoAcceptFiles: (value: boolean) => void;
 
+  // Clipboard Settings
+  clipboardAutoSync: boolean;
+  clipboardSyncImages: boolean;
+  clipboardShowPreview: boolean;
+  setClipboardAutoSync: (value: boolean) => void;
+  setClipboardSyncImages: (value: boolean) => void;
+  setClipboardShowPreview: (value: boolean) => void;
+
   // Initialization
   initialized: boolean;
   initialize: () => Promise<void>;
@@ -30,6 +38,9 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
   deviceName: "",
   deviceId: "",
   autoAcceptFiles: false,
+  clipboardAutoSync: false, // Default to manual approval for privacy
+  clipboardSyncImages: true,
+  clipboardShowPreview: true,
   initialized: false,
 
   setTheme: theme => set({ theme }),
@@ -37,6 +48,12 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
   setDeviceName: name => set({ deviceName: name }),
 
   setAutoAcceptFiles: value => set({ autoAcceptFiles: value }),
+
+  setClipboardAutoSync: value => set({ clipboardAutoSync: value }),
+
+  setClipboardSyncImages: value => set({ clipboardSyncImages: value }),
+
+  setClipboardShowPreview: value => set({ clipboardShowPreview: value }),
 
   initialize: async () => {
     if (get().initialized) return;
@@ -57,6 +74,15 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
     const storedAutoAcceptFiles = await localStorageService.get<boolean>(
       STORAGE_KEYS.AUTO_ACCEPT_FILES,
     );
+    const storedClipboardAutoSync = await localStorageService.get<boolean>(
+      STORAGE_KEYS.CLIPBOARD_AUTO_SYNC,
+    );
+    const storedClipboardSyncImages = await localStorageService.get<boolean>(
+      STORAGE_KEYS.CLIPBOARD_SYNC_IMAGES,
+    );
+    const storedClipboardShowPreview = await localStorageService.get<boolean>(
+      STORAGE_KEYS.CLIPBOARD_SHOW_PREVIEW,
+    );
 
     // Get device info from Capacitor for defaults if not stored
     const info = await Device.getInfo();
@@ -72,6 +98,9 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
       deviceName: currentDeviceName,
       deviceId: currentDeviceId,
       autoAcceptFiles: storedAutoAcceptFiles ?? false,
+      clipboardAutoSync: storedClipboardAutoSync ?? false,
+      clipboardSyncImages: storedClipboardSyncImages ?? true,
+      clipboardShowPreview: storedClipboardShowPreview ?? true,
       initialized: true,
     });
 

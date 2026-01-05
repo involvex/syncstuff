@@ -7,6 +7,12 @@ export interface StorageKeys {
   PAIRED_DEVICES: "pairedDevices";
   AUTO_ACCEPT_FILES: "autoAcceptFiles";
   TRANSFER_HISTORY: "transferHistory";
+  CLIPBOARD_HISTORY: "clipboardHistory";
+  CLIPBOARD_AUTO_SYNC: "clipboardAutoSync";
+  CLIPBOARD_SYNC_IMAGES: "clipboardSyncImages";
+  CLIPBOARD_SHOW_PREVIEW: "clipboardShowPreview";
+  CLOUD_ACCOUNTS: "cloudAccounts";
+  CLOUD_TOKEN_CACHE: "cloudTokenCache";
 }
 
 export const STORAGE_KEYS: StorageKeys = {
@@ -16,6 +22,12 @@ export const STORAGE_KEYS: StorageKeys = {
   PAIRED_DEVICES: "pairedDevices",
   AUTO_ACCEPT_FILES: "autoAcceptFiles",
   TRANSFER_HISTORY: "transferHistory",
+  CLIPBOARD_HISTORY: "clipboardHistory",
+  CLIPBOARD_AUTO_SYNC: "clipboardAutoSync",
+  CLIPBOARD_SYNC_IMAGES: "clipboardSyncImages",
+  CLIPBOARD_SHOW_PREVIEW: "clipboardShowPreview",
+  CLOUD_ACCOUNTS: "cloudAccounts",
+  CLOUD_TOKEN_CACHE: "cloudTokenCache",
 };
 
 export interface StorageService {

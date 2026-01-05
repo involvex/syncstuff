@@ -46,7 +46,13 @@ export type TransferMessageType =
   | "FILE_CHUNK"
   | "CHUNK_ACK"
   | "TRANSFER_COMPLETE"
-  | "TRANSFER_ERROR";
+  | "TRANSFER_ERROR"
+  | "CLIPBOARD_OFFER"
+  | "CLIPBOARD_ACCEPT"
+  | "CLIPBOARD_REJECT"
+  | "CLIPBOARD_CHUNK"
+  | "CLIPBOARD_COMPLETE"
+  | "CLIPBOARD_ERROR";
 
 export interface TransferMessage {
   type: TransferMessageType;

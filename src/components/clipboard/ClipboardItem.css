@@ -1,0 +1,46 @@
+.clipboard-item {
+  --padding-start: 16px;
+  --padding-end: 8px;
+  --inner-padding-end: 0;
+}
+
+.clipboard-item-icon {
+  font-size: 24px;
+  margin-right: 12px;
+  color: var(--ion-color-medium);
+}
+
+.clipboard-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.clipboard-item-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.clipboard-item-preview {
+  margin: 8px 0;
+  font-size: 14px;
+  color: var(--ion-color-step-600);
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 60px;
+  overflow: hidden;
+  line-height: 1.4;
+}
+
+.clipboard-item-thumbnail {
+  width: 60px;
+  height: 60px;
+  margin-right: 12px;
+}
+
+.clipboard-item-thumbnail img {
+  object-fit: cover;
+  border-radius: 4px;
+}
