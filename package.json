@@ -20,7 +20,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit",
-    "prebuild": "bun run format && bun run lint:fix && bun run typecheck",
+    "prebuild": "prettier --write . && eslint --fix . && tsc --noEmit",
     "serve": "ionic serve",
     "start:signaling": "node signaling-server.js",
     "run:android": " ionic cap run android -l --external"
