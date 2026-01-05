@@ -57,6 +57,14 @@ The MVP implementation is complete, covering the first three phases of the proje
 - **UI for Transfers:** The "Transfers" page now shows active and historical transfers, and the "Devices" page has a "Send File" button for paired devices.
 - **QR Code Pairing:** This new feature enables easy pairing and connection setup, especially between a native app and the web version, by scanning a QR code containing the device ID.
 
+### Phase 4: Cloud Provider Integration (In Progress)
+
+- **Cloud Architecture:** Implemented a unified `CloudManagerService` and `useCloudStore` to handle multiple cloud providers.
+- **Provider Interface:** Defined generic `CloudProvider` interface for seamless integration of different services (Google Drive, Mega, etc.).
+- **Mock Cloud Provider:** Added a mock provider to demonstrate and test the UI and authentication flows without external API keys.
+- **Google Drive Stub:** Created a structure for Google Drive integration, ready for Client ID configuration.
+- **Settings UI:** Added a "Cloud Accounts" section in the Settings page to manage connected accounts.
+
 ## 3. How to Run & Test the App
 
 To test the full P2P functionality, you will need to run the signaling server and then instances of the app on different platforms (e.g., your Android device and a web browser).
@@ -77,6 +85,7 @@ bun run dev
 ```
 
 Navigate to `http://localhost:5173`. The web version will automatically connect to the signaling server.
+To test Cloud Integration, go to **Settings** and click **"Connect Mock Cloud (Test)"**.
 
 ### C. Run the App on Android
 
@@ -112,13 +121,10 @@ The Android app will automatically connect to the signaling server.
 
 ## 4. Next Steps
 
-The implemented features align with the "Futureplan" items for "Quick Pairing with QR Code Scan". The automated signaling and QR code pairing significantly enhance the core P2P experience. The next logical steps, as per your updated `Plan.md`, would involve:
-
-- **Account Service & Cloud Linking:** Integrating cloud providers like Google Drive or Mega for account login and device linking.
-
-### Phase 4: Clipboard Synchronization (Planned)
-
-- This phase will implement the clipboard content sharing feature.
+- **Complete Google Drive Integration:** Register a Google Cloud project and configure the Client ID in `src/services/cloud/providers/google-drive.service.ts`.
+- **Implement Cloud File Browser:** Create a UI to browse, upload, and download files from connected cloud storage.
+- **Mega Integration:** Research and implement Mega cloud provider.
+- **Phase 5: Clipboard Synchronization:** (Previously Phase 4) Refine the existing clipboard implementation and ensure it integrates well with the new cloud features if needed (e.g., syncing clipboard history to cloud).
 
 ## 4. Next Steps
 
