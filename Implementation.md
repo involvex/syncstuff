@@ -5,12 +5,13 @@
 ### packages/database
 - [x] Schema defined (`schema.sql`)
 - [x] Schema executed on local D1
-- [ ] Migrations setup
+- [x] Migrations setup and applied to remote D1
 
 ### packages/api
 - [x] Basic Worker setup
 - [x] Auth routes structure (`src/routes/auth.ts`)
-- [ ] Database integration
+- [x] Database integration (typed result)
+- [x] Deployed to Cloudflare Workers
 - [ ] Full CRUD for Users
 - [ ] Admin endpoints
 - [ ] Email Workers integration
@@ -19,6 +20,8 @@
 - [x] Remix setup
 - [x] Responsive Navigation Component
 - [x] Landing page (Hero, Features, Footer)
+- [x] React duplication/hydration bug fixed
+- [x] Deployed to Cloudflare Workers with Assets
 - [ ] Auth Pages (Login, Signup, Reset Password)
 - [ ] Dashboard (User Profile, Settings)
 - [ ] Admin Dashboard (User Management)
@@ -27,6 +30,7 @@
 ### packages/app
 - [x] Basic functionality (Syncstuff original features)
 - [x] Google Drive integration implemented
+- [x] Prebuild checks (Lint/Typecheck) passing
 - [ ] Auth integration with `packages/api`
 - [ ] Profile management integration
 - [ ] Admin access integration

@@ -2,6 +2,7 @@
   "name": "@syncstuff/api",
   "version": "0.0.16",
   "private": true,
+  "homepage": "https://syncstuff-api.involvex.workers.dev",
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",

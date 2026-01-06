@@ -2,6 +2,7 @@
   "name": "@syncstuff/web",
   "version": "0.0.1",
   "description": "Syncstuff Website",
+  "homepage": "https://syncstuff-web.involvex.workers.dev",
   "cloudflare": {
     "label": "Syncstuff Website",
     "products": [

@@ -35,7 +35,19 @@ export class Database {
   }
 
   async getUserByEmail(email: string): Promise<{ user: User; password_hash: string } | null> {
-    const result = await this.db.prepare("SELECT * FROM users WHERE email = ?").bind(email).first<any>();
+    const result = await this.db.prepare("SELECT * FROM users WHERE email = ?").bind(email).first<{
+      id: string;
+      email: string;
+      username: string;
+      full_name: string | null;
+      role: 'user' | 'admin';
+      avatar_url?: string;
+      preferences?: string;
+      status: 'active' | 'suspended';
+      created_at: number;
+      updated_at: number;
+      password_hash: string;
+    }>();
     if (!result) return null;
 
     const user: User = {
