@@ -54,7 +54,7 @@ export class Database {
         id: result.id,
         email: result.email,
         username: result.username,
-        full_name: result.full_name,
+        full_name: result.full_name ?? undefined,
         role: result.role,
         avatar_url: result.avatar_url,
         preferences: result.preferences ? JSON.parse(result.preferences) : undefined,
