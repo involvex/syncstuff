@@ -136,14 +136,27 @@ export async function handleAuth(
         }
 
         // Get user to check current password
-        // We need a method to get user by ID with password hash. db.getUserByEmail fetches by email.
-        // Let's add db.getUserById or just execute query here if db class doesn't support it yet?
-        // Since Database class is minimal, I might need to extend it.
-        // For now, I'll access the DB directly or add a method.
-        // Accessing DB directly here is tricky because `db` instance is typed.
-        // I will add `getUserById` to `Database` class in `packages/api/src/db/index.ts` first.
+        const userRecord = await db.getUserById(userId);
+        if (!userRecord) {
+             return new Response(JSON.stringify({ success: false, error: "User not found" }), { status: 404, headers });
+        }
+
+        const isValid = await bcrypt.compare(currentPassword, userRecord.password_hash);
+        if (!isValid) {
+             return new Response(JSON.stringify({ success: false, error: "Incorrect current password" }), { status: 401, headers });
+        }
+
+        // Hash new password
+        const newPasswordHash = await bcrypt.hash(newPassword, 10);
         
-        return new Response(JSON.stringify({ success: false, error: "Not implemented yet" }), { status: 501, headers });
+        // Update password
+        const updated = await db.updateUserPassword(userId, newPasswordHash);
+        
+        if (updated) {
+             return new Response(JSON.stringify({ success: true }), { status: 200, headers });
+        } else {
+             return new Response(JSON.stringify({ success: false, error: "Failed to update password" }), { status: 500, headers });
+        }
 
     } catch (e) {
         console.error("Change Password Error:", e);

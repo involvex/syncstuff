@@ -9,6 +9,7 @@
     "android": "cd packages/app && bun run android",
     "web": "cd packages/web && bun run dev",
     "api": "cd packages/api && bun run dev",
+    "build": "npm run build -w packages/app",
     "build:app": "cd packages/app && bun run build",
     "build:web": "cd packages/web && bun run build",
     "build:api": "cd packages/api && bun run deploy",
