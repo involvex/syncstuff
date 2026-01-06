@@ -17,13 +17,14 @@ export async function loader({ context, request }: LoaderFunctionArgs) {
     // Check if running locally based on request URL
     const url = new URL(request.url);
     if (url.hostname === "localhost" || url.hostname === "127.0.0.1") {
-      redirect_uri = `${url.protocol}//${url.host}/auth/callback`;
+      redirect_uri = `${url.protocol}//${url.host}/auth/callback?provider=github`;
       console.log("Using local callback URL:", redirect_uri);
     } else {
       console.log(
         "Warning: GITHUB_OAUTH_CALLBACK missing from context, using fallback",
       );
-      redirect_uri = "https://syncstuff-web.involvex.workers.dev/auth/callback";
+      redirect_uri =
+        "https://syncstuff-web.involvex.workers.dev/auth/callback?provider=github";
     }
   }
 

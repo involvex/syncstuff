@@ -1,7 +1,11 @@
 import { Link } from "@remix-run/react";
 import { useState } from "react";
 
-export default function Navigation() {
+interface NavigationProps {
+  isLoggedIn?: boolean;
+}
+
+export default function Navigation({ isLoggedIn = false }: NavigationProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -26,12 +30,21 @@ export default function Navigation() {
           </span>
         </Link>
         <div className="flex space-x-3 md:order-2 md:space-x-0 rtl:space-x-reverse">
-          <Link
-            to="/auth/login"
-            className="rounded-lg bg-blue-700 px-4 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          >
-            Get started
-          </Link>
+          {isLoggedIn ? (
+            <Link
+              to="/dashboard"
+              className="rounded-lg bg-blue-700 px-4 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >
+              Dashboard
+            </Link>
+          ) : (
+            <Link
+              to="/auth/login"
+              className="rounded-lg bg-blue-700 px-4 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >
+              Get started
+            </Link>
+          )}
           <button
             data-collapse-toggle="navbar-sticky"
             type="button"
@@ -74,6 +87,16 @@ export default function Navigation() {
                 Home
               </Link>
             </li>
+            {isLoggedIn && (
+              <li>
+                <Link
+                  to="/dashboard/settings"
+                  className="block rounded px-3 py-2 text-gray-900 hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
+                >
+                  Settings
+                </Link>
+              </li>
+            )}
             <li>
               <Link
                 to="#features"

@@ -65,4 +65,46 @@ export class Database {
 
     return { user, password_hash: result.password_hash };
   }
+
+  async getUserById(id: string): Promise<{ user: User; password_hash: string } | null> {
+    const result = await this.db.prepare("SELECT * FROM users WHERE id = ?").bind(id).first<{
+      id: string;
+      email: string;
+      username: string;
+      full_name: string | null;
+      role: 'user' | 'admin';
+      avatar_url?: string;
+      preferences?: string;
+      status: 'active' | 'suspended';
+      created_at: number;
+      updated_at: number;
+      password_hash: string;
+    }>();
+    if (!result) return null;
+
+    const user: User = {
+        id: result.id,
+        email: result.email,
+        username: result.username,
+        full_name: result.full_name ?? undefined,
+        role: result.role,
+        avatar_url: result.avatar_url,
+        preferences: result.preferences ? JSON.parse(result.preferences) : undefined,
+        status: result.status,
+        created_at: result.created_at,
+        updated_at: result.updated_at
+    };
+
+    return { user, password_hash: result.password_hash };
+  }
+
+  async updateUserPassword(id: string, passwordHash: string): Promise<boolean> {
+      try {
+          await this.db.prepare("UPDATE users SET password_hash = ? WHERE id = ?").bind(passwordHash, id).run();
+          return true;
+      } catch (e) {
+          console.error("Error updating password:", e);
+          return false;
+      }
+  }
 }

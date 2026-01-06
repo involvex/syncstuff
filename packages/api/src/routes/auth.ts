@@ -106,6 +106,51 @@ export async function handleAuth(
     }
   }
 
+  // POST /api/auth/change-password
+  if (path === "/api/auth/change-password" && request.method === "POST") {
+    try {
+        const authHeader = request.headers.get("Authorization");
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+            return new Response(JSON.stringify({ success: false, error: "Unauthorized" }), { status: 401, headers });
+        }
+        const token = authHeader.split(" ")[1];
+        
+        let payload;
+        try {
+            const result = await jose.jwtVerify(token, jwtSecret);
+            payload = result.payload;
+        } catch {
+            return new Response(JSON.stringify({ success: false, error: "Invalid token" }), { status: 401, headers });
+        }
+
+        const userId = payload.sub;
+        if (!userId) {
+             return new Response(JSON.stringify({ success: false, error: "Invalid token" }), { status: 401, headers });
+        }
+
+        const body: any = await request.json(); // TODO: Add type
+        const { currentPassword, newPassword } = body;
+
+        if (!currentPassword || !newPassword) {
+            return new Response(JSON.stringify({ success: false, error: "Missing fields" }), { status: 400, headers });
+        }
+
+        // Get user to check current password
+        // We need a method to get user by ID with password hash. db.getUserByEmail fetches by email.
+        // Let's add db.getUserById or just execute query here if db class doesn't support it yet?
+        // Since Database class is minimal, I might need to extend it.
+        // For now, I'll access the DB directly or add a method.
+        // Accessing DB directly here is tricky because `db` instance is typed.
+        // I will add `getUserById` to `Database` class in `packages/api/src/db/index.ts` first.
+        
+        return new Response(JSON.stringify({ success: false, error: "Not implemented yet" }), { status: 501, headers });
+
+    } catch (e) {
+        console.error("Change Password Error:", e);
+        return new Response(JSON.stringify({ success: false, error: "Server error" }), { status: 500, headers });
+    }
+  }
+
   return new Response(JSON.stringify({ error: "Not found" }), {
     status: 404,
     headers,
