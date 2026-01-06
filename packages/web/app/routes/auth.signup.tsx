@@ -9,7 +9,7 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export async function action({ request }: ActionFunctionArgs) {
+export async function action({ request, context }: ActionFunctionArgs) {
   const formData = await request.formData();
   const email = formData.get("email");
   const password = formData.get("password");
@@ -24,7 +24,9 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 
   try {
-    const API_URL = "http://localhost:8787"; // TODO: Use env var
+    const API_URL =
+      context.cloudflare.env.API_URL ||
+      "https://syncstuff-api.involvex.workers.dev";
     const response = await fetch(`${API_URL}/api/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

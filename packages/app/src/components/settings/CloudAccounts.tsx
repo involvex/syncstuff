@@ -55,10 +55,7 @@ export const CloudAccounts: React.FC = () => {
       const account = await provider.authenticate();
       addAccount(account);
     } catch (err: unknown) {
-      if (
-        err instanceof Error &&
-        err.message === "CREDENTIALS_REQUIRED"
-      ) {
+      if (err instanceof Error && err.message === "CREDENTIALS_REQUIRED") {
         if (type === "syncstuff") setShowSyncstuffLogin(true);
         if (type === "mega") setShowMegaLogin(true);
       } else if (err instanceof Error) {
@@ -85,8 +82,7 @@ export const CloudAccounts: React.FC = () => {
         addAccount(account);
       }
     } catch (err: unknown) {
-      const errorMsg =
-        err instanceof Error ? err.message : "Login failed";
+      const errorMsg = err instanceof Error ? err.message : "Login failed";
       setError(errorMsg);
     } finally {
       setIsAuthenticating(false);
@@ -106,8 +102,7 @@ export const CloudAccounts: React.FC = () => {
         addAccount(account);
       }
     } catch (err: unknown) {
-      const errorMsg =
-        err instanceof Error ? err.message : "Login failed";
+      const errorMsg = err instanceof Error ? err.message : "Login failed";
       setError(errorMsg);
     } finally {
       setIsAuthenticating(false);

@@ -2,7 +2,6 @@
   "name": "@syncstuff/web",
   "version": "0.0.1",
   "description": "Syncstuff Website",
-  "homepage": "https://syncstuff-web.involvex.workers.dev",
   "cloudflare": {
     "label": "Syncstuff Website",
     "products": [
@@ -63,7 +62,7 @@
     "build": "remix vite:build",
     "cf-typegen": "wrangler types",
     "check": "tsc && remix vite:build && wrangler deploy --dry-run",
-    "deploy": "wrangler deploy",
+    "deploy": "bun run build && wrangler deploy -c wrangler.toml",
     "dev": "remix vite:dev",
     "lint": "eslint . --ignore-pattern build",
     "preview": "npm run build && wrangler dev",

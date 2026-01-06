@@ -17,133 +17,132 @@ export class MegaService implements CloudProvider {
   }
 
   async authenticate(): Promise<CloudAccount> {
-    if (this.storage && this.storage.ready) {
-        return this.getAccountInfo();
+    if (this.storage) {
+      return this.getAccountInfo();
     }
     // Mega requires credentials (email/pass) which we can't get here without UI interaction
     throw new Error("CREDENTIALS_REQUIRED");
   }
 
   async login(email: string, pass: string): Promise<CloudAccount> {
-      return new Promise((resolve, reject) => {
-          try {
-              this.storage = new Storage({
-                  email,
-                  password: pass,
-                  keepalive: true
-              });
+    return new Promise((resolve, reject) => {
+      try {
+        const storage = new Storage({
+          email,
+          password: pass,
+          keepalive: true,
+        });
 
-              this.storage.ready.then(async () => {
-                  const account = await this.getAccountInfo();
-                  resolve(account);
-              }).catch((err) => {
-                  console.error("Mega login error:", err);
-                  reject(new Error("Mega login failed: " + err.message));
-              });
-
-          } catch (err: any) {
-              reject(err);
-          }
-      });
+        storage.ready
+          .then(async () => {
+            this.storage = storage;
+            const account = await this.getAccountInfo();
+            resolve(account);
+          })
+          .catch(err => {
+            console.error("Mega login error:", err);
+            reject(new Error("Mega login failed: " + err.message));
+          });
+      } catch (err: unknown) {
+        const errorMsg = err instanceof Error ? err.message : String(err);
+        reject(new Error(errorMsg));
+      }
+    });
   }
 
   async disconnect(): Promise<void> {
     if (this.storage) {
-        // megajs doesn't have a specific logout, just stop using it
-        // and if keepalive was used, maybe close connection if exposed
-        this.storage = null;
+      this.storage = null;
     }
     console.log("Disconnecting from Mega");
   }
 
   async listFiles(folderId?: string): Promise<CloudFile[]> {
-    if (!this.storage || !this.storage.ready) throw new Error("Not authenticated");
+    if (!this.storage) throw new Error("Not authenticated");
 
     const folder = folderId ? this.storage.files[folderId] : this.storage.root;
     if (!folder || !folder.children) return [];
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return folder.children.map((f: any) => ({
       id: f.nodeId,
       name: f.name,
-      mimeType: f.directory ? 'application/vnd.google-apps.folder' : (f.type || 'application/octet-stream'), // approximate mapping
+      mimeType: f.directory
+        ? "application/vnd.google-apps.folder"
+        : f.type || "application/octet-stream",
       size: f.size || 0,
       modifiedTime: f.timestamp ? new Date(f.timestamp * 1000) : new Date(),
-      parents: [folderId || 'root'],
-      provider: 'mega',
-      accountId: this.storage!.currentKey || 'mega-user' // megajs doesn't expose ID easily public
+      parents: [folderId || "root"],
+      provider: "mega",
+      accountId: "mega-user",
     }));
   }
 
   async uploadFile(file: File, parentId?: string): Promise<CloudFile> {
-      if (!this.storage || !this.storage.ready) throw new Error("Not authenticated");
-      
-      const folder = parentId ? this.storage.files[parentId] : this.storage.root;
-      if (!folder) throw new Error("Folder not found");
+    if (!this.storage) throw new Error("Not authenticated");
 
-      // megajs upload expects a buffer or stream in Node, or File/Blob in browser
-      // It supports File object directly in browser
-      const upload = folder.upload({
-          name: file.name,
-          data: file
-      });
+    const folder = parentId ? this.storage.files[parentId] : this.storage.root;
+    if (!folder) throw new Error("Folder not found");
 
-      const uploadedFile: any = await upload.complete;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const upload = (folder as any).upload(file.name, file);
 
-      return {
-          id: uploadedFile.nodeId,
-          name: uploadedFile.name,
-          mimeType: file.type,
-          size: file.size,
-          modifiedTime: new Date(),
-          parents: [parentId || 'root'],
-          provider: 'mega',
-          accountId: this.storage!.currentKey || 'mega-user'
-      };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const uploadedFile: any = await upload.complete;
+
+    return {
+      id: uploadedFile.nodeId,
+      name: uploadedFile.name,
+      mimeType: file.type,
+      size: file.size,
+      modifiedTime: new Date(),
+      parents: [parentId || "root"],
+      provider: "mega",
+      accountId: "mega-user",
+    };
   }
 
   async downloadFile(fileId: string): Promise<Blob> {
-      if (!this.storage || !this.storage.ready) throw new Error("Not authenticated");
+    if (!this.storage) throw new Error("Not authenticated");
 
-      const file = this.storage.files[fileId];
-      if (!file) throw new Error("File not found");
+    const file = this.storage.files[fileId];
+    if (!file) throw new Error("File not found");
 
-      const stream = file.download();
-      
-      // Convert stream/buffer to Blob
-      // In browser megajs might return a web stream or we might need to handle chunks
-      // Simplest way for small files:
-      const chunks: any[] = [];
-      for await (const chunk of stream) {
-          chunks.push(chunk);
-      }
-      
-      return new Blob(chunks);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const stream = (file as any).download();
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const chunks: any[] = [];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    for await (const chunk of stream as any) {
+      chunks.push(chunk);
+    }
+
+    return new Blob(chunks);
   }
 
   async getQuota(): Promise<{ used: number; total: number }> {
-      if (!this.storage || !this.storage.ready) throw new Error("Not authenticated");
-      
-      const info = await this.storage.getAccountInfo();
-      return {
-          used: info.spaceUsed,
-          total: info.spaceTotal
-      };
+    if (!this.storage) throw new Error("Not authenticated");
+
+    const info = await this.storage.getAccountInfo();
+    return {
+      used: info.spaceUsed,
+      total: info.spaceTotal,
+    };
   }
 
   private async getAccountInfo(): Promise<CloudAccount> {
-      if (!this.storage) throw new Error("No storage");
-      const info = await this.storage.getAccountInfo();
-      
-      // megajs doesn't give display name easily in basic info, use email
-      // We can mock ID or use a hash of email if needed
-      return {
-          id: this.storage.currentKey || 'mega-user', 
-          provider: 'mega',
-          name: 'Mega User', // Placeholder or fetch if possible
-          email: 'user@mega.nz', // megajs 1.x might not expose email directly on storage instance public props easily without getAccountInfo response check
-          isAuthenticated: true,
-          quotaUsed: info.spaceUsed,
-          quotaTotal: info.spaceTotal
-      };
+    if (!this.storage) throw new Error("No storage");
+    const info = await this.storage.getAccountInfo();
+
+    return {
+      id: "mega-user",
+      provider: "mega",
+      name: "Mega User",
+      email: "user@mega.nz",
+      isAuthenticated: true,
+      quotaUsed: info.spaceUsed,
+      quotaTotal: info.spaceTotal,
+    };
   }
 }

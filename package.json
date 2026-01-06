@@ -19,6 +19,10 @@
     "lint:app": "cd packages/app && bun run lint",
     "lint:api": "cd packages/api && bun run lint",
     "lint:web": "cd packages/web && bun run lint",
+    "lint:fix": "bun run lint:fix:app && bun run lint:fix:api && bun run lint:fix:web",
+    "lint:fix:app": "cd packages/app && bun run lint:fix",
+    "lint:fix:api": "cd packages/api && bun run lint:fix",
+    "lint:fix:web": "cd packages/web && bun run lint:fix",
     "typecheck": "bun run typecheck:app && bun run typecheck:shared && bun run typecheck:api && bun run typecheck:web",
     "typecheck:app": "cd packages/app && bun run typecheck",
     "typecheck:shared": "cd packages/shared && bun run typecheck",
@@ -33,7 +37,8 @@
     "gradle:clean": "cd packages/app && bun run gradle:clean",
     "app:version:patch": "node scripts/bump-app-version.js --patch",
     "app:version:minor": "node scripts/bump-app-version.js --minor",
-    "app:version:major": "node scripts/bump-app-version.js --major"
+    "app:version:major": "node scripts/bump-app-version.js --major",
+    "check": "bun run format && bun run lint:fix && bun run typecheck"
   },
   "devDependencies": {
     "@types/bun": "latest",
