@@ -1,0 +1,13 @@
+name = "syncstuff-web"
+compatibility_date = "2024-01-01"
+main = "server.ts"
+pages_build_output_dir = "./build/client"
+
+[[d1_databases]]
+binding = "syncstuff_db"
+database_name = "syncstuff-db"
+database_id = "94e9ef8c-2032-4ee5-9a97-b6280eab0957"
+
+# Cloudflare Pages configuration
+# Deploy with: bun run deploy
+# Custom domain: Set up in Cloudflare Pages dashboard

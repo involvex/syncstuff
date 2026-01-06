@@ -32,3 +32,27 @@ yarn-error.log*
 .eslintcache
 
 .mira
+
+Warp.md
+
+packages/app/node_modules
+packages/web/node_modules
+packages/api/node_modules
+packages/app/node_modules
+packages/shared/node_modules
+
+packages/app/.env
+packages/web/.env
+
+# Wrangler local development
+.wrangler/
+**/.wrangler/
+
+packages/app/build
+packages/app/dist
+
+packages/app/Warp.md
+
+packages/app/android/build
+packages/app/android/app/build
+packages/app/android/.gradle

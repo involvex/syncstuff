@@ -1,0 +1,15 @@
+{
+  "name": "@syncstuff/database",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "create": "wrangler d1 create syncstuff-db",
+    "migrate": "wrangler d1 migrations apply syncstuff-db",
+    "migrate:local": "wrangler d1 migrations apply syncstuff-db --local",
+    "studio": "wrangler d1 execute syncstuff-db --command '.tables'",
+    "deploy": "wrangler d1 migrations apply syncstuff-db --remote"
+  },
+  "devDependencies": {
+    "wrangler": "4"
+  }
+}

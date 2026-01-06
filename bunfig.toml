@@ -1,0 +1,23 @@
+# Bun configuration for Involvex monorepo
+# https://bun.sh/docs/runtime/bunfig
+
+[install]
+# Use exact versions for lockfile
+exact = true
+
+# Enable workspace protocol
+production = false
+
+# Cache directory
+cache = "node_modules/.cache/bun"
+
+[install.scopes]
+# Scope configurations for private registries (if needed)
+
+[test]
+# Test configuration
+preload = ["./setup-tests.ts"]
+
+[run]
+# Scripts run with bun
+shell = "system"

@@ -1,102 +1,56 @@
-# Syncstuff
+# Syncstuff Monorepo
 
-## Plan
+## Workspaces
 
-- Appname: Syncstuff (to be changed)
-- Appicon: new is provided in resources\icon.png (needs to be applied to android\ic launcher)
+- packages/app
+- packages/api
+- packages/shared
+- packages/web
+- packages/database
 
-- Using ionicframework
-- ionic cli
-- Utilize Bun
+## Implementation Plan
 
-## commands
+Develop a comprehensive full-stack application ecosystem comprising a web platform and a connected mobile Android app, utilizing a monorepo structure with the following workspaces: packages/web (frontend web app), packages/api (backend API), packages/app (mobile app), packages/shared (shared utilities and types), and packages/database (database schemas and migrations). Implement robust user authentication across all platforms, including secure login, registration, password reset, and multi-factor authentication (MFA). Set up a Cloudflare-based database solution (e.g., Cloudflare D1 for relational data or Workers KV for key-value storage) to securely manage user accounts, storing encrypted credentials, detailed profiles (e.g., name, email, avatar, preferences), roles (e.g., user, admin, moderator), and account statuses (e.g., active, suspended). Build a scalable backend API using Cloudflare Workers (or an equivalent serverless framework like Vercel Edge Functions), integrating with the database for full CRUD operations on user data, authentication endpoints (e.g., JWT-based sessions), admin functionalities (e.g., user role management, bulk actions, audit logs), and additional features like email notifications via Cloudflare Email Workers. Develop a responsive web frontend using a modern framework like React or Vue.js, featuring signup and login forms with validation, user profile management (e.g., editing details, changing passwords, uploading avatars), and an admin dashboard with advanced controls (e.g., paginated user lists, role assignments, status toggles, analytics). Ensure seamless integration with the mobile Android app, built using React Native or Flutter, which mirrors web functionalities for authentication, profile management, and admin access where applicable, with offline capabilities and push notifications. Incorporate shared packages for common logic, such as authentication helpers, API clients, and data models, to maintain consistency. Prioritize security through measures like HTTPS, input sanitization, rate limiting, encryption (e.g., bcrypt for passwords), and compliance with standards like GDPR and OWASP. Design for scalability with caching (e.g., Cloudflare Cache), load balancing, and efficient database queries. Follow best practices for user experience, modern, responsive UI designs.
 
-- ionic serve
-- ionic cap sync
-- ionic build
-- ionic cap copy
-- ionic cap add android
+## Commands
 
-Create a comprehensive cross-platform application that enables seamless content synchronization between multiple devices using both local and cloud-based methods. The application should prioritize local-first file sharing capabilities that function entirely without internet connectivity, while offering optional cloud integration as a secondary feature.
+- bun run build:app
+- bun run build:web
+- bun run build:api
+- bun run lint
+- bun run typecheck
+- bun run format
 
-## Core Requirements
+## Needs to be fixed
 
-Local Network Synchronization:
+- Entry points for wrangler setup for packages/api packages/web
 
-- Implement peer-to-peer file sharing over WiFi Direct and infrastructure networks without requiring internet connectivity
-- Support Bluetooth-based file transfer for offline scenarios and when WiFi is unavailable
-- Enable automatic device discovery and pairing within the same local network
-- Provide real-time sync status and progress tracking for all transfers
-- Support both push and pull sync modes with conflict resolution strategies
+## Needs to be done
 
-## Clipboard and Content Sharing
+packages/database:
 
-- Enable clipboard content (text, images, files) sharing to any computer connected to the same WiFi network
-- Implement a system tray or menu bar application for instant access to clipboard history
-- Support streaming clipboard content rather than full file transfer when appropriate
-- Provide secure transmission with optional end-to-end encryption for sensitive content
+- packages/database sql schema (schema.sql) needs to be changed for this setup
 
-## Cloud Provider Integration
+packages/web:
 
-- Integrate seamlessly with Google Drive and Mega for optional cloud backup and sync
-- Implement selective sync to minimize bandwidth usage and storage consumption
-- Support hybrid sync where local files are mirrored to cloud providers automatically
-- Provide cloud sync status indicators and manual override options
+- Build the full webpage Dashboard/Auth/Admin/Frontpage
 
-## Cross-Platform Compatibility
+packages/app
 
-- Ensure consistent functionality across Windows, macOS, Linux, iOS, and Android
-- Implement native platform integrations (file system access, notifications, background services)
-- Provide intuitive user interfaces tailored to each platform's design guidelines
-- Support both desktop and mobile device synchronization
+- App works, just needs integration into the Monorepo setup(Auth)
 
-## Technical Implementation
+## Instructions
 
-- Use efficient transfer protocols that minimize bandwidth usage and battery drain
-- Implement resumable transfers for large files and unstable connections
-- Support concurrent connections to multiple devices without performance degradation
-- Provide comprehensive logging and diagnostic tools for troubleshooting
-- Include configurable bandwidth throttling and scheduling options
+- Keep Code clean, typesafe
 
-## Security and Privacy
+- Always format, lint, typecheck before commiting
 
-- Implement optional password protection for peer-to-peer connections
-- Support local network encryption for all data transfers
-- Provide clear indicators when data is being transmitted to external cloud services
-- Include privacy controls to restrict which content types can be synced or shared
+- Write a Implementation.md to keep current implementationstatus uptodate
 
-## User Experience
+## Tech
 
-- Provide a unified dashboard showing all connected devices and sync status
-- Enable granular control over which folders and file types are synchronized
-- Support one-click sharing and batch operations for multiple files
-- Implement intelligent conflict resolution with user override capabilities
-- Include offline mode indicators and manual sync triggers
-
-## Performance Optimization
-
-- Optimize for background operation with minimal system resource usage
-- Implement intelligent file versioning to prevent storage bloat
-- Support incremental transfers for large files (only changed portions)
-- Provide network quality detection and automatic protocol switching
-
-## Expandability
-
-- Design with a plugin architecture to support additional cloud providers
-- Enable custom sync rules and filtering based on file attributes
-- Support integration with existing file managers and productivity tools
-- Provide API access for advanced users and automation scenarios
-
-## Theme
-
-- Dark/Light mode theme support with modern color scheme
-
--- using ionic free tier only !
+- using Bun for packagemanagement
 
 ## Futureplan
 
-- Add Accountservice and add Accountlinking to Cloud / Drive providers like Google drive / Mega cloud
-- Account Login to auto detect connected devices and share via cloud or local
-
-- Quick Pairing with QR Code Scan
-- or URL share to pair/sync/share content
+- Implement tests for each workspace
