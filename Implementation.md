@@ -22,9 +22,10 @@
 - [x] Landing page (Hero, Features, Footer)
 - [x] React duplication/hydration bug fixed
 - [x] Deployed to Cloudflare Workers with Assets
-- [x] GitHub OAuth implementation
-- [ ] Auth Pages (Login, Signup, Reset Password)
-- [ ] Dashboard (User Profile, Settings)
+- [x] GitHub OAuth implementation (with local dev fallbacks)
+- [x] Auth Pages (Login, Signup)
+- [x] Dashboard (Overview, Settings)
+- [ ] Reset Password
 - [ ] Admin Dashboard (User Management)
 - [ ] API integration
 
@@ -45,4 +46,4 @@
 
 ## Current Focus
 - Finalizing User Auth flow across all platforms.
-- Implementing the Dashboard on Web.
+- Testing the Dashboard on Web.
