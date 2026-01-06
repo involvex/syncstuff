@@ -35,6 +35,7 @@ export default defineConfig({
   },
   resolve: {
     mainFields: ["browser", "module", "main"],
+    dedupe: ["react", "react-dom"],
   },
   server: {
     host: "0.0.0.0",

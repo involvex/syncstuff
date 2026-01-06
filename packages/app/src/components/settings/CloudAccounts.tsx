@@ -18,15 +18,18 @@ import {
   trashOutline,
   logoGoogle,
   cloudUploadOutline,
+  personCircleOutline,
 } from "ionicons/icons";
 import { useCloudStore } from "../../store/cloud.store";
 import { cloudManagerService } from "../../services/cloud/cloud-manager.service";
 import type { CloudProviderType } from "../../types/cloud.types";
+import { SyncstuffService } from "../../services/cloud/providers/syncstuff.service";
 
 export const CloudAccounts: React.FC = () => {
   const { accounts, addAccount, removeAccount } = useCloudStore();
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showSyncstuffLogin, setShowSyncstuffLogin] = useState(false);
 
   const handleAddAccount = async (type: CloudProviderType) => {
     setIsAuthenticating(true);
@@ -35,16 +38,52 @@ export const CloudAccounts: React.FC = () => {
       const provider = cloudManagerService.getProvider(type);
       if (!provider) throw new Error("Provider not found");
 
+      if (type === "syncstuff") {
+        setShowSyncstuffLogin(true);
+        setIsAuthenticating(false);
+        return;
+      }
+
       const account = await provider.authenticate();
       addAccount(account);
     } catch (err: unknown) {
-      if (err instanceof Error) {
+      if (
+        err instanceof Error &&
+        err.message === "CREDENTIALS_REQUIRED" &&
+        type === "syncstuff"
+      ) {
+        setShowSyncstuffLogin(true);
+      } else if (err instanceof Error) {
         setError(err.message);
       } else {
         setError("Failed to authenticate");
       }
     } finally {
+      if (type !== "syncstuff") {
+        setIsAuthenticating(false);
+      }
+    }
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleSyncstuffLogin = async (data: any) => {
+    setIsAuthenticating(true);
+
+    try {
+      const provider = cloudManagerService.getProvider("syncstuff");
+
+      if (provider instanceof SyncstuffService) {
+        const account = await provider.login(data.email, data.password);
+
+        addAccount(account);
+      }
+    } catch (err: unknown) {
+      const errorMsg = err instanceof Error ? err.message : "Login failed";
+      setError(errorMsg);
+    } finally {
       setIsAuthenticating(false);
+
+      setShowSyncstuffLogin(false);
     }
   };
 
@@ -69,6 +108,8 @@ export const CloudAccounts: React.FC = () => {
         return logoGoogle;
       case "mock":
         return cloudUploadOutline;
+      case "syncstuff":
+        return personCircleOutline;
       default:
         return cloudOutline;
     }
@@ -126,15 +167,25 @@ export const CloudAccounts: React.FC = () => {
           <IonButton
             expand="block"
             fill="outline"
+            onClick={() => handleAddAccount("syncstuff")}
+            disabled={isAuthenticating}
+          >
+            <IonIcon slot="start" icon={personCircleOutline} />
+            {isAuthenticating ? (
+              <IonSpinner name="dots" />
+            ) : (
+              "Connect Syncstuff"
+            )}
+          </IonButton>
+
+          <IonButton
+            expand="block"
+            fill="outline"
             onClick={() => handleAddAccount("google")}
             disabled={isAuthenticating}
           >
             <IonIcon slot="start" icon={logoGoogle} />
-            {isAuthenticating ? (
-              <IonSpinner name="dots" />
-            ) : (
-              "Connect Google Drive"
-            )}
+            Connect Google Drive
           </IonButton>
 
           <IonButton
@@ -168,6 +219,35 @@ export const CloudAccounts: React.FC = () => {
           header="Authentication Error"
           message={error || "Unknown error"}
           buttons={["OK"]}
+        />
+
+        <IonAlert
+          isOpen={showSyncstuffLogin}
+          onDidDismiss={() => setShowSyncstuffLogin(false)}
+          header="Login to Syncstuff"
+          inputs={[
+            {
+              name: "email",
+              type: "email",
+              placeholder: "Email",
+            },
+            {
+              name: "password",
+              type: "password",
+              placeholder: "Password",
+            },
+          ]}
+          buttons={[
+            {
+              text: "Cancel",
+              role: "cancel",
+              handler: () => setShowSyncstuffLogin(false),
+            },
+            {
+              text: "Login",
+              handler: data => handleSyncstuffLogin(data),
+            },
+          ]}
         />
       </IonCardContent>
     </IonCard>

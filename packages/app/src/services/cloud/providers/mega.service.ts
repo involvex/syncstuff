@@ -4,9 +4,6 @@ import type {
   CloudFile,
 } from "../../../types/cloud.types";
 
-// Mega integration would typically use 'megajs' library
-// import { Storage } from 'megajs';
-
 export class MegaService implements CloudProvider {
   readonly type = "mega";
   name = "Mega";

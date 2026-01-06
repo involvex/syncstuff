@@ -1,4 +1,4 @@
-export type CloudProviderType = "google" | "mega" | "mock";
+export type CloudProviderType = "google" | "mega" | "mock" | "syncstuff";
 
 export interface CloudAccount {
   id: string;

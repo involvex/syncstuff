@@ -7,6 +7,7 @@ import { handleAuth } from "./routes/auth";
 
 export interface Env {
   DB: D1Database;
+  JWT_SECRET?: string;
   // Add secrets here
 }
 

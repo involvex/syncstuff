@@ -56,3 +56,5 @@ packages/app/Warp.md
 packages/app/android/build
 packages/app/android/app/build
 packages/app/android/.gradle
+
+packages/app/google_drive_client_secret.json

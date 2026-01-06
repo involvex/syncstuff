@@ -7,10 +7,14 @@ CREATE TABLE IF NOT EXISTS users (
   email TEXT UNIQUE,
   password_hash TEXT,
   username TEXT,
-  role TEXT DEFAULT 'user', -- 'user' or 'admin'
+  full_name TEXT,
+  role TEXT DEFAULT 'user', -- 'user', 'admin', 'moderator'
   avatar_url TEXT,
+  preferences TEXT DEFAULT '{}', -- JSON string of user preferences
+  status TEXT DEFAULT 'active', -- 'active', 'suspended', 'pending'
   discord_id TEXT UNIQUE,
   github_id TEXT UNIQUE,
+  last_login_at INTEGER,
   created_at INTEGER DEFAULT (unixepoch() * 1000),
   updated_at INTEGER DEFAULT (unixepoch() * 1000)
 );
@@ -65,6 +69,9 @@ CREATE TABLE IF NOT EXISTS cache (
 );
 
 -- Indexes for performance
+CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+CREATE INDEX IF NOT EXISTS idx_users_role ON users(role);
+CREATE INDEX IF NOT EXISTS idx_users_status ON users(status);
 CREATE INDEX IF NOT EXISTS idx_subscriptions_user ON subscriptions(user_id);
 CREATE INDEX IF NOT EXISTS idx_subscriptions_type ON subscriptions(type);
 CREATE INDEX IF NOT EXISTS idx_subscriptions_active ON subscriptions(is_active);
