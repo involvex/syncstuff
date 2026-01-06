@@ -77,29 +77,6 @@ export default function DashboardIndex() {
           </div>
         </div>
 
-        {/* Stats Card (Placeholder) */}
-        <div className="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-800">
-          <div className="px-4 py-5 sm:p-6">
-            <h3 className="text-base font-semibold leading-6 text-gray-900 dark:text-white">
-              Storage Usage
-            </h3>
-            <div className="mt-5">
-              <div className="flex items-baseline text-2xl font-semibold text-indigo-600">
-                0 GB
-                <span className="ml-2 text-sm font-medium text-gray-500 dark:text-gray-400">
-                  from 5 GB
-                </span>
-              </div>
-              <div className="mt-4 w-full rounded-full bg-gray-200 dark:bg-gray-700">
-                <div
-                  className="h-2 rounded-full bg-indigo-600"
-                  style={{ width: "0%" }}
-                ></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* Recent Activity Card */}
         <div className="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-800">
           <div className="px-4 py-5 sm:p-6">
@@ -108,20 +85,22 @@ export default function DashboardIndex() {
             </h3>
             <div className="mt-5 flow-root">
               <ul className="-my-5 divide-y divide-gray-200 dark:divide-gray-700">
-                {activity.map((item: any) => (
-                  <li key={item.id} className="py-4">
-                    <div className="flex items-center space-x-4">
-                      <div className="min-w-0 flex-1">
-                        <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
-                          {item.description}
-                        </p>
-                        <p className="truncate text-sm text-gray-500 dark:text-gray-400">
-                          {new Date(item.date).toLocaleDateString()}
-                        </p>
+                {activity.map(
+                  (item: { id: number; description: string; date: string }) => (
+                    <li key={item.id} className="py-4">
+                      <div className="flex items-center space-x-4">
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
+                            {item.description}
+                          </p>
+                          <p className="truncate text-sm text-gray-500 dark:text-gray-400">
+                            {new Date(item.date).toLocaleDateString()}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  </li>
-                ))}
+                    </li>
+                  ),
+                )}
               </ul>
             </div>
           </div>

@@ -9,7 +9,7 @@ import {
   IonLabel,
   IonButton,
   IonIcon,
-  IonSpinner,
+  // IonSpinner,
   IonText,
   IonAlert,
 } from "@ionic/react";
@@ -187,20 +187,6 @@ export const CloudAccounts: React.FC = () => {
         </IonList>
 
         <div className="ion-padding-top">
-          <IonButton
-            expand="block"
-            fill="outline"
-            onClick={() => handleAddAccount("syncstuff")}
-            disabled={isAuthenticating}
-          >
-            <IonIcon slot="start" icon={personCircleOutline} />
-            {isAuthenticating ? (
-              <IonSpinner name="dots" />
-            ) : (
-              "Connect Syncstuff"
-            )}
-          </IonButton>
-
           <IonButton
             expand="block"
             fill="outline"

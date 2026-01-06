@@ -113,7 +113,7 @@ export default function Settings() {
                 <div className="flex items-center justify-between rounded-md border p-4 dark:border-gray-700">
                   <div className="flex items-center">
                     <svg
-                      className="h-6 w-6 text-gray-900 dark:text-white"
+                      className="size-6 text-gray-900 dark:text-white"
                       fill="currentColor"
                       viewBox="0 0 24 24"
                     >
@@ -135,7 +135,7 @@ export default function Settings() {
                 <div className="flex items-center justify-between rounded-md border p-4 dark:border-gray-700">
                   <div className="flex items-center">
                     <svg
-                      className="h-6 w-6 text-gray-400"
+                      className="size-6 text-gray-400"
                       fill="currentColor"
                       viewBox="0 0 24 24"
                     >

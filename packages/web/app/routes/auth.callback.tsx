@@ -21,9 +21,15 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
       GITHUB_OAUTH_CLIENT_ID = "Ov23li5ZRzCQoPWMN21O";
     if (!GITHUB_OAUTH_CLIENT_SECRET)
       GITHUB_OAUTH_CLIENT_SECRET = "07631a180f65b26a290791b111dd1ba01dae370b";
-    if (!GITHUB_OAUTH_CALLBACK)
-      GITHUB_OAUTH_CALLBACK =
-        "https://syncstuff-web.involvex.workers.dev/auth/callback";
+
+    if (!GITHUB_OAUTH_CALLBACK) {
+      if (url.hostname === "localhost" || url.hostname === "127.0.0.1") {
+        GITHUB_OAUTH_CALLBACK = `${url.protocol}//${url.host}/auth/callback`;
+      } else {
+        GITHUB_OAUTH_CALLBACK =
+          "https://syncstuff-web.involvex.workers.dev/auth/callback";
+      }
+    }
 
     // Exchange code for access token
     const tokenResponse = await fetch(

@@ -12,16 +12,17 @@ import { getSession } from "~/services/session.server";
 export async function loader({ request }: LoaderFunctionArgs) {
   const session = await getSession(request.headers.get("Cookie"));
   const userId = session.get("userId");
+  const role = session.get("role");
 
   if (!userId) {
     return redirect("/auth/login");
   }
 
-  return json({ userId });
+  return json({ userId, role });
 }
 
 export default function DashboardLayout() {
-  const { userId } = useLoaderData<typeof loader>();
+  const { userId, role } = useLoaderData<typeof loader>();
   const location = useLocation();
 
   const navigation = [
@@ -37,13 +38,21 @@ export default function DashboardLayout() {
     },
   ];
 
+  if (role === "admin") {
+    navigation.push({
+      name: "Admin",
+      href: "/admin",
+      current: false,
+    });
+  }
+
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
       <nav className="bg-white shadow-sm dark:bg-gray-800">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 justify-between">
             <div className="flex">
-              <div className="flex flex-shrink-0 items-center">
+              <div className="flex shrink-0 items-center">
                 <Link
                   to="/"
                   className="text-xl font-bold text-gray-900 dark:text-white"
@@ -72,7 +81,8 @@ export default function DashboardLayout() {
               <div className="relative ml-3">
                 <div className="flex items-center gap-4">
                   <span className="text-sm text-gray-500 dark:text-gray-400">
-                    User ID: {userId.substring(0, 8)}...
+                    {role === "admin" ? "(Admin) " : ""}User ID:{" "}
+                    {userId.substring(0, 8)}...
                   </span>
                   <Form action="/auth/logout" method="post">
                     <button
