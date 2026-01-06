@@ -22,6 +22,7 @@
 - [x] Landing page (Hero, Features, Footer)
 - [x] React duplication/hydration bug fixed
 - [x] Deployed to Cloudflare Workers with Assets
+- [x] GitHub OAuth implementation
 - [ ] Auth Pages (Login, Signup, Reset Password)
 - [ ] Dashboard (User Profile, Settings)
 - [ ] Admin Dashboard (User Management)
@@ -30,6 +31,9 @@
 ### packages/app
 - [x] Basic functionality (Syncstuff original features)
 - [x] Google Drive integration implemented
+- [x] Mega integration implemented (using `megajs`)
+- [x] Syncstuff integration updated (pointing to live API)
+- [x] CloudAccounts UI updated for Mega login
 - [x] Prebuild checks (Lint/Typecheck) passing
 - [ ] Auth integration with `packages/api`
 - [ ] Profile management integration
@@ -40,6 +44,5 @@
 - [ ] Shared utilities
 
 ## Current Focus
-- Implementing Auth Pages in `packages/web`.
-- Connecting `packages/api` to `packages/database`.
 - Finalizing User Auth flow across all platforms.
+- Implementing the Dashboard on Web.

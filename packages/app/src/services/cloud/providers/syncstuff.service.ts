@@ -11,7 +11,7 @@ export class SyncstuffService implements CloudProvider {
   name = "Syncstuff";
   icon = personCircleOutline;
   private token: string | null = null;
-  private API_URL = "http://localhost:8787/api"; // TODO: Use environment variable
+  private API_URL = "https://syncstuff-api.involvex.workers.dev/api"; // Updated to deployed API
 
   async initialize(): Promise<void> {
     const storedToken = localStorage.getItem("syncstuff_token");

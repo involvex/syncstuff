@@ -43,10 +43,12 @@ packages/shared/node_modules
 
 packages/app/.env
 packages/web/.env
+packages/web/.dev.vars
 
 # Wrangler local development
 .wrangler/
 **/.wrangler/
+packages/web/wrangler.toml
 
 packages/app/build
 packages/app/dist
@@ -58,3 +60,4 @@ packages/app/android/app/build
 packages/app/android/.gradle
 
 packages/app/google_drive_client_secret.json
+packages/web/wrangler.toml

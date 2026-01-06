@@ -133,6 +133,40 @@ export default function Login() {
           </div>
         </Form>
 
+        <div className="mt-6">
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300 dark:border-gray-700" />
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="bg-gray-50 px-2 text-gray-500 dark:bg-gray-900 dark:text-gray-400">
+                Or continue with
+              </span>
+            </div>
+          </div>
+
+          <div className="mt-6 grid grid-cols-1 gap-3">
+            <a
+              href="/auth/github"
+              className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-1.5 text-sm font-semibold leading-6 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent dark:bg-gray-800 dark:text-white dark:ring-gray-700 dark:hover:bg-gray-700"
+            >
+              <svg
+                className="size-5"
+                aria-hidden="true"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.91 8.18 6.947 9.53.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.825.612-3.422-1.362-3.422-1.362-.455-1.158-1.11-1.466-1.11-1.466-.923-.632.068-.62.068-.62 1.02.072 1.558 1.05 1.558 1.05.907 1.547 2.38 1.1 2.96.842.093-.654.352-1.1.64-1.354-2.258-.256-4.632-1.128-4.632-5.023 0-1.108.396-2.014 1.046-2.724-.105-.256-.453-1.288.1-2.686 0 0 .852-.27 2.79 1.043a9.71 9.71 0 012.537-.343c.86.004 1.72.115 2.537.343 1.938-1.313 2.79-1.043 2.79-1.043.554 1.398.206 2.43.101 2.686.65.71 1.045 1.616 1.045 2.724 0 3.906-2.378 4.764-4.643 5.016.363.31.686.92.686 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <span className="text-sm font-semibold leading-6">GitHub</span>
+            </a>
+          </div>
+        </div>
+
         <p className="mt-10 text-center text-sm text-gray-500">
           Not a member?{" "}
           <Link

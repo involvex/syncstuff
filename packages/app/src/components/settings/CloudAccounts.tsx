@@ -24,12 +24,14 @@ import { useCloudStore } from "../../store/cloud.store";
 import { cloudManagerService } from "../../services/cloud/cloud-manager.service";
 import type { CloudProviderType } from "../../types/cloud.types";
 import { SyncstuffService } from "../../services/cloud/providers/syncstuff.service";
+import { MegaService } from "../../services/cloud/providers/mega.service";
 
 export const CloudAccounts: React.FC = () => {
   const { accounts, addAccount, removeAccount } = useCloudStore();
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showSyncstuffLogin, setShowSyncstuffLogin] = useState(false);
+  const [showMegaLogin, setShowMegaLogin] = useState(false);
 
   const handleAddAccount = async (type: CloudProviderType) => {
     setIsAuthenticating(true);
@@ -44,22 +46,28 @@ export const CloudAccounts: React.FC = () => {
         return;
       }
 
+      if (type === "mega") {
+        setShowMegaLogin(true);
+        setIsAuthenticating(false);
+        return;
+      }
+
       const account = await provider.authenticate();
       addAccount(account);
     } catch (err: unknown) {
       if (
         err instanceof Error &&
-        err.message === "CREDENTIALS_REQUIRED" &&
-        type === "syncstuff"
+        err.message === "CREDENTIALS_REQUIRED"
       ) {
-        setShowSyncstuffLogin(true);
+        if (type === "syncstuff") setShowSyncstuffLogin(true);
+        if (type === "mega") setShowMegaLogin(true);
       } else if (err instanceof Error) {
         setError(err.message);
       } else {
         setError("Failed to authenticate");
       }
     } finally {
-      if (type !== "syncstuff") {
+      if (type !== "syncstuff" && type !== "mega") {
         setIsAuthenticating(false);
       }
     }
@@ -74,16 +82,36 @@ export const CloudAccounts: React.FC = () => {
 
       if (provider instanceof SyncstuffService) {
         const account = await provider.login(data.email, data.password);
-
         addAccount(account);
       }
     } catch (err: unknown) {
-      const errorMsg = err instanceof Error ? err.message : "Login failed";
+      const errorMsg =
+        err instanceof Error ? err.message : "Login failed";
       setError(errorMsg);
     } finally {
       setIsAuthenticating(false);
-
       setShowSyncstuffLogin(false);
+    }
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleMegaLogin = async (data: any) => {
+    setIsAuthenticating(true);
+
+    try {
+      const provider = cloudManagerService.getProvider("mega");
+
+      if (provider instanceof MegaService) {
+        const account = await provider.login(data.email, data.password);
+        addAccount(account);
+      }
+    } catch (err: unknown) {
+      const errorMsg =
+        err instanceof Error ? err.message : "Login failed";
+      setError(errorMsg);
+    } finally {
+      setIsAuthenticating(false);
+      setShowMegaLogin(false);
     }
   };
 
@@ -246,6 +274,35 @@ export const CloudAccounts: React.FC = () => {
             {
               text: "Login",
               handler: data => handleSyncstuffLogin(data),
+            },
+          ]}
+        />
+
+        <IonAlert
+          isOpen={showMegaLogin}
+          onDidDismiss={() => setShowMegaLogin(false)}
+          header="Login to Mega"
+          inputs={[
+            {
+              name: "email",
+              type: "email",
+              placeholder: "Email",
+            },
+            {
+              name: "password",
+              type: "password",
+              placeholder: "Password",
+            },
+          ]}
+          buttons={[
+            {
+              text: "Cancel",
+              role: "cancel",
+              handler: () => setShowMegaLogin(false),
+            },
+            {
+              text: "Login",
+              handler: data => handleMegaLogin(data),
             },
           ]}
         />
