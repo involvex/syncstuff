@@ -4,8 +4,7 @@ import {
   type MetaFunction,
 } from "@remix-run/cloudflare";
 import { Link, useLoaderData } from "@remix-run/react";
-import { env } from "node:process";
-import { getSession } from "~/services/session.server";
+import { commitSession, getSession } from "~/services/session.server";
 import Navigation from "../components/Navigation";
 
 export const meta: MetaFunction = () => {
@@ -17,13 +16,26 @@ export const meta: MetaFunction = () => {
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const session = await getSession(request.headers.get("Cookie"));
-  if (env.env == "development") {
-    //Create mock login
+
+  // Check for development environment to provide mock login
+  // In Remix on Cloudflare, we can check process.env.NODE_ENV or a custom flag
+  const isDev = process.env.NODE_ENV === "development";
+
+  if (isDev && !session.has("userId")) {
+    // Create mock login for local development convenience
     session.set("userId", "mock-user-id");
-    return json({ isLoggedIn: session.has("userId") });
-  } else {
-    return json({ isLoggedIn: session.has("userId") });
+    session.set("role", "admin");
+    return json(
+      { isLoggedIn: true },
+      {
+        headers: {
+          "Set-Cookie": await commitSession(session),
+        },
+      },
+    );
   }
+
+  return json({ isLoggedIn: session.has("userId") });
 }
 
 export default function Index() {
@@ -66,7 +78,7 @@ export default function Index() {
                 </Link>
               ) : (
                 <a
-                  href="/auth/register"
+                  href="/auth/login"
                   className="mr-3 inline-flex items-center justify-center rounded-lg bg-blue-700 px-5 py-3 text-center text-base font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900"
                 >
                   Get started

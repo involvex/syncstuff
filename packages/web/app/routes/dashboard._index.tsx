@@ -6,16 +6,39 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   const session = await getSession(request.headers.get("Cookie"));
   const userId = session.get("userId");
 
-  const db = context.cloudflare.env.syncstuff_db;
-
-  // Fetch user details
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const user: any = await db
-    .prepare(
-      "SELECT email, username, full_name, role, status, created_at FROM users WHERE id = ?",
-    )
-    .bind(userId)
-    .first();
+  let user: any = null;
+
+  // Check if DB is available (it might not be in some local dev modes without wrangler)
+  if (
+    context.cloudflare &&
+    context.cloudflare.env &&
+    context.cloudflare.env.syncstuff_db
+  ) {
+    const db = context.cloudflare.env.syncstuff_db;
+    try {
+      // Fetch user details
+      user = await db
+        .prepare(
+          "SELECT email, username, full_name, role, status, created_at FROM users WHERE id = ?",
+        )
+        .bind(userId)
+        .first();
+    } catch (e) {
+      console.error("Database error:", e);
+    }
+  } else {
+    // Mock user for local dev if DB is missing
+    console.warn("Database binding not found, using mock data");
+    user = {
+      username: "mockuser",
+      email: "mock@example.com",
+      full_name: "Mock User",
+      role: "admin",
+      status: "active",
+      created_at: Date.now(),
+    };
+  }
 
   // Fetch recent activity (mock for now as we don't have activity logs yet)
   const activity = [

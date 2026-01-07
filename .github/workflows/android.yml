@@ -35,6 +35,14 @@ jobs:
         run: bun install
         working-directory: packages/app
 
+      - name: Build Web Assets
+        run: bun run build
+        working-directory: packages/app
+
+      - name: Sync Capacitor Android
+        run: npx cap sync android
+        working-directory: packages/app
+
       - name: Accept Android SDK licenses
         run: |
           SDK_ROOT="${ANDROID_SDK_ROOT:-$ANDROID_HOME}"

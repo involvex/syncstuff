@@ -3,11 +3,13 @@
 ## Workspaces
 
 ### packages/database
+
 - [x] Schema defined (`schema.sql`)
 - [x] Schema executed on local D1
 - [x] Migrations setup and applied to remote D1
 
 ### packages/api
+
 - [x] Basic Worker setup
 - [x] Auth routes structure (`src/routes/auth.ts`)
 - [x] Database integration (typed result)
@@ -17,6 +19,7 @@
 - [ ] Email Workers integration
 
 ### packages/web
+
 - [x] Remix setup
 - [x] Responsive Navigation Component
 - [x] Landing page (Hero, Features, Footer)
@@ -30,6 +33,7 @@
 - [ ] API integration
 
 ### packages/app
+
 - [x] Basic functionality (Syncstuff original features)
 - [x] Google Drive integration implemented
 - [x] Mega integration implemented (using `megajs`)
@@ -41,9 +45,11 @@
 - [ ] Admin access integration
 
 ### packages/shared
+
 - [ ] Shared types (User, API Responses)
 - [ ] Shared utilities
 
 ## Current Focus
+
 - Finalizing User Auth flow across all platforms.
 - Testing the Dashboard on Web.

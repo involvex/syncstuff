@@ -39,7 +39,8 @@
     "app:version:patch": "node scripts/bump-app-version.js --patch",
     "app:version:minor": "node scripts/bump-app-version.js --minor",
     "app:version:major": "node scripts/bump-app-version.js --major",
-    "check": "bun run format && bun run lint:fix && bun run typecheck"
+    "check": "bun run format && bun run lint:fix && bun run typecheck",
+    "test:app": "cd packages/app && bun run test"
   },
   "devDependencies": {
     "@types/bun": "latest",
