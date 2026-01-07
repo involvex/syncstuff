@@ -65,7 +65,19 @@ export async function action({ request, context }: ActionFunctionArgs) {
       const API_URL =
         context.cloudflare.env.API_URL ||
         "https://syncstuff-api.involvex.workers.dev";
-      const response = await fetch(`${API_URL}/api/auth/change-password`, {
+
+      // Diagnostic POST test
+      const testPing = await fetch(`${API_URL}/api/ping`, { method: "POST" });
+      console.log(`[WEB] Ping POST status: ${testPing.status}`);
+      const testNop = await fetch(`${API_URL}/api/auth/nop`, {
+        method: "POST",
+      });
+      console.log(`[WEB] Nop POST status: ${testNop.status}`);
+
+      const fullUrl = `${API_URL}/api/auth/change-password`;
+      console.log(`[WEB] POST to ${fullUrl}`);
+
+      const response = await fetch(fullUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -74,8 +86,52 @@ export async function action({ request, context }: ActionFunctionArgs) {
         body: JSON.stringify({ currentPassword, newPassword }),
       });
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const data: any = await response.json();
+      console.log(`[WEB] Status: ${response.status} ${response.statusText}`);
+      console.log(
+        `[WEB] Headers: ${JSON.stringify(Object.fromEntries(response.headers))}`,
+      );
+
+      const contentType = response.headers.get("Content-Type");
+      let responseText = "";
+      let data: {
+        success: boolean;
+        error?: string;
+        message?: string;
+      };
+
+      try {
+        responseText = await response.text();
+
+        if (!contentType || !contentType.includes("application/json")) {
+          console.error("Non-JSON response from API:", responseText);
+          return json({
+            success: false,
+            error: "Server returned invalid response. Please try again.",
+          });
+        }
+
+        try {
+          data = JSON.parse(responseText) as {
+            success: boolean;
+            error?: string;
+            message?: string;
+          };
+        } catch (parseError) {
+          console.error("JSON parse error:", parseError, {
+            responseText: responseText.substring(0, 200),
+          });
+          return json({
+            success: false,
+            error: "Server returned invalid response. Please try again.",
+          });
+        }
+      } catch (textError) {
+        console.error("Response text read error:", textError);
+        return json({
+          success: false,
+          error: "Network error. Please try again.",
+        });
+      }
 
       if (!response.ok) {
         console.error("Change password API error:", data);

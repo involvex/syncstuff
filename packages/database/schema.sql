@@ -20,32 +20,32 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 -- Subscriptions table
-CREATE TABLE IF NOT EXISTS subscriptions (
-  id TEXT PRIMARY KEY,
-  user_id TEXT REFERENCES users(id) ON DELETE CASCADE,
-  type TEXT NOT NULL,
-  item_id TEXT NOT NULL UNIQUE,
-  name TEXT NOT NULL,
-  full_name TEXT,
-  data TEXT NOT NULL,
-  subscribed_at INTEGER NOT NULL,
-  is_active INTEGER DEFAULT 1,
-  created_at INTEGER DEFAULT (unixepoch() * 1000),
-  updated_at INTEGER DEFAULT (unixepoch() * 1000)
-);
+-- CREATE TABLE IF NOT EXISTS subscriptions (
+--   id TEXT PRIMARY KEY,
+--   user_id TEXT REFERENCES users(id) ON DELETE CASCADE,
+--   type TEXT NOT NULL,
+--   item_id TEXT NOT NULL UNIQUE,
+--   name TEXT NOT NULL,
+--   full_name TEXT,
+--   data TEXT NOT NULL,
+--   subscribed_at INTEGER NOT NULL,
+--   is_active INTEGER DEFAULT 1,
+--   created_at INTEGER DEFAULT (unixepoch() * 1000),
+--   updated_at INTEGER DEFAULT (unixepoch() * 1000)
+-- );
 
--- Releases table
-CREATE TABLE IF NOT EXISTS releases (
-  id TEXT PRIMARY KEY,
-  subscription_id TEXT NOT NULL,
-  tag_name TEXT NOT NULL,
-  name TEXT,
-  body TEXT,
-  published_at INTEGER NOT NULL,
-  is_read INTEGER DEFAULT 0,
-  created_at INTEGER DEFAULT (unixepoch() * 1000),
-  FOREIGN KEY (subscription_id) REFERENCES subscriptions(id) ON DELETE CASCADE
-);
+-- -- Releases table
+-- CREATE TABLE IF NOT EXISTS releases (
+--   id TEXT PRIMARY KEY,
+--   subscription_id TEXT NOT NULL,
+--   tag_name TEXT NOT NULL,
+--   name TEXT,
+--   body TEXT,
+--   published_at INTEGER NOT NULL,
+--   is_read INTEGER DEFAULT 0,
+--   created_at INTEGER DEFAULT (unixepoch() * 1000),
+--   FOREIGN KEY (subscription_id) REFERENCES subscriptions(id) ON DELETE CASCADE
+-- );
 
 -- Notifications table
 CREATE TABLE IF NOT EXISTS notifications (

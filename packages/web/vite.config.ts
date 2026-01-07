@@ -13,6 +13,7 @@ declare module "@remix-run/cloudflare" {
 }
 
 export default defineConfig({
+  mode: process.env.NODE_ENV,
   plugins: [
     cloudflareDevProxyVitePlugin({
       getLoadContext,

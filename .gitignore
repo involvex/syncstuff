@@ -40,6 +40,7 @@ packages/web/node_modules
 packages/api/node_modules
 packages/app/node_modules
 packages/shared/node_modules
+packages/database/node_modules
 
 packages/app/.env
 packages/web/.env

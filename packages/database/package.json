@@ -3,10 +3,10 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "create": "wrangler d1 create syncstuff-db",
-    "migrate": "wrangler d1 migrations apply syncstuff-db",
-    "migrate:local": "wrangler d1 migrations apply syncstuff-db --local",
-    "studio": "wrangler d1 execute syncstuff-db --command '.tables'",
+    "create": "wrangler d1 create syncstuff-db -c wrangler.toml",
+    "migrate": "wrangler d1 migrations apply syncstuff-db -c wrangler.toml",
+    "migrate:local": "wrangler d1 migrations apply syncstuff-db --local -c wrangler.toml",
+    "studio": "wrangler d1 execute syncstuff-db --command '.tables' -c wrangler.toml",
     "deploy": "wrangler d1 migrations apply syncstuff-db --remote -c wrangler.toml"
   },
   "devDependencies": {

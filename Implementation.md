@@ -43,6 +43,8 @@
 - [ ] Auth integration with `packages/api`
 - [ ] Profile management integration
 - [ ] Admin access integration
+- [ ] update the app:version script to also increase app version inside packages\app\android\app\build.gradle -> versionName
+- [ ] use ionicons@latest for app icons
 
 ### packages/shared
 

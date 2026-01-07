@@ -1,23 +1,38 @@
-name = "syncstuff-web"
 compatibility_date = "2024-01-01"
 main = "./server.ts"
+name = "syncstuff-web"
 
 [vars]
-GITHUB_OAUTH_CLIENT_ID = "Ov23li5ZRzCQoPWMN21O"
 GITHUB_OAUTH_CALLBACK = "https://syncstuff-web.involvex.workers.dev/auth/callback?provider=github"
+GITHUB_OAUTH_CLIENT_ID = "Ov23li5ZRzCQoPWMN21O"
 # Secrets (GITHUB_OAUTH_CLIENT_SECRET, SESSION_SECRET) must be set via `wrangler secret put`
 # or in .dev.vars for local development.
-GITHUB_OAUTH_CLIENT_SECRET = "07631a180f65b26a290791b111dd1ba01dae370b"
+API_URL = "https://syncstuff-api.involvex.workers.dev"
 DISCORD_CLIENT_ID = "1458236674097283236"
 DISCORD_OAUTH_CALLBACK = "https://syncstuff-web.involvex.workers.dev/auth/callback?provider=discord"
+GITHUB_OAUTH_CLIENT_SECRET = "07631a180f65b26a290791b111dd1ba01dae370b"
 SESSION_SECRET = "dev-session-secret"
-API_URL = "https://syncstuff-api.involvex.workers.dev"
 
 [assets]
-directory = "./build/client"
 binding = "ASSETS"
+directory = "./build/client"
 
 [[d1_databases]]
 binding = "syncstuff_db"
-database_name = "syncstuff-db"
 database_id = "94e9ef8c-2032-4ee5-9a97-b6280eab0957"
+database_name = "syncstuff-db"
+
+[observability]
+enabled = true
+head_sampling_rate = 1
+
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+persist = true
+invocation_logs = true
+
+[observability.traces]
+enabled = true
+persist = true
+head_sampling_rate = 1

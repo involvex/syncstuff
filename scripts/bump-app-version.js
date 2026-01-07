@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Enhanced Version Bump Script for Involvex App
+ * Enhanced Version Bump Script for Syncstuff
  *
  * Features:
  * - Pre-flight checks (clean working directory, typecheck)
@@ -70,7 +70,7 @@ const appPackagePath = path.join(
   "..",
   "packages",
   "app",
-  "package.json",
+  "package.json"
 );
 const rootDir = path.join(__dirname, "..");
 
@@ -105,7 +105,7 @@ function checkGitStatus() {
   if (status) {
     error(
       "Git working directory is not clean. Commit or stash your changes first.\n\nModified files:\n" +
-        status,
+        status
     );
   }
 
@@ -222,7 +222,7 @@ function rollback() {
  */
 function main() {
   log("\n" + "=".repeat(60), "bright");
-  log("📦 Involvex App Version Bump Script", "bright");
+  log("📦 Syncstuff Version Bump Script", "bright");
   log("=".repeat(60) + "\n", "bright");
 
   if (isDryRun) {
@@ -275,7 +275,7 @@ function main() {
     appPackage.version = newVersion;
     fs.writeFileSync(
       appPackagePath,
-      JSON.stringify(appPackage, null, 2) + "\n",
+      JSON.stringify(appPackage, null, 2) + "\n"
     );
     success(`Updated package.json to ${newVersion}`);
 

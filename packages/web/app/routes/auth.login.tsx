@@ -22,16 +22,60 @@ export async function action({ request, context }: ActionFunctionArgs) {
     const API_URL =
       context.cloudflare.env.API_URL ||
       "https://syncstuff-api.involvex.workers.dev";
-    const response = await fetch(`${API_URL}/api/auth/login`, {
+    const fullUrl = `${API_URL}/api/auth/login`;
+    console.log(`[WEB] POST to ${fullUrl}`);
+
+    const response = await fetch(fullUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const data = await response.json<any>();
+    console.log(`[WEB] Status: ${response.status} ${response.statusText}`);
+    console.log(
+      `[WEB] Headers: ${JSON.stringify(Object.fromEntries(response.headers))}`,
+    );
 
-    if (!data.success) {
+    const contentType = response.headers.get("Content-Type");
+    let responseText = "";
+    let data: {
+      success: boolean;
+      data?: { token: string; user: { id: string; role: string } };
+      error?: string;
+    };
+
+    try {
+      responseText = await response.text();
+
+      if (!contentType || !contentType.includes("application/json")) {
+        console.error("Non-JSON response from login API:", responseText);
+        return {
+          error: `Server returned invalid response. Please try again.`,
+        };
+      }
+
+      try {
+        data = JSON.parse(responseText) as {
+          success: boolean;
+          data?: { token: string; user: { id: string; role: string } };
+          error?: string;
+        };
+      } catch (parseError) {
+        console.error("JSON parse error:", parseError, {
+          responseText: responseText.substring(0, 200),
+        });
+        return {
+          error: "Server returned invalid response. Please try again.",
+        };
+      }
+    } catch (textError) {
+      console.error("Response text read error:", textError);
+      return {
+        error: "Network error. Please try again.",
+      };
+    }
+
+    if (!data.success || !data.data) {
       return { error: data.error || "Login failed" };
     }
 
