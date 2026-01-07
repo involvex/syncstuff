@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import { existsSync, statSync } from "fs";
 import inquirer from "inquirer";
-import { resolve } from "path";
+import { basename, resolve } from "path";
 import { apiClient } from "../../utils/api-client.js";
 import { debugLog, type CommandContext } from "../../utils/context.js";
 import {
@@ -11,7 +11,19 @@ import {
   printHeader,
   printSeparator,
   success,
+  warning,
 } from "../../utils/ui.js";
+
+/**
+ * Format file size for display
+ */
+function formatFileSize(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(2)} KB`;
+  if (bytes < 1024 * 1024 * 1024)
+    return `${(bytes / 1024 / 1024).toFixed(2)} MB`;
+  return `${(bytes / 1024 / 1024 / 1024).toFixed(2)} GB`;
+}
 
 export async function transferFile(
   filePath: string | undefined,
@@ -24,11 +36,13 @@ export async function transferFile(
     error("You are not logged in. Please run 'syncstuff login' first.");
     process.exit(1);
   }
+  debugLog(ctx, "Authentication verified");
 
   let targetFile = filePath;
 
   // If no file path provided, prompt for it
   if (!targetFile) {
+    debugLog(ctx, "No file path provided, prompting user");
     const answers = await inquirer.prompt([
       {
         type: "input",
@@ -58,6 +72,7 @@ export async function transferFile(
   }
 
   const resolvedPath = resolve(targetFile);
+  debugLog(ctx, "Resolved file path", { resolvedPath });
 
   if (!existsSync(resolvedPath)) {
     error(`File not found: ${resolvedPath}`);
@@ -71,16 +86,31 @@ export async function transferFile(
 
   // Get file info
   const stats = statSync(resolvedPath);
-  const fileSize = (stats.size / 1024 / 1024).toFixed(2);
+  const fileName = basename(resolvedPath);
+  const fileSize = formatFileSize(stats.size);
 
-  info(`File: ${resolvedPath}`);
-  info(`Size: ${fileSize} MB`);
+  debugLog(ctx, "File info", {
+    name: fileName,
+    size: stats.size,
+    formattedSize: fileSize,
+    modified: stats.mtime,
+  });
+
+  printSeparator();
+  console.log(chalk.cyan("File Details:"));
+  console.log(`  Name: ${chalk.bold(fileName)}`);
+  console.log(`  Path: ${resolvedPath}`);
+  console.log(`  Size: ${chalk.yellow(fileSize)}`);
+  printSeparator();
 
   // Get device list
-  const devicesSpinner = createSpinner("Fetching devices...");
+  const devicesSpinner = createSpinner("Fetching available devices...");
   devicesSpinner.start();
 
+  debugLog(ctx, "Fetching devices from API");
   const devicesResponse = await apiClient.getDevices();
+  debugLog(ctx, "Devices response", devicesResponse);
+
   devicesSpinner.stop();
 
   if (
@@ -88,15 +118,32 @@ export async function transferFile(
     !devicesResponse.data ||
     devicesResponse.data.length === 0
   ) {
-    error(
-      "No devices available. Please ensure at least one device is connected.",
-    );
+    if (devicesResponse.error) {
+      debugLog(ctx, "Devices API error", { error: devicesResponse.error });
+      error(`Failed to fetch devices: ${devicesResponse.error}`);
+    } else {
+      warning("No devices available.");
+      info("Make sure you have at least one device connected to your account.");
+      info("Run 'syncstuff devices' to see your registered devices.");
+    }
+    process.exit(1);
+  }
+
+  const onlineDevices = devicesResponse.data.filter(d => d.is_online);
+  debugLog(ctx, "Device counts", {
+    total: devicesResponse.data.length,
+    online: onlineDevices.length,
+  });
+
+  if (onlineDevices.length === 0) {
+    warning("All devices are offline.");
+    info("Start Syncstuff on your target device to receive files.");
     process.exit(1);
   }
 
   // Prompt for device selection
   const deviceChoices = devicesResponse.data.map(device => ({
-    name: `${device.name} (${device.platform}) - ${device.is_online ? "Online" : "Offline"}`,
+    name: `${device.name} (${device.platform}) - ${device.is_online ? chalk.green("Online") : chalk.red("Offline")}`,
     value: device.id,
     disabled: !device.is_online ? "Offline" : false,
   }));
@@ -110,22 +157,38 @@ export async function transferFile(
     },
   ]);
 
+  const selectedDevice = devicesResponse.data.find(
+    d => d.id === deviceAnswer.deviceId,
+  );
+  debugLog(ctx, "Selected device", selectedDevice);
+
   // Transfer file
+  printSeparator();
   const transferSpinner = createSpinner(
-    `Transferring ${chalk.cyan(resolvedPath)} to device...`,
+    `Transferring ${chalk.cyan(fileName)} to ${chalk.yellow(selectedDevice?.name || "device")}...`,
   );
   transferSpinner.start();
 
   try {
+    debugLog(ctx, "Initiating transfer API call", {
+      deviceId: deviceAnswer.deviceId,
+      filePath: resolvedPath,
+    });
+
     const transferResponse = await apiClient.transferFile(
       deviceAnswer.deviceId,
       resolvedPath,
     );
 
+    debugLog(ctx, "Transfer response", transferResponse);
+
     if (transferResponse.success) {
       transferSpinner.succeed("File transfer initiated!");
       printSeparator();
       success(`Transfer ID: ${transferResponse.data?.transferId || "N/A"}`);
+      info(`File: ${fileName}`);
+      info(`Size: ${fileSize}`);
+      info(`Target: ${selectedDevice?.name || deviceAnswer.deviceId}`);
       info("File is being synced to the target device");
       printSeparator();
     } else {
@@ -134,15 +197,19 @@ export async function transferFile(
         transferResponse.error?.includes("404") ||
         transferResponse.error?.includes("Not found")
       ) {
-        info("File transfer endpoint not yet implemented in API");
+        warning("File transfer endpoint not yet implemented in API");
         info("This feature will be available soon!");
+        debugLog(ctx, "API endpoint not implemented");
       } else {
-        error(transferResponse.error || "Unknown error");
+        error(transferResponse.error || "Unknown error occurred");
+        debugLog(ctx, "Transfer error", { error: transferResponse.error });
       }
     }
   } catch (err) {
     transferSpinner.fail("Transfer error");
-    error(`Error: ${err instanceof Error ? err.message : String(err)}`);
+    const errorMessage = err instanceof Error ? err.message : String(err);
+    error(`Error: ${errorMessage}`);
+    debugLog(ctx, "Exception during transfer", { error: err });
     process.exit(1);
   }
 }

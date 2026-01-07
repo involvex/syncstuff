@@ -196,6 +196,64 @@ export default function Index() {
             </div>
           </div>
         </section>
+
+        {/* Download Section */}
+        <section id="download" className="bg-white dark:bg-gray-900">
+          <div className="mx-auto max-w-screen-xl px-4 py-8 sm:py-16 lg:px-6">
+            <div className="mx-auto max-w-screen-md text-center">
+              <h2 className="mb-4 text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+                Download Syncstuff
+              </h2>
+              <p className="mb-8 text-gray-500 sm:text-xl dark:text-gray-400">
+                Get the app on your device and start syncing today.
+              </p>
+              <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+                {/* Android Download */}
+                <a
+                  href="/downloads/syncstuff-v0.0.1.apk"
+                  download
+                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-green-600 px-6 py-3 text-base font-medium text-white transition-colors hover:bg-green-700 focus:ring-4 focus:ring-green-300 dark:focus:ring-green-800"
+                >
+                  <svg
+                    className="size-6"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M17.523 15.34l-.946-3.788c-.293-1.172-.733-2.198-1.32-3.072l.52-.52c.39-.39.39-1.024 0-1.414s-1.024-.39-1.414 0l-.293.293c-.883-.538-1.893-.844-2.97-.844-1.077 0-2.087.306-2.97.844l-.293-.293c-.39-.39-1.024-.39-1.414 0s-.39 1.024 0 1.414l.52.52c-.587.874-1.027 1.9-1.32 3.072l-.946 3.788c-.146.585.21 1.18.795 1.326.097.024.195.036.291.036.48 0 .918-.33 1.035-.82l.894-3.576c.39-1.56 1.167-2.846 2.254-3.716V18c0 .552.448 1 1 1s1-.448 1-1v-9.956c1.087.87 1.864 2.156 2.254 3.716l.894 3.576c.146.585.74.94 1.326.795.585-.147.94-.74.795-1.326zM12 6c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z" />
+                  </svg>
+                  Download for Android
+                  <span className="rounded bg-green-500 px-2 py-0.5 text-xs font-semibold">
+                    v0.0.1
+                  </span>
+                </a>
+
+                {/* iOS Coming Soon */}
+                <div className="inline-flex cursor-not-allowed items-center justify-center gap-2 rounded-lg border border-gray-300 bg-gray-100 px-6 py-3 text-base font-medium text-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400">
+                  <svg
+                    className="size-6"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+                  </svg>
+                  iOS Coming Soon
+                </div>
+              </div>
+
+              {/* CLI Install */}
+              <div className="mt-8">
+                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                  Or install via npm:
+                </p>
+                <code className="rounded bg-gray-100 px-3 py-2 text-sm text-gray-800 dark:bg-gray-800 dark:text-gray-200">
+                  npm install -g @involvex/syncstuff-cli
+                </code>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
 
       <footer className="bg-white p-4 md:p-8 lg:p-10 dark:bg-gray-800">

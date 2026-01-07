@@ -1,23 +1,25 @@
+import type { PluginListenerHandle } from "@capacitor/core";
 import {
   ZeroConf,
   type ZeroConfService,
   type ZeroConfWatchResult,
 } from "capacitor-zeroconf";
+import type { Device } from "../../types/device.types";
 import {
-  SYNCSTUFF_SERVICE_TYPE,
   SYNCSTUFF_SERVICE_DOMAIN,
   SYNCSTUFF_SERVICE_PORT,
-  type ServiceTxtRecord,
+  SYNCSTUFF_SERVICE_TYPE,
   type DiscoveredDevice,
+  type ServiceTxtRecord,
 } from "../../types/network.types";
 import { isNative } from "../../utils/platform.utils";
-import type { Device } from "../../types/device.types";
 
 type DeviceFoundCallback = (device: DiscoveredDevice) => void;
 type DeviceLostCallback = (deviceId: string) => void;
 
 class DiscoveryService {
   private isRunning = false;
+  private listenerHandle: PluginListenerHandle | null = null;
   private onDeviceFoundCallbacks: Set<DeviceFoundCallback> = new Set();
   private onDeviceLostCallbacks: Set<DeviceLostCallback> = new Set();
 
@@ -51,18 +53,22 @@ class DiscoveryService {
 
       this.isRunning = true;
 
-      // Listen for discover events
-      await ZeroConf.addListener("discover", (result: ZeroConfWatchResult) => {
-        if (result.action === "added" || result.action === "resolved") {
-          this.handleServiceAdded(result);
-        } else if (result.action === "removed") {
-          this.handleServiceRemoved(result);
-        }
-      });
+      // Listen for discover events and store the handle for cleanup
+      this.listenerHandle = await ZeroConf.addListener(
+        "discover",
+        (result: ZeroConfWatchResult) => {
+          if (result.action === "added" || result.action === "resolved") {
+            this.handleServiceAdded(result);
+          } else if (result.action === "removed") {
+            this.handleServiceRemoved(result);
+          }
+        },
+      );
 
       console.log("Device discovery started");
     } catch (error) {
       console.error("Failed to start discovery:", error);
+      this.isRunning = false;
       throw error;
     }
   }
@@ -76,6 +82,12 @@ class DiscoveryService {
     }
 
     try {
+      // Remove the listener first to prevent any more callbacks
+      if (this.listenerHandle) {
+        await this.listenerHandle.remove();
+        this.listenerHandle = null;
+      }
+
       await ZeroConf.unwatch({
         domain: SYNCSTUFF_SERVICE_DOMAIN,
         type: SYNCSTUFF_SERVICE_TYPE,
@@ -85,6 +97,9 @@ class DiscoveryService {
       console.log("Device discovery stopped");
     } catch (error) {
       console.error("Failed to stop discovery:", error);
+      // Reset state even on error to allow restart
+      this.isRunning = false;
+      this.listenerHandle = null;
     }
   }
 
