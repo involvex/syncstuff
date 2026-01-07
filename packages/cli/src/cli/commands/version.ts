@@ -20,7 +20,7 @@ export function showversion() {
         chalk.bold("Version:") +
         ` ${chalk.green(version)}\n` +
         chalk.bold("Package:") +
-        ` @syncstuff/cli`,
+        ` @involvex/syncstuff-cli`,
       {
         title: "Version Information",
         titleAlignment: "center",

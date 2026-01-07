@@ -152,7 +152,7 @@ export async function showHelp(command?: string): Promise<void> {
   printSeparator();
   console.log(
     chalk.gray(
-      "For more information, visit: https://github.com/involvex/syncstuff",
+      "For more information, visit: https://syncstuff-web.involvex.workers.dev/",
     ),
   );
   printSeparator();

@@ -2,12 +2,12 @@
 
 SyncStuff CLI is a command line interface for the [SyncStuff](https://syncstuff-web.involvex.workers.dev/) service.
 
-[![npm version](https://badge.fury.io/js/@syncstuff%2Fcli.svg)](https://badge.fury.io/js/@syncstuff%2Fcli)
+[![npm version](https://badge.fury.io/js/@involvex%2Fsyncstuff-cli.svg)](https://badge.fury.io/js/@involvex%2Fsyncstuff-cli)
 
 ## Installation
 
 ```bash
-npm install -g @syncstuff/cli
+npm install -g @involvex/syncstuff-cli
 ```
 
 ## Usage

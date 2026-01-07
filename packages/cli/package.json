@@ -1,5 +1,5 @@
 {
-  "name": "@syncstuff/cli",
+  "name": "@involvex/syncstuff-cli",
   "version": "0.0.1",
   "type": "module",
   "homepage": "https://syncstuff-web.involvex.workers.dev/",
