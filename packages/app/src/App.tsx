@@ -22,8 +22,12 @@ import ClipboardPage from "./pages/ClipboardPage";
 import SettingsPage from "./pages/SettingsPage";
 import { useTheme } from "./hooks/useTheme";
 import { useEffect } from "react";
-import { useSettingsStore } from "./store/settings.store"; // Import useSettingsStore
+import { useSettingsStore } from "./store/settings.store";
 import { deepLinkService } from "./services/network/deeplink.service";
+import { deviceDetectionService } from "./services/device/device-detection.service";
+import { permissionsService } from "./services/permissions/permissions.service";
+import { notificationService } from "./services/notifications/notification.service";
+import { useCloudStore } from "./store/cloud.store";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -58,15 +62,47 @@ setupIonicReact();
 const App: React.FC = () => {
   // Initialize theme
   useTheme();
+  const { accounts } = useCloudStore();
 
   // Initialize storage and settings
   useEffect(() => {
     const initializeAppSettings = async () => {
       await useSettingsStore.getState().initialize();
       await deepLinkService.initialize();
+
+      // Initialize device detection
+      try {
+        await deviceDetectionService.initialize();
+      } catch (error) {
+        console.error("Failed to initialize device detection:", error);
+      }
+
+      // Initialize permissions service
+      try {
+        await permissionsService.initialize();
+      } catch (error) {
+        console.error("Failed to initialize permissions:", error);
+      }
+
+      // Initialize notification service
+      try {
+        await notificationService.initialize();
+      } catch (error) {
+        console.error("Failed to initialize notifications:", error);
+      }
     };
     initializeAppSettings();
   }, []);
+
+  // Auto-detect device when user logs in with accounts
+  useEffect(() => {
+    if (accounts.length > 0) {
+      // User has logged in, trigger device auto-registration
+      deviceDetectionService.autoRegisterDevice().catch(error => {
+        console.warn("Failed to auto-register device:", error);
+      });
+    }
+  }, [accounts]);
 
   return (
     <IonApp>

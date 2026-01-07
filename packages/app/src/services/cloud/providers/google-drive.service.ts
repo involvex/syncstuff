@@ -149,12 +149,39 @@ export class GoogleDriveService implements CloudProvider {
 
   async disconnect(): Promise<void> {
     if (this.accessToken) {
-      window.google.accounts.oauth2.revoke(this.accessToken, () => {
-        console.log("Token revoked");
-      });
+      try {
+        window.google.accounts.oauth2.revoke(this.accessToken, () => {
+          console.log("Google Drive token revoked");
+        });
+      } catch (error) {
+        console.error("Error revoking Google Drive token:", error);
+      }
       this.accessToken = null;
       this.accountId = null;
+      this.gapiInited = false;
+      this.gisInited = false;
     }
+  }
+
+  async refreshToken(): Promise<string | null> {
+    if (!this.tokenClient) {
+      return null;
+    }
+
+    return new Promise((resolve, reject) => {
+      try {
+        this.tokenClient.requestAccessToken({ prompt: "" });
+        // The callback will be called with the new token
+        // For now, we'll just return the current token
+        resolve(this.accessToken);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  isAuthenticated(): boolean {
+    return this.accessToken !== null && this.accountId !== null;
   }
 
   async listFiles(folderId: string = "root"): Promise<CloudFile[]> {

@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   IonCard,
   IonCardHeader,
   IonCardTitle,
+  IonCardSubtitle,
   IonCardContent,
   IonList,
   IonItem,
@@ -10,7 +11,13 @@ import {
   IonButton,
   IonIcon,
   IonText,
+  IonSpinner,
+  IonAvatar,
+  IonBadge,
+  IonChip,
   useIonAlert,
+  useIonToast,
+  IonProgressBar,
 } from "@ionic/react";
 import {
   cloudOutline,
@@ -18,134 +25,271 @@ import {
   logoGoogle,
   cloudUploadOutline,
   personCircleOutline,
+  checkmarkCircleOutline,
+  closeCircleOutline,
+  refreshOutline,
+  linkOutline,
+  shieldCheckmarkOutline,
+  warningOutline,
+  informationCircleOutline,
 } from "ionicons/icons";
 import { useCloudStore } from "../../store/cloud.store";
 import { cloudManagerService } from "../../services/cloud/cloud-manager.service";
 import type { CloudProviderType } from "../../types/cloud.types";
-import { SyncstuffService } from "../../services/cloud/providers/syncstuff.service";
-import { MegaService } from "../../services/cloud/providers/mega.service";
 
 export const CloudAccounts: React.FC = () => {
-  const { accounts, addAccount, removeAccount } = useCloudStore();
-  const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const { accounts, addAccount, removeAccount, updateAccount } =
+    useCloudStore();
+  const [isAuthenticating, setIsAuthenticating] =
+    useState<CloudProviderType | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState<string | null>(null);
   const [presentAlert] = useIonAlert();
+  const [presentToast] = useIonToast();
+
+  // Ensure disabled is always a boolean to avoid Ionic component issues
+  // Use Boolean() to explicitly convert to boolean type
+  const isAnyAuthenticating = Boolean(isAuthenticating);
+
+  useEffect(() => {
+    // Initialize all providers on mount
+    cloudManagerService.initializeAll().catch(error => {
+      console.error("Failed to initialize cloud providers:", error);
+    });
+
+    // Refresh account info periodically
+    const refreshInterval = setInterval(() => {
+      accounts.forEach(account => {
+        cloudManagerService
+          .refreshAccountInfo(account.provider)
+          .then(updated => {
+            if (updated) {
+              updateAccount(account.id, updated);
+            }
+          });
+      });
+    }, 60000); // Refresh every minute
+
+    return () => clearInterval(refreshInterval);
+  }, [accounts, updateAccount]);
 
   const handleSyncstuffLogin = async (data: Record<string, string>) => {
-    setIsAuthenticating(true);
+    if (!data.email || !data.password) {
+      presentToast({
+        message: "Please enter both email and password",
+        duration: 2000,
+        color: "warning",
+        icon: warningOutline,
+      });
+      return;
+    }
+
+    setIsAuthenticating("syncstuff");
     try {
-      const provider = cloudManagerService.getProvider("syncstuff");
-      if (provider instanceof SyncstuffService) {
-        const account = await provider.login(data.email, data.password);
-        addAccount(account);
+      const account = await cloudManagerService.authenticate("syncstuff", {
+        email: data.email,
+        password: data.password,
+      });
+      addAccount(account);
+
+      // Trigger device auto-registration when account is added
+      try {
+        const { deviceDetectionService } =
+          await import("../../services/device/device-detection.service");
+        await deviceDetectionService.autoRegisterDevice();
+      } catch (error) {
+        console.warn("Failed to auto-register device:", error);
       }
+
+      presentToast({
+        message: "Successfully connected to SyncStuff",
+        duration: 2000,
+        color: "success",
+        icon: checkmarkCircleOutline,
+      });
     } catch (err: unknown) {
       const errorMsg = err instanceof Error ? err.message : "Login failed";
       presentAlert({
         header: "Login Failed",
         message: errorMsg,
-        buttons: ["OK"],
+        buttons: [
+          {
+            text: "OK",
+            role: "cancel",
+          },
+        ],
+        cssClass: "error-alert",
       });
     } finally {
-      setIsAuthenticating(false);
+      setIsAuthenticating(null);
     }
   };
 
   const handleMegaLogin = async (data: Record<string, string>) => {
-    setIsAuthenticating(true);
+    if (!data.email || !data.password) {
+      presentToast({
+        message: "Please enter both email and password",
+        duration: 2000,
+        color: "warning",
+        icon: warningOutline,
+      });
+      return;
+    }
+
+    setIsAuthenticating("mega");
     try {
-      const provider = cloudManagerService.getProvider("mega");
-      if (provider instanceof MegaService) {
-        const account = await provider.login(data.email, data.password);
-        addAccount(account);
-      }
+      const account = await cloudManagerService.authenticate("mega", {
+        email: data.email,
+        password: data.password,
+      });
+      addAccount(account);
+      presentToast({
+        message: "Successfully connected to MEGA",
+        duration: 2000,
+        color: "success",
+        icon: checkmarkCircleOutline,
+      });
     } catch (err: unknown) {
       const errorMsg = err instanceof Error ? err.message : "Login failed";
       presentAlert({
         header: "Login Failed",
         message: errorMsg,
-        buttons: ["OK"],
+        buttons: [
+          {
+            text: "OK",
+            role: "cancel",
+          },
+        ],
+        cssClass: "error-alert",
       });
     } finally {
-      setIsAuthenticating(false);
+      setIsAuthenticating(null);
     }
   };
 
   const showSyncstuffLoginAlert = () => {
     presentAlert({
-      header: "Login to Syncstuff",
+      header: "Connect to SyncStuff",
+      subHeader: "Sign in to your SyncStuff account",
       inputs: [
         {
           name: "email",
           type: "email",
-          placeholder: "Email",
+          placeholder: "Enter your email",
+          attributes: {
+            required: true,
+            autocomplete: "email",
+          },
         },
         {
           name: "password",
           type: "password",
-          placeholder: "Password",
+          placeholder: "Enter your password",
+          attributes: {
+            required: true,
+            autocomplete: "current-password",
+          },
         },
       ],
       buttons: [
         {
           text: "Cancel",
           role: "cancel",
+          cssClass: "alert-button-cancel",
         },
         {
-          text: "Login",
+          text: "Connect",
           handler: handleSyncstuffLogin,
+          cssClass: "alert-button-confirm",
         },
       ],
+      cssClass: "modern-alert",
     });
   };
 
   const showMegaLoginAlert = () => {
     presentAlert({
-      header: "Login to Mega",
+      header: "Connect to MEGA",
+      subHeader: "Sign in to your MEGA account",
       inputs: [
         {
           name: "email",
           type: "email",
-          placeholder: "Email",
+          placeholder: "Enter your email",
+          attributes: {
+            required: true,
+            autocomplete: "email",
+          },
         },
         {
           name: "password",
           type: "password",
-          placeholder: "Password",
+          placeholder: "Enter your password",
+          attributes: {
+            required: true,
+            autocomplete: "current-password",
+          },
         },
       ],
       buttons: [
         {
           text: "Cancel",
           role: "cancel",
+          cssClass: "alert-button-cancel",
         },
         {
-          text: "Login",
+          text: "Connect",
           handler: handleMegaLogin,
+          cssClass: "alert-button-confirm",
         },
       ],
+      cssClass: "modern-alert",
     });
   };
 
   const handleAddAccount = async (type: CloudProviderType) => {
-    setIsAuthenticating(true);
-    try {
-      const provider = cloudManagerService.getProvider(type);
-      if (!provider) throw new Error("Provider not found");
+    // Check if already authenticated
+    if (cloudManagerService.isAuthenticated(type)) {
+      presentToast({
+        message: `${cloudManagerService.getProvider(type)?.name} is already connected`,
+        duration: 2000,
+        color: "warning",
+        icon: informationCircleOutline,
+      });
+      return;
+    }
 
+    setIsAuthenticating(type);
+    try {
       if (type === "syncstuff") {
         showSyncstuffLoginAlert();
-        setIsAuthenticating(false);
+        setIsAuthenticating(null);
         return;
       }
 
       if (type === "mega") {
         showMegaLoginAlert();
-        setIsAuthenticating(false);
+        setIsAuthenticating(null);
         return;
       }
 
-      const account = await provider.authenticate();
+      const account = await cloudManagerService.authenticate(type);
       addAccount(account);
+
+      // Trigger device auto-registration when account is added
+      try {
+        const { deviceDetectionService } =
+          await import("../../services/device/device-detection.service");
+        await deviceDetectionService.autoRegisterDevice();
+      } catch (error) {
+        console.warn("Failed to auto-register device:", error);
+      }
+
+      presentToast({
+        message: `Successfully connected to ${cloudManagerService.getProvider(type)?.name}`,
+        duration: 2000,
+        color: "success",
+        icon: checkmarkCircleOutline,
+      });
     } catch (err: unknown) {
       console.error("Auth Error:", err);
       let errorMessage = "Failed to authenticate";
@@ -164,18 +308,19 @@ export const CloudAccounts: React.FC = () => {
         errorMessage = err;
       }
 
-      // If we didn't show a login dialog (which handles its own errors), show generic error
-      if (type !== "syncstuff" && type !== "mega") {
-        presentAlert({
-          header: "Authentication Error",
-          message: errorMessage,
-          buttons: ["OK"],
-        });
-      }
+      presentAlert({
+        header: "Authentication Error",
+        message: errorMessage,
+        buttons: [
+          {
+            text: "OK",
+            role: "cancel",
+          },
+        ],
+        cssClass: "error-alert",
+      });
     } finally {
-      if (type !== "syncstuff" && type !== "mega") {
-        setIsAuthenticating(false);
-      }
+      setIsAuthenticating(null);
     }
   };
 
@@ -183,14 +328,71 @@ export const CloudAccounts: React.FC = () => {
     accountId: string,
     type: CloudProviderType,
   ) => {
+    presentAlert({
+      header: "Disconnect Account?",
+      message: `Are you sure you want to disconnect ${cloudManagerService.getProvider(type)?.name}?`,
+      buttons: [
+        {
+          text: "Cancel",
+          role: "cancel",
+          cssClass: "alert-button-cancel",
+        },
+        {
+          text: "Disconnect",
+          role: "destructive",
+          handler: async () => {
+            try {
+              await cloudManagerService.disconnect(type);
+              removeAccount(accountId);
+              presentToast({
+                message: "Account disconnected successfully",
+                duration: 2000,
+                color: "success",
+                icon: checkmarkCircleOutline,
+              });
+            } catch (err) {
+              console.error("Failed to disconnect:", err);
+              presentToast({
+                message: "Failed to disconnect account",
+                duration: 2000,
+                color: "danger",
+                icon: closeCircleOutline,
+              });
+            }
+          },
+          cssClass: "alert-button-destructive",
+        },
+      ],
+      cssClass: "modern-alert",
+    });
+  };
+
+  const handleRefreshAccount = async (
+    accountId: string,
+    type: CloudProviderType,
+  ) => {
+    setIsRefreshing(accountId);
     try {
-      const provider = cloudManagerService.getProvider(type);
-      if (provider) {
-        await provider.disconnect();
+      const updated = await cloudManagerService.refreshAccountInfo(type);
+      if (updated) {
+        updateAccount(accountId, updated);
+        presentToast({
+          message: "Account information refreshed",
+          duration: 2000,
+          color: "success",
+          icon: refreshOutline,
+        });
       }
-      removeAccount(accountId);
     } catch (err) {
-      console.error("Failed to disconnect:", err);
+      console.error("Failed to refresh account:", err);
+      presentToast({
+        message: "Failed to refresh account information",
+        duration: 2000,
+        color: "warning",
+        icon: warningOutline,
+      });
+    } finally {
+      setIsRefreshing(null);
     }
   };
 
@@ -207,90 +409,261 @@ export const CloudAccounts: React.FC = () => {
     }
   };
 
+  const formatBytes = (bytes: number): string => {
+    if (bytes === 0) return "0 B";
+    const k = 1024;
+    const sizes = ["B", "KB", "MB", "GB", "TB"];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return `${Math.round((bytes / Math.pow(k, i)) * 100) / 100} ${sizes[i]}`;
+  };
+
+  const getQuotaPercentage = (used?: number, total?: number): number => {
+    if (!used || !total || total === 0) return 0;
+    return Math.min((used / total) * 100, 100);
+  };
+
   return (
-    <IonCard>
+    <IonCard className="cloud-accounts-card">
       <IonCardHeader>
-        <IonCardTitle>Cloud Accounts</IonCardTitle>
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <IonIcon
+            icon={cloudOutline}
+            style={{ fontSize: "28px", color: "var(--ion-color-primary)" }}
+          />
+          <div>
+            <IonCardTitle>Cloud Accounts</IonCardTitle>
+            <IonCardSubtitle>
+              Manage your connected cloud storage services
+            </IonCardSubtitle>
+          </div>
+        </div>
       </IonCardHeader>
       <IonCardContent>
-        <IonList>
-          {accounts.map(account => (
-            <IonItem key={account.id}>
-              <IonIcon slot="start" icon={getIcon(account.provider)} />
-              <IonLabel>
-                <h2>{account.name}</h2>
-                <p>{account.email}</p>
-                {account.quotaUsed !== undefined &&
-                  account.quotaTotal !== undefined && (
-                    <p
+        {accounts.length > 0 ? (
+          <IonList lines="full" className="accounts-list">
+            {accounts.map(account => {
+              const quotaPercent = getQuotaPercentage(
+                account.quotaUsed,
+                account.quotaTotal,
+              );
+              const accountIsRefreshing = isRefreshing === account.id;
+
+              return (
+                <IonItem
+                  key={account.id}
+                  className="account-item"
+                  button={false}
+                >
+                  <IonAvatar slot="start" className="account-avatar">
+                    {account.avatarUrl ? (
+                      <img src={account.avatarUrl} alt={account.name} />
+                    ) : (
+                      <IonIcon
+                        icon={getIcon(account.provider)}
+                        style={{ fontSize: "24px" }}
+                      />
+                    )}
+                  </IonAvatar>
+                  <IonLabel className="account-label">
+                    <div
                       style={{
-                        fontSize: "0.8em",
-                        color: "var(--ion-color-medium)",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
                       }}
                     >
-                      {Math.round(account.quotaUsed / 1024 / 1024)}MB /{" "}
-                      {Math.round(account.quotaTotal / 1024 / 1024)}MB used
-                    </p>
-                  )}
-              </IonLabel>
-              <IonButton
-                fill="clear"
-                color="danger"
-                slot="end"
-                onClick={() =>
-                  handleRemoveAccount(account.id, account.provider)
-                }
-              >
-                <IonIcon icon={trashOutline} />
-              </IonButton>
-            </IonItem>
-          ))}
+                      <h2>{account.name}</h2>
+                      {account.isAuthenticated && (
+                        <IonBadge color="success" style={{ fontSize: "10px" }}>
+                          <IonIcon
+                            icon={checkmarkCircleOutline}
+                            style={{ fontSize: "12px", marginRight: "2px" }}
+                          />
+                          Connected
+                        </IonBadge>
+                      )}
+                    </div>
+                    <p className="account-email">{account.email}</p>
+                    {account.quotaUsed !== undefined &&
+                      account.quotaTotal !== undefined && (
+                        <div className="quota-info">
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              marginTop: "8px",
+                              marginBottom: "4px",
+                            }}
+                          >
+                            <IonText
+                              color={
+                                quotaPercent > 90
+                                  ? "danger"
+                                  : quotaPercent > 75
+                                    ? "warning"
+                                    : "medium"
+                              }
+                              style={{ fontSize: "0.85em" }}
+                            >
+                              {formatBytes(account.quotaUsed)} /{" "}
+                              {formatBytes(account.quotaTotal)}
+                            </IonText>
+                            <IonChip
+                              color={
+                                quotaPercent > 90
+                                  ? "danger"
+                                  : quotaPercent > 75
+                                    ? "warning"
+                                    : "primary"
+                              }
+                              style={{ fontSize: "0.75em", height: "20px" }}
+                            >
+                              {quotaPercent.toFixed(1)}%
+                            </IonChip>
+                          </div>
+                          <IonProgressBar
+                            value={quotaPercent / 100}
+                            color={
+                              quotaPercent > 90
+                                ? "danger"
+                                : quotaPercent > 75
+                                  ? "warning"
+                                  : "primary"
+                            }
+                            style={{ height: "6px", borderRadius: "3px" }}
+                          />
+                        </div>
+                      )}
+                    {account.lastSync && (
+                      <IonText
+                        color="medium"
+                        style={{
+                          fontSize: "0.75em",
+                          display: "block",
+                          marginTop: "4px",
+                        }}
+                      >
+                        Last synced:{" "}
+                        {new Date(account.lastSync).toLocaleString()}
+                      </IonText>
+                    )}
+                  </IonLabel>
+                  <div slot="end" style={{ display: "flex", gap: "4px" }}>
+                    <IonButton
+                      fill="clear"
+                      size="small"
+                      onClick={() =>
+                        handleRefreshAccount(account.id, account.provider)
+                      }
+                      disabled={Boolean(accountIsRefreshing)}
+                    >
+                      {accountIsRefreshing ? (
+                        <IonSpinner name="crescent" />
+                      ) : (
+                        <IonIcon icon={refreshOutline} />
+                      )}
+                    </IonButton>
+                    <IonButton
+                      fill="clear"
+                      color="danger"
+                      size="small"
+                      onClick={() =>
+                        handleRemoveAccount(account.id, account.provider)
+                      }
+                    >
+                      <IonIcon icon={trashOutline} />
+                    </IonButton>
+                  </div>
+                </IonItem>
+              );
+            })}
+          </IonList>
+        ) : (
+          <div className="empty-state">
+            <IonIcon
+              icon={cloudOutline}
+              style={{
+                fontSize: "64px",
+                color: "var(--ion-color-medium)",
+                marginBottom: "16px",
+              }}
+            />
+            <IonText color="medium">
+              <h3 style={{ marginBottom: "8px" }}>No accounts connected</h3>
+              <p>
+                Link your cloud accounts to sync files across devices and access
+                your files from anywhere.
+              </p>
+            </IonText>
+          </div>
+        )}
 
-          {accounts.length === 0 && (
-            <div className="ion-text-center ion-padding">
-              <IonText color="medium">
-                <p>Link your cloud accounts to sync files across devices.</p>
-              </IonText>
-            </div>
-          )}
-        </IonList>
-
-        <div className="ion-padding-top">
+        <div className="connect-buttons" style={{ marginTop: "24px" }}>
           <IonButton
             expand="block"
-            fill="outline"
+            fill="solid"
             onClick={() => handleAddAccount("syncstuff")}
-            disabled={isAuthenticating}
+            disabled={isAnyAuthenticating}
+            className="provider-button syncstuff-button"
+            style={{
+              marginBottom: "12px",
+              "--background":
+                "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+            }}
           >
-            <IonIcon slot="start" icon={personCircleOutline} />
-            {isAuthenticating &&
-              // We can't easily know if it's THIS button causing loading if we use a single state,
-              // but for now simple spinner is fine or we can omit it since the alert opens instantly.
-              // Let's keep the spinner logic simple or remove it for the dialog-based ones.
-              /* simpler to just show text */
-              null}
-            Connect Syncstuff
+            {isAuthenticating === "syncstuff" ? (
+              <IonSpinner name="crescent" slot="start" />
+            ) : (
+              <IonIcon icon={personCircleOutline} slot="start" />
+            )}
+            {isAuthenticating === "syncstuff"
+              ? "Connecting..."
+              : "Connect SyncStuff"}
+            <IonIcon icon={linkOutline} slot="end" />
           </IonButton>
 
           <IonButton
             expand="block"
-            fill="outline"
+            fill="solid"
             onClick={() => handleAddAccount("google")}
-            disabled={isAuthenticating}
+            disabled={isAnyAuthenticating}
+            className="provider-button google-button"
+            style={{
+              marginBottom: "12px",
+              "--background":
+                "linear-gradient(135deg, #4285f4 0%, #34a853 100%)",
+            }}
           >
-            <IonIcon slot="start" icon={logoGoogle} />
-            Connect Google Drive
+            {isAuthenticating === "google" ? (
+              <IonSpinner name="crescent" slot="start" />
+            ) : (
+              <IonIcon icon={logoGoogle} slot="start" />
+            )}
+            {isAuthenticating === "google"
+              ? "Connecting..."
+              : "Connect Google Drive"}
+            <IonIcon icon={shieldCheckmarkOutline} slot="end" />
           </IonButton>
 
           <IonButton
             expand="block"
             fill="outline"
             onClick={() => handleAddAccount("mega")}
-            disabled={isAuthenticating}
-            color="danger"
+            disabled={isAnyAuthenticating}
+            className="provider-button mega-button"
+            style={{
+              marginBottom: "12px",
+              "--border-color": "var(--ion-color-danger)",
+              "--color": "var(--ion-color-danger)",
+            }}
           >
-            <IonIcon slot="start" icon={cloudOutline} />
-            Connect Mega
+            {isAuthenticating === "mega" ? (
+              <IonSpinner name="crescent" slot="start" />
+            ) : (
+              <IonIcon icon={cloudOutline} slot="start" />
+            )}
+            {isAuthenticating === "mega" ? "Connecting..." : "Connect MEGA"}
           </IonButton>
 
           {/* Mock Provider for Testing */}
@@ -299,10 +672,11 @@ export const CloudAccounts: React.FC = () => {
             fill="clear"
             size="small"
             onClick={() => handleAddAccount("mock")}
-            disabled={isAuthenticating}
+            disabled={isAnyAuthenticating}
             color="medium"
+            className="provider-button mock-button"
           >
-            <IonIcon slot="start" icon={cloudUploadOutline} />
+            <IonIcon icon={cloudUploadOutline} slot="start" />
             Connect Mock Cloud (Test)
           </IonButton>
         </div>

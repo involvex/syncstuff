@@ -72,6 +72,15 @@ const appPackagePath = path.join(
   "app",
   "package.json"
 );
+const buildGradlePath = path.join(
+  __dirname,
+  "..",
+  "packages",
+  "app",
+  "android",
+  "app",
+  "build.gradle"
+);
 const rootDir = path.join(__dirname, "..");
 
 /**
@@ -260,6 +269,9 @@ function main() {
 
     log("\n📋 Summary:", "bright");
     log(`   ✓ Would update package.json to ${newVersion}`);
+    if (fs.existsSync(buildGradlePath)) {
+      log(`   ✓ Would update build.gradle versionName to ${newVersion}`);
+    }
     log(`   ✓ Would create git commit`);
     log(`   ✓ Would create annotated tag v${newVersion}`);
     if (shouldPush) {
@@ -279,9 +291,34 @@ function main() {
     );
     success(`Updated package.json to ${newVersion}`);
 
+    // Step 4b: Update build.gradle versionName
+    if (fs.existsSync(buildGradlePath)) {
+      info("Updating build.gradle versionName...");
+      let buildGradleContent = fs.readFileSync(buildGradlePath, "utf-8");
+      
+      // Update versionName in build.gradle
+      // Pattern: versionName "0.0.1" or versionName = "0.0.1"
+      const versionNameRegex = /versionName\s+(?:=)?\s*["']([^"']+)["']/;
+      if (versionNameRegex.test(buildGradleContent)) {
+        buildGradleContent = buildGradleContent.replace(
+          versionNameRegex,
+          `versionName "${newVersion}"`
+        );
+        fs.writeFileSync(buildGradlePath, buildGradleContent);
+        success(`Updated build.gradle versionName to ${newVersion}`);
+      } else {
+        warning("Could not find versionName in build.gradle, skipping...");
+      }
+    } else {
+      warning(`build.gradle not found at ${buildGradlePath}, skipping...`);
+    }
+
     // Step 5: Git operations
     info("Staging changes...");
     exec(`git add ${appPackagePath}`);
+    if (fs.existsSync(buildGradlePath)) {
+      exec(`git add ${buildGradlePath}`);
+    }
     success("Changes staged");
 
     info("Creating commit...");

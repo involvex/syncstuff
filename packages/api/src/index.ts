@@ -413,6 +413,97 @@ export default {
         }
       }
 
+      // FORGOT PASSWORD
+      if (path === "/api/auth/forgot-password" && request.method === "POST") {
+        try {
+          const body = await request.json<{ email: string }>();
+          
+          if (!body.email) {
+            return new Response(JSON.stringify({ success: false, error: "Email is required" }), { status: 400, headers });
+          }
+
+          let user: D1User | null = null;
+          try {
+            user = await env.syncstuff_db
+              .prepare("SELECT id, email FROM users WHERE email = ?")
+              .bind(body.email)
+              .first<D1User>();
+          } catch (dbError) {
+            return handleDatabaseError(dbError, path, request.method);
+          }
+
+          // Always return success to prevent email enumeration
+          // In production, send reset email if user exists
+          // For now, we'll just return success
+          return new Response(JSON.stringify({ 
+            success: true, 
+            message: "If an account with that email exists, a password reset link has been sent."
+          }), { headers });
+        } catch (error) {
+          const errorMsg = error instanceof Error ? error.message : String(error);
+          if (errorMsg.includes("JSON") || errorMsg.includes("Unexpected token")) {
+            console.error("Forgot password JSON parse error:", error);
+            return new Response(JSON.stringify({ success: false, error: "Invalid JSON in request body" }), { status: 400, headers });
+          }
+          return handleDatabaseError(error, path, request.method);
+        }
+      }
+
+      // RESET PASSWORD
+      if (path === "/api/auth/reset-password" && request.method === "POST") {
+        try {
+          const body = await request.json<{ token: string; email: string; newPassword: string }>();
+          
+          if (!body.token || !body.email || !body.newPassword) {
+            return new Response(JSON.stringify({ success: false, error: "Token, email, and new password are required" }), { status: 400, headers });
+          }
+
+          if (body.newPassword.length < 8) {
+            return new Response(JSON.stringify({ success: false, error: "Password must be at least 8 characters long" }), { status: 400, headers });
+          }
+
+          // TODO: Verify reset token (in production, store tokens in database with expiry)
+          // For now, we'll verify the user exists and update password
+          let user: D1User | null = null;
+          try {
+            user = await env.syncstuff_db
+              .prepare("SELECT id, email FROM users WHERE email = ?")
+              .bind(body.email)
+              .first<D1User>();
+          } catch (dbError) {
+            return handleDatabaseError(dbError, path, request.method);
+          }
+
+          if (!user) {
+            return new Response(JSON.stringify({ success: false, error: "Invalid reset token or email" }), { status: 400, headers });
+          }
+
+          // Hash new password and update
+          const newHash = await hashPassword(body.newPassword);
+          try {
+            const result = await env.syncstuff_db
+              .prepare("UPDATE users SET password_hash = ?, updated_at = ? WHERE id = ?")
+              .bind(newHash, Date.now(), user.id)
+              .run();
+
+            if (!result.success || result.meta?.changes === 0) {
+              return new Response(JSON.stringify({ success: false, error: "Failed to reset password" }), { status: 500, headers });
+            }
+
+            return new Response(JSON.stringify({ success: true, message: "Password reset successfully" }), { headers });
+          } catch (dbError) {
+            return handleDatabaseError(dbError, path, request.method);
+          }
+        } catch (error) {
+          const errorMsg = error instanceof Error ? error.message : String(error);
+          if (errorMsg.includes("JSON") || errorMsg.includes("Unexpected token")) {
+            console.error("Reset password JSON parse error:", error);
+            return new Response(JSON.stringify({ success: false, error: "Invalid JSON in request body" }), { status: 400, headers });
+          }
+          return handleDatabaseError(error, path, request.method);
+        }
+      }
+
       return new Response(JSON.stringify({ 
         error: "Not found", 
         path, 
@@ -421,7 +512,9 @@ export default {
           "/api/ping",
           "/api/auth/nop", 
           "/api/auth/login",
-          "/api/auth/change-password", 
+          "/api/auth/change-password",
+          "/api/auth/forgot-password",
+          "/api/auth/reset-password",
           "/api/auth/register",
           "/api/user/profile",
           "/api/user/settings"

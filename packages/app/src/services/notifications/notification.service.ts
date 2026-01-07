@@ -1,0 +1,204 @@
+export interface NotificationOptions {
+  title: string;
+  body: string;
+  icon?: string;
+  badge?: string;
+  tag?: string;
+  data?: Record<string, unknown>;
+  requireInteraction?: boolean;
+  silent?: boolean;
+}
+
+class NotificationService {
+  private permissionGranted = false;
+  private serviceWorkerRegistration: ServiceWorkerRegistration | null = null;
+
+  async initialize(): Promise<void> {
+    // Check if notifications are supported
+    if (!("Notification" in window)) {
+      console.warn("Notifications are not supported in this browser");
+      return;
+    }
+
+    // Check current permission
+    this.permissionGranted = Notification.permission === "granted";
+
+    // Register service worker for persistent notifications (if available)
+    if ("serviceWorker" in navigator) {
+      try {
+        this.serviceWorkerRegistration = await navigator.serviceWorker.ready;
+      } catch (error) {
+        console.warn("Service worker not available:", error);
+      }
+    }
+
+    // Request permission if not already granted/denied
+    if (Notification.permission === "default") {
+      await this.requestPermission();
+    }
+  }
+
+  async requestPermission(): Promise<boolean> {
+    if (!("Notification" in window)) {
+      return false;
+    }
+
+    try {
+      const permission = await Notification.requestPermission();
+      this.permissionGranted = permission === "granted";
+      return this.permissionGranted;
+    } catch (error) {
+      console.error("Failed to request notification permission:", error);
+      return false;
+    }
+  }
+
+  async showNotification(options: NotificationOptions): Promise<void> {
+    if (!this.permissionGranted) {
+      const granted = await this.requestPermission();
+      if (!granted) {
+        console.warn("Notification permission not granted");
+        return;
+      }
+    }
+
+    try {
+      const notificationOptions: NotificationOptions = {
+        icon: options.icon || "/icons/icon-192x192.png",
+        badge: options.badge || "/icons/icon-96x96.png",
+        tag: options.tag,
+        data: options.data,
+        requireInteraction: options.requireInteraction || false,
+        silent: options.silent || false,
+        ...options,
+      };
+
+      if (this.serviceWorkerRegistration) {
+        // Use service worker for persistent notifications
+        await this.serviceWorkerRegistration.showNotification(
+          options.title,
+          notificationOptions,
+        );
+      } else {
+        // Fallback to regular Notification API
+        const notification = new Notification(
+          options.title,
+          notificationOptions,
+        );
+
+        // Auto-close after 5 seconds unless requireInteraction is true
+        if (!notificationOptions.requireInteraction) {
+          setTimeout(() => {
+            notification.close();
+          }, 5000);
+        }
+
+        // Handle click
+        notification.onclick = event => {
+          event.preventDefault();
+          window.focus();
+          if (notificationOptions.data?.url) {
+            window.open(notificationOptions.data.url as string, "_blank");
+          }
+          notification.close();
+        };
+      }
+    } catch (error) {
+      console.error("Failed to show notification:", error);
+    }
+  }
+
+  async showSyncNotification(
+    type: "success" | "error" | "info",
+    message: string,
+  ): Promise<void> {
+    await this.showNotification({
+      title: `Sync ${type === "success" ? "Complete" : type === "error" ? "Failed" : "Update"}`,
+      body: message,
+      icon: `/icons/icon-192x192.png`,
+      tag: `sync-${type}`,
+      requireInteraction: type === "error",
+    });
+  }
+
+  async showCloudAccountNotification(
+    provider: string,
+    action: "connected" | "disconnected" | "error",
+  ): Promise<void> {
+    const messages = {
+      connected: `Successfully connected to ${provider}`,
+      disconnected: `Disconnected from ${provider}`,
+      error: `Failed to connect to ${provider}`,
+    };
+
+    await this.showNotification({
+      title: "Cloud Account",
+      body: messages[action],
+      icon: `/icons/icon-192x192.png`,
+      tag: `cloud-${provider}-${action}`,
+    });
+  }
+
+  async showDeviceNotification(
+    deviceName: string,
+    action: "connected" | "disconnected" | "file-received",
+  ): Promise<void> {
+    const messages = {
+      connected: `${deviceName} is now connected`,
+      disconnected: `${deviceName} disconnected`,
+      "file-received": `Received file from ${deviceName}`,
+    };
+
+    await this.showNotification({
+      title: "Device Update",
+      body: messages[action],
+      icon: `/icons/icon-192x192.png`,
+      tag: `device-${action}`,
+      requireInteraction: action === "file-received",
+    });
+  }
+
+  async showTransferNotification(
+    status: "started" | "progress" | "completed" | "failed",
+    fileName?: string,
+    progress?: number,
+  ): Promise<void> {
+    const titles = {
+      started: "Transfer Started",
+      progress: "Transferring...",
+      completed: "Transfer Complete",
+      failed: "Transfer Failed",
+    };
+
+    let body = "";
+    if (status === "progress" && progress !== undefined) {
+      body = `${fileName || "File"}: ${Math.round(progress)}%`;
+    } else if (fileName) {
+      body = fileName;
+    } else {
+      body = titles[status];
+    }
+
+    await this.showNotification({
+      title: titles[status],
+      body,
+      icon: `/icons/icon-192x192.png`,
+      tag: `transfer-${status}`,
+      data: { fileName, progress },
+      requireInteraction: status === "completed" || status === "failed",
+    });
+  }
+
+  isPermissionGranted(): boolean {
+    return this.permissionGranted;
+  }
+
+  async checkPermission(): Promise<"granted" | "denied" | "default"> {
+    if (!("Notification" in window)) {
+      return "denied";
+    }
+    return Notification.permission as "granted" | "denied" | "default";
+  }
+}
+
+export const notificationService = new NotificationService();
