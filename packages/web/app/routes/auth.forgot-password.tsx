@@ -1,25 +1,5 @@
-import {
-  IonButton,
-  IonContent,
-  IonHeader,
-  IonIcon,
-  IonInput,
-  IonItem,
-  IonLabel,
-  IonPage,
-  IonSpinner,
-  IonText,
-  IonTitle,
-  IonToolbar,
-} from "@ionic/react";
 import { json, type ActionFunctionArgs } from "@remix-run/cloudflare";
 import { Form, Link, useActionData, useNavigation } from "@remix-run/react";
-import {
-  arrowBackOutline,
-  checkmarkCircleOutline,
-  closeCircleOutline,
-  mailOutline,
-} from "ionicons/icons";
 
 export async function action({ request, context }: ActionFunctionArgs) {
   const formData = await request.formData();
@@ -42,7 +22,6 @@ export async function action({ request, context }: ActionFunctionArgs) {
 
     const contentType = response.headers.get("Content-Type");
     let responseText = "";
-    let data: { success: boolean; error?: string; message?: string };
 
     try {
       responseText = await response.text();
@@ -56,7 +35,8 @@ export async function action({ request, context }: ActionFunctionArgs) {
       }
 
       try {
-        data = JSON.parse(responseText) as {
+        // Parse to validate JSON, but we always return success to prevent email enumeration
+        JSON.parse(responseText) as {
           success: boolean;
           error?: string;
           message?: string;
@@ -101,112 +81,183 @@ export default function ForgotPassword() {
 
   if (actionData?.success) {
     return (
-      <IonPage>
-        <IonHeader>
-          <IonToolbar>
-            <IonTitle>Password Reset</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent className="ion-padding">
-          <div className="flex min-h-[60vh] flex-col items-center justify-center">
-            <IonIcon
-              icon={checkmarkCircleOutline}
-              style={{ fontSize: "64px", color: "var(--ion-color-success)" }}
-            />
-            <h2 className="mb-2 mt-4 text-2xl font-bold">Check Your Email</h2>
-            <p className="mb-6 max-w-md text-center text-gray-600 dark:text-gray-400">
-              {actionData.message}
+      <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 dark:bg-gray-900">
+        <div className="w-full max-w-md space-y-8 rounded-lg bg-white p-8 shadow-lg dark:bg-gray-800">
+          <div className="text-center">
+            <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900">
+              <svg
+                className="size-8 text-green-600 dark:text-green-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </div>
+            <h2 className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">
+              Check Your Email
+            </h2>
+            <p className="mb-6 text-gray-600 dark:text-gray-400">
+              {"message" in actionData ? actionData.message : actionData.error}
             </p>
-            <IonButton expand="block" routerLink="/auth/login">
+            <Link
+              to="/auth/login"
+              className="inline-block w-full rounded-lg bg-indigo-600 px-4 py-2 text-center font-medium text-white transition-colors hover:bg-indigo-700"
+            >
               Back to Login
-            </IonButton>
+            </Link>
           </div>
-        </IonContent>
-      </IonPage>
+        </div>
+      </div>
     );
   }
 
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonButton
-            slot="start"
-            fill="clear"
-            routerLink="/auth/login"
-            routerDirection="back"
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8 dark:bg-gray-900">
+      <div className="w-full max-w-md space-y-8">
+        <div>
+          <Link
+            to="/auth/login"
+            className="mb-4 inline-flex items-center text-sm text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
           >
-            <IonIcon icon={arrowBackOutline} slot="icon-only" />
-          </IonButton>
-          <IonTitle>Forgot Password</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className="ion-padding">
-        <div className="mx-auto mt-8 max-w-md">
-          <div className="mb-8 text-center">
-            <IonIcon
-              icon={mailOutline}
-              style={{ fontSize: "48px", color: "var(--ion-color-primary)" }}
-            />
-            <h1 className="mb-2 mt-4 text-2xl font-bold">Forgot Password?</h1>
+            <svg
+              className="mr-2 size-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+            Back to Login
+          </Link>
+          <div className="text-center">
+            <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900">
+              <svg
+                className="size-6 text-indigo-600 dark:text-indigo-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                />
+              </svg>
+            </div>
+            <h1 className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">
+              Forgot Password?
+            </h1>
             <p className="text-gray-600 dark:text-gray-400">
               Enter your email address and we'll send you a link to reset your
               password.
             </p>
           </div>
+        </div>
 
-          {actionData?.error && (
-            <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20">
-              <div className="flex items-center gap-2">
-                <IonIcon
-                  icon={closeCircleOutline}
-                  style={{ color: "var(--ion-color-danger)" }}
+        {actionData && "error" in actionData && actionData.error && (
+          <div className="rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20">
+            <div className="flex items-center gap-2">
+              <svg
+                className="size-5 text-red-600 dark:text-red-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
                 />
-                <IonText color="danger">{actionData.error}</IonText>
-              </div>
+              </svg>
+              <p className="text-sm text-red-800 dark:text-red-200">
+                {actionData.error}
+              </p>
             </div>
-          )}
+          </div>
+        )}
 
-          <Form method="post">
-            <IonItem>
-              <IonIcon icon={mailOutline} slot="start" />
-              <IonLabel position="stacked">Email Address</IonLabel>
-              <IonInput
-                type="email"
+        <Form method="post" className="mt-8 space-y-6">
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              Email Address
+            </label>
+            <div className="mt-1">
+              <input
+                id="email"
                 name="email"
+                type="email"
+                autoComplete="email"
                 required
+                className="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 shadow-sm placeholder:text-gray-500 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-indigo-400 dark:focus:ring-indigo-400"
                 placeholder="Enter your email"
-                autocomplete="email"
               />
-            </IonItem>
+            </div>
+          </div>
 
-            <IonButton
-              expand="block"
+          <div>
+            <button
               type="submit"
               disabled={isSubmitting}
-              className="mt-6"
+              className="flex w-full justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-indigo-500 dark:hover:bg-indigo-600"
             >
               {isSubmitting ? (
-                <>
-                  <IonSpinner name="crescent" slot="start" />
+                <span className="flex items-center">
+                  <svg
+                    className="mr-2 size-4 animate-spin"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    />
+                  </svg>
                   Sending...
-                </>
+                </span>
               ) : (
                 "Send Reset Link"
               )}
-            </IonButton>
-          </Form>
-
-          <div className="mt-6 text-center">
-            <IonText color="medium">
-              Remember your password?{" "}
-              <Link to="/auth/login" className="text-primary">
-                Sign in
-              </Link>
-            </IonText>
+            </button>
           </div>
+        </Form>
+
+        <div className="text-center">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Remember your password?{" "}
+            <Link
+              to="/auth/login"
+              className="font-medium text-indigo-600 transition-colors hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
+            >
+              Sign in
+            </Link>
+          </p>
         </div>
-      </IonContent>
-    </IonPage>
+      </div>
+    </div>
   );
 }

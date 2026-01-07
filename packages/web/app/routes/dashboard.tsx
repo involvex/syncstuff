@@ -103,7 +103,7 @@ export default function DashboardLayout() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <nav className="bg-white shadow-sm dark:bg-gray-800">
+      <nav className="sticky top-0 z-40 bg-white shadow-sm dark:bg-gray-800">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 justify-between">
             <div className="flex">
@@ -115,6 +115,32 @@ export default function DashboardLayout() {
                   Syncstuff
                 </Link>
               </div>
+              {/* Mobile menu button */}
+              <button
+                type="button"
+                className="ml-4 inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:hidden dark:hover:bg-gray-700 dark:hover:text-gray-300"
+                aria-label="Toggle navigation menu"
+                onClick={() => {
+                  const menu = document.getElementById("mobile-nav-menu");
+                  if (menu) {
+                    menu.classList.toggle("hidden");
+                  }
+                }}
+              >
+                <svg
+                  className="size-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              </button>
               <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
                 {navItems.map(item => (
                   <Link
@@ -131,6 +157,29 @@ export default function DashboardLayout() {
                     {item.name}
                   </Link>
                 ))}
+              </div>
+              {/* Mobile navigation menu */}
+              <div
+                id="mobile-nav-menu"
+                className="absolute inset-x-0 top-full z-50 hidden border-t border-gray-200 bg-white shadow-lg sm:hidden dark:border-gray-700 dark:bg-gray-800"
+              >
+                <div className="space-y-1 border-t border-gray-200 bg-white px-2 pb-3 pt-2 dark:border-gray-700 dark:bg-gray-800">
+                  {navItems.map(item => (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      className={`flex items-center gap-2 rounded-md px-3 py-2 text-base font-medium ${
+                        item.current
+                          ? "bg-indigo-50 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-200"
+                          : "text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white"
+                      }`}
+                      aria-current={item.current ? "page" : undefined}
+                    >
+                      {item.icon}
+                      {item.name}
+                    </Link>
+                  ))}
+                </div>
               </div>
             </div>
             <div className="hidden sm:ml-6 sm:flex sm:items-center">

@@ -196,6 +196,11 @@ export const PermissionsSettings: React.FC = () => {
     );
   }
 
+  // Get permission keys in a safe way
+  const permissionKeys = Object.keys(permissions).filter(
+    key => permissions[key as keyof PermissionsState] !== undefined,
+  ) as Array<keyof PermissionsState>;
+
   return (
     <IonCard className="permissions-card">
       <IonCardHeader>
@@ -225,8 +230,8 @@ export const PermissionsSettings: React.FC = () => {
       </IonCardHeader>
       <IonCardContent>
         <IonList lines="full">
-          {(Object.keys(permissions) as Array<keyof PermissionsState>).map(
-            permissionType => {
+          {permissionKeys.length > 0 ? (
+            permissionKeys.map(permissionType => {
               const permission = permissions[permissionType];
               if (!permission) return null;
 
@@ -284,7 +289,13 @@ export const PermissionsSettings: React.FC = () => {
                   </div>
                 </IonItem>
               );
-            },
+            })
+          ) : (
+            <IonItem>
+              <IonLabel>
+                <p>No permissions available</p>
+              </IonLabel>
+            </IonItem>
           )}
         </IonList>
       </IonCardContent>

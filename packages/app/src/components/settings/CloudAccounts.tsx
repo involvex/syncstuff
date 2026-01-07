@@ -100,6 +100,15 @@ export const CloudAccounts: React.FC = () => {
         console.warn("Failed to auto-register device:", error);
       }
 
+      // Link account for Electron sync
+      try {
+        const { electronSyncService } =
+          await import("../../services/electron/sync.service");
+        await electronSyncService.linkAccount(account);
+      } catch (error) {
+        console.warn("Failed to link account for Electron sync:", error);
+      }
+
       presentToast({
         message: "Successfully connected to SyncStuff",
         duration: 2000,
@@ -284,6 +293,15 @@ export const CloudAccounts: React.FC = () => {
         console.warn("Failed to auto-register device:", error);
       }
 
+      // Link account for Electron sync
+      try {
+        const { electronSyncService } =
+          await import("../../services/electron/sync.service");
+        await electronSyncService.linkAccount(account);
+      } catch (error) {
+        console.warn("Failed to link account for Electron sync:", error);
+      }
+
       presentToast({
         message: `Successfully connected to ${cloudManagerService.getProvider(type)?.name}`,
         duration: 2000,
@@ -344,6 +362,19 @@ export const CloudAccounts: React.FC = () => {
             try {
               await cloudManagerService.disconnect(type);
               removeAccount(accountId);
+
+              // Unlink account from Electron sync
+              try {
+                const { electronSyncService } =
+                  await import("../../services/electron/sync.service");
+                await electronSyncService.unlinkAccount(type);
+              } catch (error) {
+                console.warn(
+                  "Failed to unlink account from Electron sync:",
+                  error,
+                );
+              }
+
               presentToast({
                 message: "Account disconnected successfully",
                 duration: 2000,
@@ -604,7 +635,7 @@ export const CloudAccounts: React.FC = () => {
             expand="block"
             fill="solid"
             onClick={() => handleAddAccount("syncstuff")}
-            disabled={isAnyAuthenticating}
+            disabled={Boolean(isAnyAuthenticating)}
             className="provider-button syncstuff-button"
             style={{
               marginBottom: "12px",
@@ -627,7 +658,7 @@ export const CloudAccounts: React.FC = () => {
             expand="block"
             fill="solid"
             onClick={() => handleAddAccount("google")}
-            disabled={isAnyAuthenticating}
+            disabled={Boolean(isAnyAuthenticating)}
             className="provider-button google-button"
             style={{
               marginBottom: "12px",
@@ -650,7 +681,7 @@ export const CloudAccounts: React.FC = () => {
             expand="block"
             fill="outline"
             onClick={() => handleAddAccount("mega")}
-            disabled={isAnyAuthenticating}
+            disabled={Boolean(isAnyAuthenticating)}
             className="provider-button mega-button"
             style={{
               marginBottom: "12px",
@@ -672,7 +703,7 @@ export const CloudAccounts: React.FC = () => {
             fill="clear"
             size="small"
             onClick={() => handleAddAccount("mock")}
-            disabled={isAnyAuthenticating}
+            disabled={Boolean(isAnyAuthenticating)}
             color="medium"
             className="provider-button mock-button"
           >

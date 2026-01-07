@@ -4,7 +4,14 @@ const config: CapacitorConfig = {
   appId: "com.syncstuff.app",
   appName: "Syncstuff",
   webDir: "dist",
-  plugins: {},
+  plugins: {
+    Electron: {
+      appId: "com.syncstuff.app",
+      appName: "Syncstuff",
+      webDir: "dist",
+      bundledWebRuntime: false,
+    },
+  },
 };
 
 export default config;

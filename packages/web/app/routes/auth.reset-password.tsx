@@ -1,18 +1,4 @@
 import {
-  IonButton,
-  IonContent,
-  IonHeader,
-  IonIcon,
-  IonInput,
-  IonItem,
-  IonLabel,
-  IonPage,
-  IonSpinner,
-  IonText,
-  IonTitle,
-  IonToolbar,
-} from "@ionic/react";
-import {
   json,
   type ActionFunctionArgs,
   type LoaderFunctionArgs,
@@ -24,12 +10,6 @@ import {
   useLoaderData,
   useNavigation,
 } from "@remix-run/react";
-import {
-  arrowBackOutline,
-  checkmarkCircleOutline,
-  closeCircleOutline,
-  lockClosedOutline,
-} from "ionicons/icons";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
@@ -146,130 +126,253 @@ export default function ResetPassword() {
 
   if (actionData?.success) {
     return (
-      <IonPage>
-        <IonHeader>
-          <IonToolbar>
-            <IonTitle>Password Reset</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent className="ion-padding">
-          <div className="flex min-h-[60vh] flex-col items-center justify-center">
-            <IonIcon
-              icon={checkmarkCircleOutline}
-              style={{ fontSize: "64px", color: "var(--ion-color-success)" }}
-            />
-            <h2 className="mb-2 mt-4 text-2xl font-bold">Success!</h2>
-            <p className="mb-6 text-center text-gray-600 dark:text-gray-400">
-              {actionData.message}
+      <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 dark:bg-gray-900">
+        <div className="w-full max-w-md space-y-8 rounded-lg bg-white p-8 shadow-lg dark:bg-gray-800">
+          <div className="text-center">
+            <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900">
+              <svg
+                className="size-8 text-green-600 dark:text-green-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </div>
+            <h2 className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">
+              Success!
+            </h2>
+            <p className="mb-6 text-gray-600 dark:text-gray-400">
+              {"message" in actionData ? actionData.message : actionData.error}
             </p>
-            <IonButton expand="block" routerLink="/auth/login">
+            <Link
+              to="/auth/login"
+              className="inline-block w-full rounded-lg bg-indigo-600 px-4 py-2 text-center font-medium text-white transition-colors hover:bg-indigo-700"
+            >
               Go to Login
-            </IonButton>
+            </Link>
           </div>
-        </IonContent>
-      </IonPage>
+        </div>
+      </div>
+    );
+  }
+
+  if ("error" in loaderData) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 dark:bg-gray-900">
+        <div className="w-full max-w-md space-y-8 rounded-lg bg-white p-8 shadow-lg dark:bg-gray-800">
+          <div className="text-center">
+            <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-red-100 dark:bg-red-900">
+              <svg
+                className="size-8 text-red-600 dark:text-red-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </div>
+            <h2 className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">
+              Invalid Link
+            </h2>
+            <p className="mb-6 text-gray-600 dark:text-gray-400">
+              {loaderData.error}
+            </p>
+            <Link
+              to="/auth/login"
+              className="inline-block w-full rounded-lg bg-indigo-600 px-4 py-2 text-center font-medium text-white transition-colors hover:bg-indigo-700"
+            >
+              Back to Login
+            </Link>
+          </div>
+        </div>
+      </div>
     );
   }
 
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonButton
-            slot="start"
-            fill="clear"
-            routerLink="/auth/login"
-            routerDirection="back"
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8 dark:bg-gray-900">
+      <div className="w-full max-w-md space-y-8">
+        <div>
+          <Link
+            to="/auth/login"
+            className="mb-4 inline-flex items-center text-sm text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
           >
-            <IonIcon icon={arrowBackOutline} slot="icon-only" />
-          </IonButton>
-          <IonTitle>Reset Password</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className="ion-padding">
-        <div className="mx-auto mt-8 max-w-md">
-          <div className="mb-8 text-center">
-            <IonIcon
-              icon={lockClosedOutline}
-              style={{ fontSize: "48px", color: "var(--ion-color-primary)" }}
-            />
-            <h1 className="mb-2 mt-4 text-2xl font-bold">
+            <svg
+              className="mr-2 size-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+            Back to Login
+          </Link>
+          <div className="text-center">
+            <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900">
+              <svg
+                className="size-6 text-indigo-600 dark:text-indigo-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                />
+              </svg>
+            </div>
+            <h1 className="mb-2 text-2xl font-bold text-gray-900 dark:text-white">
               Reset Your Password
             </h1>
             <p className="text-gray-600 dark:text-gray-400">
               Enter your new password below
             </p>
           </div>
+        </div>
 
-          {actionData?.error && (
-            <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20">
-              <div className="flex items-center gap-2">
-                <IonIcon
-                  icon={closeCircleOutline}
-                  style={{ color: "var(--ion-color-danger)" }}
+        {actionData && "error" in actionData && actionData.error && (
+          <div className="rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20">
+            <div className="flex items-center gap-2">
+              <svg
+                className="size-5 text-red-600 dark:text-red-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
                 />
-                <IonText color="danger">{actionData.error}</IonText>
-              </div>
+              </svg>
+              <p className="text-sm text-red-800 dark:text-red-200">
+                {actionData.error}
+              </p>
             </div>
-          )}
+          </div>
+        )}
 
-          <Form method="post">
-            <input type="hidden" name="token" value={loaderData.token || ""} />
-            <input type="hidden" name="email" value={loaderData.email || ""} />
+        <Form method="post" className="mt-8 space-y-6">
+          <input
+            type="hidden"
+            name="token"
+            value={"token" in loaderData ? loaderData.token || "" : ""}
+          />
+          <input
+            type="hidden"
+            name="email"
+            value={"email" in loaderData ? loaderData.email || "" : ""}
+          />
 
-            <IonItem>
-              <IonIcon icon={lockClosedOutline} slot="start" />
-              <IonLabel position="stacked">New Password</IonLabel>
-              <IonInput
-                type="password"
+          <div>
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              New Password
+            </label>
+            <div className="mt-1">
+              <input
+                id="password"
                 name="password"
-                required
-                minlength={8}
-                placeholder="Enter new password"
-                autocomplete="new-password"
-              />
-            </IonItem>
-
-            <IonItem>
-              <IonIcon icon={lockClosedOutline} slot="start" />
-              <IonLabel position="stacked">Confirm Password</IonLabel>
-              <IonInput
                 type="password"
-                name="confirm_password"
+                autoComplete="new-password"
                 required
-                minlength={8}
-                placeholder="Confirm new password"
-                autocomplete="new-password"
+                minLength={8}
+                className="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 shadow-sm placeholder:text-gray-500 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-indigo-400 dark:focus:ring-indigo-400"
+                placeholder="Enter new password"
               />
-            </IonItem>
+            </div>
+          </div>
 
-            <IonButton
-              expand="block"
+          <div>
+            <label
+              htmlFor="confirm_password"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              Confirm Password
+            </label>
+            <div className="mt-1">
+              <input
+                id="confirm_password"
+                name="confirm_password"
+                type="password"
+                autoComplete="new-password"
+                required
+                minLength={8}
+                className="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 shadow-sm placeholder:text-gray-500 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-indigo-400 dark:focus:ring-indigo-400"
+                placeholder="Confirm new password"
+              />
+            </div>
+          </div>
+
+          <div>
+            <button
               type="submit"
               disabled={isSubmitting}
-              className="mt-6"
+              className="flex w-full justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-indigo-500 dark:hover:bg-indigo-600"
             >
               {isSubmitting ? (
-                <>
-                  <IonSpinner name="crescent" slot="start" />
+                <span className="flex items-center">
+                  <svg
+                    className="mr-2 size-4 animate-spin"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    />
+                  </svg>
                   Resetting...
-                </>
+                </span>
               ) : (
                 "Reset Password"
               )}
-            </IonButton>
-          </Form>
-
-          <div className="mt-6 text-center">
-            <IonText color="medium">
-              Remember your password?{" "}
-              <Link to="/auth/login" className="text-primary">
-                Sign in
-              </Link>
-            </IonText>
+            </button>
           </div>
+        </Form>
+
+        <div className="text-center">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Remember your password?{" "}
+            <Link
+              to="/auth/login"
+              className="font-medium text-indigo-600 transition-colors hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
+            >
+              Sign in
+            </Link>
+          </p>
         </div>
-      </IonContent>
-    </IonPage>
+      </div>
+    </div>
   );
 }

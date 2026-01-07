@@ -28,6 +28,8 @@ import { deviceDetectionService } from "./services/device/device-detection.servi
 import { permissionsService } from "./services/permissions/permissions.service";
 import { notificationService } from "./services/notifications/notification.service";
 import { useCloudStore } from "./store/cloud.store";
+import { electronService } from "./services/electron/electron.service";
+import { ResponsiveLayout } from "./components/common/ResponsiveLayout";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -56,6 +58,7 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./theme/variables.css";
+import "./theme/responsive.css";
 
 setupIonicReact();
 
@@ -90,6 +93,24 @@ const App: React.FC = () => {
       } catch (error) {
         console.error("Failed to initialize notifications:", error);
       }
+
+      // Initialize Electron service
+      try {
+        await electronService.initialize();
+        if (electronService.isAvailable()) {
+          await electronService.setTray({
+            icon: "/icons/icon-96x96.png",
+            tooltip: "Syncstuff",
+          });
+
+          // Initialize Electron sync service
+          const { electronSyncService } =
+            await import("./services/electron/sync.service");
+          await electronSyncService.initialize();
+        }
+      } catch (error) {
+        console.error("Failed to initialize Electron:", error);
+      }
     };
     initializeAppSettings();
   }, []);
@@ -106,45 +127,47 @@ const App: React.FC = () => {
 
   return (
     <IonApp>
-      <IonReactRouter>
-        <IonTabs>
-          <IonRouterOutlet>
-            <Route exact path="/devices">
-              <DevicesPage />
-            </Route>
-            <Route exact path="/transfers">
-              <TransfersPage />
-            </Route>
-            <Route exact path="/clipboard">
-              <ClipboardPage />
-            </Route>
-            <Route exact path="/settings">
-              <SettingsPage />
-            </Route>
-            <Route exact path="/">
-              <Redirect to="/devices" />
-            </Route>
-          </IonRouterOutlet>
-          <IonTabBar slot="bottom">
-            <IonTabButton tab="devices" href="/devices">
-              <IonIcon aria-hidden="true" icon={phonePortrait} />
-              <IonLabel>Devices</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="transfers" href="/transfers">
-              <IonIcon aria-hidden="true" icon={swapHorizontal} />
-              <IonLabel>Transfers</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="clipboard" href="/clipboard">
-              <IonIcon aria-hidden="true" icon={clipboard} />
-              <IonLabel>Clipboard</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="settings" href="/settings">
-              <IonIcon aria-hidden="true" icon={settings} />
-              <IonLabel>Settings</IonLabel>
-            </IonTabButton>
-          </IonTabBar>
-        </IonTabs>
-      </IonReactRouter>
+      <ResponsiveLayout>
+        <IonReactRouter>
+          <IonTabs>
+            <IonRouterOutlet>
+              <Route exact path="/devices">
+                <DevicesPage />
+              </Route>
+              <Route exact path="/transfers">
+                <TransfersPage />
+              </Route>
+              <Route exact path="/clipboard">
+                <ClipboardPage />
+              </Route>
+              <Route exact path="/settings">
+                <SettingsPage />
+              </Route>
+              <Route exact path="/">
+                <Redirect to="/devices" />
+              </Route>
+            </IonRouterOutlet>
+            <IonTabBar slot="bottom">
+              <IonTabButton tab="devices" href="/devices">
+                <IonIcon aria-hidden="true" icon={phonePortrait} />
+                <IonLabel>Devices</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="transfers" href="/transfers">
+                <IonIcon aria-hidden="true" icon={swapHorizontal} />
+                <IonLabel>Transfers</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="clipboard" href="/clipboard">
+                <IonIcon aria-hidden="true" icon={clipboard} />
+                <IonLabel>Clipboard</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="settings" href="/settings">
+                <IonIcon aria-hidden="true" icon={settings} />
+                <IonLabel>Settings</IonLabel>
+              </IonTabButton>
+            </IonTabBar>
+          </IonTabs>
+        </IonReactRouter>
+      </ResponsiveLayout>
     </IonApp>
   );
 };

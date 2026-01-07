@@ -1,0 +1,97 @@
+/* Responsive Layout Styles */
+
+.responsive-layout {
+  width: 100%;
+  height: 100%;
+}
+
+/* Desktop styles */
+.is-desktop .responsive-layout {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.is-desktop ion-tabs {
+  --background: var(--ion-background-color);
+}
+
+.is-desktop ion-tab-bar {
+  padding: 0 20%;
+}
+
+/* Tablet styles */
+.is-tablet .responsive-layout {
+  max-width: 100%;
+}
+
+.is-tablet ion-tab-bar {
+  padding: 0 10%;
+}
+
+/* Mobile styles */
+.is-mobile .responsive-layout {
+  max-width: 100%;
+}
+
+.is-mobile ion-content {
+  --padding-start: 8px;
+  --padding-end: 8px;
+}
+
+.is-mobile ion-card {
+  margin: 8px;
+}
+
+.is-mobile ion-item {
+  --padding-start: 12px;
+  --padding-end: 12px;
+}
+
+/* Responsive text sizes */
+@media (min-width: 768px) {
+  .responsive-layout h1 {
+    font-size: 2rem;
+  }
+
+  .responsive-layout h2 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-layout h1 {
+    font-size: 2.5rem;
+  }
+
+  .responsive-layout h2 {
+    font-size: 2rem;
+  }
+
+  .responsive-layout {
+    padding: 0 2rem;
+  }
+}
+
+/* Responsive grid layouts */
+@media (min-width: 768px) {
+  .responsive-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+/* Responsive navigation */
+@media (max-width: 767px) {
+  ion-tab-bar {
+    --background: var(--ion-background-color);
+    border-top: 1px solid var(--ion-border-color);
+  }
+}

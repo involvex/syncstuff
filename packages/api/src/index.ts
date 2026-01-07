@@ -422,9 +422,9 @@ export default {
             return new Response(JSON.stringify({ success: false, error: "Email is required" }), { status: 400, headers });
           }
 
-          let user: D1User | null = null;
+          let _user: D1User | null = null;
           try {
-            user = await env.syncstuff_db
+            _user = await env.syncstuff_db
               .prepare("SELECT id, email FROM users WHERE email = ?")
               .bind(body.email)
               .first<D1User>();

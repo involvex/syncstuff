@@ -31,7 +31,6 @@
     "typecheck:web": "cd packages/web && bun run typecheck",
     "db:create": "cd packages/database && bun run create",
     "db:migrate": "cd packages/database && bun run migrate",
-    "api:deploy": "cd packages/api && bun run deploy",
     "deploy:api": "cd packages/api && bun run deploy",
     "deploy:web": "cd packages/web && bun run deploy",
     "deploy:db": "cd packages/database && bun run deploy",

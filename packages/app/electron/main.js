@@ -100,7 +100,11 @@ function createWindow() {
 }
 
 function createTray() {
-  const iconPath = path.join(__dirname, "../public/favicon.png");
+  // Try icon.ico first (Windows), fallback to favicon.png
+  const iconPath =
+    process.platform === "win32"
+      ? path.join(__dirname, "../public/icon.ico")
+      : path.join(__dirname, "../public/favicon.png");
   const icon = nativeImage.createFromPath(iconPath);
 
   tray = new Tray(icon.resize({ width: 16, height: 16 }));
