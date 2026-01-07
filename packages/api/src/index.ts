@@ -57,8 +57,24 @@ function mapUser(result: D1User): User {
 }
 
 function handleDatabaseError(error: unknown, path: string, method: string): Response {
-  const errorMsg = error instanceof Error ? error.message : String(error);
-  console.error("[DB-ERROR]", errorMsg, { path, method });
+  // Convert error to string, handling various error types
+  let errorMsg = "";
+  let errorDetails: unknown = null;
+  
+  if (error instanceof Error) {
+    errorMsg = error.message;
+    errorDetails = { name: error.name, stack: error.stack };
+  } else if (typeof error === "string") {
+    errorMsg = error;
+  } else if (error && typeof error === "object") {
+    // Handle D1 result objects or other error-like objects
+    errorMsg = JSON.stringify(error);
+    errorDetails = error;
+  } else {
+    errorMsg = String(error);
+  }
+  
+  console.error("[DB-ERROR]", errorMsg, { path, method, details: errorDetails });
   
   const headers = {
     "Access-Control-Allow-Origin": "*",
@@ -67,38 +83,58 @@ function handleDatabaseError(error: unknown, path: string, method: string): Resp
     "Content-Type": "application/json",
   };
   
-  // Check for D1-specific errors
-  if (errorMsg.includes("error code: 1042")) {
+  // Check for D1-specific errors - SQLite error codes (multiple patterns)
+  // Pattern 1: "error code: 1042"
+  // Pattern 2: "error code:1042" (no space)
+  // Pattern 3: "SQLITE_ERROR: 1042"
+  // Pattern 4: Just "1042" in error message
+  if (
+    errorMsg.includes("error code: 1042") || 
+    errorMsg.includes("error code:1042") ||
+    errorMsg.includes("SQLITE_ERROR: 1042") ||
+    errorMsg.includes("SQLITE_ERROR:1042") ||
+    /error\s*code\s*:?\s*1042/i.test(errorMsg) ||
+    (errorMsg.includes("1042") && (errorMsg.includes("error") || errorMsg.includes("SQLITE")))
+  ) {
     return new Response(JSON.stringify({ 
       success: false, 
-      error: "Database schema mismatch. Please contact support.",
+      error: "Database schema mismatch. The password_hash column may not exist. Please contact support.",
       code: "DB_SCHEMA_ERROR"
     }), { status: 500, headers });
   }
   
-  if (errorMsg.includes("error code:") || errorMsg.includes("SQLITE_")) {
+  // Check for other SQLite error codes (more flexible pattern matching)
+  if (
+    errorMsg.includes("error code:") || 
+    errorMsg.includes("error code") ||
+    errorMsg.includes("SQLITE_") || 
+    errorMsg.includes("SQLITE_ERROR") ||
+    /error\s*code\s*:?\s*\d+/i.test(errorMsg)
+  ) {
+    // Extract error code if possible (multiple patterns)
+    const codeMatch = errorMsg.match(/error\s*code\s*:?\s*(\d+)/i) || 
+                     errorMsg.match(/SQLITE_ERROR\s*:?\s*(\d+)/i) ||
+                     errorMsg.match(/(\d{4})/); // Try to find 4-digit codes
+    const errorCode = codeMatch ? codeMatch[1] : "UNKNOWN";
+    
     return new Response(JSON.stringify({ 
       success: false, 
       error: "Database error occurred. Please try again later.",
-      code: "DB_ERROR"
+      code: `DB_ERROR_${errorCode}`
     }), { status: 500, headers });
   }
   
+  // Generic database error
   return new Response(JSON.stringify({ 
     success: false, 
-    error: "Database error occurred",
+    error: "Database error occurred. Please try again.",
     code: "DB_ERROR"
   }), { status: 500, headers });
 }
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
-    const url = new URL(request.url);
-    const path = url.pathname.replace(/\/$/, "");
-    
-    // eslint-disable-next-line no-console
-    console.log(`[API-RAW] ${request.method} ${path} (original: ${url.pathname})`);
-
+    // Define headers early so they're always available
     const headers = {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
@@ -108,8 +144,28 @@ export default {
 
     if (request.method === "OPTIONS") return new Response(null, { headers });
 
+    let path = "";
+    let method = "";
+    
+    try {
+      const url = new URL(request.url);
+      path = url.pathname.replace(/\/$/, "");
+      method = request.method;
+      
+      // eslint-disable-next-line no-console
+      console.log(`[API-RAW] ${method} ${path} (original: ${url.pathname})`);
+    } catch (urlError) {
+      console.error("[API-ERROR] URL parsing failed:", urlError);
+      return new Response(JSON.stringify({ 
+        success: false, 
+        error: "Invalid request URL",
+        code: "INVALID_URL"
+      }), { status: 400, headers });
+    }
+
     const secret = env.JWT_SECRET || "dev-secret-key-change-me";
 
+    // Wrap everything in try-catch to ensure all errors return JSON
     try {
       if (path === "/api/ping") {
         return new Response(JSON.stringify({ ok: true, v: "0.2.3", method: request.method }), { headers });
@@ -167,11 +223,17 @@ export default {
           
           let user: { password_hash: string | null } | null = null;
           try {
-            user = await env.syncstuff_db
-              .prepare("SELECT password_hash FROM users WHERE id = ?")
-              .bind(userId)
-              .first<{ password_hash: string | null }>();
+            try {
+              user = await env.syncstuff_db
+                .prepare("SELECT password_hash FROM users WHERE id = ?")
+                .bind(userId)
+                .first<{ password_hash: string | null }>();
+            } catch (prepareError) {
+              console.error("[DB-ERROR] SELECT prepare/bind/first failed:", prepareError);
+              return handleDatabaseError(prepareError, path, request.method);
+            }
           } catch (dbError) {
+            console.error("[DB-ERROR] SELECT outer catch:", dbError);
             return handleDatabaseError(dbError, path, request.method);
           }
 
@@ -185,12 +247,60 @@ export default {
 
           const newHash = await hashPassword(body.newPassword);
           try {
-            await env.syncstuff_db
-              .prepare("UPDATE users SET password_hash = ?, updated_at = ? WHERE id = ?")
-              .bind(newHash, Date.now(), userId)
-              .run();
+            let result;
+            try {
+              result = await env.syncstuff_db
+                .prepare("UPDATE users SET password_hash = ?, updated_at = ? WHERE id = ?")
+                .bind(newHash, Date.now(), userId)
+                .run();
+            } catch (prepareError) {
+              console.error("[DB-ERROR] Prepare/bind/run failed:", prepareError);
+              return handleDatabaseError(prepareError, path, request.method);
+            }
+            
+            // Check if result has an error property (D1 sometimes returns errors in result)
+            if (result && typeof result === "object" && "error" in result) {
+              console.error("[DB-ERROR] Result contains error:", result);
+              return handleDatabaseError((result as { error: unknown }).error, path, request.method);
+            }
+            
+            // Check if the update actually affected a row
+            if (!result || !result.success) {
+              console.error("[DB-ERROR] Update failed:", result);
+              // Check if result has error message
+              const errorMsg = result && typeof result === "object" && "error" in result 
+                ? String((result as { error: unknown }).error)
+                : "Failed to update password";
+              
+              if (errorMsg.includes("error code:") || errorMsg.includes("1042")) {
+                return handleDatabaseError(errorMsg, path, request.method);
+              }
+              
+              return new Response(JSON.stringify({ 
+                success: false, 
+                error: "Failed to update password. Please try again.",
+                code: "DB_UPDATE_ERROR"
+              }), { status: 500, headers });
+            }
+            
+            // Verify the update affected at least one row
+            if (result.meta?.changes === 0) {
+              console.warn("[DB-WARN] Update affected 0 rows for user:", userId);
+              return new Response(JSON.stringify({ 
+                success: false, 
+                error: "User not found or password could not be updated.",
+                code: "USER_NOT_FOUND"
+              }), { status: 404, headers });
+            }
           } catch (dbError) {
-            return handleDatabaseError(dbError, path, request.method);
+            console.error("[DB-ERROR] Exception during update:", dbError);
+            // Ensure we convert the error to a format handleDatabaseError can process
+            const errorToHandle = dbError instanceof Error 
+              ? dbError 
+              : typeof dbError === "string" 
+                ? new Error(dbError)
+                : new Error(String(dbError));
+            return handleDatabaseError(errorToHandle, path, request.method);
           }
 
           return new Response(JSON.stringify({ success: true }), { headers });
@@ -318,10 +428,34 @@ export default {
         ]
       }), { status: 404, headers });
     } catch (error) {
-      const msg = error instanceof Error ? error.message : String(error);
+      // Catch any unhandled errors and ensure they're returned as JSON
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      const errorString = String(error);
+      
       // eslint-disable-next-line no-console
-      console.error("[API-ERROR]", msg);
-      return new Response(JSON.stringify({ success: false, error: "API Error", m: msg }), { status: 500, headers });
+      console.error("[API-ERROR]", errorMsg, { error, path, method, errorString });
+      
+      // Check if this is a database error that wasn't caught (multiple patterns)
+      if (
+        errorMsg.includes("error code:") || 
+        errorMsg.includes("error code") ||
+        errorMsg.includes("SQLITE_") || 
+        errorMsg.includes("1042") ||
+        errorString.includes("error code:") ||
+        errorString.includes("error code") ||
+        errorString.includes("SQLITE_") ||
+        errorString.includes("1042") ||
+        /error\s*code\s*:?\s*\d+/i.test(errorMsg) ||
+        /error\s*code\s*:?\s*\d+/i.test(errorString)
+      ) {
+        return handleDatabaseError(error, path || "unknown", method || "UNKNOWN");
+      }
+      
+      return new Response(JSON.stringify({ 
+        success: false, 
+        error: "An unexpected error occurred. Please try again.",
+        code: "INTERNAL_ERROR"
+      }), { status: 500, headers });
     }
   },
 };

@@ -66,25 +66,38 @@ export async function action({ request, context }: ActionFunctionArgs) {
         context.cloudflare.env.API_URL ||
         "https://syncstuff-api.involvex.workers.dev";
 
-      // Diagnostic POST test
-      const testPing = await fetch(`${API_URL}/api/ping`, { method: "POST" });
-      console.log(`[WEB] Ping POST status: ${testPing.status}`);
-      const testNop = await fetch(`${API_URL}/api/auth/nop`, {
-        method: "POST",
-      });
-      console.log(`[WEB] Nop POST status: ${testNop.status}`);
-
       const fullUrl = `${API_URL}/api/auth/change-password`;
       console.log(`[WEB] POST to ${fullUrl}`);
 
-      const response = await fetch(fullUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ currentPassword, newPassword }),
-      });
+      let response: Response;
+      try {
+        response = await fetch(fullUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ currentPassword, newPassword }),
+        });
+      } catch (fetchError) {
+        console.error("[WEB] Fetch error:", fetchError);
+        const errorMsg =
+          fetchError instanceof Error ? fetchError.message : String(fetchError);
+        // Check for Cloudflare error 1042
+        if (
+          errorMsg.includes("1042") ||
+          errorMsg.includes("error code: 1042")
+        ) {
+          return json({
+            success: false,
+            error: "Unable to connect to the server. Please try again later.",
+          });
+        }
+        return json({
+          success: false,
+          error: "Network error. Please check your connection and try again.",
+        });
+      }
 
       console.log(`[WEB] Status: ${response.status} ${response.statusText}`);
       console.log(
@@ -104,6 +117,16 @@ export async function action({ request, context }: ActionFunctionArgs) {
 
         if (!contentType || !contentType.includes("application/json")) {
           console.error("Non-JSON response from API:", responseText);
+          // Check if it's the specific error code 1042
+          if (
+            responseText.includes("error code: 1042") ||
+            responseText.includes("1042")
+          ) {
+            return json({
+              success: false,
+              error: "Server connection error. Please try again later.",
+            });
+          }
           return json({
             success: false,
             error: "Server returned invalid response. Please try again.",
