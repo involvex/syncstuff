@@ -3,6 +3,7 @@ import { existsSync, statSync } from "fs";
 import inquirer from "inquirer";
 import { resolve } from "path";
 import { apiClient } from "../../utils/api-client.js";
+import { debugLog, type CommandContext } from "../../utils/context.js";
 import {
   createSpinner,
   error,
@@ -12,8 +13,12 @@ import {
   success,
 } from "../../utils/ui.js";
 
-export async function transferFile(filePath?: string): Promise<void> {
+export async function transferFile(
+  filePath: string | undefined,
+  ctx: CommandContext,
+): Promise<void> {
   printHeader();
+  debugLog(ctx, "Starting file transfer", { filePath });
 
   if (!apiClient.isAuthenticated()) {
     error("You are not logged in. Please run 'syncstuff login' first.");

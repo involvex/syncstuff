@@ -1,5 +1,6 @@
 import chalk from "chalk";
 import { apiClient } from "../../utils/api-client.js";
+import { debugLog, type CommandContext } from "../../utils/context.js";
 import {
   createSpinner,
   createTable,
@@ -10,8 +11,9 @@ import {
   success,
 } from "../../utils/ui.js";
 
-export async function listDevices(): Promise<void> {
+export async function listDevices(ctx: CommandContext): Promise<void> {
   printHeader();
+  debugLog(ctx, "Fetching devices list");
 
   if (!apiClient.isAuthenticated()) {
     error("You are not logged in. Please run 'syncstuff login' first.");

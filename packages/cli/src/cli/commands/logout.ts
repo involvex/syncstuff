@@ -1,8 +1,10 @@
 import { apiClient } from "../../utils/api-client.js";
+import { debugLog, type CommandContext } from "../../utils/context.js";
 import { error, printHeader, printSeparator, success } from "../../utils/ui.js";
 
-export async function logout(): Promise<void> {
+export async function logout(ctx: CommandContext): Promise<void> {
   printHeader();
+  debugLog(ctx, "Starting logout flow");
 
   if (!apiClient.isAuthenticated()) {
     error("You are not logged in");

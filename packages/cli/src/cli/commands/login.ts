@@ -1,5 +1,6 @@
 import inquirer from "inquirer";
 import { apiClient } from "../../utils/api-client.js";
+import { debugLog, type CommandContext } from "../../utils/context.js";
 import {
   createSpinner,
   error,
@@ -9,8 +10,9 @@ import {
   success,
 } from "../../utils/ui.js";
 
-export async function login(): Promise<void> {
+export async function login(ctx: CommandContext): Promise<void> {
   printHeader();
+  debugLog(ctx, "Starting login flow");
 
   try {
     const answers = await inquirer.prompt([

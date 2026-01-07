@@ -1,59 +1,79 @@
 #!/usr/bin/env node
+import { debugLog, parseArgs, type CommandContext } from "../utils/context.js";
 import { printHeader } from "../utils/ui.js";
 
 export async function run() {
   const args = process.argv.slice(2);
-  const command = args[0];
+  const { command, flags, commandArgs } = parseArgs(args);
 
-  if (!command || command === "--help" || command === "-h") {
-    const { showHelp } = await import("./commands/help");
-    showHelp();
+  const ctx: CommandContext = { debug: flags.debug };
+
+  // Debug mode: log parsed arguments
+  debugLog(ctx, "Parsed arguments:", { command, flags, commandArgs });
+
+  // Handle help flag - show command-specific or general help
+  if (flags.help) {
+    const { showHelp } = await import("./commands/help.js");
+    await showHelp(command);
+    return;
+  }
+
+  // Handle no command
+  if (!command) {
+    const { showHelp } = await import("./commands/help.js");
+    await showHelp();
     return;
   }
 
   switch (command) {
     case "login":
       {
-        const { login } = await import("./commands/login");
-        await login();
+        const { login } = await import("./commands/login.js");
+        await login(ctx);
       }
       break;
     case "whoami":
       {
-        const { whoami } = await import("./commands/whoami");
-        await whoami();
+        const { whoami } = await import("./commands/whoami.js");
+        await whoami(ctx);
       }
       break;
     case "logout":
       {
-        const { logout } = await import("./commands/logout");
-        await logout();
+        const { logout } = await import("./commands/logout.js");
+        await logout(ctx);
       }
       break;
     case "devices":
       {
-        const { listDevices } = await import("./commands/devices");
-        await listDevices();
+        const { listDevices } = await import("./commands/devices.js");
+        await listDevices(ctx);
+      }
+      break;
+    case "device":
+      {
+        const { device } = await import("./commands/device.js");
+        await device(commandArgs, ctx);
       }
       break;
     case "transfer":
       {
-        const { transferFile } = await import("./commands/transfer");
-        await transferFile(args[1]);
+        const { transferFile } = await import("./commands/transfer.js");
+        await transferFile(commandArgs[0], ctx);
       }
       break;
     case "help":
       {
-        const { showHelp } = await import("./commands/help");
-        showHelp();
+        const { showHelp } = await import("./commands/help.js");
+        await showHelp(commandArgs[0]);
       }
       break;
     case "version":
     case "--version":
     case "-v": {
-      const { showversion } = await import("./commands/version");
+      const { showversion } = await import("./commands/version.js");
       showversion();
-      return; // Exit after showing version
+      return;
     }
     default:
       printHeader();

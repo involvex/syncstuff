@@ -1,5 +1,6 @@
 import chalk from "chalk";
 import { apiClient } from "../../utils/api-client.js";
+import { debugLog, type CommandContext } from "../../utils/context.js";
 import {
   createBox,
   createSpinner,
@@ -8,8 +9,9 @@ import {
   printSeparator,
 } from "../../utils/ui.js";
 
-export async function whoami(): Promise<void> {
+export async function whoami(ctx: CommandContext): Promise<void> {
   printHeader();
+  debugLog(ctx, "Fetching user profile");
 
   if (!apiClient.isAuthenticated()) {
     error("You are not logged in. Please run 'syncstuff login' first.");

@@ -68,3 +68,6 @@ packages/app/electron/dist
 
 packages/cli/node_modules
 packages/cli/dist
+
+.npmrc
+packages/cli/.npmrc
