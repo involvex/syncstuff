@@ -1,11 +1,9 @@
 #!/usr/bin/env node
+import { printHeader } from "../utils/ui.js";
+
 export async function run() {
   const args = process.argv.slice(2);
   const command = args[0];
-
-  console.log("@syncstuff/cli");
-  console.log("=".repeat(50));
-  console.log(`Command: ${command}`);
 
   if (!command || command === "--help" || command === "-h") {
     const { showHelp } = await import("./commands/help");
@@ -32,6 +30,18 @@ export async function run() {
         await logout();
       }
       break;
+    case "devices":
+      {
+        const { listDevices } = await import("./commands/devices");
+        await listDevices();
+      }
+      break;
+    case "transfer":
+      {
+        const { transferFile } = await import("./commands/transfer");
+        await transferFile(args[1]);
+      }
+      break;
     case "help":
       {
         const { showHelp } = await import("./commands/help");
@@ -46,7 +56,9 @@ export async function run() {
       return; // Exit after showing version
     }
     default:
+      printHeader();
       console.log(`❌ Unknown command: ${command}`);
+      console.log("Run 'syncstuff help' to see available commands");
       process.exit(1);
   }
 }

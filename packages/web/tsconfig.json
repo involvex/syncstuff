@@ -21,6 +21,7 @@
     "jsx": "react-jsx",
     "moduleResolution": "Bundler",
     "resolveJsonModule": true,
+    "module": "es2022",
     "target": "ES2022",
     "strict": true,
     "allowJs": true,
@@ -39,5 +40,6 @@
     "rootDir": ".",
     // Remix takes care of building everything in `remix build`.
     "noEmit": true
-  }
+  },
+  "project": "./tsconfig.json"
 }

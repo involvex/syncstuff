@@ -49,4 +49,13 @@ export default defineConfig([
     language: "json/jsonc",
     extends: ["json/recommended"],
   },
+  {
+    files: ["**/*.{ts,tsx}"],
+    languageOptions: {
+      parserOptions: {
+        tsconfigRootDir: import.meta.dirname,
+        project: "./tsconfig.json",
+      },
+    },
+  },
 ]);

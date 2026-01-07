@@ -60,6 +60,37 @@ CREATE TABLE IF NOT EXISTS notifications (
   created_at INTEGER DEFAULT (unixepoch() * 1000)
 );
 
+-- Devices table
+CREATE TABLE IF NOT EXISTS devices (
+  id TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  name TEXT NOT NULL,
+  type TEXT NOT NULL, -- 'mobile', 'desktop', 'web'
+  platform TEXT NOT NULL, -- 'android', 'ios', 'windows', 'macos', 'linux', 'web'
+  device_id TEXT UNIQUE,
+  last_seen INTEGER DEFAULT (unixepoch() * 1000),
+  is_online INTEGER DEFAULT 0,
+  metadata TEXT, -- JSON string of additional device info
+  created_at INTEGER DEFAULT (unixepoch() * 1000),
+  updated_at INTEGER DEFAULT (unixepoch() * 1000)
+);
+
+-- Transfers table
+CREATE TABLE IF NOT EXISTS transfers (
+  id TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  device_id TEXT NOT NULL REFERENCES devices(id) ON DELETE CASCADE,
+  file_path TEXT NOT NULL,
+  file_name TEXT,
+  file_size INTEGER,
+  status TEXT DEFAULT 'pending', -- 'pending', 'in_progress', 'completed', 'failed'
+  progress INTEGER DEFAULT 0, -- 0-100
+  error_message TEXT,
+  created_at INTEGER DEFAULT (unixepoch() * 1000),
+  updated_at INTEGER DEFAULT (unixepoch() * 1000),
+  completed_at INTEGER
+);
+
 -- Cache table
 CREATE TABLE IF NOT EXISTS cache (
   key TEXT PRIMARY KEY,
@@ -79,4 +110,9 @@ CREATE INDEX IF NOT EXISTS idx_releases_subscription ON releases(subscription_id
 CREATE INDEX IF NOT EXISTS idx_releases_published ON releases(published_at DESC);
 CREATE INDEX IF NOT EXISTS idx_notifications_type ON notifications(type);
 CREATE INDEX IF NOT EXISTS idx_notifications_read ON notifications(is_read);
+CREATE INDEX IF NOT EXISTS idx_devices_user ON devices(user_id);
+CREATE INDEX IF NOT EXISTS idx_devices_online ON devices(is_online);
+CREATE INDEX IF NOT EXISTS idx_transfers_user ON transfers(user_id);
+CREATE INDEX IF NOT EXISTS idx_transfers_device ON transfers(device_id);
+CREATE INDEX IF NOT EXISTS idx_transfers_status ON transfers(status);
 CREATE INDEX IF NOT EXISTS idx_cache_expires ON cache(expires_at);

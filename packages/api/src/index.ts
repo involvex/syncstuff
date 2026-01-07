@@ -186,8 +186,8 @@ export default {
               .prepare("SELECT * FROM users WHERE email = ?")
               .bind(body.email)
               .first<D1User>();
-          } catch (dbError) {
-            return handleDatabaseError(dbError, path, request.method);
+          } catch (__dbError) {
+            return handleDatabaseError(__dbError, path, request.method);
           }
 
           if (!user || !user.password_hash || !(await verifyPassword(body.password, user.password_hash))) {
@@ -232,9 +232,9 @@ export default {
               console.error("[DB-ERROR] SELECT prepare/bind/first failed:", prepareError);
               return handleDatabaseError(prepareError, path, request.method);
             }
-          } catch (dbError) {
-            console.error("[DB-ERROR] SELECT outer catch:", dbError);
-            return handleDatabaseError(dbError, path, request.method);
+          } catch (__dbError) {
+            console.error("[DB-ERROR] SELECT outer catch:", __dbError);
+            return handleDatabaseError(__dbError, path, request.method);
           }
 
           if (!user) return new Response(JSON.stringify({ success: false, error: "User not found" }), { status: 404, headers });
@@ -292,14 +292,14 @@ export default {
                 code: "USER_NOT_FOUND"
               }), { status: 404, headers });
             }
-          } catch (dbError) {
-            console.error("[DB-ERROR] Exception during update:", dbError);
+          } catch (__dbError) {
+            console.error("[DB-ERROR] Exception during update:", __dbError);
             // Ensure we convert the error to a format handleDatabaseError can process
-            const errorToHandle = dbError instanceof Error 
-              ? dbError 
-              : typeof dbError === "string" 
-                ? new Error(dbError)
-                : new Error(String(dbError));
+            const errorToHandle = __dbError instanceof Error 
+              ? __dbError 
+              : typeof __dbError === "string" 
+                ? new Error(__dbError)
+                : new Error(String(__dbError));
             return handleDatabaseError(errorToHandle, path, request.method);
           }
 
@@ -351,8 +351,8 @@ export default {
             .prepare("SELECT id, username, email, full_name, role, status, preferences FROM users WHERE id = ?")
             .bind(userId)
             .first<D1User>();
-        } catch (dbError) {
-          return handleDatabaseError(dbError, path, request.method);
+        } catch (__dbError) {
+          return handleDatabaseError(__dbError, path, request.method);
         }
 
         if (!user) return new Response(JSON.stringify({ success: false, error: "User not found" }), { status: 404, headers });
@@ -386,8 +386,8 @@ export default {
                 .prepare("UPDATE users SET preferences = ?, updated_at = ? WHERE id = ?")
                 .bind(JSON.stringify(body.preferences), Date.now(), userId)
                 .run();
-            } catch (dbError) {
-              return handleDatabaseError(dbError, path, request.method);
+            } catch (__dbError) {
+              return handleDatabaseError(__dbError, path, request.method);
             }
           }
 
@@ -397,8 +397,8 @@ export default {
                 .prepare("UPDATE users SET full_name = ?, updated_at = ? WHERE id = ?")
                 .bind(body.full_name, Date.now(), userId)
                 .run();
-            } catch (dbError) {
-              return handleDatabaseError(dbError, path, request.method);
+            } catch (__dbError) {
+              return handleDatabaseError(__dbError, path, request.method);
             }
           }
 
@@ -428,8 +428,8 @@ export default {
               .prepare("SELECT id, email FROM users WHERE email = ?")
               .bind(body.email)
               .first<D1User>();
-          } catch (dbError) {
-            return handleDatabaseError(dbError, path, request.method);
+          } catch (__dbError) {
+            return handleDatabaseError(__dbError, path, request.method);
           }
 
           // Always return success to prevent email enumeration
@@ -470,8 +470,8 @@ export default {
               .prepare("SELECT id, email FROM users WHERE email = ?")
               .bind(body.email)
               .first<D1User>();
-          } catch (dbError) {
-            return handleDatabaseError(dbError, path, request.method);
+          } catch (__dbError) {
+            return handleDatabaseError(__dbError, path, request.method);
           }
 
           if (!user) {
@@ -491,14 +491,160 @@ export default {
             }
 
             return new Response(JSON.stringify({ success: true, message: "Password reset successfully" }), { headers });
-          } catch (dbError) {
-            return handleDatabaseError(dbError, path, request.method);
+          } catch (__dbError) {
+            return handleDatabaseError(__dbError, path, request.method);
           }
         } catch (error) {
           const errorMsg = error instanceof Error ? error.message : String(error);
           if (errorMsg.includes("JSON") || errorMsg.includes("Unexpected token")) {
             console.error("Reset password JSON parse error:", error);
             return new Response(JSON.stringify({ success: false, error: "Invalid JSON in request body" }), { status: 400, headers });
+          }
+          return handleDatabaseError(error, path, request.method);
+        }
+      }
+
+      // DEVICES - GET list of user's devices
+      if (path === "/api/devices" && request.method === "GET") {
+        const auth = request.headers.get("Authorization");
+        if (!auth?.startsWith("Bearer "))
+          return new Response(
+            JSON.stringify({ success: false, error: "Missing token" }),
+            { status: 401, headers },
+          );
+
+        const token = auth.split(" ")[1];
+        const payload = await verifyJWT(token, secret);
+        if (!payload || !payload.sub)
+          return new Response(
+            JSON.stringify({ success: false, error: "Invalid token" }),
+            { status: 401, headers },
+          );
+
+        const userId = payload.sub as string;
+
+        try {
+          // Query devices table (if it exists, otherwise return empty array)
+          let devices: Array<{
+  id: string;
+  name: string;
+  type: string;
+  platform: string;
+  last_seen: number;
+  is_online: boolean;
+}> = [];
+          try {
+            const result = await env.syncstuff_db
+              .prepare(
+                "SELECT id, name, type, platform, last_seen, is_online FROM devices WHERE user_id = ? ORDER BY last_seen DESC",
+              )
+              .bind(userId)
+              .all<{
+                id: string;
+                name: string;
+                type: string;
+                platform: string;
+                last_seen: number;
+                is_online: number;
+              }>();
+
+            devices = (result.results || []).map(device => ({
+              id: device.id,
+              name: device.name,
+              type: device.type,
+              platform: device.platform,
+              last_seen: device.last_seen,
+              is_online: Boolean(device.is_online),
+            }));
+          } catch (__dbError) {
+            // Devices table might not exist yet
+            console.warn("Devices table not found, returning empty array");
+            devices = [];
+          }
+
+          return new Response(
+            JSON.stringify({ success: true, data: devices }),
+            { headers },
+          );
+        } catch (error) {
+          return handleDatabaseError(error, path, request.method);
+        }
+      }
+
+      // TRANSFER - POST initiate file transfer
+      if (path === "/api/transfer" && request.method === "POST") {
+        const auth = request.headers.get("Authorization");
+        if (!auth?.startsWith("Bearer "))
+          return new Response(
+            JSON.stringify({ success: false, error: "Missing token" }),
+            { status: 401, headers },
+          );
+
+        const token = auth.split(" ")[1];
+        const payload = await verifyJWT(token, secret);
+        if (!payload || !payload.sub)
+          return new Response(
+            JSON.stringify({ success: false, error: "Invalid token" }),
+            { status: 401, headers },
+          );
+
+        try {
+          const body = await request.json<{
+            deviceId: string;
+            filePath: string;
+          }>();
+
+          if (!body.deviceId || !body.filePath) {
+            return new Response(
+              JSON.stringify({
+                success: false,
+                error: "deviceId and filePath are required",
+              }),
+              { status: 400, headers },
+            );
+          }
+
+          // Generate transfer ID
+          const transferId = crypto.randomUUID();
+
+          // Store transfer request (if transfers table exists)
+          try {
+            await env.syncstuff_db
+              .prepare(
+                "INSERT INTO transfers (id, user_id, device_id, file_path, status, created_at) VALUES (?, ?, ?, ?, 'pending', ?)",
+              )
+              .bind(
+                transferId,
+                payload.sub,
+                body.deviceId,
+                body.filePath,
+                Date.now(),
+              )
+              .run();
+          } catch (__dbError) {
+            // Transfers table might not exist yet
+            console.warn("Transfers table not found, transfer not persisted");
+          }
+
+          return new Response(
+            JSON.stringify({
+              success: true,
+              data: { transferId, message: "Transfer initiated" },
+            }),
+            { headers },
+          );
+        } catch (error) {
+          const errorMsg =
+            error instanceof Error ? error.message : String(error);
+          if (errorMsg.includes("JSON") || errorMsg.includes("Unexpected token")) {
+            console.error("Transfer JSON parse error:", error);
+            return new Response(
+              JSON.stringify({
+                success: false,
+                error: "Invalid JSON in request body",
+              }),
+              { status: 400, headers },
+            );
           }
           return handleDatabaseError(error, path, request.method);
         }
@@ -517,7 +663,9 @@ export default {
           "/api/auth/reset-password",
           "/api/auth/register",
           "/api/user/profile",
-          "/api/user/settings"
+          "/api/user/settings",
+          "/api/devices",
+          "/api/transfer"
         ]
       }), { status: 404, headers });
     } catch (error) {

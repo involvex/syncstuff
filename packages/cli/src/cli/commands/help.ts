@@ -1,23 +1,51 @@
+import chalk from "chalk";
+import { createBox, printHeader, printSeparator } from "../../utils/ui.js";
+
 export async function showHelp() {
-  console.log("Help Menu:");
-  console.log("=".repeat(50));
-  console.log("Commands:");
-  console.log("=".repeat(50));
-  console.log("help - Show this help menu");
-  console.log("exit - Exit the program");
-  console.log("clear - Clear the screen");
-  console.log("version - Show the version of the program");
-  console.log("=".repeat(50));
-  console.log("Account Management:");
-  console.log("=".repeat(50));
-  console.log("login - Login to an account");
-  console.log("whoami - view userdetails");
-  console.log("logout - Logout of an account");
-  console.log("=".repeat(50));
-  console.log("Device Management:");
-  console.log("=".repeat(50));
-  console.log("devices - List all devices");
-  console.log("device - Manage a device");
-  console.log("transfer <file> - Transfer a file");
-  console.log("=".repeat(50));
+  printHeader();
+
+  const helpContent = createBox(
+    chalk.cyan.bold("Available Commands\n\n") +
+      chalk.bold("Authentication:\n") +
+      "  " +
+      chalk.green("login") +
+      "              Login to your Syncstuff account\n" +
+      "  " +
+      chalk.green("logout") +
+      "             Logout from your account\n" +
+      "  " +
+      chalk.green("whoami") +
+      "             Display your user profile\n\n" +
+      chalk.bold("Device Management:\n") +
+      "  " +
+      chalk.green("devices") +
+      "            List all your connected devices\n" +
+      "  " +
+      chalk.green("transfer <file>") +
+      "    Transfer a file to a device\n\n" +
+      chalk.bold("General:\n") +
+      "  " +
+      chalk.green("help") +
+      "              Show this help message\n" +
+      "  " +
+      chalk.green("version") +
+      "           Show CLI version\n" +
+      "  " +
+      chalk.green("--version, -v") +
+      "    Show CLI version",
+    {
+      title: "Syncstuff CLI Help",
+      titleAlignment: "center",
+      padding: 1,
+    },
+  );
+
+  console.log(helpContent);
+  printSeparator();
+  console.log(
+    chalk.gray(
+      "For more information, visit: https://github.com/involvex/syncstuff",
+    ),
+  );
+  printSeparator();
 }
