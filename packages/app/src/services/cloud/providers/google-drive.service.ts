@@ -6,7 +6,7 @@ import type {
 
 const CLIENT_ID =
   "699308700646-6a9no4bf3osp21v6rljeq7p4cqsriims.apps.googleusercontent.com";
-const SCOPES = "https://www.googleapis.com/auth/drive.file";
+const SCOPES = "https://www.googleapis.com/auth/drive";
 
 // Declare global types for Google Identity Services and GAPI if not already present
 declare global {

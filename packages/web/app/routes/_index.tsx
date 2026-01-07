@@ -16,12 +16,13 @@ export const meta: MetaFunction = () => {
 
 export async function loader({ request, context }: LoaderFunctionArgs) {
   const session = await getSession(request.headers.get("Cookie"));
-  
+
   // Check for development environment using Cloudflare context if available
   // Or check host header as a fallback for local dev
-  const isDev = context.cloudflare?.env?.API_URL?.includes("localhost") || 
-                new URL(request.url).hostname === "localhost" || 
-                new URL(request.url).hostname === "127.0.0.1";
+  const isDev =
+    context.cloudflare?.env?.API_URL?.includes("localhost") ||
+    new URL(request.url).hostname === "localhost" ||
+    new URL(request.url).hostname === "127.0.0.1";
 
   if (isDev && !session.has("userId")) {
     // Create mock login for local development convenience
@@ -33,7 +34,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
         headers: {
           "Set-Cookie": await commitSession(session),
         },
-      }
+      },
     );
   }
 

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import {
   IonCard,
   IonCardHeader,
@@ -10,8 +10,8 @@ import {
   IonButton,
   IonIcon,
   IonSpinner,
-  IonText,
   IonAlert,
+  IonText,
   type AlertInput,
   type AlertButton,
 } from "@ionic/react";
@@ -57,9 +57,21 @@ export const CloudAccounts: React.FC = () => {
       const account = await provider.authenticate();
       addAccount(account);
     } catch (err: unknown) {
-      if (err instanceof Error && err.message === "CREDENTIALS_REQUIRED") {
+      if (
+        err instanceof Error &&
+        (err.message === "CREDENTIALS_REQUIRED" ||
+          err.message.includes("Storage relay URI"))
+      ) {
+        // Google Drive specific error handling fallback could go here if needed,
+        // but for now we just show the error or handle Syncstuff/Mega logic
         if (type === "syncstuff") setShowSyncstuffLogin(true);
         if (type === "mega") setShowMegaLogin(true);
+
+        if (err.message.includes("Storage relay URI")) {
+          setError(
+            "Google Drive Error: Client ID configuration mismatch. Please use a Web Client ID for this app.",
+          );
+        }
       } else if (err instanceof Error) {
         setError(err.message);
       } else {
@@ -72,45 +84,51 @@ export const CloudAccounts: React.FC = () => {
     }
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleSyncstuffLogin = async (data: any) => {
-    setIsAuthenticating(true);
+  const handleSyncstuffLogin = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async (data: any) => {
+      setIsAuthenticating(true);
 
-    try {
-      const provider = cloudManagerService.getProvider("syncstuff");
+      try {
+        const provider = cloudManagerService.getProvider("syncstuff");
 
-      if (provider instanceof SyncstuffService) {
-        const account = await provider.login(data.email, data.password);
-        addAccount(account);
+        if (provider instanceof SyncstuffService) {
+          const account = await provider.login(data.email, data.password);
+          addAccount(account);
+        }
+      } catch (err: unknown) {
+        const errorMsg = err instanceof Error ? err.message : "Login failed";
+        setError(errorMsg);
+      } finally {
+        setIsAuthenticating(false);
+        setShowSyncstuffLogin(false);
       }
-    } catch (err: unknown) {
-      const errorMsg = err instanceof Error ? err.message : "Login failed";
-      setError(errorMsg);
-    } finally {
-      setIsAuthenticating(false);
-      setShowSyncstuffLogin(false);
-    }
-  };
+    },
+    [addAccount],
+  );
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleMegaLogin = async (data: any) => {
-    setIsAuthenticating(true);
+  const handleMegaLogin = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async (data: any) => {
+      setIsAuthenticating(true);
 
-    try {
-      const provider = cloudManagerService.getProvider("mega");
+      try {
+        const provider = cloudManagerService.getProvider("mega");
 
-      if (provider instanceof MegaService) {
-        const account = await provider.login(data.email, data.password);
-        addAccount(account);
+        if (provider instanceof MegaService) {
+          const account = await provider.login(data.email, data.password);
+          addAccount(account);
+        }
+      } catch (err: unknown) {
+        const errorMsg = err instanceof Error ? err.message : "Login failed";
+        setError(errorMsg);
+      } finally {
+        setIsAuthenticating(false);
+        setShowMegaLogin(false);
       }
-    } catch (err: unknown) {
-      const errorMsg = err instanceof Error ? err.message : "Login failed";
-      setError(errorMsg);
-    } finally {
-      setIsAuthenticating(false);
-      setShowMegaLogin(false);
-    }
-  };
+    },
+    [addAccount],
+  );
 
   const handleRemoveAccount = async (
     accountId: string,
@@ -165,10 +183,10 @@ export const CloudAccounts: React.FC = () => {
       },
       {
         text: "Login",
-        handler: data => handleSyncstuffLogin(data),
+        handler: handleSyncstuffLogin,
       },
     ],
-    [],
+    [handleSyncstuffLogin],
   );
 
   const megaInputs = useMemo<AlertInput[]>(
@@ -196,10 +214,10 @@ export const CloudAccounts: React.FC = () => {
       },
       {
         text: "Login",
-        handler: data => handleMegaLogin(data),
+        handler: handleMegaLogin,
       },
     ],
-    [],
+    [handleMegaLogin],
   );
 
   return (
