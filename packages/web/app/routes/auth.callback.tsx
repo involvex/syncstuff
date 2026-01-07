@@ -80,7 +80,6 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
         .bind(userData.id)
         .first();
       if (!user) {
-         
         user = await db
           .prepare("SELECT id, role FROM users WHERE email = ?")
           .bind(userData.email)
@@ -184,7 +183,6 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
         .bind(userData.id.toString())
         .first();
       if (!user) {
-         
         user = await db
           .prepare("SELECT id, role FROM users WHERE email = ?")
           .bind(primaryEmail)
