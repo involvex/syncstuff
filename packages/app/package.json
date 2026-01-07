@@ -73,8 +73,8 @@
     "@types/crypto-js": "^4.2.2",
     "@types/gapi": "0.0.47",
     "@types/gapi.client.drive": "3.0.15",
-    "@types/react": "^18.0.27",
-    "@types/react-dom": "^18.0.10",
+    "@types/react": "18.2.0",
+    "@types/react-dom": "18.2.0",
     "@types/simple-peer": "^9.11.9",
     "@types/uuid": "^11.0.0",
     "@vitejs/plugin-legacy": "^5.0.0",
@@ -93,6 +93,14 @@
     "vite": "^5.0.0",
     "vite-plugin-node-polyfills": "^0.24.0",
     "vitest": "^0.34.6"
+  },
+  "resolutions": {
+    "@types/react": "18.2.0",
+    "@types/react-dom": "18.2.0"
+  },
+  "overrides": {
+    "@types/react": "18.2.0",
+    "@types/react-dom": "18.2.0"
   },
   "description": "An App to synchronize your files to all your devices."
 }
