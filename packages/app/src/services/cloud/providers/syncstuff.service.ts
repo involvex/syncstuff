@@ -6,6 +6,20 @@ import type {
 } from "../../../types/cloud.types";
 import { personCircleOutline } from "ionicons/icons";
 
+interface AuthResponse {
+  success: boolean;
+  error?: string;
+  data: {
+    token: string;
+    user: {
+      id: string;
+      username: string;
+      email: string;
+      avatar_url?: string;
+    };
+  };
+}
+
 export class SyncstuffService implements CloudProvider {
   type: CloudProviderType = "syncstuff";
   name = "Syncstuff";
@@ -42,28 +56,22 @@ export class SyncstuffService implements CloudProvider {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
+      const data = (await response.json()) as AuthResponse;
 
       if (!data.success) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        throw new Error((data as any).error || "Login failed");
+        throw new Error(data.error || "Login failed");
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      this.token = (data as any).data.token;
-      localStorage.setItem("syncstuff_token", this.token!);
+      this.token = data.data.token;
+      localStorage.setItem("syncstuff_token", this.token);
 
       return {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        id: (data as any).data.user.id,
+        id: data.data.user.id,
         provider: "syncstuff",
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        name: (data as any).data.user.username,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        email: (data as any).data.user.email,
+        name: data.data.user.username,
+        email: data.data.user.email,
         isAuthenticated: true,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        avatarUrl: (data as any).data.user.avatar_url,
+        avatarUrl: data.data.user.avatar_url,
       };
     } catch (error) {
       console.error("Syncstuff Login Error:", error);

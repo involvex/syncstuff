@@ -1,6 +1,12 @@
 import type { Env } from "../index";
 import { Database } from "../db";
-import type { LoginRequest, RegisterRequest, ApiResponse, AuthPayload } from "@syncstuff/shared";
+import type {
+  LoginRequest,
+  RegisterRequest,
+  ChangePasswordRequest,
+  ApiResponse,
+  AuthPayload,
+} from "@syncstuff/shared";
 import * as bcrypt from "bcryptjs";
 import * as jose from "jose";
 
@@ -11,7 +17,7 @@ export async function handleAuth(
 ): Promise<Response> {
   const url = new URL(request.url);
   const path = url.pathname;
-  const db = new Database(env.DB);
+  const db = new Database(env.syncstuff_db);
   const jwtSecret = new TextEncoder().encode(env.JWT_SECRET || "dev-secret-key-change-me");
 
   // POST /api/auth/register
@@ -133,7 +139,7 @@ export async function handleAuth(
              return new Response(JSON.stringify({ success: false, error: "Invalid token" }), { status: 401, headers });
         }
 
-        const body: any = await request.json(); // TODO: Add type
+        const body = await request.json<ChangePasswordRequest>();
         const { currentPassword, newPassword } = body;
 
         if (!newPassword) {

@@ -2,10 +2,11 @@
   "name": "@syncstuff/api",
   "version": "0.0.16",
   "private": true,
+  "main": "src/index.ts",
   "homepage": "https://syncstuff-api.involvex.workers.dev",
   "scripts": {
-    "dev": "wrangler dev",
-    "deploy": "wrangler deploy",
+    "dev": "wrangler dev -c wrangler.toml",
+    "deploy": "wrangler deploy -c wrangler.toml",
     "tail": "wrangler tail",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src",

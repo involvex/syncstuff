@@ -67,3 +67,8 @@ export interface RegisterRequest {
   username: string;
   full_name?: string;
 }
+
+export interface ChangePasswordRequest {
+  currentPassword?: string;
+  newPassword: string;
+}

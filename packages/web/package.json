@@ -65,6 +65,7 @@
     "check": "tsc && remix vite:build && wrangler deploy --dry-run",
     "deploy": "bun run build && wrangler deploy -c wrangler.toml",
     "dev": "remix vite:dev",
+    "wrangler:dev": "wrangler dev -c wrangler.toml",
     "lint": "eslint . --ignore-pattern build",
     "preview": "npm run build && wrangler dev",
     "start": "wrangler dev",

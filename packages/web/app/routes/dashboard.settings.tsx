@@ -88,7 +88,12 @@ export async function action({ request, context }: ActionFunctionArgs) {
       return json({ success: true, message: "Password updated successfully" });
     } catch (error) {
       console.error("Change password fetch exception:", error);
-      return json({ success: false, error: "Network error: " + (error instanceof Error ? error.message : "Unknown") });
+      return json({
+        success: false,
+        error:
+          "Network error: " +
+          (error instanceof Error ? error.message : "Unknown"),
+      });
     }
   }
 

@@ -6,7 +6,6 @@
   "types": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
-    "./theme": "./src/theme/index.ts",
     "./types": "./src/types/index.ts",
     "./utils": "./src/utils/index.ts"
   },

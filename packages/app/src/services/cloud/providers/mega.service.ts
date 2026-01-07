@@ -5,6 +5,30 @@ import type {
 } from "../../../types/cloud.types";
 import { Storage } from "megajs";
 
+interface MegaFile {
+  nodeId: string;
+  name: string;
+  directory: boolean;
+  type?: string;
+  size: number;
+  timestamp: number;
+  children?: MegaFile[];
+  download(): ReadableStream;
+}
+
+// Custom interface for Mega Storage to avoid conflicts with global Storage
+interface IMegaStorage {
+  email?: string;
+  name?: string;
+  root: MegaFile;
+  files: Record<string, MegaFile>;
+  upload(
+    name: string,
+    data: File | string | Buffer | Blob,
+  ): { complete: Promise<MegaFile> };
+  getAccountInfo(): Promise<{ spaceUsed: number; spaceTotal: number }>;
+}
+
 export class MegaService implements CloudProvider {
   readonly type = "mega";
   name = "Mega";
@@ -63,8 +87,7 @@ export class MegaService implements CloudProvider {
     const folder = folderId ? this.storage.files[folderId] : this.storage.root;
     if (!folder || !folder.children) return [];
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return folder.children.map((f: any) => ({
+    return (folder.children as unknown as MegaFile[]).map((f: MegaFile) => ({
       id: f.nodeId,
       name: f.name,
       mimeType: f.directory
@@ -74,7 +97,7 @@ export class MegaService implements CloudProvider {
       modifiedTime: f.timestamp ? new Date(f.timestamp * 1000) : new Date(),
       parents: [folderId || "root"],
       provider: "mega",
-      accountId: (this.storage as any).email || "mega-user",
+      accountId: (this.storage as unknown as IMegaStorage).email || "mega-user",
     }));
   }
 
@@ -84,11 +107,9 @@ export class MegaService implements CloudProvider {
     const folder = parentId ? this.storage.files[parentId] : this.storage.root;
     if (!folder) throw new Error("Folder not found");
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const upload = (folder as any).upload(file.name, file);
+    const upload = (folder as unknown as IMegaStorage).upload(file.name, file);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const uploadedFile: any = await upload.complete;
+    const uploadedFile: MegaFile = await upload.complete;
 
     return {
       id: uploadedFile.nodeId,
@@ -98,27 +119,28 @@ export class MegaService implements CloudProvider {
       modifiedTime: new Date(),
       parents: [parentId || "root"],
       provider: "mega",
-      accountId: (this.storage as any).email || "mega-user",
+      accountId: (this.storage as unknown as IMegaStorage).email || "mega-user",
     };
   }
 
   async downloadFile(fileId: string): Promise<Blob> {
     if (!this.storage) throw new Error("Not authenticated");
 
-    const file = this.storage.files[fileId];
+    const storage = this.storage as unknown as IMegaStorage;
+    const file = storage.files[fileId];
     if (!file) throw new Error("File not found");
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const stream = (file as any).download();
+    const stream = file.download();
+    const reader = stream.getReader();
+    const chunks: Uint8Array[] = [];
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const chunks: any[] = [];
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    for await (const chunk of stream as any) {
-      chunks.push(chunk);
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      if (value) chunks.push(value);
     }
 
-    return new Blob(chunks);
+    return new Blob(chunks as BlobPart[]);
   }
 
   async getQuota(): Promise<{ used: number; total: number }> {
@@ -135,8 +157,7 @@ export class MegaService implements CloudProvider {
     if (!this.storage) throw new Error("No storage");
     const info = await this.storage.getAccountInfo();
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const storageAny = this.storage as any;
+    const storageAny = this.storage as unknown as IMegaStorage;
 
     return {
       id: storageAny.email || "mega-user", // Use email as ID if available
