@@ -65,3 +65,6 @@ packages/web/wrangler.toml
 
 packages/app/electron/node_modules
 packages/app/electron/dist
+
+packages/cli/node_modules
+packages/cli/dist

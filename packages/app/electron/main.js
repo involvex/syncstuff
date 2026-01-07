@@ -23,7 +23,12 @@ function createWindow() {
       contextIsolation: true,
       preload: path.resolve(__dirname, "preload.js"),
     },
-    icon: path.resolve(__dirname, "../public/icon.png"),
+    icon: path.resolve(
+      __dirname,
+      process.platform === "win32"
+        ? "../public/icon.ico"
+        : "../public/favicon.png",
+    ),
     show: false, // Don't show until ready
   });
 

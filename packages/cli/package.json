@@ -1,0 +1,35 @@
+{
+  "name": "@syncstuff/cli",
+  "version": "0.0.1",
+  "type": "module",
+  "bin": {
+    "syncstuff": "src/cli/index.ts"
+  },
+  "scripts": {
+    "dev": "bun run src/cli/index.ts",
+    "build": "bun build --target node --outfile dist/cli.js src/cli/index.ts",
+    "lint": "eslint src ",
+    "lint:fix": "eslint src --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit",
+    "prebuild": "bun run format && bun run lint:fix && bun run typecheck"
+  },
+  "devDependencies": {
+    "@eslint/css": "0.14.1",
+    "@eslint/js": "9.39.2",
+    "@eslint/json": "0.14.0",
+    "@types/bun": "latest",
+    "eslint": "9.39.2",
+    "globals": "17.0.0",
+    "prettier": "3.7.4",
+    "prettier-plugin-organize-imports": "4.3.0",
+    "typescript-eslint": "8.52.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@types/node": "25.0.3"
+  }
+}

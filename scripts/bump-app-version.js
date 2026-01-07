@@ -81,6 +81,25 @@ const buildGradlePath = path.join(
   "app",
   "build.gradle"
 );
+const electronPackagePath = path.join(
+  __dirname,
+  "..",
+  "packages",
+  "app",
+  "electron",
+  "package.json"
+);
+const androidManifestPath = path.join(
+  __dirname,
+  "..",
+  "packages",
+  "app",
+  "android",
+  "app",
+  "src",
+  "main",
+  "AndroidManifest.xml"
+);
 const rootDir = path.join(__dirname, "..");
 
 /**
@@ -272,6 +291,13 @@ function main() {
     if (fs.existsSync(buildGradlePath)) {
       log(`   ✓ Would update build.gradle versionName to ${newVersion}`);
     }
+    if (fs.existsSync(electronPackagePath)) {
+      log(`   ✓ Would update Electron package.json to ${newVersion}`);
+    }
+    if (fs.existsSync(androidManifestPath)) {
+      log(`   ✓ Would update AndroidManifest.xml versionName to ${newVersion}`);
+      log(`   ✓ Would increment AndroidManifest.xml versionCode`);
+    }
     log(`   ✓ Would create git commit`);
     log(`   ✓ Would create annotated tag v${newVersion}`);
     if (shouldPush) {
@@ -313,11 +339,81 @@ function main() {
       warning(`build.gradle not found at ${buildGradlePath}, skipping...`);
     }
 
+    // Step 4c: Update Electron package.json version
+    if (fs.existsSync(electronPackagePath)) {
+      info("Updating Electron package.json version...");
+      const electronPackage = JSON.parse(
+        fs.readFileSync(electronPackagePath, "utf-8")
+      );
+      electronPackage.version = newVersion;
+      fs.writeFileSync(
+        electronPackagePath,
+        JSON.stringify(electronPackage, null, 2) + "\n"
+      );
+      success(`Updated Electron package.json to ${newVersion}`);
+    } else {
+      warning(
+        `Electron package.json not found at ${electronPackagePath}, skipping...`
+      );
+    }
+
+    // Step 4d: Update AndroidManifest.xml versionCode and versionName
+    if (fs.existsSync(androidManifestPath)) {
+      info("Updating AndroidManifest.xml version...");
+      let manifestContent = fs.readFileSync(androidManifestPath, "utf-8");
+      
+      // Update versionName in AndroidManifest.xml
+      // Pattern: android:versionName="0.0.1"
+      const versionNameRegex = /android:versionName=["']([^"']+)["']/;
+      if (versionNameRegex.test(manifestContent)) {
+        manifestContent = manifestContent.replace(
+          versionNameRegex,
+          `android:versionName="${newVersion}"`
+        );
+        success(`Updated AndroidManifest.xml versionName to ${newVersion}`);
+      } else {
+        warning(
+          "Could not find android:versionName in AndroidManifest.xml, skipping..."
+        );
+      }
+
+      // Update versionCode (increment it)
+      const versionCodeRegex = /android:versionCode=["'](\d+)["']/;
+      if (versionCodeRegex.test(manifestContent)) {
+        const match = manifestContent.match(versionCodeRegex);
+        const currentVersionCode = parseInt(match[1], 10);
+        const newVersionCode = currentVersionCode + 1;
+        manifestContent = manifestContent.replace(
+          versionCodeRegex,
+          `android:versionCode="${newVersionCode}"`
+        );
+        success(
+          `Updated AndroidManifest.xml versionCode to ${newVersionCode}`
+        );
+      } else {
+        warning(
+          "Could not find android:versionCode in AndroidManifest.xml, skipping..."
+        );
+      }
+
+      fs.writeFileSync(androidManifestPath, manifestContent);
+    } else {
+      warning(
+        `AndroidManifest.xml not found at ${androidManifestPath}, skipping...`
+      );
+    }
+
     // Step 5: Git operations
     info("Staging changes...");
     exec(`git add ${appPackagePath}`);
     if (fs.existsSync(buildGradlePath)) {
       exec(`git add ${buildGradlePath}`);
+    }
+    if (fs.existsSync(electronPackagePath)) {
+      exec(`git add ${electronPackagePath}`);
+    }
+    if (fs.existsSync(androidManifestPath)) {
+      exec(`git add ${androidManifestPath}`);
     }
     success("Changes staged");
 
@@ -343,6 +439,15 @@ function main() {
 
     log("📋 Summary:", "bright");
     log(`   ✓ Updated app version: ${currentVersion} → ${newVersion}`);
+    if (fs.existsSync(buildGradlePath)) {
+      log(`   ✓ Updated build.gradle versionName`);
+    }
+    if (fs.existsSync(electronPackagePath)) {
+      log(`   ✓ Updated Electron package.json`);
+    }
+    if (fs.existsSync(androidManifestPath)) {
+      log(`   ✓ Updated AndroidManifest.xml versionName and versionCode`);
+    }
     log(`   ✓ Created commit: "chore: bump app version to ${newVersion}"`);
     log(`   ✓ Created tag: v${newVersion}`);
 

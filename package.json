@@ -43,7 +43,13 @@
     "test:app": "cd packages/app && bun run test",
     "electron:dev": " bun run --cwd packages/app electron:dev",
     "electron:build": "bun run --cwd packages/app electron:build",
-    "electron:start": "bun run --cwd packages/app electron:start"
+    "electron:start": "bun run --cwd packages/app electron:start",
+    "build:cli": "bun run --cwd packages/cli build",
+    "dev:cli": "bun run --cwd packages/cli dev",
+    "lint:cli": "bun run --cwd packages/cli lint",
+    "lint:fix:cli": "bun run --cwd packages/cli lint:fix",
+    "format:cli": "bun run --cwd packages/cli format",
+    "typecheck:cli": "bun run --cwd packages/cli typecheck"
   },
   "devDependencies": {
     "@types/bun": "latest",
