@@ -74,7 +74,7 @@ export class MegaService implements CloudProvider {
       modifiedTime: f.timestamp ? new Date(f.timestamp * 1000) : new Date(),
       parents: [folderId || "root"],
       provider: "mega",
-      accountId: "mega-user",
+      accountId: (this.storage as any).email || "mega-user",
     }));
   }
 
@@ -98,7 +98,7 @@ export class MegaService implements CloudProvider {
       modifiedTime: new Date(),
       parents: [parentId || "root"],
       provider: "mega",
-      accountId: "mega-user",
+      accountId: (this.storage as any).email || "mega-user",
     };
   }
 

@@ -15,6 +15,9 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 
   try {
     const db = context.cloudflare.env.syncstuff_db;
+    if (!db) {
+      throw new Error("D1 database binding 'syncstuff_db' not found");
+    }
     const session = await getSession(request.headers.get("Cookie"));
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

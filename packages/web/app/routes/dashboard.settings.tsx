@@ -16,6 +16,12 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   const userId = session.get("userId");
   const db = context.cloudflare.env.syncstuff_db;
 
+  if (!db) {
+    throw new Error(
+      "D1 database binding 'syncstuff_db' not found. If running locally, ensure you are using 'wrangler dev' or have configured the proxy correctly.",
+    );
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const user: any = await db
     .prepare(
@@ -72,6 +78,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
       const data: any = await response.json();
 
       if (!response.ok) {
+        console.error("Change password API error:", data);
         return json({
           success: false,
           error: data.error || "Failed to change password",
@@ -80,8 +87,8 @@ export async function action({ request, context }: ActionFunctionArgs) {
 
       return json({ success: true, message: "Password updated successfully" });
     } catch (error) {
-      console.error("Change password error:", error);
-      return json({ success: false, error: "Network error" });
+      console.error("Change password fetch exception:", error);
+      return json({ success: false, error: "Network error: " + (error instanceof Error ? error.message : "Unknown") });
     }
   }
 
