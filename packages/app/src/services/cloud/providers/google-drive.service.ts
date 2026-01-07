@@ -93,6 +93,21 @@ export class GoogleDriveService implements CloudProvider {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           callback: async (resp: any) => {
             if (resp.error !== undefined) {
+              // Handle specific error for Android/Web client mismatch
+              if (
+                resp.error === "invalid_client" ||
+                resp.error.includes("Storage relay URI is not allowed")
+              ) {
+                console.error(
+                  "Google Drive Auth Error: Client ID configuration mismatch. Ensure you are using a 'Web application' Client ID for web/hybrid apps, not an Android Client ID.",
+                );
+                reject(
+                  new Error(
+                    "Google Client ID configuration error. See console for details.",
+                  ),
+                );
+                return;
+              }
               reject(resp);
               return;
             }

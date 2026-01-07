@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   IonCard,
   IonCardHeader,
@@ -12,6 +12,8 @@ import {
   IonSpinner,
   IonText,
   IonAlert,
+  type AlertInput,
+  type AlertButton,
 } from "@ionic/react";
 import {
   cloudOutline,
@@ -138,6 +140,68 @@ export const CloudAccounts: React.FC = () => {
     }
   };
 
+  const syncstuffInputs = useMemo<AlertInput[]>(
+    () => [
+      {
+        name: "email",
+        type: "email",
+        placeholder: "Email",
+      },
+      {
+        name: "password",
+        type: "password",
+        placeholder: "Password",
+      },
+    ],
+    [],
+  );
+
+  const syncstuffButtons = useMemo<AlertButton[]>(
+    () => [
+      {
+        text: "Cancel",
+        role: "cancel",
+        handler: () => setShowSyncstuffLogin(false),
+      },
+      {
+        text: "Login",
+        handler: data => handleSyncstuffLogin(data),
+      },
+    ],
+    [],
+  );
+
+  const megaInputs = useMemo<AlertInput[]>(
+    () => [
+      {
+        name: "email",
+        type: "email",
+        placeholder: "Email",
+      },
+      {
+        name: "password",
+        type: "password",
+        placeholder: "Password",
+      },
+    ],
+    [],
+  );
+
+  const megaButtons = useMemo<AlertButton[]>(
+    () => [
+      {
+        text: "Cancel",
+        role: "cancel",
+        handler: () => setShowMegaLogin(false),
+      },
+      {
+        text: "Login",
+        handler: data => handleMegaLogin(data),
+      },
+    ],
+    [],
+  );
+
   return (
     <IonCard>
       <IonCardHeader>
@@ -252,58 +316,16 @@ export const CloudAccounts: React.FC = () => {
           isOpen={showSyncstuffLogin}
           onDidDismiss={() => setShowSyncstuffLogin(false)}
           header="Login to Syncstuff"
-          inputs={[
-            {
-              name: "email",
-              type: "email",
-              placeholder: "Email",
-            },
-            {
-              name: "password",
-              type: "password",
-              placeholder: "Password",
-            },
-          ]}
-          buttons={[
-            {
-              text: "Cancel",
-              role: "cancel",
-              handler: () => setShowSyncstuffLogin(false),
-            },
-            {
-              text: "Login",
-              handler: data => handleSyncstuffLogin(data),
-            },
-          ]}
+          inputs={syncstuffInputs}
+          buttons={syncstuffButtons}
         />
 
         <IonAlert
           isOpen={showMegaLogin}
           onDidDismiss={() => setShowMegaLogin(false)}
           header="Login to Mega"
-          inputs={[
-            {
-              name: "email",
-              type: "email",
-              placeholder: "Email",
-            },
-            {
-              name: "password",
-              type: "password",
-              placeholder: "Password",
-            },
-          ]}
-          buttons={[
-            {
-              text: "Cancel",
-              role: "cancel",
-              handler: () => setShowMegaLogin(false),
-            },
-            {
-              text: "Login",
-              handler: data => handleMegaLogin(data),
-            },
-          ]}
+          inputs={megaInputs}
+          buttons={megaButtons}
         />
       </IonCardContent>
     </IonCard>
