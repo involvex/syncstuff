@@ -2,15 +2,31 @@ import { json, type LoaderFunctionArgs } from "@remix-run/cloudflare";
 import { useLoaderData } from "@remix-run/react";
 
 export async function loader({ context }: LoaderFunctionArgs) {
-  const db = context.cloudflare.env.syncstuff_db;
+  let userCount = 0;
+  let activeUserCount = 0;
 
-  // Fetch basic stats
-  const userCount = await db
-    .prepare("SELECT COUNT(*) as count FROM users")
-    .first("count");
-  const activeUserCount = await db
-    .prepare("SELECT COUNT(*) as count FROM users WHERE status = 'active'")
-    .first("count");
+  if (
+    context.cloudflare &&
+    context.cloudflare.env &&
+    context.cloudflare.env.syncstuff_db
+  ) {
+    const db = context.cloudflare.env.syncstuff_db;
+    // Fetch basic stats
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const userCountResult: any = await db
+      .prepare("SELECT COUNT(*) as count FROM users")
+      .first("count");
+    userCount = userCountResult;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const activeUserCountResult: any = await db
+      .prepare("SELECT COUNT(*) as count FROM users WHERE status = 'active'")
+      .first("count");
+    activeUserCount = activeUserCountResult;
+  } else {
+    console.warn("Database binding not found in admin._index, using mock data");
+    userCount = 10;
+    activeUserCount = 5;
+  }
 
   // Mock other stats since we don't have tables for everything yet
   const totalStorageUsed = "0 GB";
