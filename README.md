@@ -1,10 +1,12 @@
 # Syncstuff - Seamless File Synchronization
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://typescriptlang.org)
 [![Bun](https://img.shields.io/badge/Bun-1.0+-green)](https://bun.sh)
+[![npm version](https://badge.fury.io/js/@involvex%2Fsyncstuff-cli.svg)](https://badge.fury.io/js/@involvex%2Fsyncstuff-cli)
 
 Syncstuff is a comprehensive file synchronization ecosystem that enables secure peer-to-peer file transfer, clipboard synchronization, and cloud storage integration across mobile and web platforms.
+
+[Syncstuff-Web](https://syncstuff-web.involvex.workers.dev/)
 
 ## 🚀 Features
 
@@ -32,10 +34,12 @@ Syncstuff is a comprehensive file synchronization ecosystem that enables secure 
 syncstuff-monorepo/
 ├── packages/
 │   ├── app/          # Mobile application (Ionic + React)
+│   ├── app/electron/ # Electron application (Bun)
 │   ├── web/          # Web dashboard (Remix.js)
 │   ├── api/          # Backend API (Cloudflare Workers)
 │   ├── database/     # Database schema and migrations
 │   └── shared/       # Shared types and utilities
+│   └── cli/          # Command line interface (Bun)
 └── docs/
     ├── CLAUDE.md     # Technical reference for AI assistants
     └── README.md     # This file
@@ -221,8 +225,8 @@ SESSION_SECRET=your-session-secret
 **Web Configuration** (`packages/web/.env`):
 
 ```bash
-API_URL=https://your-api-url.com
-GITHUB_OAUTH_CALLBACK=https://your-domain.com/auth/callback?provider=github
+API_URL=https://syncstuff-web.involvex.workers.dev
+GITHUB_OAUTH_CALLBACK=https://syncstuff-web.involvex.workers.dev/auth/callback?provider=github
 ```
 
 ### Database Setup
@@ -237,10 +241,6 @@ bun run db:migrate
 # View database schema
 bun run db:studio
 ```
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
 
 ### Development Workflow
 
@@ -311,7 +311,6 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 - Check the [Technical Reference](CLAUDE.md) for detailed implementation details
 - Review existing [Issues](https://github.com/involvex/syncstuff/issues) for similar problems
-- Join our [Discord](https://discord.gg/your-invite-link) for community support
 
 ## 📄 License
 
@@ -324,14 +323,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Simple Peer** for WebRTC implementation
 - **All contributors** who have helped shape this project
 
-## 📞 Contact
-
-For questions and support, please contact:
-
-- **Project Maintainer**: [Your Name](mailto:your-email@example.com)
-- **Issues**: [GitHub Issues](https://github.com/involvex/syncstuff/issues)
-- **Discord**: [Community Chat](https://discord.gg/your-invite-link)
-
 ---
 
 **Syncstuff** - Making file synchronization seamless across all your devices.
+
+- [npm](https://www.npmjs.com/package/@involvex/syncstuff-cli)
+- [GitHub](https://github.com/involvex/syncstuff)
