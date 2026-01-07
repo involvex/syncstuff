@@ -21,6 +21,8 @@ import "./SettingsPage.css";
 import pkg from "../../package.json";
 
 import { CloudAccounts } from "../components/settings/CloudAccounts";
+import { PermissionsSettings } from "../components/settings/PermissionsSettings";
+import { NotificationSettings } from "../components/settings/NotificationSettings";
 
 const SettingsPage: React.FC = () => {
   const { deviceName, deviceId, initialize } = useSettingsStore();
@@ -73,6 +75,10 @@ const SettingsPage: React.FC = () => {
           </IonCard>
 
           <CloudAccounts />
+
+          <PermissionsSettings />
+
+          <NotificationSettings />
 
           <IonCard>
             <IonCardHeader>

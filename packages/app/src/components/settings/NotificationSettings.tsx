@@ -197,7 +197,7 @@ export const NotificationSettings: React.FC = () => {
               <IonToggle
                 checked={preferences.enabled}
                 onIonChange={e => handleToggle("enabled", e.detail.checked)}
-                disabled={permissionStatus === "denied"}
+                disabled={Boolean(permissionStatus === "denied")}
               />
             </div>
           </IonItem>
@@ -208,7 +208,7 @@ export const NotificationSettings: React.FC = () => {
                 expand="block"
                 fill="outline"
                 onClick={handleRequestPermission}
-                disabled={permissionStatus === "denied"}
+                disabled={Boolean(permissionStatus === "denied")}
               >
                 <IonIcon icon={notificationsOutline} slot="start" />
                 Request Permission

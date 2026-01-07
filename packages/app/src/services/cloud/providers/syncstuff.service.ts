@@ -55,80 +55,126 @@ export class SyncstuffService implements CloudProvider {
   }
 
   async login(email: string, password: string): Promise<CloudAccount> {
-    try {
-      const response = await fetch(`${this.API_URL}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+    // Retry logic for network issues (especially on mobile)
+    const maxRetries = 3;
+    let lastError: Error | null = null;
 
-      // Read response text once - we'll parse it as JSON if possible
-      const responseText = await response.text();
-      const contentType = response.headers.get("content-type");
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        // Create abort controller for timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
 
-      // Check if response is ok
-      if (!response.ok) {
-        let errorMessage = "Login failed";
-        // Try to parse as JSON first
-        if (contentType && contentType.includes("application/json")) {
-          try {
-            const errorData = JSON.parse(responseText);
-            errorMessage = errorData.error || errorData.message || errorMessage;
-          } catch {
-            // If JSON parse fails, use the text as-is
+        const response = await fetch(`${this.API_URL}/auth/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+          signal: controller.signal,
+        });
+
+        clearTimeout(timeoutId);
+
+        // Read response text once - we'll parse it as JSON if possible
+        const responseText = await response.text();
+        const contentType = response.headers.get("content-type");
+
+        // Check if response is ok
+        if (!response.ok) {
+          let errorMessage = "Login failed";
+          // Try to parse as JSON first
+          if (contentType && contentType.includes("application/json")) {
+            try {
+              const errorData = JSON.parse(responseText);
+              errorMessage =
+                errorData.error || errorData.message || errorMessage;
+            } catch {
+              // If JSON parse fails, use the text as-is
+              errorMessage =
+                responseText ||
+                `HTTP ${response.status}: ${response.statusText}`;
+            }
+          } else {
             errorMessage =
               responseText || `HTTP ${response.status}: ${response.statusText}`;
           }
-        } else {
-          errorMessage =
-            responseText || `HTTP ${response.status}: ${response.statusText}`;
+          throw new Error(errorMessage);
         }
-        throw new Error(errorMessage);
-      }
 
-      // Response is ok, try to parse as JSON
-      if (!contentType || !contentType.includes("application/json")) {
-        throw new Error(
-          `Invalid response format: ${responseText.substring(0, 100)}`,
+        // Response is ok, try to parse as JSON
+        if (!contentType || !contentType.includes("application/json")) {
+          throw new Error(
+            `Invalid response format: ${responseText.substring(0, 100)}`,
+          );
+        }
+
+        let data: AuthResponse;
+        try {
+          data = JSON.parse(responseText) as AuthResponse;
+        } catch (_parseError) {
+          throw new Error(
+            `Failed to parse response: ${responseText.substring(0, 100)}`,
+          );
+        }
+
+        if (!data.success) {
+          throw new Error(data.error || "Login failed");
+        }
+
+        if (!data.data || !data.data.token || !data.data.user) {
+          throw new Error("Invalid response data from server");
+        }
+
+        this.token = data.data.token;
+        localStorage.setItem("syncstuff_token", this.token);
+
+        return {
+          id: data.data.user.id,
+          provider: "syncstuff",
+          name: data.data.user.username,
+          email: data.data.user.email,
+          isAuthenticated: true,
+          avatarUrl: data.data.user.avatar_url,
+        };
+      } catch (error) {
+        console.error(
+          `Syncstuff Login Error (attempt ${attempt}/${maxRetries}):`,
+          error,
         );
-      }
+        lastError = error instanceof Error ? error : new Error(String(error));
 
-      let data: AuthResponse;
-      try {
-        data = JSON.parse(responseText) as AuthResponse;
-      } catch (_parseError) {
-        throw new Error(
-          `Failed to parse response: ${responseText.substring(0, 100)}`,
-        );
-      }
+        // Don't retry on authentication errors (4xx)
+        if (error instanceof Error) {
+          if (
+            error.message.includes("401") ||
+            error.message.includes("403") ||
+            error.message.includes("Invalid credentials")
+          ) {
+            throw error;
+          }
+          // Check if it's a network error that we should retry
+          if (
+            error.message.includes("Failed to fetch") ||
+            error.message.includes("NetworkError") ||
+            error.message.includes("aborted") ||
+            error.name === "AbortError"
+          ) {
+            if (attempt < maxRetries) {
+              // Wait before retrying (exponential backoff)
+              await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+              continue;
+            }
+          }
+        }
 
-      if (!data.success) {
-        throw new Error(data.error || "Login failed");
+        // If it's the last attempt or not a retryable error, throw
+        if (attempt === maxRetries) {
+          throw lastError;
+        }
       }
-
-      if (!data.data || !data.data.token || !data.data.user) {
-        throw new Error("Invalid response data from server");
-      }
-
-      this.token = data.data.token;
-      localStorage.setItem("syncstuff_token", this.token);
-
-      return {
-        id: data.data.user.id,
-        provider: "syncstuff",
-        name: data.data.user.username,
-        email: data.data.user.email,
-        isAuthenticated: true,
-        avatarUrl: data.data.user.avatar_url,
-      };
-    } catch (error) {
-      console.error("Syncstuff Login Error:", error);
-      // Re-throw with better error message
-      if (error instanceof Error) {
-        throw error;
-      }
-      throw new Error(String(error));
     }
+
+    // Should never reach here, but just in case
+    throw lastError || new Error("Login failed after retries");
   }
 
   async disconnect(): Promise<void> {

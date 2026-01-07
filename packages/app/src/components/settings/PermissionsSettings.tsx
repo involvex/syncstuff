@@ -212,7 +212,7 @@ export const PermissionsSettings: React.FC = () => {
             fill="clear"
             size="small"
             onClick={handleRefresh}
-            disabled={isRefreshing}
+            disabled={Boolean(isRefreshing)}
             slot="end"
           >
             {isRefreshing ? (
