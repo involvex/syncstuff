@@ -34,7 +34,7 @@ export class Database {
     }
   }
 
-  async getUserByEmail(email: string): Promise<{ user: User; password_hash: string } | null> {
+  async getUserByEmail(email: string): Promise<{ user: User; password_hash: string | null } | null> {
     const result = await this.db.prepare("SELECT * FROM users WHERE email = ?").bind(email).first<{
       id: string;
       email: string;
@@ -46,7 +46,7 @@ export class Database {
       status: 'active' | 'suspended';
       created_at: number;
       updated_at: number;
-      password_hash: string;
+      password_hash: string | null;
     }>();
     if (!result) return null;
 
@@ -66,7 +66,7 @@ export class Database {
     return { user, password_hash: result.password_hash };
   }
 
-  async getUserById(id: string): Promise<{ user: User; password_hash: string } | null> {
+  async getUserById(id: string): Promise<{ user: User; password_hash: string | null } | null> {
     const result = await this.db.prepare("SELECT * FROM users WHERE id = ?").bind(id).first<{
       id: string;
       email: string;
@@ -78,7 +78,7 @@ export class Database {
       status: 'active' | 'suspended';
       created_at: number;
       updated_at: number;
-      password_hash: string;
+      password_hash: string | null;
     }>();
     if (!result) return null;
 

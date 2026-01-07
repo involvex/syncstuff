@@ -76,6 +76,11 @@ export async function handleAuth(
         return new Response(JSON.stringify({ success: false, error: "Invalid credentials" }), { status: 401, headers });
       }
 
+      // If user has no password (e.g. OAuth only), they can't login with password
+      if (!userRecord.password_hash) {
+          return new Response(JSON.stringify({ success: false, error: "Please login with your social account" }), { status: 401, headers });
+      }
+
       const isValid = await bcrypt.compare(body.password, userRecord.password_hash);
       if (!isValid) {
         return new Response(JSON.stringify({ success: false, error: "Invalid credentials" }), { status: 401, headers });
@@ -131,8 +136,8 @@ export async function handleAuth(
         const body: any = await request.json(); // TODO: Add type
         const { currentPassword, newPassword } = body;
 
-        if (!currentPassword || !newPassword) {
-            return new Response(JSON.stringify({ success: false, error: "Missing fields" }), { status: 400, headers });
+        if (!newPassword) {
+            return new Response(JSON.stringify({ success: false, error: "New password is required" }), { status: 400, headers });
         }
 
         // Get user to check current password
@@ -141,9 +146,15 @@ export async function handleAuth(
              return new Response(JSON.stringify({ success: false, error: "User not found" }), { status: 404, headers });
         }
 
-        const isValid = await bcrypt.compare(currentPassword, userRecord.password_hash);
-        if (!isValid) {
-             return new Response(JSON.stringify({ success: false, error: "Incorrect current password" }), { status: 401, headers });
+        // Only check current password if one is set
+        if (userRecord.password_hash) {
+            if (!currentPassword) {
+                return new Response(JSON.stringify({ success: false, error: "Current password is required" }), { status: 400, headers });
+            }
+            const isValid = await bcrypt.compare(currentPassword, userRecord.password_hash);
+            if (!isValid) {
+                 return new Response(JSON.stringify({ success: false, error: "Incorrect current password" }), { status: 401, headers });
+            }
         }
 
         // Hash new password

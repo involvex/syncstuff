@@ -25,6 +25,16 @@ export default function AdminLayout() {
   const navigation = [
     {
       name: "Overview",
+      href: "/dashboard",
+      current: location.pathname === "/dashboard",
+    },
+    {
+      name: "Settings",
+      href: "/dashboard/settings",
+      current: location.pathname === "/dashboard/settings",
+    },
+    {
+      name: "Overview",
       href: "/admin",
       current: location.pathname === "/admin",
     },

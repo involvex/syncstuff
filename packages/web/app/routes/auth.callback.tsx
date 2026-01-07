@@ -21,9 +21,13 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     if (providerParam === "discord") {
       let { DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET, DISCORD_OAUTH_CALLBACK } =
         context.cloudflare.env;
+
+      // Fallbacks
       if (!DISCORD_CLIENT_ID) DISCORD_CLIENT_ID = "1458236674097283236";
+      // Hardcoded secret for now if not in env
       if (!DISCORD_CLIENT_SECRET)
         DISCORD_CLIENT_SECRET = "WwHX9w5L9avio4J7e-WoZl_tH7kbbR2e";
+
       if (!DISCORD_OAUTH_CALLBACK) {
         if (url.hostname === "localhost" || url.hostname === "127.0.0.1") {
           DISCORD_OAUTH_CALLBACK = `${url.protocol}//${url.host}/auth/callback?provider=discord`;
@@ -32,6 +36,12 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
             "https://syncstuff-web.involvex.workers.dev/auth/callback?provider=discord";
         }
       }
+
+      console.log("Discord Auth Debug:", {
+        client_id: DISCORD_CLIENT_ID,
+        redirect_uri: DISCORD_OAUTH_CALLBACK,
+        secret_length: DISCORD_CLIENT_SECRET?.length,
+      });
 
       const tokenResponse = await fetch(
         "https://discord.com/api/oauth2/token",
@@ -50,10 +60,13 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const tokenData: any = await tokenResponse.json();
-      if (tokenData.error)
+
+      if (tokenData.error) {
+        console.error("Discord Token Error Body:", tokenData);
         throw new Error(
-          tokenData.error_description || "Discord token exchange failed",
+          tokenData.error_description || `Discord error: ${tokenData.error}`,
         );
+      }
 
       const userResponse = await fetch("https://discord.com/api/users/@me", {
         headers: { Authorization: `Bearer ${tokenData.access_token}` },
@@ -67,6 +80,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
         .bind(userData.id)
         .first();
       if (!user) {
+         
         user = await db
           .prepare("SELECT id, role FROM users WHERE email = ?")
           .bind(userData.email)
@@ -170,6 +184,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
         .bind(userData.id.toString())
         .first();
       if (!user) {
+         
         user = await db
           .prepare("SELECT id, role FROM users WHERE email = ?")
           .bind(primaryEmail)

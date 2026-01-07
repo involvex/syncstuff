@@ -4,10 +4,12 @@ main = "./server.ts"
 
 [vars]
 GITHUB_OAUTH_CLIENT_ID = "Ov23li5ZRzCQoPWMN21O"
-GITHUB_OAUTH_CALLBACK = "https://syncstuff-web.involvex.workers.dev/auth/callback"
+GITHUB_OAUTH_CALLBACK = "https://syncstuff-web.involvex.workers.dev/auth/callback?provider=github"
+# Secrets (GITHUB_OAUTH_CLIENT_SECRET, SESSION_SECRET) must be set via `wrangler secret put`
+# or in .dev.vars for local development.
 GITHUB_OAUTH_CLIENT_SECRET = "07631a180f65b26a290791b111dd1ba01dae370b"
 DISCORD_CLIENT_ID = "1458236674097283236"
-DISCORD_OAUTH_CALLBACK = "https://syncstuff-web.involvex.workers.dev/auth/callback"
+DISCORD_OAUTH_CALLBACK = "https://syncstuff-web.involvex.workers.dev/auth/callback?provider=discord"
 SESSION_SECRET = "dev-session-secret"
 API_URL = "https://syncstuff-api.involvex.workers.dev"
 

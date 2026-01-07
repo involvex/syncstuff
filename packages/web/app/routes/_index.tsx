@@ -4,6 +4,7 @@ import {
   type MetaFunction,
 } from "@remix-run/cloudflare";
 import { Link, useLoaderData } from "@remix-run/react";
+import { env } from "node:process";
 import { getSession } from "~/services/session.server";
 import Navigation from "../components/Navigation";
 
@@ -16,7 +17,13 @@ export const meta: MetaFunction = () => {
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const session = await getSession(request.headers.get("Cookie"));
-  return json({ isLoggedIn: session.has("userId") });
+  if (env.env == "development") {
+    //Create mock login
+    session.set("userId", "mock-user-id");
+    return json({ isLoggedIn: session.has("userId") });
+  } else {
+    return json({ isLoggedIn: session.has("userId") });
+  }
 }
 
 export default function Index() {
