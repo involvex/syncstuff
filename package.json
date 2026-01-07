@@ -41,7 +41,10 @@
     "app:version:minor": "node scripts/bump-app-version.js --minor",
     "app:version:major": "node scripts/bump-app-version.js --major",
     "check": "bun run format && bun run lint:fix && bun run typecheck",
-    "test:app": "cd packages/app && bun run test"
+    "test:app": "cd packages/app && bun run test",
+    "electron:dev": " bun run --cwd packages/app electron:dev",
+    "electron:build": "bun run --cwd packages/app electron:build",
+    "electron:start": "bun run --cwd packages/app electron:start"
   },
   "devDependencies": {
     "@types/bun": "latest",

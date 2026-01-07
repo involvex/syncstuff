@@ -62,3 +62,6 @@ packages/app/android/.gradle
 
 packages/app/google_drive_client_secret.json
 packages/web/wrangler.toml
+
+packages/app/electron/node_modules
+packages/app/electron/dist

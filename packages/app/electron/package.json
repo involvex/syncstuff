@@ -1,0 +1,45 @@
+{
+  "name": "syncstuff-electron",
+  "version": "0.0.1",
+  "description": "Syncstuff Electron Desktop App",
+  "author": {
+    "name": "Involvex"
+  },
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "dev": "electron . --dev"
+  },
+  "devDependencies": {
+    "electron": "^39.2.7",
+    "electron-builder": "^24.9.1",
+    "electron-is-dev": "^3.0.1"
+  },
+  "build": {
+    "appId": "com.syncstuff.app",
+    "productName": "Syncstuff",
+    "icon": "../public/favicon.png",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "../dist/**/*",
+      "../assets/**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "../public/icon.ico"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "../public/icon.ico"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "../public/favicon.png"
+    }
+  }
+}
