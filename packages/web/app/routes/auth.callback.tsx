@@ -1,9 +1,13 @@
 import { redirect, type LoaderFunctionArgs } from "@remix-run/cloudflare";
+import * as jose from "jose";
 import { commitSession, getSession } from "~/services/session.server";
 
 export async function loader({ request, context }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
+  const jwtSecret = new TextEncoder().encode(
+    context.cloudflare.env.JWT_SECRET || "dev-secret-key-change-me",
+  );
 
   if (!code) {
     return redirect("/auth/login?error=No code provided");
@@ -113,6 +117,15 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 
       session.set("userId", user.id);
       session.set("role", user.role || "user");
+
+      // Generate Token
+      const token = await new jose.SignJWT({ sub: user.id, role: user.role })
+        .setProtectedHeader({ alg: "HS256" })
+        .setIssuedAt()
+        .setExpirationTime("7d")
+        .sign(jwtSecret);
+
+      session.set("token", token);
     } else {
       // GitHub flow (default or if provider=github)
       let {
@@ -216,6 +229,15 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 
       session.set("userId", user.id);
       session.set("role", user.role || "user");
+
+      // Generate Token
+      const token = await new jose.SignJWT({ sub: user.id, role: user.role })
+        .setProtectedHeader({ alg: "HS256" })
+        .setIssuedAt()
+        .setExpirationTime("7d")
+        .sign(jwtSecret);
+
+      session.set("token", token);
     }
 
     return redirect("/dashboard", {

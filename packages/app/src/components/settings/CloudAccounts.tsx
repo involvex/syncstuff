@@ -30,7 +30,7 @@ export const CloudAccounts: React.FC = () => {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [presentAlert] = useIonAlert();
 
-  const handleSyncstuffLogin = async (data: any) => {
+  const handleSyncstuffLogin = async (data: Record<string, string>) => {
     setIsAuthenticating(true);
     try {
       const provider = cloudManagerService.getProvider("syncstuff");
@@ -50,7 +50,7 @@ export const CloudAccounts: React.FC = () => {
     }
   };
 
-  const handleMegaLogin = async (data: any) => {
+  const handleMegaLogin = async (data: Record<string, string>) => {
     setIsAuthenticating(true);
     try {
       const provider = cloudManagerService.getProvider("mega");
@@ -161,18 +161,17 @@ export const CloudAccounts: React.FC = () => {
             "Google Drive Configuration Error: The Client ID used is likely for 'Android' but the app is using the Web SDK. Please create a new 'Web application' Client ID in Google Cloud Console and use that instead.";
         }
       } else if (typeof err === "string") {
-          errorMessage = err;
+        errorMessage = err;
       }
 
       // If we didn't show a login dialog (which handles its own errors), show generic error
       if (type !== "syncstuff" && type !== "mega") {
-          presentAlert({
-            header: "Authentication Error",
-            message: errorMessage,
-            buttons: ["OK"],
-          });
+        presentAlert({
+          header: "Authentication Error",
+          message: errorMessage,
+          buttons: ["OK"],
+        });
       }
-      
     } finally {
       if (type !== "syncstuff" && type !== "mega") {
         setIsAuthenticating(false);
@@ -264,13 +263,12 @@ export const CloudAccounts: React.FC = () => {
             disabled={isAuthenticating}
           >
             <IonIcon slot="start" icon={personCircleOutline} />
-            {isAuthenticating && (
-               // We can't easily know if it's THIS button causing loading if we use a single state,
-               // but for now simple spinner is fine or we can omit it since the alert opens instantly.
-               // Let's keep the spinner logic simple or remove it for the dialog-based ones.
-               /* simpler to just show text */
-               null
-            )}
+            {isAuthenticating &&
+              // We can't easily know if it's THIS button causing loading if we use a single state,
+              // but for now simple spinner is fine or we can omit it since the alert opens instantly.
+              // Let's keep the spinner logic simple or remove it for the dialog-based ones.
+              /* simpler to just show text */
+              null}
             Connect Syncstuff
           </IonButton>
 

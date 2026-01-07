@@ -8,5 +8,6 @@ interface Env {
   DISCORD_OAUTH_CALLBACK: string;
   SESSION_SECRET: string;
   API_URL: string;
+  JWT_SECRET: string;
   ASSETS: Fetcher;
 }

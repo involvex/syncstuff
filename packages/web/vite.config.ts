@@ -44,7 +44,7 @@ export default defineConfig({
     allowedHosts: ["localhost", "127.0.0.1", "0.0.0.0", "1.1.1.1"],
   },
   build: {
-    minify: true,
+    minify: false,
     copyPublicDir: true,
     outDir: "build",
     assetsDir: "assets",

@@ -93,8 +93,9 @@ export class GoogleDriveService implements CloudProvider {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           callback: async (resp: any) => {
             if (resp.error !== undefined) {
-              const errorText = resp.error_description || resp.error || "Unknown error";
-              
+              const errorText =
+                resp.error_description || resp.error || "Unknown error";
+
               // Handle specific error for Android/Web client mismatch
               if (
                 errorText.includes("Storage relay URI") ||

@@ -135,11 +135,14 @@ export class MegaService implements CloudProvider {
     if (!this.storage) throw new Error("No storage");
     const info = await this.storage.getAccountInfo();
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const storageAny = this.storage as any;
+
     return {
-      id: "mega-user",
+      id: storageAny.email || "mega-user", // Use email as ID if available
       provider: "mega",
-      name: "Mega User",
-      email: "user@mega.nz",
+      name: storageAny.name || "Mega User",
+      email: storageAny.email || "user@mega.nz",
       isAuthenticated: true,
       quotaUsed: info.spaceUsed,
       quotaTotal: info.spaceTotal,
