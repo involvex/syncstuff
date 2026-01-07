@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState } from "react";
 import {
   IonCard,
   IonCardHeader,
@@ -9,11 +9,8 @@ import {
   IonLabel,
   IonButton,
   IonIcon,
-  IonSpinner,
-  IonAlert,
   IonText,
-  type AlertInput,
-  type AlertButton,
+  useIonAlert,
 } from "@ionic/react";
 import {
   cloudOutline,
@@ -31,25 +28,118 @@ import { MegaService } from "../../services/cloud/providers/mega.service";
 export const CloudAccounts: React.FC = () => {
   const { accounts, addAccount, removeAccount } = useCloudStore();
   const [isAuthenticating, setIsAuthenticating] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [showSyncstuffLogin, setShowSyncstuffLogin] = useState(false);
-  const [showMegaLogin, setShowMegaLogin] = useState(false);
+  const [presentAlert] = useIonAlert();
+
+  const handleSyncstuffLogin = async (data: any) => {
+    setIsAuthenticating(true);
+    try {
+      const provider = cloudManagerService.getProvider("syncstuff");
+      if (provider instanceof SyncstuffService) {
+        const account = await provider.login(data.email, data.password);
+        addAccount(account);
+      }
+    } catch (err: unknown) {
+      const errorMsg = err instanceof Error ? err.message : "Login failed";
+      presentAlert({
+        header: "Login Failed",
+        message: errorMsg,
+        buttons: ["OK"],
+      });
+    } finally {
+      setIsAuthenticating(false);
+    }
+  };
+
+  const handleMegaLogin = async (data: any) => {
+    setIsAuthenticating(true);
+    try {
+      const provider = cloudManagerService.getProvider("mega");
+      if (provider instanceof MegaService) {
+        const account = await provider.login(data.email, data.password);
+        addAccount(account);
+      }
+    } catch (err: unknown) {
+      const errorMsg = err instanceof Error ? err.message : "Login failed";
+      presentAlert({
+        header: "Login Failed",
+        message: errorMsg,
+        buttons: ["OK"],
+      });
+    } finally {
+      setIsAuthenticating(false);
+    }
+  };
+
+  const showSyncstuffLoginAlert = () => {
+    presentAlert({
+      header: "Login to Syncstuff",
+      inputs: [
+        {
+          name: "email",
+          type: "email",
+          placeholder: "Email",
+        },
+        {
+          name: "password",
+          type: "password",
+          placeholder: "Password",
+        },
+      ],
+      buttons: [
+        {
+          text: "Cancel",
+          role: "cancel",
+        },
+        {
+          text: "Login",
+          handler: handleSyncstuffLogin,
+        },
+      ],
+    });
+  };
+
+  const showMegaLoginAlert = () => {
+    presentAlert({
+      header: "Login to Mega",
+      inputs: [
+        {
+          name: "email",
+          type: "email",
+          placeholder: "Email",
+        },
+        {
+          name: "password",
+          type: "password",
+          placeholder: "Password",
+        },
+      ],
+      buttons: [
+        {
+          text: "Cancel",
+          role: "cancel",
+        },
+        {
+          text: "Login",
+          handler: handleMegaLogin,
+        },
+      ],
+    });
+  };
 
   const handleAddAccount = async (type: CloudProviderType) => {
     setIsAuthenticating(true);
-    setError(null);
     try {
       const provider = cloudManagerService.getProvider(type);
       if (!provider) throw new Error("Provider not found");
 
       if (type === "syncstuff") {
-        setShowSyncstuffLogin(true);
+        showSyncstuffLoginAlert();
         setIsAuthenticating(false);
         return;
       }
 
       if (type === "mega") {
-        setShowMegaLogin(true);
+        showMegaLoginAlert();
         setIsAuthenticating(false);
         return;
       }
@@ -57,78 +147,38 @@ export const CloudAccounts: React.FC = () => {
       const account = await provider.authenticate();
       addAccount(account);
     } catch (err: unknown) {
-      if (
-        err instanceof Error &&
-        (err.message === "CREDENTIALS_REQUIRED" ||
-          err.message.includes("Storage relay URI"))
-      ) {
-        // Google Drive specific error handling fallback could go here if needed,
-        // but for now we just show the error or handle Syncstuff/Mega logic
-        if (type === "syncstuff") setShowSyncstuffLogin(true);
-        if (type === "mega") setShowMegaLogin(true);
+      console.error("Auth Error:", err);
+      let errorMessage = "Failed to authenticate";
 
-        if (err.message.includes("Storage relay URI")) {
-          setError(
-            "Google Drive Error: Client ID configuration mismatch. Please use a Web Client ID for this app.",
-          );
+      if (err instanceof Error) {
+        errorMessage = err.message;
+        // Check for specific Google Drive error
+        if (
+          errorMessage.includes("Storage relay URI") ||
+          errorMessage === "invalid_client"
+        ) {
+          errorMessage =
+            "Google Drive Configuration Error: The Client ID used is likely for 'Android' but the app is using the Web SDK. Please create a new 'Web application' Client ID in Google Cloud Console and use that instead.";
         }
-      } else if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("Failed to authenticate");
+      } else if (typeof err === "string") {
+          errorMessage = err;
       }
+
+      // If we didn't show a login dialog (which handles its own errors), show generic error
+      if (type !== "syncstuff" && type !== "mega") {
+          presentAlert({
+            header: "Authentication Error",
+            message: errorMessage,
+            buttons: ["OK"],
+          });
+      }
+      
     } finally {
       if (type !== "syncstuff" && type !== "mega") {
         setIsAuthenticating(false);
       }
     }
   };
-
-  const handleSyncstuffLogin = useCallback(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async (data: any) => {
-      setIsAuthenticating(true);
-
-      try {
-        const provider = cloudManagerService.getProvider("syncstuff");
-
-        if (provider instanceof SyncstuffService) {
-          const account = await provider.login(data.email, data.password);
-          addAccount(account);
-        }
-      } catch (err: unknown) {
-        const errorMsg = err instanceof Error ? err.message : "Login failed";
-        setError(errorMsg);
-      } finally {
-        setIsAuthenticating(false);
-        setShowSyncstuffLogin(false);
-      }
-    },
-    [addAccount],
-  );
-
-  const handleMegaLogin = useCallback(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async (data: any) => {
-      setIsAuthenticating(true);
-
-      try {
-        const provider = cloudManagerService.getProvider("mega");
-
-        if (provider instanceof MegaService) {
-          const account = await provider.login(data.email, data.password);
-          addAccount(account);
-        }
-      } catch (err: unknown) {
-        const errorMsg = err instanceof Error ? err.message : "Login failed";
-        setError(errorMsg);
-      } finally {
-        setIsAuthenticating(false);
-        setShowMegaLogin(false);
-      }
-    },
-    [addAccount],
-  );
 
   const handleRemoveAccount = async (
     accountId: string,
@@ -157,68 +207,6 @@ export const CloudAccounts: React.FC = () => {
         return cloudOutline;
     }
   };
-
-  const syncstuffInputs = useMemo<AlertInput[]>(
-    () => [
-      {
-        name: "email",
-        type: "email",
-        placeholder: "Email",
-      },
-      {
-        name: "password",
-        type: "password",
-        placeholder: "Password",
-      },
-    ],
-    [],
-  );
-
-  const syncstuffButtons = useMemo<AlertButton[]>(
-    () => [
-      {
-        text: "Cancel",
-        role: "cancel",
-        handler: () => setShowSyncstuffLogin(false),
-      },
-      {
-        text: "Login",
-        handler: handleSyncstuffLogin,
-      },
-    ],
-    [handleSyncstuffLogin],
-  );
-
-  const megaInputs = useMemo<AlertInput[]>(
-    () => [
-      {
-        name: "email",
-        type: "email",
-        placeholder: "Email",
-      },
-      {
-        name: "password",
-        type: "password",
-        placeholder: "Password",
-      },
-    ],
-    [],
-  );
-
-  const megaButtons = useMemo<AlertButton[]>(
-    () => [
-      {
-        text: "Cancel",
-        role: "cancel",
-        handler: () => setShowMegaLogin(false),
-      },
-      {
-        text: "Login",
-        handler: handleMegaLogin,
-      },
-    ],
-    [handleMegaLogin],
-  );
 
   return (
     <IonCard>
@@ -276,11 +264,14 @@ export const CloudAccounts: React.FC = () => {
             disabled={isAuthenticating}
           >
             <IonIcon slot="start" icon={personCircleOutline} />
-            {isAuthenticating && showSyncstuffLogin ? (
-              <IonSpinner name="dots" />
-            ) : (
-              "Connect Syncstuff"
+            {isAuthenticating && (
+               // We can't easily know if it's THIS button causing loading if we use a single state,
+               // but for now simple spinner is fine or we can omit it since the alert opens instantly.
+               // Let's keep the spinner logic simple or remove it for the dialog-based ones.
+               /* simpler to just show text */
+               null
             )}
+            Connect Syncstuff
           </IonButton>
 
           <IonButton
@@ -301,11 +292,7 @@ export const CloudAccounts: React.FC = () => {
             color="danger"
           >
             <IonIcon slot="start" icon={cloudOutline} />
-            {isAuthenticating && showMegaLogin ? (
-              <IonSpinner name="dots" />
-            ) : (
-              "Connect Mega"
-            )}
+            Connect Mega
           </IonButton>
 
           {/* Mock Provider for Testing */}
@@ -321,30 +308,6 @@ export const CloudAccounts: React.FC = () => {
             Connect Mock Cloud (Test)
           </IonButton>
         </div>
-
-        <IonAlert
-          isOpen={!!error}
-          onDidDismiss={() => setError(null)}
-          header="Authentication Error"
-          message={error || "Unknown error"}
-          buttons={["OK"]}
-        />
-
-        <IonAlert
-          isOpen={showSyncstuffLogin}
-          onDidDismiss={() => setShowSyncstuffLogin(false)}
-          header="Login to Syncstuff"
-          inputs={syncstuffInputs}
-          buttons={syncstuffButtons}
-        />
-
-        <IonAlert
-          isOpen={showMegaLogin}
-          onDidDismiss={() => setShowMegaLogin(false)}
-          header="Login to Mega"
-          inputs={megaInputs}
-          buttons={megaButtons}
-        />
       </IonCardContent>
     </IonCard>
   );
