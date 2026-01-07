@@ -13,7 +13,7 @@ export function showversion() {
   try {
     const packagePath = join(__dirname, "../../../package.json");
     const packageJson = JSON.parse(readFileSync(packagePath, "utf-8"));
-    const version = packageJson.version || "0.0.1";
+    const version = packageJson.version;
 
     const versionBox = createBox(
       chalk.cyan.bold("Syncstuff CLI\n\n") +

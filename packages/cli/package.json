@@ -1,6 +1,6 @@
 {
   "name": "@involvex/syncstuff-cli",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "homepage": "https://syncstuff-web.involvex.workers.dev/",
   "sponsor": {
@@ -10,7 +10,7 @@
     "name": "involvex"
   },
   "bin": {
-    "syncstuff": "src/cli/index.ts"
+    "syncstuff": "dist/cli.js"
   },
   "scripts": {
     "dev": "bun run src/cli/index.ts",

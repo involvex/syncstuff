@@ -1,6 +1,8 @@
 import boxen from "boxen";
 import chalk from "chalk";
+import { readFileSync } from "fs";
 import ora from "ora";
+import { join } from "path";
 import Table from "table";
 
 export function success(message: string): void {
@@ -69,9 +71,12 @@ export function animateText(text: string, delay: number = 50): Promise<void> {
 }
 
 export function printHeader(): void {
+  const packagePath = join(__dirname, "../../../../package.json");
+  const packageJson = JSON.parse(readFileSync(packagePath, "utf-8"));
+  const version = packageJson.version;
   const header = chalk.cyan.bold(`
 ╔═══════════════════════════════════════╗
-║        Syncstuff CLI v0.0.1          ║
+║        Syncstuff CLI v${version}          ║
 ║     Seamless Sync Across Devices      ║
 ╚═══════════════════════════════════════╝
   `);
