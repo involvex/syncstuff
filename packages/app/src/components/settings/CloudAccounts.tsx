@@ -9,7 +9,7 @@ import {
   IonLabel,
   IonButton,
   IonIcon,
-  // IonSpinner,
+  IonSpinner,
   IonText,
   IonAlert,
 } from "@ionic/react";
@@ -190,6 +190,20 @@ export const CloudAccounts: React.FC = () => {
           <IonButton
             expand="block"
             fill="outline"
+            onClick={() => handleAddAccount("syncstuff")}
+            disabled={isAuthenticating}
+          >
+            <IonIcon slot="start" icon={personCircleOutline} />
+            {isAuthenticating && showSyncstuffLogin ? (
+              <IonSpinner name="dots" />
+            ) : (
+              "Connect Syncstuff"
+            )}
+          </IonButton>
+
+          <IonButton
+            expand="block"
+            fill="outline"
             onClick={() => handleAddAccount("google")}
             disabled={isAuthenticating}
           >
@@ -205,7 +219,11 @@ export const CloudAccounts: React.FC = () => {
             color="danger"
           >
             <IonIcon slot="start" icon={cloudOutline} />
-            Connect Mega
+            {isAuthenticating && showMegaLogin ? (
+              <IonSpinner name="dots" />
+            ) : (
+              "Connect Mega"
+            )}
           </IonButton>
 
           {/* Mock Provider for Testing */}

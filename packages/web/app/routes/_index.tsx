@@ -14,12 +14,14 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request, context }: LoaderFunctionArgs) {
   const session = await getSession(request.headers.get("Cookie"));
-
-  // Check for development environment to provide mock login
-  // In Remix on Cloudflare, we can check process.env.NODE_ENV or a custom flag
-  const isDev = process.env.NODE_ENV === "development";
+  
+  // Check for development environment using Cloudflare context if available
+  // Or check host header as a fallback for local dev
+  const isDev = context.cloudflare?.env?.API_URL?.includes("localhost") || 
+                new URL(request.url).hostname === "localhost" || 
+                new URL(request.url).hostname === "127.0.0.1";
 
   if (isDev && !session.has("userId")) {
     // Create mock login for local development convenience
@@ -31,7 +33,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         headers: {
           "Set-Cookie": await commitSession(session),
         },
-      },
+      }
     );
   }
 
@@ -78,7 +80,7 @@ export default function Index() {
                 </Link>
               ) : (
                 <a
-                  href="/auth/login"
+                  href="/auth/register"
                   className="mr-3 inline-flex items-center justify-center rounded-lg bg-blue-700 px-5 py-3 text-center text-base font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900"
                 >
                   Get started
