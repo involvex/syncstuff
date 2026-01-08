@@ -1,12 +1,16 @@
 #!/usr/bin/env node
 import { debugLog, parseArgs, type CommandContext } from "../utils/context.js";
 import { printHeader } from "../utils/ui.js";
+import { checkForUpdates } from "../utils/update-checker.js";
 
 export async function run() {
   const args = process.argv.slice(2);
   const { command, flags, commandArgs } = parseArgs(args);
 
   const ctx: CommandContext = { debug: flags.debug };
+
+  // Check for updates (non-blocking)
+  checkForUpdates();
 
   // Debug mode: log parsed arguments
   debugLog(ctx, "Parsed arguments:", { command, flags, commandArgs });
@@ -47,7 +51,7 @@ export async function run() {
     case "devices":
       {
         const { listDevices } = await import("./commands/devices.js");
-        await listDevices(ctx);
+        await listDevices(commandArgs, ctx);
       }
       break;
     case "device":

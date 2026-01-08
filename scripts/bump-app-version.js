@@ -179,6 +179,14 @@ function calculateNewVersion(currentVersion, bumpType) {
 }
 
 /**
+ * Check if a git tag already exists
+ */
+function tagExists(tagName) {
+  const result = exec(`git tag -l ${tagName}`, { silent: true });
+  return result.trim() !== "";
+}
+
+/**
  * Create annotated git tag with release notes
  */
 function createAnnotatedTag(version, isDryRun) {
@@ -199,6 +207,12 @@ Changes:
     log("\nTag message:", "yellow");
     log(tagMessage, "yellow");
     return;
+  }
+
+  // Check if tag already exists and delete it
+  if (tagExists(tagName)) {
+    warning(`Tag ${tagName} already exists, deleting...`);
+    exec(`git tag -d ${tagName}`, { ignoreError: true });
   }
 
   // Create annotated tag with message
@@ -321,7 +335,7 @@ function main() {
     if (fs.existsSync(buildGradlePath)) {
       info("Updating build.gradle versionName...");
       let buildGradleContent = fs.readFileSync(buildGradlePath, "utf-8");
-      
+
       // Update versionName in build.gradle
       // Pattern: versionName "0.0.1" or versionName = "0.0.1"
       const versionNameRegex = /versionName\s+(?:=)?\s*["']([^"']+)["']/;
@@ -361,7 +375,7 @@ function main() {
     if (fs.existsSync(androidManifestPath)) {
       info("Updating AndroidManifest.xml version...");
       let manifestContent = fs.readFileSync(androidManifestPath, "utf-8");
-      
+
       // Update versionName in AndroidManifest.xml
       // Pattern: android:versionName="0.0.1"
       const versionNameRegex = /android:versionName=["']([^"']+)["']/;
@@ -387,9 +401,7 @@ function main() {
           versionCodeRegex,
           `android:versionCode="${newVersionCode}"`
         );
-        success(
-          `Updated AndroidManifest.xml versionCode to ${newVersionCode}`
-        );
+        success(`Updated AndroidManifest.xml versionCode to ${newVersionCode}`);
       } else {
         warning(
           "Could not find android:versionCode in AndroidManifest.xml, skipping..."
@@ -457,6 +469,55 @@ function main() {
       log(`   git push && git push --tags\n`, "bright");
     } else {
       log(`   ✓ Pushed to remote\n`);
+    }
+
+    // Step 9: Build APK
+    log("\n📱 Building Android APK...", "cyan");
+    try {
+      exec("cd packages/app && ionic cap sync android", { silent: false });
+      exec("cd packages/app/android && ./gradlew.bat assembleDebug", {
+        silent: false,
+      });
+      success("Android APK built successfully");
+
+      // Copy APK to web downloads folder
+      const apkSource = path.join(
+        rootDir,
+        "packages",
+        "app",
+        "android",
+        "app",
+        "build",
+        "outputs",
+        "apk",
+        "debug",
+        "app-debug.apk"
+      );
+      const apkDest = path.join(
+        rootDir,
+        "packages",
+        "web",
+        "public",
+        "downloads",
+        `syncstuff-v${newVersion}.apk`
+      );
+
+      if (fs.existsSync(apkSource)) {
+        fs.copyFileSync(apkSource, apkDest);
+        success(`APK copied to: ${apkDest}`);
+
+        log("\n🌐 Deploy to web?", "cyan");
+        log("   To deploy the new APK to the web app, run:", "cyan");
+        log(`   cd packages/web && bun run deploy\n`, "bright");
+      } else {
+        warning("APK not found at expected location");
+      }
+    } catch (buildErr) {
+      warning(`APK build failed: ${buildErr.message}`);
+      log(
+        "   You can build manually with: cd packages/app && ionic cap sync android && cd android && ./gradlew.bat assembleDebug",
+        "yellow"
+      );
     }
   } catch (err) {
     error(`Version bump failed: ${err.message}`);

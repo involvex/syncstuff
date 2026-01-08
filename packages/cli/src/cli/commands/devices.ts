@@ -11,8 +11,31 @@ import {
   success,
 } from "../../utils/ui.js";
 
-export async function listDevices(ctx: CommandContext): Promise<void> {
-  printHeader();
+/**
+ * List devices command
+ * Options:
+ *   --loop    Continuously refresh devices until Ctrl+C
+ */
+export async function listDevices(
+  args: string[],
+  ctx: CommandContext,
+): Promise<void> {
+  const isLoop = args.includes("--loop") || args.includes("-l");
+
+  debugLog(ctx, "Devices command", { loop: isLoop });
+
+  if (isLoop) {
+    await loopDevices(ctx);
+  } else {
+    printHeader();
+    await fetchAndDisplayDevices(ctx);
+  }
+}
+
+/**
+ * Fetch and display devices once
+ */
+async function fetchAndDisplayDevices(ctx: CommandContext): Promise<boolean> {
   debugLog(ctx, "Fetching devices list");
 
   if (!apiClient.isAuthenticated()) {
@@ -33,7 +56,7 @@ export async function listDevices(ctx: CommandContext): Promise<void> {
       if (response.data.length === 0) {
         info("No devices found. Connect a device to get started.");
         printSeparator();
-        return;
+        return true;
       }
 
       const tableData = response.data.map(device => [
@@ -58,6 +81,7 @@ export async function listDevices(ctx: CommandContext): Promise<void> {
       printSeparator();
       success(`Found ${response.data.length} device(s)`);
       printSeparator();
+      return true;
     } else {
       spinner.fail("Failed to fetch devices");
       if (
@@ -69,10 +93,53 @@ export async function listDevices(ctx: CommandContext): Promise<void> {
       } else {
         error(response.error || "Unknown error");
       }
+      return false;
     }
   } catch (err) {
     spinner.fail("Error fetching devices");
     error(`Error: ${err instanceof Error ? err.message : String(err)}`);
-    process.exit(1);
+    return false;
   }
+}
+
+/**
+ * Loop mode: continuously refresh devices
+ */
+async function loopDevices(ctx: CommandContext): Promise<void> {
+  const REFRESH_INTERVAL = 5000; // 5 seconds
+
+  console.clear();
+  printHeader();
+  console.log(chalk.cyan("Loop mode enabled. Press Ctrl+C to exit."));
+  console.log(
+    chalk.gray(`Refreshing every ${REFRESH_INTERVAL / 1000} seconds...\n`),
+  );
+
+  // Handle Ctrl+C gracefully
+  process.on("SIGINT", () => {
+    console.log("\n");
+    info("Loop stopped by user");
+    process.exit(0);
+  });
+
+  // Initial fetch
+  await fetchAndDisplayDevices(ctx);
+
+  // Set up refresh loop
+  const interval = setInterval(async () => {
+    console.clear();
+    printHeader();
+    console.log(chalk.cyan("Loop mode enabled. Press Ctrl+C to exit."));
+    console.log(
+      chalk.gray(`Last refresh: ${new Date().toLocaleTimeString()}\n`),
+    );
+    await fetchAndDisplayDevices(ctx);
+  }, REFRESH_INTERVAL);
+
+  // Keep the process running
+  await new Promise(() => {
+    // This promise never resolves - we wait for SIGINT
+  });
+
+  clearInterval(interval);
 }
