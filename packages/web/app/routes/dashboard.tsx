@@ -105,7 +105,7 @@ export default function DashboardLayout() {
   return (
     <div className="flex min-h-screen bg-gray-50 transition-colors duration-200 dark:bg-gray-900">
       {/* Sidebar for Desktop */}
-      <aside className="hidden border-r border-gray-200 bg-white backdrop-blur-sm md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col dark:border-gray-800 dark:bg-gray-800/50">
+      <aside className="hidden border-r border-gray-200 bg-white backdrop-blur-sm dark:border-gray-800 dark:bg-gray-800/50 md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
         <div className="flex min-h-0 flex-1 flex-col">
           <div className="flex h-16 shrink-0 items-center border-b border-gray-200 px-4 dark:border-gray-800">
             <Link
@@ -202,7 +202,7 @@ export default function DashboardLayout() {
             <div className="flex items-center space-x-4">
               <ThemeToggle />
               {role === "admin" && (
-                <span className="hidden items-center rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-800 sm:inline-flex dark:bg-purple-900 dark:text-purple-200">
+                <span className="hidden items-center rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-800 dark:bg-purple-900 dark:text-purple-200 sm:inline-flex">
                   Admin
                 </span>
               )}

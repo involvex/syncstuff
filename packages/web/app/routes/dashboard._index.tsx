@@ -313,7 +313,7 @@ export default function DashboardIndex() {
         </div>
 
         {/* Recent Activity Card */}
-        <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm lg:col-span-2 dark:border-gray-700 dark:bg-gray-800">
+        <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800 lg:col-span-2">
           <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50/50 px-6 py-4 dark:border-gray-700 dark:bg-gray-700/30">
             <h3 className="text-sm font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
               Recent Activity Triggers

@@ -6,6 +6,7 @@ interface Env {
   DISCORD_CLIENT_ID: string;
   DISCORD_CLIENT_SECRET: string;
   DISCORD_OAUTH_CALLBACK: string;
+  DISCORD_WEBHOOK_URL?: string;
   SESSION_SECRET: string;
   API_URL: string;
   JWT_SECRET: string;

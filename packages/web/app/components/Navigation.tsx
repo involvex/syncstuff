@@ -10,7 +10,8 @@ export default function Navigation({ isLoggedIn = false }: NavigationProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav className="sticky start-0 top-0 z-50 w-full border-b border-gray-200 bg-white/80 backdrop-blur-md dark:border-gray-700 dark:bg-gray-900/80">
+    /* eslint-disable tailwindcss/no-custom-classname */
+    <nav className="bg-surfaceContainer/80 sticky start-0 top-0 z-50 w-full border-b border-gray-200 bg-blue-100 backdrop-blur-md dark:border-gray-700 dark:bg-gray-900/80">
       <div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
         <Link
           to="/"
@@ -26,9 +27,9 @@ export default function Navigation({ isLoggedIn = false }: NavigationProps) {
             className="hidden h-8 dark:block"
             alt="Syncstuff Logo"
           />
-          <span className="self-center whitespace-nowrap text-2xl font-bold tracking-tight dark:text-white">
+          {/* <span className="self-center whitespace-nowrap text-2xl font-bold tracking-tight dark:text-white">
             Syncstuff
-          </span>
+          </span> */}
         </Link>
 
         <div className="flex items-center space-x-2 md:order-2 md:space-x-4 rtl:space-x-reverse">
@@ -52,7 +53,7 @@ export default function Navigation({ isLoggedIn = false }: NavigationProps) {
 
           <button
             type="button"
-            className="inline-flex size-10 items-center justify-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 md:hidden dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+            className="inline-flex size-10 items-center justify-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 md:hidden"
             aria-controls="navbar-sticky"
             aria-expanded={isMenuOpen}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -82,37 +83,52 @@ export default function Navigation({ isLoggedIn = false }: NavigationProps) {
           }`}
           id="navbar-sticky"
         >
-          <ul className="mt-4 flex flex-col rounded-xl border border-gray-100 bg-gray-50 p-4 font-medium md:mt-0 md:flex-row md:space-x-8 md:border-0 md:bg-transparent md:p-0 rtl:space-x-reverse dark:border-gray-700 dark:bg-gray-800 md:dark:bg-transparent">
+          <ul className="mt-4 flex flex-col rounded-xl border border-gray-100 bg-gray-50 p-4 font-medium dark:border-gray-700 dark:bg-gray-800 md:mt-0 md:flex-row md:space-x-8 md:border-0 md:bg-transparent md:p-0 md:dark:bg-transparent rtl:space-x-reverse">
             <li>
               <Link
                 to="/"
-                className="block rounded-lg px-3 py-2 text-blue-600 md:p-0 dark:text-blue-500"
-                aria-current="page"
+                className="block rounded-lg bg-blue-400 px-3 py-2 text-gray-900 transition-colors hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 md:p-0 md:hover:bg-transparent md:hover:text-blue-600 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
               >
                 Home
               </Link>
             </li>
             <li>
               <Link
-                to="#features"
-                className="block rounded-lg px-3 py-2 text-gray-900 transition-colors hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-blue-600 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
+                to="/about"
+                className="block rounded-lg bg-blue-400 px-3 py-2 text-gray-900 transition-colors hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 md:p-0 md:hover:bg-transparent md:hover:text-blue-600 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
               >
-                Features
+                About
               </Link>
             </li>
             <li>
               <Link
-                to="#pricing"
-                className="block rounded-lg px-3 py-2 text-gray-900 transition-colors hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-blue-600 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
+                to="/premium"
+                className="block rounded-lg bg-blue-400 px-3 py-2 text-gray-900 transition-colors hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 md:p-0 md:hover:bg-transparent md:hover:text-blue-600 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
               >
-                Pricing
+                Premium
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/campaigns"
+                className="block rounded-lg bg-blue-400 px-3 py-2 text-gray-900 transition-colors hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 md:p-0 md:hover:bg-transparent md:hover:text-blue-600 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
+              >
+                Campaigns
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/faq"
+                className="block rounded-lg bg-blue-400 px-3 py-2 text-gray-900 transition-colors hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 md:p-0 md:hover:bg-transparent md:hover:text-blue-600 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
+              >
+                FAQs
               </Link>
             </li>
             {isLoggedIn && (
               <li>
                 <Link
                   to="/dashboard/settings"
-                  className="block rounded-lg px-3 py-2 text-gray-900 transition-colors hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-blue-600 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
+                  className="block rounded-lg bg-blue-400 px-3 py-2 text-gray-900 transition-colors hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 md:p-0 md:hover:bg-transparent md:hover:text-blue-600 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
                 >
                   Settings
                 </Link>
@@ -121,7 +137,7 @@ export default function Navigation({ isLoggedIn = false }: NavigationProps) {
             <li>
               <Link
                 to="/contact"
-                className="block rounded-lg px-3 py-2 text-gray-900 transition-colors hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-blue-600 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
+                className="block rounded-lg bg-blue-400 px-3 py-2 text-gray-900 transition-colors hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 md:p-0 md:hover:bg-transparent md:hover:text-blue-600 md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
               >
                 Contact
               </Link>

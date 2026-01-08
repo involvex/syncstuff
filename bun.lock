@@ -31,7 +31,7 @@
     },
     "packages/app": {
       "name": "syncstuff",
-      "version": "0.0.6",
+      "version": "0.0.8",
       "dependencies": {
         "@aparajita/capacitor-dark-mode": "6.0.0",
         "@byteowls/capacitor-filesharer": "7.0.0",
@@ -140,7 +140,7 @@
       "name": "@syncstuff/database",
       "version": "0.0.1",
       "devDependencies": {
-        "wrangler": "4",
+        "wrangler": "4.57.0",
       },
     },
     "packages/shared": {
@@ -155,6 +155,7 @@
       "name": "@syncstuff/web",
       "version": "0.0.1",
       "dependencies": {
+        "@emailjs/browser": "4.4.1",
         "@eslint/css": "0.14.1",
         "@eslint/js": "9.39.2",
         "@eslint/json": "0.14.0",
@@ -490,6 +491,8 @@
     "@cypress/request": ["@cypress/request@3.0.10", "", { "dependencies": { "aws-sign2": "~0.7.0", "aws4": "^1.8.0", "caseless": "~0.12.0", "combined-stream": "~1.0.6", "extend": "~3.0.2", "forever-agent": "~0.6.1", "form-data": "~4.0.4", "http-signature": "~1.4.0", "is-typedarray": "~1.0.0", "isstream": "~0.1.2", "json-stringify-safe": "~5.0.1", "mime-types": "~2.1.19", "performance-now": "^2.1.0", "qs": "~6.14.1", "safe-buffer": "^5.1.2", "tough-cookie": "^5.0.0", "tunnel-agent": "^0.6.0", "uuid": "^8.3.2" } }, "sha512-hauBrOdvu08vOsagkZ/Aju5XuiZx6ldsLfByg1htFeldhex+PeMrYauANzFsMJeAA0+dyPLbDoX2OYuvVoLDkQ=="],
 
     "@cypress/xvfb": ["@cypress/xvfb@1.2.4", "", { "dependencies": { "debug": "^3.1.0", "lodash.once": "^4.1.1" } }, "sha512-skbBzPggOVYCbnGgV+0dmBdW/s77ZkAOXIC1knS8NagwDjBrNC1LuXtQJeiN6l+m7lzmHtaoUw/ctJKdqkG57Q=="],
+
+    "@emailjs/browser": ["@emailjs/browser@4.4.1", "", {}, "sha512-DGSlP9sPvyFba3to2A50kDtZ+pXVp/0rhmqs2LmbMS3I5J8FSOgLwzY2Xb4qfKlOVHh29EAutLYwe5yuEZmEFg=="],
 
     "@emnapi/core": ["@emnapi/core@1.8.1", "", { "dependencies": { "@emnapi/wasi-threads": "1.1.0", "tslib": "^2.4.0" } }, "sha512-AvT9QFpxK0Zd8J0jopedNm+w/2fIzvtPKPjqyw9jwvBaReTTqPBk9Hixaz7KbjimP+QNz605/XnjFcDAL2pqBg=="],
 

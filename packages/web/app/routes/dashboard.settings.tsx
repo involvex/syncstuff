@@ -258,7 +258,7 @@ export default function Settings() {
   return (
     <div className="mx-auto max-w-4xl space-y-10">
       {/* Profile Section */}
-      <section className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all hover:shadow-md dark:border-gray-700 dark:bg-gray-800">
+      <section className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-xl shadow-gray-200/50 transition-all hover:shadow-2xl dark:border-gray-800 dark:bg-gray-900 dark:shadow-none">
         <div className="p-6 sm:p-8">
           <div className="mb-8">
             <h3 className="text-xl font-bold text-gray-900 dark:text-white">
@@ -267,6 +267,50 @@ export default function Settings() {
             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
               Manage your public-facing information and personal details.
             </p>
+          </div>
+
+          <div className="mb-8 flex items-center space-x-6">
+            <div className="relative">
+              <div className="flex size-24 items-center justify-center rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-3xl font-bold text-white shadow-lg ring-4 ring-white dark:ring-gray-800">
+                {user?.username?.charAt(0).toUpperCase() || "U"}
+              </div>
+              <span className="absolute bottom-0 right-0 flex size-8 items-center justify-center rounded-full bg-white shadow-md ring-2 ring-white dark:bg-gray-800 dark:ring-gray-800">
+                <svg
+                  className="size-4 text-gray-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+              </span>
+            </div>
+            <div>
+              <button
+                type="button"
+                disabled
+                className="rounded-xl bg-gray-100 px-4 py-2 text-sm font-bold text-gray-500 transition-colors dark:bg-gray-800 dark:text-gray-400"
+              >
+                Change Photo
+                <span className="ml-2 inline-flex items-center rounded-md bg-gray-200 px-1.5 py-0.5 text-xs font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-400">
+                  Soon
+                </span>
+              </button>
+              <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                Custom profile pictures coming in the next update.
+              </p>
+            </div>
           </div>
 
           <Form method="post" className="space-y-6">
@@ -318,7 +362,7 @@ export default function Settings() {
                   id="full_name"
                   defaultValue={user?.full_name || ""}
                   placeholder="Sync User"
-                  className="block w-full rounded-xl border-gray-300 bg-white px-4 py-3 text-sm transition-all focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-400"
+                  className="block w-full rounded-xl border-gray-200 bg-white px-4 py-3 text-sm transition-all focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:focus:border-blue-400"
                 />
               </div>
             </div>

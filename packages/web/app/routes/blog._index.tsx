@@ -32,13 +32,13 @@ const posts = [
 
 export default function Blog() {
   return (
-    <div className="min-h-screen bg-white py-24 sm:py-32 dark:bg-gray-950">
+    <div className="min-h-screen bg-white py-24 dark:bg-gray-950 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-sm font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400">
             Blog
           </h2>
-          <p className="mt-2 text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl dark:text-white">
+          <p className="mt-2 text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
             Latest News & Guides
           </p>
           <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-400">
@@ -53,7 +53,7 @@ export default function Blog() {
               className="flex flex-col items-start justify-between"
             >
               <div className="relative w-full">
-                <div className="aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2] dark:bg-gray-800" />
+                <div className="aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover dark:bg-gray-800 sm:aspect-[2/1] lg:aspect-[3/2]" />
                 <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
               </div>
               <div className="max-w-xl">

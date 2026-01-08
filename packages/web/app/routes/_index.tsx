@@ -5,6 +5,7 @@ import {
 } from "@remix-run/cloudflare";
 import { Link, useLoaderData } from "@remix-run/react";
 import { commitSession, getSession } from "~/services/session.server";
+import Footer from "../components/Footer";
 import Navigation from "../components/Navigation";
 
 export const meta: MetaFunction = () => {
@@ -45,18 +46,18 @@ export default function Index() {
   const { isLoggedIn } = useLoaderData<typeof loader>();
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-300 dark:bg-gray-900">
       <Navigation isLoggedIn={isLoggedIn} />
 
       <main className="pt-20">
         {/* Hero Section */}
-        <section className="bg-white dark:bg-gray-900">
+        <section className="bg-blue-200 dark:bg-gray-900">
           <div className="mx-auto grid max-w-screen-xl px-4 py-8 lg:grid-cols-12 lg:gap-8 lg:py-16 xl:gap-0">
             <div className="mr-auto place-self-center lg:col-span-7">
-              <h1 className="mb-4 max-w-2xl text-4xl font-extrabold leading-none tracking-tight md:text-5xl xl:text-6xl dark:text-white">
+              <h1 className="mb-4 max-w-2xl text-4xl font-extrabold leading-none tracking-tight text-black dark:text-white md:text-5xl xl:text-6xl">
                 Sync Everything, Everywhere
               </h1>
-              <p className="mb-6 max-w-2xl font-light text-gray-500 md:text-lg lg:mb-8 lg:text-xl dark:text-gray-400">
+              <p className="mb-6 max-w-2xl font-light text-gray-500 dark:text-gray-400 md:text-lg lg:mb-8 lg:text-xl">
                 Securely transfer files, clipboard, and notifications across
                 your devices. No cloud required, or cloud optional. You choose.
               </p>
@@ -108,9 +109,21 @@ export default function Index() {
             </div>
             <div className="hidden lg:col-span-5 lg:mt-0 lg:flex">
               {/* <img src="/hero-mockup.png" alt="mockup" /> */}
-              <div className="flex h-96 w-full items-center justify-center rounded-lg bg-gray-200 dark:bg-gray-800">
+              <div className="hero-hover ml-20 flex items-end justify-end rounded-lg bg-blue-700 dark:bg-gray-800">
                 <span className="text-gray-500 dark:text-gray-400">
-                  App Mockup Placeholder
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="350"
+                    height="250"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      fill="#000000ff"
+                      d="M12.125 13H16.2q.65 0 1.1-.45t.45-1.1t-.45-1.112t-1.1-.463h-.05q-.125-.8-.725-1.338T14 8q-.65 0-1.175.338t-.8.912q-.75.05-1.263.588t-.512 1.287t.538 1.313t1.337.562M1 21V6h2v13h17v2zm4-4V2h7l2 2h9v13zm2-2h14V6h-7.825l-2-2H7zm0 0V4z"
+                      strokeWidth="1"
+                      stroke="#000000ff"
+                    />
+                  </svg>
                 </span>
               </div>
             </div>
@@ -118,22 +131,22 @@ export default function Index() {
         </section>
 
         {/* Features Section */}
-        <section id="features" className="bg-gray-50 dark:bg-gray-800">
+        <section id="features" className="bg-blue-300 dark:bg-gray-800">
           <div className="mx-auto max-w-screen-xl px-4 py-8 sm:py-16 lg:px-6">
             <div className="mb-8 max-w-screen-md lg:mb-16">
               <h2 className="mb-4 text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
                 Designed for seamless productivity
               </h2>
-              <p className="text-gray-500 sm:text-xl dark:text-gray-400">
+              <p className="text-gray-500 dark:text-gray-400 sm:text-xl">
                 Work across your phone, tablet, and computer without missing a
                 beat.
               </p>
             </div>
             <div className="space-y-8 md:grid md:grid-cols-2 md:gap-12 md:space-y-0 lg:grid-cols-3">
               <div>
-                <div className="mb-4 flex size-10 items-center justify-center rounded-full bg-blue-100 lg:size-12 dark:bg-blue-900">
+                <div className="mb-4 flex size-10 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900 lg:size-12">
                   <svg
-                    className="size-5 text-blue-600 lg:size-6 dark:text-blue-300"
+                    className="size-5 text-blue-600 dark:text-blue-300 lg:size-6"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -145,7 +158,7 @@ export default function Index() {
                     ></path>
                   </svg>
                 </div>
-                <h3 className="mb-2 text-xl font-bold dark:text-white">
+                <h3 className="mb-2 text-xl font-bold text-black dark:text-white">
                   Universal Clipboard
                 </h3>
                 <p className="text-gray-500 dark:text-gray-400">
@@ -153,9 +166,9 @@ export default function Index() {
                 </p>
               </div>
               <div>
-                <div className="mb-4 flex size-10 items-center justify-center rounded-full bg-blue-100 lg:size-12 dark:bg-blue-900">
+                <div className="mb-4 flex size-10 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900 lg:size-12">
                   <svg
-                    className="size-5 text-blue-600 lg:size-6 dark:text-blue-300"
+                    className="size-5 text-blue-600 dark:text-blue-300 lg:size-6"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -163,7 +176,7 @@ export default function Index() {
                     <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"></path>
                   </svg>
                 </div>
-                <h3 className="mb-2 text-xl font-bold dark:text-white">
+                <h3 className="mb-2 text-xl font-bold text-black dark:text-white">
                   File Transfer
                 </h3>
                 <p className="text-gray-500 dark:text-gray-400">
@@ -171,26 +184,26 @@ export default function Index() {
                 </p>
               </div>
               <div>
-                <div className="mb-4 flex size-10 items-center justify-center rounded-full bg-blue-100 lg:size-12 dark:bg-blue-900">
+                <div className="mb-4 flex size-10 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900 lg:size-12">
                   <svg
-                    className="size-5 text-blue-600 lg:size-6 dark:text-blue-300"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
                   >
-                    <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"></path>
                     <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.647 1.413 1.095 2.353 1.25V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.647-1.413-1.095-2.354-1.25V5z"
-                      clipRule="evenodd"
-                    ></path>
+                      fill="currentColor"
+                      d="M4 20q-.825 0-1.412-.587T2 18V6q0-.825.588-1.412T4 4h16q.825 0 1.413.588T22 6v12q0 .825-.587 1.413T20 20zm0-2h16V8H4zm3.5-1l-1.4-1.4L8.675 13l-2.6-2.6L7.5 9l4 4zm4.5 0v-2h6v2z"
+                      strokeWidth="0.5"
+                      stroke="currentColor"
+                    />
                   </svg>
                 </div>
-                <h3 className="mb-2 text-xl font-bold dark:text-white">
-                  File Transfer
+                <h3 className="mb-2 text-xl font-bold text-black dark:text-white">
+                  CLI integration
                 </h3>
                 <p className="text-gray-500 dark:text-gray-400">
-                  Send files of any size between devices securely and instantly.
+                  Syncstuff provides a CLI tool to sync files between devices.
                 </p>
               </div>
             </div>
@@ -198,13 +211,13 @@ export default function Index() {
         </section>
 
         {/* Download Section */}
-        <section id="download" className="bg-white dark:bg-gray-900">
+        <section id="download" className="bg-blue-200 dark:bg-gray-900">
           <div className="mx-auto max-w-screen-xl px-4 py-8 sm:py-16 lg:px-6">
             <div className="mx-auto max-w-screen-md text-center">
               <h2 className="mb-4 text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">
-                Download Syncstuff
+                Download Syncstuff App
               </h2>
-              <p className="mb-8 text-gray-500 sm:text-xl dark:text-gray-400">
+              <p className="mb-8 text-gray-500 dark:text-gray-400 sm:text-xl">
                 Get the app on your device and start syncing today.
               </p>
               <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -243,12 +256,20 @@ export default function Index() {
               </div>
 
               {/* CLI Install */}
-              <div className="mt-8">
-                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+              <div className="mt-4">
+                <p className="mb-1 text-sm text-gray-500 dark:text-gray-400">
                   Or install via npm:
                 </p>
                 <code className="rounded bg-gray-100 px-3 py-2 text-sm text-gray-800 dark:bg-gray-800 dark:text-gray-200">
                   npm install -g @involvex/syncstuff-cli
+                </code>
+              </div>
+              <div className="mt-2" style={{ marginBottom: "-2rem" }}>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  or quickstart with npx:
+                </p>
+                <code className="rounded bg-gray-100 px-3 py-2 text-sm text-gray-800 dark:bg-gray-800 dark:text-gray-200">
+                  npx @involvex/syncstuff-cli
                 </code>
               </div>
             </div>
@@ -256,63 +277,7 @@ export default function Index() {
         </section>
       </main>
 
-      <footer className="bg-white p-4 md:p-8 lg:p-10 dark:bg-gray-800">
-        <div className="mx-auto max-w-screen-xl text-center">
-          <a
-            href="#"
-            className="flex items-center justify-center text-2xl font-semibold text-gray-900 dark:text-white"
-          >
-            Syncstuff
-          </a>
-          <p className="my-6 text-gray-500 dark:text-gray-400">
-            Open source sync for everyone.
-          </p>
-          <ul className="mb-6 flex flex-wrap items-center justify-center text-gray-900 dark:text-white">
-            <li>
-              <a href="#" className="mr-4 hover:underline md:mr-6">
-                About
-              </a>
-            </li>
-            <li>
-              <a href="#" className="mr-4 hover:underline md:mr-6">
-                Premium
-              </a>
-            </li>
-            <li>
-              <a href="#" className="mr-4 hover:underline md:mr-6">
-                Campaigns
-              </a>
-            </li>
-            <li>
-              <a href="#" className="mr-4 hover:underline md:mr-6">
-                Blog
-              </a>
-            </li>
-            <li>
-              <a href="#" className="mr-4 hover:underline md:mr-6">
-                Affiliate Program
-              </a>
-            </li>
-            <li>
-              <a href="#" className="mr-4 hover:underline md:mr-6">
-                FAQs
-              </a>
-            </li>
-            <li>
-              <a href="#" className="mr-4 hover:underline md:mr-6">
-                Contact
-              </a>
-            </li>
-          </ul>
-          <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
-            © 2026{" "}
-            <a href="#" className="hover:underline">
-              Syncstuff™
-            </a>
-            . All Rights Reserved.
-          </span>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

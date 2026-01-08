@@ -4,9 +4,13 @@
 
 html,
 body {
-  @apply bg-white dark:bg-gray-950;
+  @apply bg-background text-onBackground dark:bg-gray-950 dark:text-gray-100;
 
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
   }
+}
+
+.hero-hover {
+  @apply opacity-75 transition-all duration-300 ease-in-out hover:scale-105 hover:opacity-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:opacity-100;
 }
