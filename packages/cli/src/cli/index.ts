@@ -66,6 +66,12 @@ export async function run() {
         await transferFile(commandArgs[0], ctx);
       }
       break;
+    case "scan":
+      {
+        const { scanLocal } = await import("./commands/scan.js");
+        await scanLocal(commandArgs, ctx);
+      }
+      break;
     case "help":
       {
         const { showHelp } = await import("./commands/help.js");

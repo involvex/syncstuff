@@ -78,6 +78,26 @@ ${chalk.bold("Usage:")}
   syncstuff version
   syncstuff --version
   syncstuff -v`,
+
+  scan: `${chalk.cyan.bold("scan")}
+
+Scan local network for SyncStuff devices.
+
+${chalk.bold("Usage:")}
+  syncstuff scan [options]
+
+${chalk.bold("Options:")}
+  --timeout N    Set scan timeout in seconds (default: 10)
+  --watch, -w    Continuously scan and show new devices
+
+${chalk.bold("Description:")}
+  Discovers SyncStuff devices on your local network using UDP broadcast.
+  This works without requiring cloud authentication.
+
+${chalk.bold("Examples:")}
+  syncstuff scan              Scan for 10 seconds
+  syncstuff scan --timeout 30 Scan for 30 seconds
+  syncstuff scan --watch      Continuously monitor for devices`,
 };
 
 export async function showHelp(command?: string): Promise<void> {
@@ -119,6 +139,9 @@ export async function showHelp(command?: string): Promise<void> {
       "  " +
       chalk.green("device <id>") +
       "         Connect to a specific device\n" +
+      "  " +
+      chalk.green("scan") +
+      "                Scan local network for devices\n" +
       "  " +
       chalk.green("transfer <file>") +
       "     Transfer a file to a device\n\n" +
