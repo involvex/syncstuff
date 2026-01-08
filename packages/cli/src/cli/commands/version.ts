@@ -43,6 +43,5 @@ export function showversion() {
       console.log("Packagepath: " + packagePath);
       console.log(chalk.yellow("Version: 0.0.1 (unable to read package.json)"));
     }
-    console.log(chalk.yellow("Version: 0.0.1 (unable to read package.json)"));
   }
 }

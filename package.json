@@ -49,7 +49,8 @@
     "lint:cli": "bun run --cwd packages/cli lint",
     "lint:fix:cli": "bun run --cwd packages/cli lint:fix",
     "format:cli": "bun run --cwd packages/cli format",
-    "typecheck:cli": "bun run --cwd packages/cli typecheck"
+    "typecheck:cli": "bun run --cwd packages/cli typecheck",
+    "publish:cli": "cd packages/cli && bun run build && npm publish --access public"
   },
   "devDependencies": {
     "@types/bun": "1.3.5",
