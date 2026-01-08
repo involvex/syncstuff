@@ -2,6 +2,14 @@ import { json, type LoaderFunctionArgs } from "@remix-run/cloudflare";
 import { Link, useLoaderData } from "@remix-run/react";
 import { getSession } from "~/services/session.server";
 
+interface ActivityItem {
+  id: number;
+  type: string;
+  description: string;
+  date: string;
+  icon: string;
+}
+
 export async function loader({ request, context }: LoaderFunctionArgs) {
   const session = await getSession(request.headers.get("Cookie"));
   const userId = session.get("userId");
@@ -80,22 +88,67 @@ export default function DashboardIndex() {
     {
       name: "Total Files",
       value: stats.totalFiles,
-      icon: "📁",
-      color: "bg-blue-500",
+      icon: (
+        <svg
+          className="size-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"
+          />
+        </svg>
+      ),
+      color: "text-blue-600 dark:text-blue-400",
+      bgColor: "bg-blue-50 dark:bg-blue-900/20",
       href: "#",
     },
     {
       name: "Storage Used",
       value: stats.storageUsed,
-      icon: "💾",
-      color: "bg-purple-500",
+      icon: (
+        <svg
+          className="size-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
+          />
+        </svg>
+      ),
+      color: "text-purple-600 dark:text-purple-400",
+      bgColor: "bg-purple-50 dark:bg-purple-900/20",
       href: "#",
     },
     {
       name: "Syncs Today",
       value: stats.syncsToday,
-      icon: "🔄",
-      color: "bg-green-500",
+      icon: (
+        <svg
+          className="size-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+          />
+        </svg>
+      ),
+      color: "text-green-600 dark:text-green-400",
+      bgColor: "bg-green-50 dark:bg-green-900/20",
       href: "#",
     },
   ];
@@ -103,191 +156,249 @@ export default function DashboardIndex() {
   const quickActions = [
     {
       name: "Sync Files",
-      description: "Start a new sync",
+      description: "Start a new sync session",
       href: "#",
-      icon: "🔄",
-      color: "bg-indigo-600 hover:bg-indigo-700",
+      icon: (
+        <svg
+          className="size-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+          />
+        </svg>
+      ),
+      color:
+        "bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600",
     },
     {
       name: "Upload Files",
-      description: "Upload new files",
+      description: "Securely upload to cloud",
       href: "#",
-      icon: "📤",
-      color: "bg-green-600 hover:bg-green-700",
+      icon: (
+        <svg
+          className="size-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+          />
+        </svg>
+      ),
+      color:
+        "bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600",
     },
     {
-      name: "View Settings",
-      description: "Manage your account",
+      name: "Device Settings",
+      description: "Manage paired devices",
       href: "/dashboard/settings",
-      icon: "⚙️",
-      color: "bg-gray-600 hover:bg-gray-700",
+      icon: (
+        <svg
+          className="size-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
+          />
+        </svg>
+      ),
+      color:
+        "bg-gray-700 hover:bg-gray-800 dark:bg-gray-600 dark:hover:bg-gray-500",
     },
   ];
 
   return (
-    <div className="px-4 py-6 sm:px-0">
+    <div className="space-y-8">
       {/* Stats Cards */}
-      <div className="mb-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {statCards.map(card => (
           <div
             key={card.name}
-            className="overflow-hidden rounded-lg bg-white shadow transition-shadow hover:shadow-md dark:bg-gray-800"
+            className="group overflow-hidden rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition-all hover:border-gray-200 hover:shadow-md dark:border-gray-700 dark:bg-gray-800 dark:hover:border-gray-600"
           >
-            <div className="p-5">
-              <div className="flex items-center">
-                <div
-                  className={`shrink-0 rounded-md p-3 ${card.color} text-2xl text-white`}
-                >
-                  {card.icon}
-                </div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="truncate text-sm font-medium text-gray-500 dark:text-gray-400">
-                      {card.name}
-                    </dt>
-                    <dd>
-                      <div className="text-2xl font-semibold text-gray-900 dark:text-white">
-                        {String(card.value)}
-                      </div>
-                    </dd>
-                  </dl>
-                </div>
+            <div className="flex items-center space-x-5">
+              <div
+                className={`shrink-0 rounded-xl p-3 ${card.bgColor} ${card.color} transition-transform group-hover:scale-110`}
+              >
+                {card.icon}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-medium text-gray-500 dark:text-gray-400">
+                  {card.name}
+                </p>
+                <h4 className="mt-1 text-2xl font-bold text-gray-900 dark:text-white">
+                  {String(card.value)}
+                </h4>
               </div>
             </div>
           </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         {/* User Profile Card */}
-        <div className="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-800">
-          <div className="px-4 py-5 sm:p-6">
-            <div className="flex items-center justify-between">
-              <h3 className="text-base font-semibold leading-6 text-gray-900 dark:text-white">
-                Profile
-              </h3>
-              <Link
-                to="/dashboard/settings"
-                className="text-sm text-indigo-600 hover:text-indigo-500 dark:text-indigo-400"
+        <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+          <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50/50 px-6 py-4 dark:border-gray-700 dark:bg-gray-700/30">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+              Account Overview
+            </h3>
+            <Link
+              to="/dashboard/settings"
+              className="rounded-lg p-1 transition-colors hover:bg-gray-200 dark:hover:bg-gray-600"
+            >
+              <svg
+                className="size-4 text-gray-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
               >
-                Edit
-              </Link>
-            </div>
-            <div className="mt-5 space-y-4">
-              <div>
-                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                  Username
-                </p>
-                <p className="mt-1 text-sm font-semibold text-gray-900 dark:text-white">
-                  {user?.username || "N/A"}
-                </p>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                />
+              </svg>
+            </Link>
+          </div>
+          <div className="space-y-5 p-6">
+            <div className="flex items-center space-x-4 pb-2">
+              <div className="flex size-12 items-center justify-center rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-xl font-bold text-white shadow-lg ring-4 ring-blue-50 dark:ring-blue-900/20">
+                {user?.username?.charAt(0).toUpperCase() || "U"}
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                  Email
-                </p>
-                <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                <h4 className="font-bold leading-none text-gray-900 dark:text-white">
+                  {user?.full_name || user?.username || "Sync Device"}
+                </h4>
+                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                   {user?.email}
                 </p>
               </div>
-              <div>
-                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 pt-2">
+              <div className="rounded-xl bg-gray-50 p-3 dark:bg-gray-700/50">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
                   Status
                 </p>
-                <span
-                  className={`mt-1 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                    user?.status === "active"
-                      ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                      : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
-                  }`}
-                >
-                  {user?.status || "unknown"}
-                </span>
+                <p className="mt-0.5 text-sm font-bold text-emerald-600 dark:text-emerald-400">
+                  {user?.status || "active"}
+                </p>
               </div>
-              {user?.full_name && (
-                <div>
-                  <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                    Full Name
-                  </p>
-                  <p className="mt-1 text-sm text-gray-900 dark:text-white">
-                    {user.full_name}
-                  </p>
-                </div>
-              )}
+              <div className="rounded-xl bg-gray-50 p-3 dark:bg-gray-700/50">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+                  Role
+                </p>
+                <p className="mt-0.5 text-sm font-bold capitalize text-blue-600 dark:text-blue-400">
+                  {user?.role || "user"}
+                </p>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Recent Activity Card */}
-        <div className="overflow-hidden rounded-lg bg-white shadow lg:col-span-2 dark:bg-gray-800">
-          <div className="px-4 py-5 sm:p-6">
-            <h3 className="text-base font-semibold leading-6 text-gray-900 dark:text-white">
-              Recent Activity
+        <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm lg:col-span-2 dark:border-gray-700 dark:bg-gray-800">
+          <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50/50 px-6 py-4 dark:border-gray-700 dark:bg-gray-700/30">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+              Recent Activity Triggers
             </h3>
-            <div className="mt-5 flow-root">
-              {activity.length === 0 ? (
-                <div className="py-8 text-center">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    No recent activity
-                  </p>
+            <button className="text-xs font-bold text-blue-600 hover:underline dark:text-blue-400">
+              View All
+            </button>
+          </div>
+
+          <div className="divide-y divide-gray-100 dark:divide-gray-700">
+            {activity.length === 0 ? (
+              <div className="p-12 text-center">
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  No activity logged yet
+                </p>
+              </div>
+            ) : (
+              (activity as ActivityItem[]).map(item => (
+                <div
+                  key={item.id}
+                  className="group p-4 transition-colors hover:bg-gray-50 dark:hover:bg-gray-700/30"
+                >
+                  <div className="flex items-center space-x-4">
+                    <div className="flex size-10 items-center justify-center rounded-lg border border-gray-100 bg-gray-100 text-xl shadow-sm transition-colors group-hover:bg-white dark:border-gray-600 dark:bg-gray-700 dark:group-hover:bg-gray-600">
+                      {item.icon || "📋"}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-semibold text-gray-900 dark:text-white">
+                        {item.description}
+                      </p>
+                      <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
+                        {new Date(item.date).toLocaleString([], {
+                          dateStyle: "medium",
+                          timeStyle: "short",
+                        })}
+                      </p>
+                    </div>
+                    <div className="invisible group-hover:visible">
+                      <svg
+                        className="size-4 text-gray-300"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </div>
+                  </div>
                 </div>
-              ) : (
-                <ul className="-my-5 divide-y divide-gray-200 dark:divide-gray-700">
-                  {activity.map(
-                    (item: {
-                      id: number;
-                      description: string;
-                      date: string;
-                      icon?: string;
-                    }) => (
-                      <li key={item.id} className="py-4">
-                        <div className="flex items-center space-x-4">
-                          <div className="shrink-0 text-2xl">
-                            {item.icon || "📋"}
-                          </div>
-                          <div className="min-w-0 flex-1">
-                            <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
-                              {item.description}
-                            </p>
-                            <p className="truncate text-sm text-gray-500 dark:text-gray-400">
-                              {new Date(item.date).toLocaleString()}
-                            </p>
-                          </div>
-                        </div>
-                      </li>
-                    ),
-                  )}
-                </ul>
-              )}
-            </div>
+              ))
+            )}
           </div>
         </div>
       </div>
 
       {/* Quick Actions */}
-      <div className="mt-8">
-        <h3 className="mb-4 text-base font-semibold leading-6 text-gray-900 dark:text-white">
-          Quick Actions
+      <div>
+        <h3 className="mb-4 px-1 text-sm font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+          Instant Operations
         </h3>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {quickActions.map(action => (
             <Link
               key={action.name}
               to={action.href}
-              className={`relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm transition-colors focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400 dark:border-gray-700 dark:bg-gray-800 dark:hover:border-gray-600 ${
-                action.href === "#" ? "cursor-not-allowed opacity-50" : ""
+              className={`group flex flex-col rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition-all hover:border-blue-200 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800 dark:hover:border-blue-900/50 ${
+                action.href === "#" ? "cursor-not-allowed grayscale" : ""
               }`}
             >
-              <div className="shrink-0 text-3xl">{action.icon}</div>
-              <div className="min-w-0 flex-1">
-                <span className="absolute inset-0" aria-hidden="true" />
-                <p className="text-sm font-medium text-gray-900 dark:text-white">
-                  {action.name}
-                </p>
-                <p className="truncate text-sm text-gray-500 dark:text-gray-400">
-                  {action.description}
-                </p>
+              <div
+                className={`flex size-12 items-center justify-center rounded-xl text-white shadow-md ${action.color} mb-4 transition-transform group-hover:scale-110`}
+              >
+                {action.icon}
               </div>
+              <h4 className="text-base font-bold text-gray-900 dark:text-white">
+                {action.name}
+              </h4>
+              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                {action.description}
+              </p>
             </Link>
           ))}
         </div>

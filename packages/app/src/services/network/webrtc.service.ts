@@ -4,11 +4,15 @@ import { io, Socket } from "socket.io-client";
 import type { ConnectionState, SignalMessage } from "../../types/network.types";
 import { useSettingsStore } from "../../store/settings.store";
 import { getPlatform } from "../../utils/platform.utils";
+import { logger } from "../logging/logger.service";
 
-// For development, assumes signaling server is running on localhost.
+// For development, assumes signaling server is running on localhost or host machine.
 // In a real app, this would be a public URL.
 // Default signaling server
-let SIGNALING_SERVER_URL = "http://localhost:3001";
+let SIGNALING_SERVER_URL =
+  getPlatform() === "android"
+    ? "http://10.0.2.2:3001"
+    : "http://localhost:3001";
 
 type DataReceivedCallback = (deviceId: string, data: unknown) => void;
 type ConnectionStateCallback = (
@@ -16,14 +20,13 @@ type ConnectionStateCallback = (
   state: ConnectionState,
   metadata?: { name?: string; platform?: string },
 ) => void;
-
 interface PeerConnectionInfo {
   peer: SimplePeerInstance;
   deviceId: string;
   state: ConnectionState;
   initiator: boolean;
   createdAt: Date;
-  pendingData: any[]; // Queue for data sent before connection
+  pendingData: unknown[]; // Queue for data sent before connection
   name?: string;
   platform?: string;
 }
@@ -34,28 +37,49 @@ class WebRTCService {
   private currentDeviceId: string | null = null;
   private onDataReceivedCallbacks: Set<DataReceivedCallback> = new Set();
   private onConnectionStateCallbacks: Set<ConnectionStateCallback> = new Set();
+  private onPairingRequestCallbacks: Set<
+    (deviceId: string, name: string, platform: string) => void
+  > = new Set();
 
   /**
    * Initialize the WebRTC service and connect to the signaling server.
    */
   initialize(deviceId: string): void {
     if (this.socket) {
+      logger.debug("WebRTC service already initialized");
       return;
     }
 
+    logger.info(
+      `Initializing WebRTC for device ${deviceId} on ${SIGNALING_SERVER_URL}`,
+    );
     this.currentDeviceId = deviceId;
     this.socket = io(SIGNALING_SERVER_URL);
 
     this.socket.on("connect", () => {
-      console.log("Connected to signaling server.");
+      logger.info("Connected to signaling server.");
       this.socket?.emit("join", this.currentDeviceId);
     });
 
     this.socket.on("signal", (signal: SignalMessage) => {
       // Ensure we don't handle our own sent signals
       if (signal.from !== this.currentDeviceId) {
-        console.log(
-          `Received signal type ${signal.type} from ${signal.from} (${signal.fromName || "Unknown"})`,
+        if (signal.type === "pair") {
+          logger.info(
+            `Received pairing request from ${signal.fromName} (${signal.from})`,
+          );
+          this.onPairingRequestCallbacks.forEach(cb =>
+            cb(
+              signal.from,
+              signal.fromName || "Unknown",
+              signal.fromPlatform || "web",
+            ),
+          );
+          return;
+        }
+
+        logger.traceHandshake(
+          `Received signal type ${signal.type} from ${signal.from}`,
         );
         this.handleSignal(signal);
       }
@@ -100,10 +124,11 @@ class WebRTCService {
     }
 
     if (this.peers.has(deviceId)) {
-      console.warn(`Connection to ${deviceId} already exists`);
+      logger.warn(`Connection to ${deviceId} already exists`);
       return;
     }
 
+    logger.info(`Creating offer to ${deviceId}`);
     const peer = this.createPeer(deviceId, true);
     this.setupPeerEventHandlers(peer, deviceId, true);
   }
@@ -202,6 +227,38 @@ class WebRTCService {
   }
 
   /**
+   * Send a manual signal to another device (e.g. for pairing)
+   */
+  sendPairingRequest(toDeviceId: string): void {
+    if (!this.currentDeviceId || !this.socket) return;
+
+    const { deviceName } = useSettingsStore.getState();
+
+    const signal: SignalMessage = {
+      from: this.currentDeviceId,
+      fromName: deviceName,
+      fromPlatform: getPlatform(),
+      to: toDeviceId,
+      type: "pair",
+      data: {},
+      timestamp: new Date(),
+    };
+
+    console.log(`Sending pairing request to ${toDeviceId}`);
+    this.socket.emit("signal", signal);
+  }
+
+  /**
+   * Subscribe to pairing request events
+   */
+  onPairingRequest(
+    callback: (deviceId: string, name: string, platform: string) => void,
+  ): () => void {
+    this.onPairingRequestCallbacks.add(callback);
+    return () => this.onPairingRequestCallbacks.delete(callback);
+  }
+
+  /**
    * Create a SimplePeer instance
    */
   private createPeer(deviceId: string, initiator: boolean): SimplePeerInstance {
@@ -236,6 +293,14 @@ class WebRTCService {
       if (!this.currentDeviceId) return;
 
       const { deviceName } = useSettingsStore.getState();
+
+      const type =
+        data.type === "candidate"
+          ? "candidate"
+          : initiator
+            ? "offer"
+            : "answer";
+      logger.traceHandshake(`Sending ${type} to ${deviceId}`);
 
       const signal: SignalMessage = {
         from: this.currentDeviceId,

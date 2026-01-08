@@ -1,8 +1,8 @@
-import type { Device } from "./device.types";
+import type { Device, Platform } from "./device.types";
 import type { ZeroConfService } from "capacitor-zeroconf";
 
 export interface DiscoveredDevice extends Device {
-  service: ZeroConfService;
+  service?: ZeroConfService;
 }
 
 // WebRTC Connection Types
@@ -22,7 +22,7 @@ export interface PeerConnection {
 }
 
 // Signaling Message Types
-export type SignalType = "offer" | "answer" | "candidate";
+export type SignalType = "offer" | "answer" | "candidate" | "pair";
 
 export interface SignalMessage {
   from: string;
@@ -43,11 +43,11 @@ export type PairingRequestStatus =
 
 export interface PairingRequest {
   id: string;
-  fromDevice: Device;
-  toDeviceId: string;
+  deviceId: string;
+  name: string;
+  platform: Platform;
   status: PairingRequestStatus;
-  createdAt: Date;
-  expiresAt: Date;
+  timestamp: Date;
 }
 
 // Network Status

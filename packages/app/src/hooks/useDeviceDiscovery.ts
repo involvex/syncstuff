@@ -3,7 +3,7 @@ import { discoveryService } from "../services/network/discovery.service";
 import { webrtcService } from "../services/network/webrtc.service";
 import { useDeviceStore } from "../store/device.store";
 import { useSettingsStore } from "../store/settings.store";
-import type { Device } from "../types/device.types";
+import type { Device, Platform } from "../types/device.types";
 import type { ConnectionState, DiscoveredDevice } from "../types/network.types";
 import {
   notifyDeviceConnected,
@@ -104,6 +104,10 @@ export const useDeviceDiscovery = () => {
         `Connection state change for ${deviceId}: ${connectionState}`,
       );
 
+      // Access latest state directly from the store to avoid dependency loop
+      const { pairedDevices, discoveredDevices, addDiscoveredDevice } =
+        useDeviceStore.getState();
+
       const matchedPaired = pairedDevices.find(d => d.id === deviceId);
       const matchedDiscovered = discoveredDevices.find(d => d.id === deviceId);
 
@@ -144,17 +148,47 @@ export const useDeviceDiscovery = () => {
         addDiscoveredDevice({
           id: deviceId,
           name: metadata?.name || "Unknown Device",
-          platform: (metadata?.platform as any) || "web",
+          platform: (metadata?.platform as Platform) || "web",
           status: connectionState === "connected" ? "connected" : "connecting",
           lastSeen: new Date(),
-        } as any);
+        });
       }
     };
 
     const unsubscribe =
       webrtcService.onConnectionStateChange(handleStateChange);
     return () => unsubscribe();
-  }, [pairedDevices, discoveredDevices, addDiscoveredDevice]);
+  }, []); // Empty dependency array is safe now as we use getState() inside
+
+  // Subscribe to pairing requests
+  useEffect(() => {
+    const handlePairingRequest = (
+      deviceId: string,
+      name: string,
+      platform: string,
+    ) => {
+      console.log(`Incoming pairing request from ${name} (${deviceId})`);
+      const { addPairingRequest, isPaired } = useDeviceStore.getState();
+
+      // Don't show request if already paired
+      if (isPaired(deviceId)) {
+        console.log(`Device ${deviceId} is already paired, ignoring request`);
+        return;
+      }
+
+      addPairingRequest({
+        id: Math.random().toString(36).substring(7),
+        deviceId,
+        name,
+        platform: platform as Platform,
+        status: "pending",
+        timestamp: new Date(),
+      });
+    };
+
+    const unsubscribe = webrtcService.onPairingRequest(handlePairingRequest);
+    return () => unsubscribe();
+  }, []);
 
   // Start discovery
   const startDiscovery = useCallback(async () => {
@@ -193,6 +227,8 @@ export const useDeviceDiscovery = () => {
   const pairDevice = useCallback(
     async (device: Device) => {
       await addPairedDevice(device);
+      // Send a pairing request signal to the other device to notify them
+      webrtcService.sendPairingRequest(device.id);
     },
     [addPairedDevice],
   );

@@ -9,6 +9,7 @@ import {
   useNavigation,
 } from "@remix-run/react";
 import { getSession } from "~/services/session.server";
+import ThemeToggle from "../components/ThemeToggle";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const session = await getSession(request.headers.get("Cookie"));
@@ -102,29 +103,76 @@ export default function DashboardLayout() {
   const isLoading = navigation.state === "loading";
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <nav className="sticky top-0 z-40 bg-white shadow-sm dark:bg-gray-800">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 justify-between">
-            <div className="flex">
-              <div className="flex shrink-0 items-center">
-                <Link
-                  to="/"
-                  className="text-xl font-bold text-gray-900 transition-colors hover:text-indigo-600 dark:text-white dark:hover:text-indigo-400"
+    <div className="flex min-h-screen bg-gray-50 transition-colors duration-200 dark:bg-gray-900">
+      {/* Sidebar for Desktop */}
+      <aside className="hidden border-r border-gray-200 bg-white backdrop-blur-sm md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col dark:border-gray-800 dark:bg-gray-800/50">
+        <div className="flex min-h-0 flex-1 flex-col">
+          <div className="flex h-16 shrink-0 items-center border-b border-gray-200 px-4 dark:border-gray-800">
+            <Link
+              to="/"
+              className="text-2xl font-bold tracking-tight text-blue-600 dark:text-blue-400"
+            >
+              Syncstuff
+            </Link>
+          </div>
+          <nav className="flex-1 space-y-1 overflow-y-auto px-2 py-4">
+            {navItems.map(item => (
+              <Link
+                key={item.name}
+                to={item.href}
+                className={`flex items-center rounded-lg px-3 py-2 text-sm font-medium transition-all ${
+                  item.current
+                    ? "bg-blue-50 text-blue-700 dark:bg-blue-900/40 dark:text-blue-200"
+                    : "text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700/50 dark:hover:text-white"
+                }`}
+              >
+                <span
+                  className={`mr-3 ${item.current ? "text-blue-600 dark:text-blue-400" : "text-gray-400 dark:text-gray-500"}`}
                 >
-                  Syncstuff
-                </Link>
+                  {item.icon}
+                </span>
+                {item.name}
+              </Link>
+            ))}
+          </nav>
+          <div className="shrink-0 border-t border-gray-200 p-4 dark:border-gray-800">
+            <div className="flex items-center gap-3 px-2">
+              <div className="flex size-8 items-center justify-center rounded-full bg-blue-100 font-bold text-blue-600 dark:bg-blue-900 dark:text-blue-400">
+                {userId.charAt(0).toUpperCase()}
               </div>
-              {/* Mobile menu button */}
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
+                  User
+                </p>
+                <p className="truncate text-xs text-gray-500 dark:text-gray-400">
+                  ID: {userId.substring(0, 8)}
+                </p>
+              </div>
+            </div>
+            <Form action="/auth/logout" method="post" className="mt-4">
+              <button
+                type="submit"
+                className="flex w-full items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
+              >
+                Sign out
+              </button>
+            </Form>
+          </div>
+        </div>
+      </aside>
+
+      {/* Main Content Area */}
+      <div className="flex flex-1 flex-col md:pl-64">
+        {/* Top Header */}
+        <header className="sticky top-0 z-10 flex h-16 shrink-0 border-b border-gray-200 bg-white/80 backdrop-blur-md dark:border-gray-800 dark:bg-gray-900/80">
+          <div className="flex flex-1 items-center justify-between px-4 sm:px-6 lg:px-8">
+            <div className="flex md:hidden">
               <button
                 type="button"
-                className="ml-4 inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:hidden dark:hover:bg-gray-700 dark:hover:text-gray-300"
-                aria-label="Toggle navigation menu"
+                className="-ml-2 rounded-md p-2 text-gray-400 hover:text-gray-500 focus:outline-none lg:hidden"
                 onClick={() => {
-                  const menu = document.getElementById("mobile-nav-menu");
-                  if (menu) {
-                    menu.classList.toggle("hidden");
-                  }
+                  const menu = document.getElementById("mobile-sidebar");
+                  if (menu) menu.classList.toggle("hidden");
                 }}
               >
                 <svg
@@ -141,102 +189,108 @@ export default function DashboardLayout() {
                   />
                 </svg>
               </button>
-              <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
-                {navItems.map(item => (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    className={`inline-flex items-center gap-2 border-b-2 px-1 pt-1 text-sm font-medium transition-colors ${
-                      item.current
-                        ? "border-indigo-500 text-gray-900 dark:text-white"
-                        : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                    }`}
-                    aria-current={item.current ? "page" : undefined}
-                  >
-                    {item.icon}
-                    {item.name}
-                  </Link>
-                ))}
-              </div>
-              {/* Mobile navigation menu */}
-              <div
-                id="mobile-nav-menu"
-                className="absolute inset-x-0 top-full z-50 hidden border-t border-gray-200 bg-white shadow-lg sm:hidden dark:border-gray-700 dark:bg-gray-800"
+              <Link
+                to="/"
+                className="ml-4 text-xl font-bold text-blue-600 dark:text-blue-400"
               >
-                <div className="space-y-1 border-t border-gray-200 bg-white px-2 pb-3 pt-2 dark:border-gray-700 dark:bg-gray-800">
-                  {navItems.map(item => (
-                    <Link
-                      key={item.name}
-                      to={item.href}
-                      className={`flex items-center gap-2 rounded-md px-3 py-2 text-base font-medium ${
-                        item.current
-                          ? "bg-indigo-50 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-200"
-                          : "text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white"
-                      }`}
-                      aria-current={item.current ? "page" : undefined}
-                    >
-                      {item.icon}
-                      {item.name}
-                    </Link>
-                  ))}
-                </div>
-              </div>
+                Syncstuff
+              </Link>
             </div>
-            <div className="hidden sm:ml-6 sm:flex sm:items-center">
-              <div className="relative ml-3">
-                <div className="flex items-center gap-4">
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
-                    {role === "admin" && (
-                      <span className="mr-2 inline-flex items-center rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-800 dark:bg-purple-900 dark:text-purple-200">
-                        Admin
-                      </span>
-                    )}
-                    <span className="text-gray-400 dark:text-gray-500">
-                      ID:
-                    </span>{" "}
-                    <span className="font-mono">
-                      {userId.substring(0, 8)}...
-                    </span>
-                  </span>
-                  <Form action="/auth/logout" method="post">
-                    <button
-                      type="submit"
-                      className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 transition-colors hover:bg-gray-50 dark:bg-gray-700 dark:text-white dark:ring-gray-600 dark:hover:bg-gray-600"
-                    >
-                      Sign out
-                    </button>
-                  </Form>
-                </div>
-              </div>
+
+            <div className="flex-1"></div>
+
+            <div className="flex items-center space-x-4">
+              <ThemeToggle />
+              {role === "admin" && (
+                <span className="hidden items-center rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-800 sm:inline-flex dark:bg-purple-900 dark:text-purple-200">
+                  Admin
+                </span>
+              )}
             </div>
-          </div>
-        </div>
-      </nav>
-
-      {isLoading && (
-        <div className="fixed inset-x-0 top-0 z-50">
-          <div className="h-1 bg-indigo-200 dark:bg-indigo-900">
-            <div
-              className="h-full animate-pulse bg-indigo-600 dark:bg-indigo-400"
-              style={{ width: "30%" }}
-            />
-          </div>
-        </div>
-      )}
-
-      <div className="py-10">
-        <header>
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
-              Dashboard
-            </h1>
           </div>
         </header>
-        <main>
-          <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+
+        {isLoading && (
+          <div className="fixed inset-x-0 top-0 z-50">
+            <div className="h-1 bg-blue-100 dark:bg-blue-900">
+              <div
+                className="h-full animate-[progress_2s_ease-in-out_infinite] bg-blue-600 dark:bg-blue-400"
+                style={{ width: "30%" }}
+              />
+            </div>
+          </div>
+        )}
+
+        <main className="flex-1 py-8">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <Outlet />
           </div>
         </main>
+      </div>
+
+      {/* Mobile Sidebar Overlay */}
+      <div id="mobile-sidebar" className="fixed inset-0 z-40 hidden md:hidden">
+        <div
+          className="fixed inset-0 bg-gray-600/75 backdrop-blur-sm"
+          onClick={() =>
+            document.getElementById("mobile-sidebar")?.classList.add("hidden")
+          }
+        ></div>
+        <div className="fixed inset-y-0 left-0 flex w-full max-w-xs flex-col bg-white pb-4 pt-5 dark:bg-gray-800">
+          <div className="flex items-center justify-between px-4">
+            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+              Syncstuff
+            </div>
+            <button
+              type="button"
+              className="p-2 text-gray-400 hover:text-gray-500 focus:outline-none"
+              onClick={() =>
+                document
+                  .getElementById("mobile-sidebar")
+                  ?.classList.add("hidden")
+              }
+            >
+              <svg
+                className="size-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+          <nav className="mt-5 flex-1 space-y-1 overflow-y-auto px-2">
+            {navItems.map(item => (
+              <Link
+                key={item.name}
+                to={item.href}
+                className={`flex items-center rounded-lg px-3 py-2 text-base font-medium ${
+                  item.current
+                    ? "bg-blue-50 text-blue-700 dark:bg-blue-900/40 dark:text-blue-200"
+                    : "text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700/50 dark:hover:text-white"
+                }`}
+                onClick={() =>
+                  document
+                    .getElementById("mobile-sidebar")
+                    ?.classList.add("hidden")
+                }
+              >
+                <span
+                  className={`mr-4 ${item.current ? "text-blue-600 dark:text-blue-400" : "text-gray-400 dark:text-gray-500"}`}
+                >
+                  {item.icon}
+                </span>
+                {item.name}
+              </Link>
+            ))}
+          </nav>
+        </div>
       </div>
     </div>
   );

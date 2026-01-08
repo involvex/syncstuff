@@ -127,27 +127,31 @@ const ClipboardPage: React.FC = () => {
           <div className="clipboard-history-container">
             <div className="clipboard-status-bar">
               <div className="status-info">
-                <IonIcon
-                  icon={isMonitoring ? playCircleOutline : pauseCircleOutline}
-                  className={
-                    isMonitoring ? "status-icon-active" : "status-icon-inactive"
-                  }
-                />
+                <div
+                  className={`p-2 rounded-xl ${isMonitoring ? "bg-emerald-50 dark:bg-emerald-900/20" : "bg-gray-100 dark:bg-gray-800"}`}
+                >
+                  <IonIcon
+                    icon={isMonitoring ? playCircleOutline : pauseCircleOutline}
+                    className={
+                      isMonitoring
+                        ? "status-icon-active"
+                        : "status-icon-inactive"
+                    }
+                  />
+                </div>
                 <IonText>
-                  <p className="status-text">
-                    {isMonitoring
-                      ? "Monitoring clipboard"
-                      : "Monitoring paused"}
+                  <p className="status-text text-gray-900 dark:text-white">
+                    {isMonitoring ? "Monitoring Active" : "Monitoring Paused"}
                   </p>
                 </IonText>
               </div>
               <IonButton
-                fill="outline"
-                size="small"
+                fill="solid"
                 onClick={handleToggleMonitoring}
                 color={isMonitoring ? "danger" : "primary"}
+                className="rounded-xl overflow-hidden font-bold"
               >
-                {isMonitoring ? "Stop" : "Start"}
+                {isMonitoring ? "Pause" : "Resume"}
               </IonButton>
             </div>
 
@@ -157,11 +161,15 @@ const ClipboardPage: React.FC = () => {
 
         {selectedSegment === "settings" && (
           <div className="clipboard-settings-container">
-            <IonList>
-              <IonItem>
-                <IonLabel>
-                  <h2>Auto-sync clipboard</h2>
-                  <p>Automatically sync clipboard to paired devices</p>
+            <IonList lines="full" className="ion-no-margin">
+              <IonItem className="rounded-xl overflow-hidden mx-4 my-2">
+                <IonLabel className="py-2">
+                  <h2 className="font-bold text-gray-900 dark:text-white">
+                    Auto-sync clipboard
+                  </h2>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Automatically sync clipboard to paired devices
+                  </p>
                 </IonLabel>
                 <IonToggle
                   checked={clipboardAutoSync}
@@ -170,21 +178,29 @@ const ClipboardPage: React.FC = () => {
               </IonItem>
 
               {!clipboardAutoSync && (
-                <IonItem lines="none" className="privacy-warning">
-                  <IonIcon icon={warningOutline} slot="start" color="warning" />
-                  <IonLabel className="ion-text-wrap">
-                    <p>
-                      Auto-sync is disabled for privacy. You'll need to approve
-                      each clipboard sync manually.
+                <div className="privacy-warning p-4 mx-4 my-2 rounded-2xl flex items-start gap-3">
+                  <IonIcon
+                    icon={warningOutline}
+                    color="warning"
+                    className="text-xl"
+                  />
+                  <div className="flex-1">
+                    <p className="text-xs font-medium leading-relaxed">
+                      Auto-sync is disabled for privacy. Each sync operation
+                      will require manual approval.
                     </p>
-                  </IonLabel>
-                </IonItem>
+                  </div>
+                </div>
               )}
 
-              <IonItem>
-                <IonLabel>
-                  <h2>Sync images</h2>
-                  <p>Include images in clipboard synchronization</p>
+              <IonItem className="rounded-xl overflow-hidden mx-4 my-2">
+                <IonLabel className="py-2">
+                  <h2 className="font-bold text-gray-900 dark:text-white">
+                    Sync images
+                  </h2>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Include images in clipboard synchronization
+                  </p>
                 </IonLabel>
                 <IonToggle
                   checked={clipboardSyncImages}
@@ -193,10 +209,14 @@ const ClipboardPage: React.FC = () => {
                 />
               </IonItem>
 
-              <IonItem>
-                <IonLabel>
-                  <h2>Show content preview</h2>
-                  <p>Display preview of clipboard content in history</p>
+              <IonItem className="rounded-xl overflow-hidden mx-4 my-2">
+                <IonLabel className="py-2">
+                  <h2 className="font-bold text-gray-900 dark:text-white">
+                    Show content preview
+                  </h2>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Display preview of clipboard content in history
+                  </p>
                 </IonLabel>
                 <IonToggle
                   checked={clipboardShowPreview}
@@ -204,12 +224,20 @@ const ClipboardPage: React.FC = () => {
                 />
               </IonItem>
 
-              <IonItem>
-                <IonLabel>
-                  <h2>Backup to Cloud</h2>
-                  <p>Save clipboard history to connected cloud accounts</p>
+              <IonItem className="rounded-xl overflow-hidden mx-4 my-2 border border-blue-100 dark:border-blue-900/50">
+                <IonIcon
+                  icon={cloudUploadOutline}
+                  slot="start"
+                  color="primary"
+                />
+                <IonLabel className="py-2">
+                  <h2 className="font-bold text-gray-900 dark:text-white">
+                    Backup to Cloud
+                  </h2>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Save clipboard history to connected accounts
+                  </p>
                 </IonLabel>
-                <IonIcon icon={cloudUploadOutline} slot="start" />
                 <IonToggle
                   checked={clipboardCloudBackup}
                   onIonChange={e => handleCloudBackupToggle(e.detail.checked)}
@@ -219,21 +247,22 @@ const ClipboardPage: React.FC = () => {
 
             <div className="settings-info-section">
               <IonText>
-                <h3>About Clipboard Sync</h3>
+                <h3>Security & Privacy</h3>
                 <p>
-                  Clipboard sync allows you to share text and images between
-                  your paired devices in real-time. When enabled, any content
-                  you copy will automatically sync to all connected devices.
+                  Clipboard sync uses military-grade encryption to share text
+                  and images directly between your paired devices in real-time.
                 </p>
                 <p>
-                  For privacy, auto-sync is disabled by default. Enable it in
-                  settings to sync automatically, or keep it disabled to approve
-                  each sync manually.
+                  Enable auto-sync for a seamless experience, or keep it
+                  disabled to maintain control over exactly what leaves this
+                  device.
                 </p>
-                <p>
-                  <strong>Privacy Note:</strong> Clipboard content is sent
-                  directly between devices using encrypted peer-to-peer
-                  connections. No data is stored on servers.
+                <p className="pt-2 border-t border-gray-100 dark:border-gray-800">
+                  <strong className="text-blue-600 dark:text-blue-400">
+                    P2P Architecture:
+                  </strong>{" "}
+                  Your data never touches our servers. Every sync is a direct,
+                  encrypted handshake between your owned nodes.
                 </p>
               </IonText>
             </div>

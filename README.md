@@ -1,4 +1,10 @@
-# Syncstuff - Seamless File Synchronization
+## 📖 Documentation
+
+Detailed implementation plans and status reports are now organized in the [docs/](file:///d:/repos/ionic/syncstuff/docs) directory:
+
+- **[Overall Plan](file:///d:/repos/ionic/syncstuff/docs/overall_plan.md)**: Project vision and roadmap.
+- **[Implementation Status](file:///d:/repos/ionic/syncstuff/docs/implementation.md)**: Current focus and progress.
+- **[App Guide](file:///d:/repos/ionic/syncstuff/docs/app)**: Mobile application details.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Bun](https://img.shields.io/badge/Bun-1.0+-green)](https://bun.sh)

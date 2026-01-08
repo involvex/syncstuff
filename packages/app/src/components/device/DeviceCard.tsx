@@ -79,8 +79,10 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
       <IonCard className="device-card">
         <IonCardHeader>
           <div className="device-card-header">
-            <IonIcon icon={getPlatformIcon()} size="large" />
-            <div>
+            <div className="device-icon-container">
+              <IonIcon icon={getPlatformIcon()} size="large" />
+            </div>
+            <div className="device-card-titles">
               <IonCardTitle>{device.name}</IonCardTitle>
               <IonCardSubtitle>{device.id}</IonCardSubtitle>
             </div>
@@ -104,17 +106,29 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
 
           <div className="action-buttons">
             {!isPaired && onPair && (
-              <IonButton fill="outline" onClick={() => onPair(device)}>
-                Pair
+              <IonButton
+                fill="solid"
+                onClick={() => onPair(device)}
+                className="connect-button"
+              >
+                Pair Device
               </IonButton>
             )}
             {isPaired && onConnect && (
-              <IonButton fill="outline" onClick={() => onConnect(device.id)}>
+              <IonButton
+                fill="solid"
+                onClick={() => onConnect(device.id)}
+                className="connect-button"
+              >
                 Connect
               </IonButton>
             )}
             {isPaired && onSendFile && (
-              <IonButton fill="outline" onClick={triggerFileSelect}>
+              <IonButton
+                fill="outline"
+                onClick={triggerFileSelect}
+                className="send-button"
+              >
                 <IonIcon slot="start" icon={documentAttach} />
                 Send File
               </IonButton>
@@ -124,6 +138,7 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
                 color="danger"
                 fill="clear"
                 onClick={() => onUnpair(device.id)}
+                className="unpair-button"
               >
                 <IonIcon slot="icon-only" icon={closeCircle} />
               </IonButton>

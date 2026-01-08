@@ -13,6 +13,8 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonCardContent,
+  IonToggle,
+  IonInput,
 } from "@ionic/react";
 import { ThemeToggle } from "../components/common/ThemeToggle";
 import { useSettingsStore } from "../store/settings.store";
@@ -27,7 +29,19 @@ import { ElectronSettings } from "../components/settings/ElectronSettings";
 import { ConnectionSettings } from "../components/settings/ConnectionSettings";
 
 const SettingsPage: React.FC = () => {
-  const { deviceName, deviceId, initialize } = useSettingsStore();
+  const {
+    deviceName,
+    deviceId,
+    initialize,
+    devMode,
+    setDevMode,
+    verboseLogging,
+    setVerboseLogging,
+    traceHandshake,
+    setTraceHandshake,
+    signalingServerUrl,
+    setSignalingServerUrl,
+  } = useSettingsStore();
 
   useEffect(() => {
     initialize();
@@ -86,9 +100,43 @@ const SettingsPage: React.FC = () => {
 
           <ElectronSettings />
 
+          {devMode && (
+            <IonCard>
+              <IonCardHeader>
+                <IonCardTitle>Developer Options</IonCardTitle>
+              </IonCardHeader>
+              <IonCardContent>
+                <IonList>
+                  <IonItem>
+                    <IonLabel>Verbose Logging</IonLabel>
+                    <IonToggle
+                      checked={verboseLogging}
+                      onIonChange={e => setVerboseLogging(e.detail.checked)}
+                    />
+                  </IonItem>
+                  <IonItem>
+                    <IonLabel>Trace Handshake</IonLabel>
+                    <IonToggle
+                      checked={traceHandshake}
+                      onIonChange={e => setTraceHandshake(e.detail.checked)}
+                    />
+                  </IonItem>
+                  <IonItem>
+                    <IonLabel position="stacked">Signaling Server URL</IonLabel>
+                    <IonInput
+                      value={signalingServerUrl}
+                      onIonChange={e => setSignalingServerUrl(e.detail.value!)}
+                      placeholder="http://localhost:3001"
+                    />
+                  </IonItem>
+                </IonList>
+              </IonCardContent>
+            </IonCard>
+          )}
+
           <IonCard>
             <IonCardHeader>
-              <IonCardTitle>Appearance</IonCardTitle>
+              <IonCardTitle>Appearance & Debug</IonCardTitle>
             </IonCardHeader>
             <IonCardContent>
               <IonList>
@@ -96,11 +144,18 @@ const SettingsPage: React.FC = () => {
                   <IonLabel>Theme</IonLabel>
                   <ThemeToggle />
                 </IonItem>
+                <IonItem>
+                  <IonLabel>Developer Mode</IonLabel>
+                  <IonToggle
+                    checked={devMode}
+                    onIonChange={e => setDevMode(e.detail.checked)}
+                  />
+                </IonItem>
               </IonList>
               <IonText color="medium">
                 <p style={{ marginTop: "10px", fontSize: "0.875rem" }}>
-                  Choose between Light, Dark, or System theme. System will match
-                  your device's theme preference.
+                  Choose between Light, Dark, or System theme. Global developer
+                  mode enables advanced logging and connection controls.
                 </p>
               </IonText>
             </IonCardContent>

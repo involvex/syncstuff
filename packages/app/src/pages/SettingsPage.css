@@ -1,9 +1,56 @@
 .settings-container {
-  padding: 16px;
+  padding: 20px;
+  background: var(--ion-background-color);
+  min-height: 100%;
+}
+
+ion-card {
+  margin: 0 0 24px 0;
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(var(--ion-color-step-200-rgb), 0.5);
+  background: white;
+}
+
+.dark ion-card {
+  background: var(--ion-color-step-100);
+  border-bordercolor: rgba(255, 255, 255, 0.05);
+}
+
+ion-card-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--ion-color-dark);
 }
 
 .device-id {
   font-family: monospace;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   word-break: break-all;
+  color: var(--ion-color-primary);
+  background: var(--ion-color-step-50);
+  padding: 4px 8px;
+  border-radius: 6px;
+  margin-top: 4px;
+}
+
+.dark .device-id {
+  background: var(--ion-color-step-200);
+}
+
+ion-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+}
+
+ion-label h3 {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--ion-color-step-600);
+}
+
+ion-label p {
+  color: var(--ion-color-dark);
+  font-weight: 600;
+  margin-top: 2px;
 }

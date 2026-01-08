@@ -14,6 +14,9 @@ export interface StorageKeys {
   CLOUD_ACCOUNTS: "cloudAccounts";
   CLOUD_TOKEN_CACHE: "cloudTokenCache";
   SIGNALING_SERVER_URL: "signalingServerUrl";
+  DEV_MODE: "devMode";
+  VERBOSE_LOGGING: "verboseLogging";
+  TRACE_HANDSHAKE: "traceHandshake";
 }
 
 export const STORAGE_KEYS: StorageKeys = {
@@ -30,6 +33,9 @@ export const STORAGE_KEYS: StorageKeys = {
   CLOUD_ACCOUNTS: "cloudAccounts",
   CLOUD_TOKEN_CACHE: "cloudTokenCache",
   SIGNALING_SERVER_URL: "signalingServerUrl",
+  DEV_MODE: "devMode",
+  VERBOSE_LOGGING: "verboseLogging",
+  TRACE_HANDSHAKE: "traceHandshake",
 };
 
 export interface StorageService {

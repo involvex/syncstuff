@@ -13,6 +13,7 @@ import {
   type ServiceTxtRecord,
 } from "../../types/network.types";
 import { isNative } from "../../utils/platform.utils";
+import { logger } from "../logging/logger.service";
 
 type DeviceFoundCallback = (device: DiscoveredDevice) => void;
 type DeviceLostCallback = (deviceId: string) => void;
@@ -40,7 +41,7 @@ class DiscoveryService {
     }
 
     if (this.isRunning) {
-      console.warn("Discovery already running");
+      logger.debug("Discovery already running");
       return;
     }
 
@@ -65,9 +66,9 @@ class DiscoveryService {
         },
       );
 
-      console.log("Device discovery started");
+      logger.info("Device discovery started");
     } catch (error) {
-      console.error("Failed to start discovery:", error);
+      logger.error("Failed to start discovery:", error);
       this.isRunning = false;
       throw error;
     }
@@ -78,72 +79,43 @@ class DiscoveryService {
    */
   async stopDiscovery(): Promise<void> {
     if (!this.isRunning) {
-      console.log("Discovery not running, nothing to stop");
+      logger.debug("Discovery not running, nothing to stop");
       return;
     }
 
-    console.log("Stopping discovery...");
+    logger.info("Stopping discovery...");
+    this.isRunning = false; // Mark as stopped immediately to avoid race conditions
 
     try {
-      // Step 1: Unregister device first (if registered)
-      try {
-        await ZeroConf.stop();
-        console.log("Device unregistered");
-      } catch (error) {
-        console.warn("Failed to unregister device:", error);
-        // Continue with cleanup even if this fails
-      }
-
-      // Step 2: Remove the listener to prevent any more callbacks
+      // Step 1: Remove the listener FIRST
       if (this.listenerHandle) {
         try {
           await this.listenerHandle.remove();
-          this.listenerHandle = null;
-          console.log("Discovery listener removed");
+          logger.info("ZeroConf listener removed");
         } catch (error) {
-          console.warn("Failed to remove listener:", error);
+          logger.warn("Failed to remove listener:", error);
+        } finally {
           this.listenerHandle = null;
         }
       }
 
-      // Step 3: Clear all callbacks to prevent memory leaks
-      this.onDeviceFoundCallbacks.clear();
-      this.onDeviceLostCallbacks.clear();
-
-      // Step 4: Stop watching for services
+      // Step 2: Stop watching for services
       try {
         await ZeroConf.unwatch({
           domain: SYNCSTUFF_SERVICE_DOMAIN,
           type: SYNCSTUFF_SERVICE_TYPE,
         });
-        console.log("ZeroConf unwatch complete");
+        logger.debug("ZeroConf unwatch complete");
       } catch (error) {
-        console.warn("Failed to unwatch:", error);
-        // Continue with cleanup
+        logger.warn("Failed to unwatch:", error);
       }
 
-      // Step 5: Close the ZeroConf connection (only if everything else succeeded)
-      try {
-        await ZeroConf.close();
-        console.log("ZeroConf closed");
-      } catch (error) {
-        console.warn("Failed to close ZeroConf:", error);
-        // This is often expected if already closed
-      }
-
-      // Step 6: Mark as stopped
-      this.isRunning = false;
-      console.log("Device discovery stopped successfully");
+      logger.info("Device discovery stopped successfully");
     } catch (error) {
-      console.error("Unexpected error while stopping discovery:", error);
-
-      // Force reset state even on error to allow restart
+      logger.error("Unexpected error while stopping discovery:", error);
+    } finally {
       this.isRunning = false;
       this.listenerHandle = null;
-      this.onDeviceFoundCallbacks.clear();
-      this.onDeviceLostCallbacks.clear();
-
-      console.log("Discovery state force reset despite error");
     }
   }
 
@@ -172,9 +144,9 @@ class DiscoveryService {
         props,
       });
 
-      console.log("Device registered:", currentDevice.name);
+      logger.info("Device registered:", currentDevice.name);
     } catch (error) {
-      console.error("Failed to register device:", error);
+      logger.error("Failed to register device:", error);
       throw error;
     }
   }

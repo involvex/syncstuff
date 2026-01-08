@@ -35,6 +35,7 @@ import { DeviceList } from "../components/device/DeviceList";
 import { PairingModal } from "../components/device/PairingModal";
 import { QrCodeModal } from "../components/device/QrCodeModal";
 import { useDeviceDiscovery } from "../hooks/useDeviceDiscovery";
+import { useDeviceStore } from "../store/device.store";
 import { useTransfer } from "../hooks/useTransfer";
 import { authCodeService } from "../services/network/auth-code.service";
 import type { Device } from "../types/device.types";
@@ -66,6 +67,25 @@ const DevicesPage: React.FC = () => {
     "display",
   );
 
+  const pairingRequests = useDeviceStore(state => state.pairingRequests);
+  const removePairingRequest = useDeviceStore(
+    state => state.removePairingRequest,
+  );
+
+  // Auto-set pairing device if an inbound request arrives
+  useEffect(() => {
+    const pendingRequest = pairingRequests.find(r => r.status === "pending");
+    if (pendingRequest && !pairingDevice) {
+      setPairingDevice({
+        id: pendingRequest.deviceId,
+        name: pendingRequest.name,
+        platform: pendingRequest.platform,
+        status: "discovered",
+        lastSeen: new Date(),
+      });
+    }
+  }, [pairingRequests, pairingDevice]);
+
   // Stop discovery when the component unmounts
   useEffect(() => {
     return () => {
@@ -95,12 +115,27 @@ const DevicesPage: React.FC = () => {
   const handleAcceptPairing = async () => {
     if (pairingDevice) {
       await pairDevice(pairingDevice);
+      // Remove any associated pairing request
+      const request = pairingRequests.find(
+        r => r.deviceId === pairingDevice.id,
+      );
+      if (request) {
+        removePairingRequest(request.id);
+      }
       setPairingDevice(null);
     }
   };
 
   const handleRejectPairing = () => {
-    setPairingDevice(null);
+    if (pairingDevice) {
+      const request = pairingRequests.find(
+        r => r.deviceId === pairingDevice.id,
+      );
+      if (request) {
+        removePairingRequest(request.id);
+      }
+      setPairingDevice(null);
+    }
   };
 
   const handleRefresh = async (event: CustomEvent<RefresherEventDetail>) => {
@@ -278,20 +313,21 @@ const DevicesPage: React.FC = () => {
             <IonCard className="current-device-card">
               <IonCardContent>
                 <div className="current-device-info">
-                  <IonIcon icon={phonePortrait} size="large" color="primary" />
-                  <div>
-                    <IonText>
-                      <h3>This Device</h3>
-                      <p>{currentDevice.name}</p>
-                    </IonText>
+                  <div className="current-device-icon-container">
+                    <IonIcon icon={phonePortrait} size="large" />
+                  </div>
+                  <div className="current-device-details">
+                    <h3 className="current-device-label">This Device</h3>
+                    <p className="current-device-name">{currentDevice.name}</p>
                   </div>
                 </div>
-                <IonGrid>
+                <IonGrid className="device-action-grid ion-no-padding">
                   <IonRow>
                     <IonCol size="6">
                       <IonButton
                         expand="block"
                         fill="outline"
+                        className="device-action-button"
                         onClick={() => setShowQrModal(true)}
                       >
                         <IonIcon slot="start" icon={qrCode} />
@@ -302,6 +338,7 @@ const DevicesPage: React.FC = () => {
                       <IonButton
                         expand="block"
                         fill="outline"
+                        className="device-action-button"
                         onClick={startScan}
                       >
                         <IonIcon slot="start" icon={scan} />
@@ -314,19 +351,21 @@ const DevicesPage: React.FC = () => {
                       <IonButton
                         expand="block"
                         fill="outline"
+                        className="device-action-button"
                         onClick={() => {
                           setAuthCodeMode("display");
                           setShowAuthCodeModal(true);
                         }}
                       >
                         <IonIcon slot="start" icon={keypad} />
-                        Show Code
+                        Share Code
                       </IonButton>
                     </IonCol>
                     <IonCol size="6">
                       <IonButton
                         expand="block"
                         fill="outline"
+                        className="device-action-button"
                         onClick={() => {
                           setAuthCodeMode("enter");
                           setShowAuthCodeModal(true);
@@ -369,7 +408,11 @@ const DevicesPage: React.FC = () => {
           {isSupported && (
             <div className="discovery-controls">
               {!isDiscovering ? (
-                <IonButton expand="block" onClick={handleStartDiscovery}>
+                <IonButton
+                  expand="block"
+                  onClick={handleStartDiscovery}
+                  className="discovery-button"
+                >
                   <IonIcon slot="start" icon={playCircle} />
                   Start Discovery
                 </IonButton>
@@ -378,6 +421,7 @@ const DevicesPage: React.FC = () => {
                   expand="block"
                   color="danger"
                   onClick={handleStopDiscovery}
+                  className="discovery-button"
                 >
                   <IonIcon slot="start" icon={stopCircle} />
                   Stop Discovery
