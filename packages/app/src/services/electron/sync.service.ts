@@ -1,14 +1,14 @@
-import { electronService } from "./electron.service";
-import { clipboardService } from "../sync/clipboard.service";
 import { useCloudStore } from "../../store/cloud.store";
 import type { CloudAccount } from "../../types/cloud.types";
+import { isElectron } from "../../utils/electron.utils";
+import { clipboardService } from "../sync/clipboard.service";
 
 class ElectronSyncService {
   private syncInterval: number | null = null;
   private isSyncing = false;
 
   async initialize(): Promise<void> {
-    if (!electronService.isAvailable()) {
+    if (!isElectron()) {
       return;
     }
 
@@ -24,7 +24,7 @@ class ElectronSyncService {
     );
 
     // Start syncing for this account if Electron is available
-    if (electronService.isAvailable()) {
+    if (isElectron()) {
       await this.syncAccount(account);
     }
   }

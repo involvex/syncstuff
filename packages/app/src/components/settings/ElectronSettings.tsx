@@ -1,36 +1,34 @@
-import React, { useState, useEffect } from "react";
 import {
+  IonButton,
   IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardSubtitle,
   IonCardContent,
-  IonList,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonCardTitle,
+  IonIcon,
   IonItem,
   IonLabel,
-  IonButton,
-  IonIcon,
+  IonList,
   IonToggle,
   useIonToast,
 } from "@ionic/react";
 import {
-  desktopOutline,
-  removeOutline,
-  expandOutline,
-  closeOutline,
   appsOutline,
+  closeOutline,
+  desktopOutline,
+  expandOutline,
+  removeOutline,
 } from "ionicons/icons";
-import { electronService } from "../../services/electron/electron.service";
-import { Capacitor } from "@capacitor/core";
+import React, { useEffect, useState } from "react";
+import { isElectron } from "../../utils/electron.utils";
 
 export const ElectronSettings: React.FC = () => {
-  const [isElectron, setIsElectron] = useState(false);
+  const [isElectronApp, setIsElectronApp] = useState(false);
   const [minimizeToTray, setMinimizeToTray] = useState(true);
   const [presentToast] = useIonToast();
 
   useEffect(() => {
-    const platform = Capacitor.getPlatform();
-    setIsElectron(platform === "electron");
+    setIsElectronApp(isElectron());
 
     // Load minimize to tray preference
     const stored = localStorage.getItem("electron_minimize_to_tray");
@@ -41,7 +39,7 @@ export const ElectronSettings: React.FC = () => {
 
   const handleMinimize = async () => {
     try {
-      await electronService.minimize();
+      await window.electron?.windowMinimize();
       presentToast({
         message: "Window minimized",
         duration: 2000,
@@ -59,7 +57,7 @@ export const ElectronSettings: React.FC = () => {
 
   const handleMaximize = async () => {
     try {
-      await electronService.maximize();
+      await window.electron?.windowMaximize();
       presentToast({
         message: "Window maximized",
         duration: 2000,
@@ -78,14 +76,14 @@ export const ElectronSettings: React.FC = () => {
   const handleClose = async () => {
     try {
       if (minimizeToTray) {
-        await electronService.hideWindow();
+        await window.electron?.windowHide();
         presentToast({
           message: "Minimized to tray",
           duration: 2000,
           color: "success",
         });
       } else {
-        await electronService.close();
+        await window.electron?.windowClose();
       }
     } catch (error) {
       console.error("Failed to close:", error);
@@ -102,7 +100,7 @@ export const ElectronSettings: React.FC = () => {
     });
   };
 
-  if (!isElectron || !electronService.isAvailable()) {
+  if (!isElectronApp) {
     return null;
   }
 

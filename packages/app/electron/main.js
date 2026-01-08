@@ -5,9 +5,11 @@ const {
   Menu,
   nativeImage,
   ipcMain,
+  Notification,
 } = require("electron");
 const path = require("path");
 const isDev = require("electron-is-dev");
+const fs = require("fs");
 
 let mainWindow = null;
 let tray = null;
@@ -55,7 +57,7 @@ function createWindow() {
     }
   });
 
-  // IPC handlers
+  // Window control IPC handlers
   ipcMain.handle("window-minimize", () => {
     if (mainWindow) {
       mainWindow.minimize();
@@ -92,12 +94,139 @@ function createWindow() {
     }
   });
 
+  // Tray IPC handlers
   ipcMain.handle("tray-set", (event, options) => {
     if (tray) {
       if (options.tooltip) {
         tray.setToolTip(options.tooltip);
       }
     }
+  });
+
+  // Notification IPC handlers
+  ipcMain.handle("show-notification", (event, options) => {
+    if (Notification.isSupported()) {
+      const notification = new Notification({
+        title: options.title,
+        body: options.body,
+        icon: options.icon || path.join(__dirname, "../public/favicon.png"),
+      });
+      notification.show();
+
+      if (options.onClick) {
+        notification.on("click", () => {
+          if (mainWindow) {
+            mainWindow.show();
+            mainWindow.focus();
+          }
+        });
+      }
+    }
+    return { success: true };
+  });
+
+  // File system IPC handlers
+  ipcMain.handle("fs-read-file", async (event, filePath) => {
+    try {
+      const content = fs.readFileSync(filePath, "utf-8");
+      return { success: true, data: content };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  });
+
+  ipcMain.handle("fs-write-file", async (event, filePath, content) => {
+    try {
+      fs.writeFileSync(filePath, content, "utf-8");
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  });
+
+  ipcMain.handle("fs-exists", async (event, filePath) => {
+    try {
+      return { success: true, exists: fs.existsSync(filePath) };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  });
+
+  // Device sync IPC handlers
+  ipcMain.handle("sync-device-connected", (event, deviceInfo) => {
+    // Update tray tooltip to show connected device
+    if (tray) {
+      tray.setToolTip(`Syncstuff - Connected to ${deviceInfo.name}`);
+    }
+
+    // Show notification
+    if (Notification.isSupported()) {
+      new Notification({
+        title: "Device Connected",
+        body: `${deviceInfo.name} is now connected`,
+      }).show();
+    }
+
+    return { success: true };
+  });
+
+  ipcMain.handle("sync-device-disconnected", (event, deviceInfo) => {
+    if (tray) {
+      tray.setToolTip("Syncstuff");
+    }
+
+    if (Notification.isSupported()) {
+      new Notification({
+        title: "Device Disconnected",
+        body: `${deviceInfo.name} disconnected`,
+      }).show();
+    }
+
+    return { success: true };
+  });
+
+  ipcMain.handle("sync-transfer-started", (event, transferInfo) => {
+    if (Notification.isSupported()) {
+      new Notification({
+        title: "Transfer Started",
+        body: `Sending ${transferInfo.fileName}`,
+      }).show();
+    }
+    return { success: true };
+  });
+
+  ipcMain.handle("sync-transfer-complete", (event, transferInfo) => {
+    if (Notification.isSupported()) {
+      const notification = new Notification({
+        title: "Transfer Complete",
+        body: `${transferInfo.fileName} sent successfully`,
+      });
+      notification.show();
+
+      notification.on("click", () => {
+        if (mainWindow) {
+          mainWindow.show();
+          mainWindow.focus();
+        }
+      });
+    }
+    return { success: true };
+  });
+
+  ipcMain.handle("sync-transfer-failed", (event, transferInfo) => {
+    if (Notification.isSupported()) {
+      new Notification({
+        title: "Transfer Failed",
+        body: `Failed to send ${transferInfo.fileName}`,
+      }).show();
+    }
+    return { success: true };
+  });
+
+  // Auto-updater placeholder
+  ipcMain.handle("check-for-updates", async () => {
+    // This will be implemented with electron-updater
+    return { success: true, updateAvailable: false };
   });
 
   // Create tray
@@ -124,6 +253,12 @@ function createTray() {
         }
       },
     },
+    { type: "separator" },
+    {
+      label: "Connected Devices",
+      enabled: false,
+    },
+    { type: "separator" },
     {
       label: "Quit",
       click: () => {

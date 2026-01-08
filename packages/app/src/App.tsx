@@ -1,4 +1,3 @@
-import { Redirect, Route } from "react-router-dom";
 import {
   IonApp,
   IonIcon,
@@ -11,25 +10,26 @@ import {
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import {
-  phonePortrait,
-  swapHorizontal,
   clipboard,
+  phonePortrait,
   settings,
+  swapHorizontal,
 } from "ionicons/icons";
-import DevicesPage from "./pages/DevicesPage";
-import TransfersPage from "./pages/TransfersPage";
-import ClipboardPage from "./pages/ClipboardPage";
-import SettingsPage from "./pages/SettingsPage";
-import { useTheme } from "./hooks/useTheme";
 import { useEffect } from "react";
-import { useSettingsStore } from "./store/settings.store";
-import { deepLinkService } from "./services/network/deeplink.service";
-import { deviceDetectionService } from "./services/device/device-detection.service";
-import { permissionsService } from "./services/permissions/permissions.service";
-import { notificationService } from "./services/notifications/notification.service";
-import { useCloudStore } from "./store/cloud.store";
-import { electronService } from "./services/electron/electron.service";
+import { Redirect, Route } from "react-router-dom";
 import { ResponsiveLayout } from "./components/common/ResponsiveLayout";
+import { useTheme } from "./hooks/useTheme";
+import ClipboardPage from "./pages/ClipboardPage";
+import DevicesPage from "./pages/DevicesPage";
+import SettingsPage from "./pages/SettingsPage";
+import TransfersPage from "./pages/TransfersPage";
+import { deviceDetectionService } from "./services/device/device-detection.service";
+import { deepLinkService } from "./services/network/deeplink.service";
+import { notificationService } from "./services/notifications/notification.service";
+import { permissionsService } from "./services/permissions/permissions.service";
+import { useCloudStore } from "./store/cloud.store";
+import { useSettingsStore } from "./store/settings.store";
+import { isElectron } from "./utils/electron.utils";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -40,12 +40,12 @@ import "@ionic/react/css/structure.css";
 import "@ionic/react/css/typography.css";
 
 /* Optional CSS utils that can be commented out */
-import "@ionic/react/css/padding.css";
+import "@ionic/react/css/display.css";
+import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/float-elements.css";
+import "@ionic/react/css/padding.css";
 import "@ionic/react/css/text-alignment.css";
 import "@ionic/react/css/text-transformation.css";
-import "@ionic/react/css/flex-utils.css";
-import "@ionic/react/css/display.css";
 
 /**
  * Ionic Dark Mode
@@ -57,8 +57,8 @@ import "@ionic/react/css/display.css";
 /* import '@ionic/react/css/palettes/dark.class.css'; */
 
 /* Theme variables */
-import "./theme/variables.css";
 import "./theme/responsive.css";
+import "./theme/variables.css";
 
 setupIonicReact();
 
@@ -94,22 +94,15 @@ const App: React.FC = () => {
         console.error("Failed to initialize notifications:", error);
       }
 
-      // Initialize Electron service
-      try {
-        await electronService.initialize();
-        if (electronService.isAvailable()) {
-          await electronService.setTray({
-            icon: "/icons/icon-96x96.png",
-            tooltip: "Syncstuff",
-          });
-
-          // Initialize Electron sync service
+      // Initialize Electron sync service if in Electron
+      if (isElectron()) {
+        try {
           const { electronSyncService } =
             await import("./services/electron/sync.service");
           await electronSyncService.initialize();
+        } catch (error) {
+          console.error("Failed to initialize Electron sync:", error);
         }
-      } catch (error) {
-        console.error("Failed to initialize Electron:", error);
       }
     };
     initializeAppSettings();

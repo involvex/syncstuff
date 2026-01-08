@@ -1,10 +1,14 @@
-import { useEffect, useCallback } from "react";
-import { useDeviceStore } from "../store/device.store";
-import { useSettingsStore } from "../store/settings.store";
+import { useCallback, useEffect } from "react";
 import { discoveryService } from "../services/network/discovery.service";
 import { webrtcService } from "../services/network/webrtc.service";
+import { useDeviceStore } from "../store/device.store";
+import { useSettingsStore } from "../store/settings.store";
 import type { Device } from "../types/device.types";
 import type { DiscoveredDevice } from "../types/network.types";
+import {
+  notifyDeviceConnected,
+  notifyDeviceDisconnected,
+} from "../utils/electron.utils";
 import { getPlatform } from "../utils/platform.utils";
 
 /**
@@ -52,17 +56,27 @@ export const useDeviceDiscovery = () => {
 
   const handleDeviceFound = useCallback(
     (device: DiscoveredDevice) => {
-      if (device.id === deviceId) return;
       addDiscoveredDevice(device);
+      // Notify Electron if running in desktop mode
+      notifyDeviceConnected(device.name, device.id).catch(err =>
+        console.warn("Failed to notify Electron:", err),
+      );
     },
-    [deviceId, addDiscoveredDevice],
+    [addDiscoveredDevice],
   );
 
   const handleDeviceLost = useCallback(
     (deviceId: string) => {
+      const device = discoveredDevices.find(d => d.id === deviceId);
       removeDiscoveredDevice(deviceId);
+      // Notify Electron if running in desktop mode
+      if (device) {
+        notifyDeviceDisconnected(device.name, device.id).catch(err =>
+          console.warn("Failed to notify Electron:", err),
+        );
+      }
     },
-    [removeDiscoveredDevice],
+    [removeDiscoveredDevice, discoveredDevices],
   );
 
   // Start discovery
