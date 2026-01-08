@@ -71,7 +71,7 @@ export function animateText(text: string, delay: number = 50): Promise<void> {
 }
 
 export function printHeader(): void {
-  const packagePath = join(__dirname, "../../../../package.json");
+  const packagePath = join(__dirname, "../../package.json");
   const packageJson = JSON.parse(readFileSync(packagePath, "utf-8"));
   const version = packageJson.version;
   const header = chalk.cyan.bold(`

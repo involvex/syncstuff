@@ -2,6 +2,7 @@ import chalk from "chalk";
 import { readFileSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
+import { DebugMode } from "../../core.js";
 import { createBox, printHeader, printSeparator } from "../../utils/ui.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -14,6 +15,12 @@ export function showversion() {
     const packagePath = join(__dirname, "../../../package.json");
     const packageJson = JSON.parse(readFileSync(packagePath, "utf-8"));
     const version = packageJson.version;
+
+    if (DebugMode.enabled === true) {
+      console.log(chalk.yellow("Debug mode enabled"));
+      console.log("Package path: " + packagePath);
+      console.log("Version: " + version);
+    }
 
     const versionBox = createBox(
       chalk.cyan.bold("Syncstuff CLI\n\n") +
@@ -30,6 +37,12 @@ export function showversion() {
     console.log(versionBox);
     printSeparator();
   } catch {
+    if (DebugMode.enabled === true) {
+      const packagePath = join(__dirname, "../../../package.json");
+      console.log(chalk.yellow("Debug mode enabled"));
+      console.log("Packagepath: " + packagePath);
+      console.log(chalk.yellow("Version: 0.0.1 (unable to read package.json)"));
+    }
     console.log(chalk.yellow("Version: 0.0.1 (unable to read package.json)"));
   }
 }

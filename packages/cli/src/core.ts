@@ -8,6 +8,6 @@ export interface Device {
   is_online: boolean;
 }
 
-export type DebugMode = {
-  enabled: boolean;
+export const DebugMode = {
+  enabled: false,
 };
