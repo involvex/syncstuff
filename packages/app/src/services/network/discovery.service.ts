@@ -82,32 +82,60 @@ class DiscoveryService {
       return;
     }
 
+    console.log("Stopping discovery...");
+
     try {
-      // Remove the listener FIRST to prevent any more callbacks during cleanup
-      if (this.listenerHandle) {
-        await this.listenerHandle.remove();
-        this.listenerHandle = null;
-        console.log("Discovery listener removed");
+      // Step 1: Unregister device first (if registered)
+      try {
+        await ZeroConf.stop();
+        console.log("Device unregistered");
+      } catch (error) {
+        console.warn("Failed to unregister device:", error);
+        // Continue with cleanup even if this fails
       }
 
-      // Clear all callbacks to prevent memory leaks
+      // Step 2: Remove the listener to prevent any more callbacks
+      if (this.listenerHandle) {
+        try {
+          await this.listenerHandle.remove();
+          this.listenerHandle = null;
+          console.log("Discovery listener removed");
+        } catch (error) {
+          console.warn("Failed to remove listener:", error);
+          this.listenerHandle = null;
+        }
+      }
+
+      // Step 3: Clear all callbacks to prevent memory leaks
       this.onDeviceFoundCallbacks.clear();
       this.onDeviceLostCallbacks.clear();
 
-      // Stop watching for services
-      await ZeroConf.unwatch({
-        domain: SYNCSTUFF_SERVICE_DOMAIN,
-        type: SYNCSTUFF_SERVICE_TYPE,
-      });
+      // Step 4: Stop watching for services
+      try {
+        await ZeroConf.unwatch({
+          domain: SYNCSTUFF_SERVICE_DOMAIN,
+          type: SYNCSTUFF_SERVICE_TYPE,
+        });
+        console.log("ZeroConf unwatch complete");
+      } catch (error) {
+        console.warn("Failed to unwatch:", error);
+        // Continue with cleanup
+      }
 
-      // Close the ZeroConf connection
-      await ZeroConf.close();
+      // Step 5: Close the ZeroConf connection (only if everything else succeeded)
+      try {
+        await ZeroConf.close();
+        console.log("ZeroConf closed");
+      } catch (error) {
+        console.warn("Failed to close ZeroConf:", error);
+        // This is often expected if already closed
+      }
 
-      // Mark as stopped
+      // Step 6: Mark as stopped
       this.isRunning = false;
       console.log("Device discovery stopped successfully");
     } catch (error) {
-      console.error("Failed to stop discovery:", error);
+      console.error("Unexpected error while stopping discovery:", error);
 
       // Force reset state even on error to allow restart
       this.isRunning = false;
@@ -115,7 +143,7 @@ class DiscoveryService {
       this.onDeviceFoundCallbacks.clear();
       this.onDeviceLostCallbacks.clear();
 
-      console.log("Discovery state reset despite error");
+      console.log("Discovery state force reset despite error");
     }
   }
 

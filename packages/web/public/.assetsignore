@@ -1,0 +1,8 @@
+# Exclude large files from Cloudflare Workers assets
+# Workers has a 25MB limit per asset, APKs exceed this
+
+# Exclude all APK files
+*.apk
+
+# Exclude the downloads directory entirely
+downloads/
