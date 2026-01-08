@@ -8,10 +8,10 @@ export interface User {
   email: string;
   username: string;
   full_name?: string;
-  role: 'user' | 'admin' | 'moderator';
+  role: "user" | "admin" | "moderator";
   avatar_url?: string;
   preferences?: UserSettings;
-  status: 'active' | 'suspended' | 'pending';
+  status: "active" | "suspended" | "pending";
   created_at: number;
   updated_at: number;
 }

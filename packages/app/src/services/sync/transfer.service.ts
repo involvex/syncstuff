@@ -55,6 +55,8 @@ class TransferService {
 
     useTransferStore.getState().addTransfer(transfer);
 
+    console.log(`Initiating file transfer ${transferId} to ${deviceId}`);
+
     // Send Offer
     const offerPayload: FileOfferPayload = {
       fileId: transferId,
@@ -63,6 +65,7 @@ class TransferService {
       mimeType: file.type,
     };
 
+    console.log(`Sending FILE_OFFER for ${file.name} to ${deviceId}`);
     this.sendMessage(deviceId, {
       type: "FILE_OFFER",
       transferId,
@@ -79,6 +82,9 @@ class TransferService {
         this.handleFileOffer(deviceId, message);
         break;
       case "FILE_ACCEPT":
+        console.log(
+          `Received FILE_ACCEPT for ${message.transferId} from ${deviceId}`,
+        );
         this.startSendingChunks(message.transferId, deviceId);
         break;
       case "FILE_REJECT":
@@ -128,6 +134,10 @@ class TransferService {
     };
 
     useTransferStore.getState().addTransfer(transfer);
+
+    console.log(
+      `Received file offer for ${payload.name} from ${deviceId}. Auto-accepting.`,
+    );
 
     // Send Accept
     this.sendMessage(deviceId, {

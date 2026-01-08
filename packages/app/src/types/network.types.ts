@@ -26,6 +26,8 @@ export type SignalType = "offer" | "answer" | "candidate";
 
 export interface SignalMessage {
   from: string;
+  fromName?: string;
+  fromPlatform?: string;
   to: string;
   type: SignalType;
   data: unknown;

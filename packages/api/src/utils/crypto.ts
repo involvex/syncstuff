@@ -25,10 +25,7 @@ function toBase64Url(buf: Uint8Array): string {
   for (let i = 0; i < buf.length; i++) {
     bin += String.fromCharCode(buf[i]);
   }
-  return btoa(bin)
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=/g, "");
+  return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
 }
 
 function fromBase64Url(str: string): Uint8Array {
@@ -47,9 +44,11 @@ async function getHmacKey(secret: string): Promise<CryptoKey> {
   let key = KEY_CACHE.get(secret);
   if (!key) {
     key = await crypto.subtle.importKey(
-      "raw", new TextEncoder().encode(secret),
+      "raw",
+      new TextEncoder().encode(secret),
       { name: "HMAC", hash: "SHA-256" },
-      false, ["sign", "verify"]
+      false,
+      ["sign", "verify"],
     );
     KEY_CACHE.set(secret, key);
   }
@@ -60,16 +59,24 @@ export async function hashPassword(password: string): Promise<string> {
   const salt = crypto.getRandomValues(new Uint8Array(16));
   const encoder = new TextEncoder();
   const keyMaterial = await crypto.subtle.importKey(
-    "raw", encoder.encode(password), { name: "PBKDF2" }, false, ["deriveBits"]
+    "raw",
+    encoder.encode(password),
+    { name: "PBKDF2" },
+    false,
+    ["deriveBits"],
   );
   const derivedKey = await crypto.subtle.deriveBits(
     { name: "PBKDF2", salt, iterations: 1, hash: "SHA-256" },
-    keyMaterial, 256
+    keyMaterial,
+    256,
   );
   return `pbk2:1:${toHex(salt)}:${toHex(new Uint8Array(derivedKey))}`;
 }
 
-export async function verifyPassword(password: string, storedHash: string): Promise<boolean> {
+export async function verifyPassword(
+  password: string,
+  storedHash: string,
+): Promise<boolean> {
   try {
     if (!storedHash) return false;
     const parts = storedHash.split(":");
@@ -79,19 +86,31 @@ export async function verifyPassword(password: string, storedHash: string): Prom
     const hashHex = parts[3];
     const encoder = new TextEncoder();
     const keyMaterial = await crypto.subtle.importKey(
-      "raw", encoder.encode(password), { name: "PBKDF2" }, false, ["deriveBits"]
+      "raw",
+      encoder.encode(password),
+      { name: "PBKDF2" },
+      false,
+      ["deriveBits"],
     );
     const derivedKey = await crypto.subtle.deriveBits(
       { name: "PBKDF2", salt, iterations, hash: "SHA-256" },
-      keyMaterial, 256
+      keyMaterial,
+      256,
     );
     return toHex(new Uint8Array(derivedKey)) === hashHex;
-  } catch { return false; }
+  } catch {
+    return false;
+  }
 }
 
-export async function signJWT(payload: Record<string, unknown>, secret: string): Promise<string> {
+export async function signJWT(
+  payload: Record<string, unknown>,
+  secret: string,
+): Promise<string> {
   const encoder = new TextEncoder();
-  const header = toBase64Url(encoder.encode(JSON.stringify({ alg: "HS256", typ: "JWT" })));
+  const header = toBase64Url(
+    encoder.encode(JSON.stringify({ alg: "HS256", typ: "JWT" })),
+  );
   const b64Payload = toBase64Url(encoder.encode(JSON.stringify(payload)));
   const data = encoder.encode(`${header}.${b64Payload}`);
   const key = await getHmacKey(secret);
@@ -99,15 +118,25 @@ export async function signJWT(payload: Record<string, unknown>, secret: string):
   return `${header}.${b64Payload}.${toBase64Url(new Uint8Array(sig))}`;
 }
 
-export async function verifyJWT(token: string, secret: string): Promise<Record<string, unknown> | null> {
+export async function verifyJWT(
+  token: string,
+  secret: string,
+): Promise<Record<string, unknown> | null> {
   try {
     const parts = token.split(".");
     if (parts.length !== 3) return null;
     const encoder = new TextEncoder();
     const data = encoder.encode(`${parts[0]}.${parts[1]}`);
     const key = await getHmacKey(secret);
-    const isValid = await crypto.subtle.verify("HMAC", key, fromBase64Url(parts[2]), data);
+    const isValid = await crypto.subtle.verify(
+      "HMAC",
+      key,
+      fromBase64Url(parts[2]),
+      data,
+    );
     if (!isValid) return null;
     return JSON.parse(new TextDecoder().decode(fromBase64Url(parts[1])));
-  } catch { return null; }
+  } catch {
+    return null;
+  }
 }

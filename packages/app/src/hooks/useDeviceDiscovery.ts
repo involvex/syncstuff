@@ -4,7 +4,7 @@ import { webrtcService } from "../services/network/webrtc.service";
 import { useDeviceStore } from "../store/device.store";
 import { useSettingsStore } from "../store/settings.store";
 import type { Device } from "../types/device.types";
-import type { DiscoveredDevice } from "../types/network.types";
+import type { ConnectionState, DiscoveredDevice } from "../types/network.types";
 import {
   notifyDeviceConnected,
   notifyDeviceDisconnected,
@@ -92,6 +92,69 @@ export const useDeviceDiscovery = () => {
       };
     }
   }, [handleDeviceFound, handleDeviceLost]);
+
+  // Sync WebRTC connection state to device store
+  useEffect(() => {
+    const handleStateChange = (
+      deviceId: string,
+      connectionState: ConnectionState,
+      metadata?: { name?: string; platform?: string },
+    ) => {
+      console.log(
+        `Connection state change for ${deviceId}: ${connectionState}`,
+      );
+
+      const matchedPaired = pairedDevices.find(d => d.id === deviceId);
+      const matchedDiscovered = discoveredDevices.find(d => d.id === deviceId);
+
+      if (matchedPaired) {
+        // Update paired device status
+        useDeviceStore.setState(state => ({
+          pairedDevices: state.pairedDevices.map(d =>
+            d.id === deviceId
+              ? {
+                  ...d,
+                  status:
+                    connectionState === "connected"
+                      ? "connected"
+                      : connectionState === "failed" ||
+                          connectionState === "closed"
+                        ? "disconnected"
+                        : "connecting",
+                }
+              : d,
+          ),
+        }));
+      } else if (matchedDiscovered) {
+        // Update discovered device status
+        addDiscoveredDevice({
+          ...matchedDiscovered,
+          status:
+            connectionState === "connected"
+              ? "connected"
+              : connectionState === "failed" || connectionState === "closed"
+                ? "disconnected"
+                : "connecting",
+        } as DiscoveredDevice);
+      } else if (
+        connectionState === "connecting" ||
+        connectionState === "connected"
+      ) {
+        // Unknown device connected? Add to discovered for now
+        addDiscoveredDevice({
+          id: deviceId,
+          name: metadata?.name || "Unknown Device",
+          platform: (metadata?.platform as any) || "web",
+          status: connectionState === "connected" ? "connected" : "connecting",
+          lastSeen: new Date(),
+        } as any);
+      }
+    };
+
+    const unsubscribe =
+      webrtcService.onConnectionStateChange(handleStateChange);
+    return () => unsubscribe();
+  }, [pairedDevices, discoveredDevices, addDiscoveredDevice]);
 
   // Start discovery
   const startDiscovery = useCallback(async () => {

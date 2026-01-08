@@ -23,7 +23,7 @@
     "typecheck": "tsc --noEmit",
     "prebuild": "prettier --write . && eslint --fix . && tsc --noEmit",
     "serve": "ionic serve",
-    "start:signaling": "node signaling-server.js",
+    "start:signaling": "node signaling-server.cjs",
     "android": " ionic cap run android -l --external",
     "gradle:stop": "cd android && ./gradlew.bat --stop",
     "gradle:clean": "cd android && ./gradlew.bat clean",

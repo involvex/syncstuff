@@ -2,6 +2,8 @@ import SimplePeer from "simple-peer";
 import type { Instance as SimplePeerInstance, SignalData } from "simple-peer";
 import { io, Socket } from "socket.io-client";
 import type { ConnectionState, SignalMessage } from "../../types/network.types";
+import { useSettingsStore } from "../../store/settings.store";
+import { getPlatform } from "../../utils/platform.utils";
 
 // For development, assumes signaling server is running on localhost.
 // In a real app, this would be a public URL.
@@ -12,6 +14,7 @@ type DataReceivedCallback = (deviceId: string, data: unknown) => void;
 type ConnectionStateCallback = (
   deviceId: string,
   state: ConnectionState,
+  metadata?: { name?: string; platform?: string },
 ) => void;
 
 interface PeerConnectionInfo {
@@ -20,6 +23,9 @@ interface PeerConnectionInfo {
   state: ConnectionState;
   initiator: boolean;
   createdAt: Date;
+  pendingData: any[]; // Queue for data sent before connection
+  name?: string;
+  platform?: string;
 }
 
 class WebRTCService {
@@ -48,6 +54,9 @@ class WebRTCService {
     this.socket.on("signal", (signal: SignalMessage) => {
       // Ensure we don't handle our own sent signals
       if (signal.from !== this.currentDeviceId) {
+        console.log(
+          `Received signal type ${signal.type} from ${signal.from} (${signal.fromName || "Unknown"})`,
+        );
         this.handleSignal(signal);
       }
     });
@@ -55,6 +64,13 @@ class WebRTCService {
     this.socket.on("disconnect", () => {
       console.log("Disconnected from signaling server.");
     });
+
+    // Handle heartbeats to keep socket alive
+    setInterval(() => {
+      if (this.socket?.connected) {
+        this.socket.emit("heartbeat", { deviceId: this.currentDeviceId });
+      }
+    }, 30000);
   }
 
   /**
@@ -110,6 +126,10 @@ class WebRTCService {
       }
     }
 
+    // Update metadata if available
+    if (signal.fromName) peerInfo.name = signal.fromName;
+    if (signal.fromPlatform) peerInfo.platform = signal.fromPlatform;
+
     try {
       peerInfo.peer.signal(data as SignalData);
     } catch (error) {
@@ -119,20 +139,24 @@ class WebRTCService {
   }
 
   /**
-   * Send data to a peer
+   * Send data to a peer. If not connected, it will be queued.
    */
   sendData(deviceId: string, data: unknown): void {
     const peerInfo = this.peers.get(deviceId);
-    if (peerInfo?.state === "connected") {
-      try {
-        peerInfo.peer.send(JSON.stringify(data));
-      } catch (error) {
-        console.error("Error sending data:", error);
+
+    if (peerInfo) {
+      if (peerInfo.state === "connected") {
+        try {
+          peerInfo.peer.send(JSON.stringify(data));
+        } catch (error) {
+          console.error("Error sending data:", error);
+        }
+      } else {
+        console.log(`Queuing data for ${deviceId} (state: ${peerInfo.state})`);
+        peerInfo.pendingData.push(data);
       }
     } else {
-      console.warn(
-        `Connection to ${deviceId} not established. State: ${peerInfo?.state}`,
-      );
+      console.warn(`Attempted to send data to unknown peer: ${deviceId}`);
     }
   }
 
@@ -204,14 +228,19 @@ class WebRTCService {
       state: "new",
       initiator,
       createdAt: new Date(),
+      pendingData: [],
     };
     this.peers.set(deviceId, peerInfo);
 
     peer.on("signal", (data: SignalData) => {
       if (!this.currentDeviceId) return;
 
+      const { deviceName } = useSettingsStore.getState();
+
       const signal: SignalMessage = {
         from: this.currentDeviceId,
+        fromName: deviceName,
+        fromPlatform: getPlatform(),
         to: deviceId,
         type:
           data.type === "candidate"
@@ -226,7 +255,26 @@ class WebRTCService {
       this.socket?.emit("signal", signal);
     });
 
-    peer.on("connect", () => this.updateConnectionState(deviceId, "connected"));
+    peer.on("connect", () => {
+      console.log(`Peer connection established with ${deviceId}`);
+      this.updateConnectionState(deviceId, "connected");
+
+      // Send pending data
+      const info = this.peers.get(deviceId);
+      if (info && info.pendingData.length > 0) {
+        console.log(
+          `Sending ${info.pendingData.length} queued messages to ${deviceId}`,
+        );
+        info.pendingData.forEach(data => {
+          try {
+            info.peer.send(JSON.stringify(data));
+          } catch (e) {
+            console.error("Failed to send queued data:", e);
+          }
+        });
+        info.pendingData = [];
+      }
+    });
     peer.on("close", () => this.closeConnection(deviceId));
     peer.on("error", () => this.updateConnectionState(deviceId, "failed"));
 
@@ -252,7 +300,12 @@ class WebRTCService {
   ): void {
     const peerInfo = this.peers.get(deviceId);
     if (peerInfo) peerInfo.state = state;
-    this.onConnectionStateCallbacks.forEach(cb => cb(deviceId, state));
+    this.onConnectionStateCallbacks.forEach(cb =>
+      cb(deviceId, state, {
+        name: peerInfo?.name,
+        platform: peerInfo?.platform,
+      }),
+    );
   }
 }
 

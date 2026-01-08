@@ -4,7 +4,8 @@ export type DeviceStatus =
   | "discovered"
   | "paired"
   | "connected"
-  | "disconnected";
+  | "disconnected"
+  | "connecting";
 
 export interface Device {
   id: string;

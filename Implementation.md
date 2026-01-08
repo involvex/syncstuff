@@ -40,6 +40,8 @@
 - [x] Syncstuff integration updated (pointing to live API)
 - [x] CloudAccounts UI updated for Mega login
 - [x] Prebuild checks (Lint/Typecheck) passing
+- [x] WebRTC Pairing & Connection stability (Pending Queue implemented)
+- [x] Cross-device signaling metadata (Name/Platform)
 - [ ] Auth integration with `packages/api`
 - [ ] Profile management integration
 - [ ] Admin access integration

@@ -70,7 +70,7 @@ const appPackagePath = path.join(
   "..",
   "packages",
   "app",
-  "package.json"
+  "package.json",
 );
 const buildGradlePath = path.join(
   __dirname,
@@ -79,7 +79,7 @@ const buildGradlePath = path.join(
   "app",
   "android",
   "app",
-  "build.gradle"
+  "build.gradle",
 );
 const electronPackagePath = path.join(
   __dirname,
@@ -87,7 +87,7 @@ const electronPackagePath = path.join(
   "packages",
   "app",
   "electron",
-  "package.json"
+  "package.json",
 );
 const androidManifestPath = path.join(
   __dirname,
@@ -98,7 +98,7 @@ const androidManifestPath = path.join(
   "app",
   "src",
   "main",
-  "AndroidManifest.xml"
+  "AndroidManifest.xml",
 );
 const rootDir = path.join(__dirname, "..");
 
@@ -133,7 +133,7 @@ function checkGitStatus() {
   if (status) {
     error(
       "Git working directory is not clean. Commit or stash your changes first.\n\nModified files:\n" +
-        status
+        status,
     );
   }
 
@@ -327,7 +327,7 @@ function main() {
     appPackage.version = newVersion;
     fs.writeFileSync(
       appPackagePath,
-      JSON.stringify(appPackage, null, 2) + "\n"
+      JSON.stringify(appPackage, null, 2) + "\n",
     );
     success(`Updated package.json to ${newVersion}`);
 
@@ -342,7 +342,7 @@ function main() {
       if (versionNameRegex.test(buildGradleContent)) {
         buildGradleContent = buildGradleContent.replace(
           versionNameRegex,
-          `versionName "${newVersion}"`
+          `versionName "${newVersion}"`,
         );
         fs.writeFileSync(buildGradlePath, buildGradleContent);
         success(`Updated build.gradle versionName to ${newVersion}`);
@@ -357,17 +357,17 @@ function main() {
     if (fs.existsSync(electronPackagePath)) {
       info("Updating Electron package.json version...");
       const electronPackage = JSON.parse(
-        fs.readFileSync(electronPackagePath, "utf-8")
+        fs.readFileSync(electronPackagePath, "utf-8"),
       );
       electronPackage.version = newVersion;
       fs.writeFileSync(
         electronPackagePath,
-        JSON.stringify(electronPackage, null, 2) + "\n"
+        JSON.stringify(electronPackage, null, 2) + "\n",
       );
       success(`Updated Electron package.json to ${newVersion}`);
     } else {
       warning(
-        `Electron package.json not found at ${electronPackagePath}, skipping...`
+        `Electron package.json not found at ${electronPackagePath}, skipping...`,
       );
     }
 
@@ -382,12 +382,12 @@ function main() {
       if (versionNameRegex.test(manifestContent)) {
         manifestContent = manifestContent.replace(
           versionNameRegex,
-          `android:versionName="${newVersion}"`
+          `android:versionName="${newVersion}"`,
         );
         success(`Updated AndroidManifest.xml versionName to ${newVersion}`);
       } else {
         warning(
-          "Could not find android:versionName in AndroidManifest.xml, skipping..."
+          "Could not find android:versionName in AndroidManifest.xml, skipping...",
         );
       }
 
@@ -399,19 +399,19 @@ function main() {
         const newVersionCode = currentVersionCode + 1;
         manifestContent = manifestContent.replace(
           versionCodeRegex,
-          `android:versionCode="${newVersionCode}"`
+          `android:versionCode="${newVersionCode}"`,
         );
         success(`Updated AndroidManifest.xml versionCode to ${newVersionCode}`);
       } else {
         warning(
-          "Could not find android:versionCode in AndroidManifest.xml, skipping..."
+          "Could not find android:versionCode in AndroidManifest.xml, skipping...",
         );
       }
 
       fs.writeFileSync(androidManifestPath, manifestContent);
     } else {
       warning(
-        `AndroidManifest.xml not found at ${androidManifestPath}, skipping...`
+        `AndroidManifest.xml not found at ${androidManifestPath}, skipping...`,
       );
     }
 
@@ -498,7 +498,7 @@ function main() {
         "outputs",
         "apk",
         "debug",
-        "app-debug.apk"
+        "app-debug.apk",
       );
       const apkDest = path.join(
         rootDir,
@@ -506,7 +506,7 @@ function main() {
         "web",
         "public",
         "downloads",
-        `syncstuff-v${newVersion}.apk`
+        `syncstuff-v${newVersion}.apk`,
       );
 
       if (fs.existsSync(apkSource)) {
@@ -523,7 +523,7 @@ function main() {
       warning(`APK build failed: ${buildErr.message}`);
       log(
         "   You can build manually with: cd packages/app && ionic cap sync android && cd android && ./gradlew.bat assembleDebug",
-        "yellow"
+        "yellow",
       );
     }
   } catch (err) {

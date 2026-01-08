@@ -55,19 +55,12 @@ packages/app
 
 - Implement tests for each workspace
 
-- add connecting with qr / auth codes to seemlessly connect
-
-- add local network devices connecting / syncing
-
-- file sharing with bluetooth
-
-- fix stop discovery button not working in the app
-
-- improve device sync between @package.json @packages/app/electron @packages/cli
-
-- improve file transfer between @packages/app @packages/app/electron @packages/cli
-
-- improve qr code / auth code / pairing
+- [x] improve device sync between @package.json @packages/app/electron @packages/cli
+- [x] improve file transfer between @packages/app @packages/app/electron @packages/cli (WebRTC stability)
+- [x] improve qr code / auth code / pairing (metadata & queue)
+- [x] fix stop discovery button not working in the app
+- [ ] add local network devices connecting / syncing (UDP Broadcast)
+- [ ] file sharing with bluetooth
 
 - fix app version bumping
 
@@ -182,9 +175,6 @@ Update capacitor to latest version (Read: packages/app/project-summary.md)
 
 @electron-builder.yml • cannot find path for dependency name=undefined reference=undefined
 
-@packages/app Pairing with QR or Code doesnt work
-i tried both : on qr it scans the code then camera closes nothing happens
-
 for Enter code it alwayss says invalid code
 
 Share Link for qr code doesnt work
@@ -232,3 +222,109 @@ BUILD SUCCESSFUL in 27s
 546 actionable tasks: 462 executed, 84 up-to-date  
 Watched directory hierarchies: [D:\repos\ionic\syncstuff\packages\app\android]
 Configuration cache entry stored.
+
+fix stop discovery button not working in the app
+makes the app crash
+Share Link for qr code doesnt work
+
+the device that scans the qr code get a success feedback and sees the connected devices but the "Receiver doesnt get any message or sees the connected device"
+
+Improve UI of the Web app
+(Improve the design of the web app, mobile navigation, and make it more user-friendly/ full responsive/mobile-first/modern/flat design/dark mode+light mode) - On mobile rightnow some navigation buttons arent visible
+Improve UI of the Android app
+(Improve the design of the Android app, mobile navigation, and make it more user-friendly/ full responsive/mobile-first/modern/flat design/dark mode+light mode)
+
+## Debugging Android App
+
+- Add logging to the app to help debug issues (in local development with debug setup (adb logcat + bun?))
+- Debug option in Android app (when deploying debug apk version)
+  (in packages/app -> bun run android --target emulator-5554 --verbose --debug)? better debugging setup possible?
+  -> Sort Logs on verbose level (show only logs that are relevant to debug the app)
+- Debug option in Web app
+  (in packages/app -> bun run dev --verbose --debug)? better debugging setup possible?
+  -> Sort Logs on verbose level (show only logs that are relevant to debug the app)
+- Debug option in Electron app
+  (in packages/app -> bun run electron --verbose --debug)? better debugging setup possible?
+  -> Sort Logs on verbose level (show only logs that are relevant to debug the app)
+
+  -> Setup Scripts for Debugging
+  - Android App
+  - Web App
+  - Electron App
+    in Root folder
+
+  debug:android
+  debug:web
+  debug:electron
+  debug:app
+  debug:cli
+
+  -> Setup Debugging Environment
+  - Android App
+  - Web App
+  - Electron App
+  - CLI
+
+  Enable Network Debugging
+  -> Trace Network Requests, Websocket Requests from local network
+
+  Setup Adb Network Debugging / deploy app to device over wifi
+  (Like on react native (npx @react-native-community/cli run-android --verbose / npx @react-native-community/cli run-android log-android ))
+
+Add Debugging Options to the app
+-> Debug option in Android app (when deploying debug apk version)
+-> Debug option in Web app
+-> Debug option in Electron app
+
+Add Doctor Command to the app
+(like on react native (npx react-native doctor --fix))
+
+Add doctor command to the cli
+
+## After development follow the best practices
+
+- Keep the code clean and readable
+- Use comments to explain the code
+- Use version control
+- Typesafe(no any / unknown types)
+- Use proper error handling
+- Use proper logging(add log levels can be enabled/disabled)
+- Use proper testing
+- Use proper documentation
+- Use proper version control
+
+- Use proper performance optimization
+- Extendable and maintainable code for future updates
+
+restore from git deployment the pushed wrangler.toml files for packages/web packages/app packages/database
+packages/api
+
+add git tracking for wrangler.toml files / .env files / .env.local files / wrangler.toml files / wrangler.json files
+
+verify that no sensitive data is stored in the git repository / secrets / credentials / api keys / tokens / etc
+like GITHUB_TOKEN / NPM_TOKEN / DISCORD_CLIENT_SECRET / GITHUB_CLIENT_SECRET / IONIC_ACCESS_TOKEN / etc
+
+# Documentation
+
+- Add documentation for the app
+- Add documentation for the cli
+- Add documentation for the api
+- Add documentation for the database
+- Add documentation for the web app
+- Add documentation for the electron app
+- Add documentation for the android app
+
+mv docs in docs/ directory
+Keep Root dir clear only Readme.md + Claude.md + Gemini.md
+
+Docs Folder structure:
+
+- docs/
+  index.md + Plan.md (Overall Plan + Overview)
+  - app/index.md + implementation.md + plan.md
+  - cli/index.md + implementation.md + plan.md
+  - api/index.md + implementation.md + plan.md
+  - database/index.md + implementation.md + plan.md
+  - web/index.md + implementation.md + plan.md
+  - electron/index.md + implementation.md + plan.md
+  - android/index.md + implementation.md + plan.md
