@@ -29,6 +29,10 @@ interface SettingsStore {
   setClipboardShowPreview: (value: boolean) => void;
   setClipboardCloudBackup: (value: boolean) => void;
 
+  // Connection Settings
+  signalingServerUrl: string;
+  setSignalingServerUrl: (url: string) => void;
+
   // Initialization
   initialized: boolean;
   initialize: () => Promise<void>;
@@ -44,6 +48,7 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
   clipboardSyncImages: true,
   clipboardShowPreview: true,
   clipboardCloudBackup: false,
+  signalingServerUrl: "http://localhost:3001",
   initialized: false,
 
   setTheme: theme => set({ theme }),
@@ -59,6 +64,11 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
   setClipboardShowPreview: value => set({ clipboardShowPreview: value }),
 
   setClipboardCloudBackup: value => set({ clipboardCloudBackup: value }),
+
+  setSignalingServerUrl: url => {
+    set({ signalingServerUrl: url });
+    localStorageService.set(STORAGE_KEYS.SIGNALING_SERVER_URL, url);
+  },
 
   initialize: async () => {
     if (get().initialized) return;
@@ -91,6 +101,9 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
     const storedClipboardCloudBackup = await localStorageService.get<boolean>(
       "clipboardCloudBackup", // Use string key directly for now or add to STORAGE_KEYS
     );
+    const storedSignalingServerUrl = await localStorageService.get<string>(
+      STORAGE_KEYS.SIGNALING_SERVER_URL,
+    );
 
     // Get device info from Capacitor for defaults if not stored
     const info = await Device.getInfo();
@@ -110,6 +123,7 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
       clipboardSyncImages: storedClipboardSyncImages ?? true,
       clipboardShowPreview: storedClipboardShowPreview ?? true,
       clipboardCloudBackup: storedClipboardCloudBackup ?? false,
+      signalingServerUrl: storedSignalingServerUrl || "http://localhost:3001",
       initialized: true,
     });
 

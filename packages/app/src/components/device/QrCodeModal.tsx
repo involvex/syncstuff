@@ -1,3 +1,4 @@
+import { Share } from "@capacitor/share";
 import {
   IonButton,
   IonButtons,
@@ -11,6 +12,7 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
+  useIonToast,
 } from "@ionic/react";
 import { copyOutline, link, qrCode, shareOutline } from "ionicons/icons";
 import { QRCodeCanvas } from "qrcode.react";
@@ -32,7 +34,16 @@ export const QrCodeModal: React.FC<QrCodeModalProps> = ({
   onDismiss,
 }) => {
   const [qrMode, setQrMode] = useState<"id" | "url">("id");
+  const [present] = useIonToast();
   const pairingUrl = deepLinkService.generatePairingUrl();
+
+  const showToast = (message: string) => {
+    present({
+      message,
+      duration: 2000,
+      position: "bottom",
+    });
+  };
 
   // For local scanning, use just the device ID
   // For sharing, use the full URL
@@ -40,24 +51,31 @@ export const QrCodeModal: React.FC<QrCodeModalProps> = ({
 
   const handleCopyUrl = async () => {
     await clipboardService.writeText(pairingUrl);
-    alert("Pairing URL copied to clipboard!");
+    showToast("Pairing URL copied to clipboard!");
   };
 
   const handleCopyId = async () => {
     await clipboardService.writeText(textToShow);
-    alert("Device ID copied to clipboard!");
+    showToast("Device ID copied to clipboard!");
   };
 
   const handleShare = async () => {
-    if (navigator.share) {
+    const canShare = await Share.canShare();
+
+    if (canShare.value) {
       try {
-        await navigator.share({
+        await Share.share({
           title: "Pair with my Syncstuff device",
           text: `Pair with my device using this link or enter ID: ${textToShow}`,
           url: pairingUrl,
+          dialogTitle: "Share pairing link",
         });
       } catch (e) {
         console.error("Share failed:", e);
+        // Fallback if user cancels or it fails
+        if ((e as Error).message !== "Share canceled") {
+          handleCopyUrl();
+        }
       }
     } else {
       // Fallback: copy to clipboard

@@ -27,6 +27,7 @@ import { deviceDetectionService } from "./services/device/device-detection.servi
 import { deepLinkService } from "./services/network/deeplink.service";
 import { notificationService } from "./services/notifications/notification.service";
 import { permissionsService } from "./services/permissions/permissions.service";
+import { webrtcService } from "./services/network/webrtc.service";
 import { useCloudStore } from "./store/cloud.store";
 import { useSettingsStore } from "./store/settings.store";
 import { isElectron } from "./utils/electron.utils";
@@ -117,6 +118,15 @@ const App: React.FC = () => {
       });
     }
   }, [accounts]);
+
+  // Sync signaling server URL with WebRTC service
+  const signalingUrl = useSettingsStore(state => state.signalingServerUrl);
+  useEffect(() => {
+    const { initialized } = useSettingsStore.getState();
+    if (initialized) {
+      webrtcService.updateSignalingServerUrl(signalingUrl);
+    }
+  }, [signalingUrl]);
 
   return (
     <IonApp>

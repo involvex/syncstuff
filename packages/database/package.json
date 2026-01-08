@@ -10,6 +10,6 @@
     "deploy": "wrangler d1 migrations apply syncstuff-db --remote -c wrangler.toml"
   },
   "devDependencies": {
-    "wrangler": "4"
+    "wrangler": "4.57.0"
   }
 }

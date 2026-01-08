@@ -110,7 +110,10 @@ const DevicesPage: React.FC = () => {
   };
 
   const handleAuthCodeEntered = async (code: string) => {
-    if (!currentDevice) return;
+    if (!currentDevice) {
+      alert("Device not initialized. Please restart the app.");
+      return;
+    }
 
     try {
       const result = await authCodeService.validateCode(code, currentDevice.id);
@@ -119,15 +122,29 @@ const DevicesPage: React.FC = () => {
         // Create device from the validated code
         const tempDevice: Device = {
           id: result.deviceId,
-          name: `Device ${result.deviceId.substring(0, 6)}`,
-          platform: "web",
+          name:
+            result.deviceName || `Device ${result.deviceId.substring(0, 6)}`,
+          platform: "android",
           status: "discovered",
           lastSeen: new Date(),
         };
 
-        // Pair and connect
+        // Pair the device
         await pairDevice(tempDevice);
-        connectToDevice(result.deviceId);
+
+        // Show success
+        alert(`Successfully paired with ${tempDevice.name}!`);
+
+        // Switch to paired tab
+        setSelectedTab("paired");
+
+        // Try to connect
+        try {
+          connectToDevice(result.deviceId);
+        } catch (e) {
+          console.warn("Could not auto-connect after pairing:", e);
+        }
+
         setShowAuthCodeModal(false);
       } else {
         alert(`Invalid code: ${result.reason || "Unknown error"}`);
@@ -140,45 +157,98 @@ const DevicesPage: React.FC = () => {
 
   const startScan = async () => {
     // Before starting a scan, remove the background
-    // This allows the native camera view to show through
-    // For ML Kit scanner, we actually want the UI to be hidden
-    // The previous CSS for `body.scanner-active` makes the IonPage transparent.
     document.querySelector("body")?.classList.add("scanner-active");
 
-    // Check permission
-    const { camera } = await BarcodeScanner.checkPermissions();
-    if (camera !== "granted") {
-      const { camera: newPerm } = await BarcodeScanner.requestPermissions();
-      if (newPerm !== "granted") {
-        alert("Camera permission is required to scan QR codes.");
-        document.querySelector("body")?.classList.remove("scanner-active");
-        return;
+    try {
+      // Check permission
+      const { camera } = await BarcodeScanner.checkPermissions();
+      if (camera !== "granted") {
+        const { camera: newPerm } = await BarcodeScanner.requestPermissions();
+        if (newPerm !== "granted") {
+          alert("Camera permission is required to scan QR codes.");
+          document.querySelector("body")?.classList.remove("scanner-active");
+          return;
+        }
       }
-    }
 
-    // Start scanning
-    // ML Kit BarcodeScanner.scan() has its own UI
-    const { barcodes } = await BarcodeScanner.scan();
+      // Start scanning - ML Kit BarcodeScanner.scan() has its own UI
+      const { barcodes } = await BarcodeScanner.scan();
 
-    // After scanning, restore the background
-    document.querySelector("body")?.classList.remove("scanner-active");
+      // After scanning, restore the background
+      document.querySelector("body")?.classList.remove("scanner-active");
 
-    if (barcodes.length > 0 && barcodes[0].rawValue) {
-      const scannedDeviceId = barcodes[0].rawValue;
+      if (barcodes.length > 0 && barcodes[0].rawValue) {
+        const scannedValue = barcodes[0].rawValue;
+        console.log("Scanned QR value:", scannedValue);
 
-      // We need to create a temporary device object to pair with if not already paired
-      const tempDevice: Device = {
-        id: scannedDeviceId,
-        name: `Device ${scannedDeviceId.substring(0, 6)}`, // Create a temporary name
-        platform: "web", // Platform info unknown from QR, default to unknown
-        status: "discovered",
-        lastSeen: new Date(),
-      };
-      // Pair and connect
-      await pairDevice(tempDevice);
-      connectToDevice(scannedDeviceId);
-    } else {
-      alert("No QR code found or scanned.");
+        let deviceId: string;
+        let deviceName: string;
+
+        // Check if it's a URL or a direct device ID
+        if (scannedValue.includes("://") || scannedValue.includes("/pair")) {
+          // It's a URL, parse the parameters
+          try {
+            const url = new URL(scannedValue);
+            const idParam = url.searchParams.get("id");
+            const nameParam = url.searchParams.get("name");
+
+            if (!idParam) {
+              alert("Invalid pairing URL - no device ID found");
+              return;
+            }
+
+            deviceId = idParam;
+            deviceName = nameParam || `Device ${idParam.substring(0, 6)}`;
+          } catch {
+            alert("Could not parse pairing URL");
+            return;
+          }
+        } else {
+          // It's a direct device ID
+          deviceId = scannedValue;
+          deviceName = `Device ${scannedValue.substring(0, 6)}`;
+        }
+
+        // Don't pair with ourselves
+        if (deviceId === currentDevice?.id) {
+          alert("Cannot pair with yourself!");
+          return;
+        }
+
+        // Create device object
+        const tempDevice: Device = {
+          id: deviceId,
+          name: deviceName,
+          platform: "android", // Assume mobile since using QR
+          status: "discovered",
+          lastSeen: new Date(),
+        };
+
+        // Pair the device
+        await pairDevice(tempDevice);
+
+        // Show success feedback
+        alert(`Successfully paired with ${deviceName}!`);
+
+        // Switch to paired tab to show the new device
+        setSelectedTab("paired");
+
+        // Try to connect (this may fail if signaling server isn't running)
+        try {
+          connectToDevice(deviceId);
+        } catch (e) {
+          console.warn("Could not auto-connect after pairing:", e);
+        }
+      } else {
+        alert("No QR code found or scanned.");
+      }
+    } catch (error) {
+      console.error("Scan error:", error);
+      document.querySelector("body")?.classList.remove("scanner-active");
+      alert(
+        "Scan failed: " +
+          (error instanceof Error ? error.message : "Unknown error"),
+      );
     }
   };
 

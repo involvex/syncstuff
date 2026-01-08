@@ -79,6 +79,20 @@ export const useDeviceDiscovery = () => {
     [removeDiscoveredDevice, discoveredDevices],
   );
 
+  // Subscribe to discovery events
+  useEffect(() => {
+    if (discoveryService.isSupported()) {
+      const unsubscribeFound =
+        discoveryService.onDeviceFound(handleDeviceFound);
+      const unsubscribeLost = discoveryService.onDeviceLost(handleDeviceLost);
+
+      return () => {
+        unsubscribeFound();
+        unsubscribeLost();
+      };
+    }
+  }, [handleDeviceFound, handleDeviceLost]);
+
   // Start discovery
   const startDiscovery = useCallback(async () => {
     if (!currentDevice) {
@@ -91,21 +105,12 @@ export const useDeviceDiscovery = () => {
         setIsDiscovering(true);
         await discoveryService.registerDevice(currentDevice);
         await discoveryService.startDiscovery();
-
-        const unsubscribeFound =
-          discoveryService.onDeviceFound(handleDeviceFound);
-        const unsubscribeLost = discoveryService.onDeviceLost(handleDeviceLost);
-
-        return () => {
-          unsubscribeFound();
-          unsubscribeLost();
-        };
       } catch (error) {
         console.error("Failed to start discovery:", error);
         setIsDiscovering(false);
       }
     }
-  }, [currentDevice, setIsDiscovering, handleDeviceFound, handleDeviceLost]);
+  }, [currentDevice, setIsDiscovering]);
 
   // Stop discovery
   const stopDiscovery = useCallback(async () => {

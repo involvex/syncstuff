@@ -71,11 +71,7 @@ packages/app
 
 - fix app version bumping
 
-- fix app build process
-
 - update dependencies for @packages/app
-
-- update dependencies for @packages/app/electron
 
 - update dependencies for @packages/cli
 
@@ -117,17 +113,11 @@ Using flatDir should be avoided because it doesn't support any meta-data formats
 
 - Implement Cloudstorage service (offer for premium users), using cloudflare storage (free tier to start with(no implementation cost))
 
--fix for electron build:
-@packages/app/electron fix file:///D:/repos/ionic/syncstuff/packages/app/electron/dist/win-unpacked/resources/dist/index.html for the compiled electron
-
-- implement into @packages/app:
+- implement into @packages/app: (No Paid)
 
 @capacitor/preferences (store settings)
 @capacitor/push-notifications (push notifications)
 @capacitor/share (share files)
-@ionic-enterprise/android-permissions (request permissions)
-
-@ionic-enterprise/network-information (to show optional network connection)
 
 @aparajita/capacitor-dark-mode (dark mode)
 
@@ -192,12 +182,53 @@ Update capacitor to latest version (Read: packages/app/project-summary.md)
 
 @electron-builder.yml • cannot find path for dependency name=undefined reference=undefined
 
-file:///D:/assets/index-BEuo8xMI.css net::ERR_FILE_NOT_FOUND
-index.html:25 GET file:///D:/assets/index-CB7rRQ7W.js net::ERR_FILE_NOT_FOUND
-
 @packages/app Pairing with QR or Code doesnt work
 i tried both : on qr it scans the code then camera closes nothing happens
 
 for Enter code it alwayss says invalid code
 
 Share Link for qr code doesnt work
+
+le or directory 'D:\repos\ionic\syncstuff\node_modules\.bun\@capacitor+status-bar@8.0.0+15e98482558ccfe6\node_modules\@capacitor\status-bar\android\libs', not found
+file or directory 'D:\repos\ionic\syncstuff\node_modules\.bun\capacitor-zeroconf@4.0.0+627b1c270a5d5c96\node_modules\capacitor-zeroconf\android\libs', not found
+file or directory 'D:\repos\ionic\syncstuff\node_modules\.bun\@capacitor+android@8.0.0+15e98482558ccfe6\node_modules\@capacitor\android\capacitor\libs', not found
+file or directory 'D:\repos\ionic\syncstuff\packages\app\android\capacitor-cordova-android-plugins\src\main\libs', not found
+Resolve mutations for :app:packageDebug (Thread[#457,Execution worker Thread 2,5,main]) started.  
+:app:packageDebug (Thread[#457,Execution worker Thread 2,5,main]) started.
+
+> Task :app:packageDebug
+> Caching disabled for task ':app:packageDebug' because:
+> Build cache is disabled
+> Caching has been disabled for the task
+> Task ':app:packageDebug' is not up-to-date because:
+> Output property 'ideModelOutputFile' file D:\repos\ionic\syncstuff\packages\app\android\app\build\outputs\apk\debug\output-metadata.json has been removed
+> Output property 'incrementalFolder' file D:\repos\ionic\syncstuff\packages\app\android\app\build\intermediates\incremental\packageDebug\tmp has been removed.
+> Output property 'incrementalFolder' file D:\repos\ionic\syncstuff\packages\app\android\app\build\intermediates\incremental\packageDebug\tmp\debug has been removed.
+> and more...
+> The input changes require a full rebuild for incremental task ':app:packageDebug'.
+> Resolve mutations for :app:createDebugApkListingFileRedirect (Thread[#457,Execution worker Thread 2,5,main]) started.
+> Resolve mutations for :app:assembleDebug (Thread[#460,Execution worker Thread 5,5,main]) started.  
+> :app:assembleDebug (Thread[#460,Execution worker Thread 5,5,main]) started.
+> :app:createDebugApkListingFileRedirect (Thread[#457,Execution worker Thread 2,5,main]) started.
+
+> Task :app:assembleDebug
+> Skipping task ':app:assembleDebug' as it has no actions.
+
+> Task :app:createDebugApkListingFileRedirect  
+> Caching disabled for task ':app:createDebugApkListingFileRedirect' because:
+> Build cache is disabled
+> Caching has been disabled for the task
+> Task ':app:createDebugApkListingFileRedirect' is not up-to-date because:
+> Output property 'redirectFile' file D:\repos\ionic\syncstuff\packages\app\android\app\build\intermediates\apk_ide_redirect_file\debug\createDebugApkListingFileRedirect\redirect.txt has been removed.  
+> Build 7274d33a-9aed-4106-97bf-c2869925784a is started
+> AAPT2 aapt2-8.13.2-14304508-windows Daemon #0: shutdown
+> Build 7274d33a-9aed-4106-97bf-c2869925784a is close
+
+See the complete report at file:///D:/repos/ionic/syncstuff/packages/app/android/build/reports/configuration-cache/af8qha9xwurz99pashmnvifxf/b5a1opwm517ti64q3q7rw4l1m/configuration-cache-report.html
+
+[Incubating] Problems report is available at: file:///D:/repos/ionic/syncstuff/packages/app/android/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 27s
+546 actionable tasks: 462 executed, 84 up-to-date  
+Watched directory hierarchies: [D:\repos\ionic\syncstuff\packages\app\android]
+Configuration cache entry stored.

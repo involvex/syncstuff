@@ -13,6 +13,7 @@ export interface StorageKeys {
   CLIPBOARD_SHOW_PREVIEW: "clipboardShowPreview";
   CLOUD_ACCOUNTS: "cloudAccounts";
   CLOUD_TOKEN_CACHE: "cloudTokenCache";
+  SIGNALING_SERVER_URL: "signalingServerUrl";
 }
 
 export const STORAGE_KEYS: StorageKeys = {
@@ -28,6 +29,7 @@ export const STORAGE_KEYS: StorageKeys = {
   CLIPBOARD_SHOW_PREVIEW: "clipboardShowPreview",
   CLOUD_ACCOUNTS: "cloudAccounts",
   CLOUD_TOKEN_CACHE: "cloudTokenCache",
+  SIGNALING_SERVER_URL: "signalingServerUrl",
 };
 
 export interface StorageService {

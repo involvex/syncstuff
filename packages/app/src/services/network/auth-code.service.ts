@@ -1,9 +1,25 @@
+/**
+ * Auth Code Service
+ *
+ * Generates pairing codes that encode the device ID directly,
+ * so they can be validated without a shared server.
+ *
+ * Code format: 6-digit code that maps to device ID via local storage
+ * The device generating the code stores the mapping locally.
+ * The device receiving the code needs to get the device info from
+ * either the QR code or by manually entering the device ID.
+ */
+
 interface AuthCode {
   code: string;
   deviceId: string;
+  deviceName: string;
   expiresAt: Date;
   used: boolean;
 }
+
+// Storage key for sharing codes across tabs/instances
+const STORAGE_KEY = "syncstuff_auth_codes";
 
 class AuthCodeService {
   private activeCodes: Map<string, AuthCode> = new Map();
@@ -11,26 +27,65 @@ class AuthCodeService {
   private cleanupInterval: NodeJS.Timeout | null = null;
 
   constructor() {
-    // Start cleanup interval when service is initialized
+    // Load any existing codes from storage
+    this.loadFromStorage();
+    // Start cleanup interval
     this.startCleanupInterval();
   }
 
   /**
-   * Generate a secure 6-digit pairing code
+   * Load codes from localStorage (for same-origin sharing)
    */
-  generateCode(deviceId: string): { code: string; expiresAt: Date } {
-    // Generate cryptographically secure 6-digit code
+  private loadFromStorage(): void {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        const codes = JSON.parse(stored) as AuthCode[];
+        const now = new Date();
+        for (const code of codes) {
+          code.expiresAt = new Date(code.expiresAt);
+          if (code.expiresAt > now && !code.used) {
+            this.activeCodes.set(code.code, code);
+          }
+        }
+      }
+    } catch (e) {
+      console.warn("Failed to load auth codes from storage:", e);
+    }
+  }
+
+  /**
+   * Save codes to localStorage
+   */
+  private saveToStorage(): void {
+    try {
+      const codes = Array.from(this.activeCodes.values());
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(codes));
+    } catch (e) {
+      console.warn("Failed to save auth codes to storage:", e);
+    }
+  }
+
+  /**
+   * Generate a pairing code for this device
+   */
+  generateCode(
+    deviceId: string,
+    deviceName?: string,
+  ): { code: string; expiresAt: Date } {
     const code = this.generateSecureCode();
     const expiresAt = new Date(Date.now() + this.CODE_EXPIRY_MS);
 
     const authCode: AuthCode = {
       code,
       deviceId,
+      deviceName: deviceName || `Device ${deviceId.substring(0, 6)}`,
       expiresAt,
       used: false,
     };
 
     this.activeCodes.set(code, authCode);
+    this.saveToStorage();
 
     console.log(
       `Auth code generated: ${code} for device ${deviceId}, expires at ${expiresAt.toISOString()}`,
@@ -39,16 +94,33 @@ class AuthCodeService {
   }
 
   /**
-   * Validate a pairing code and mark it as used
+   * Validate a pairing code
+   *
+   * NOTE: This only works if the code was generated on the same device
+   * or in the same browser session. For cross-device pairing,
+   * use QR codes instead which encode the device ID directly.
    */
   async validateCode(
     code: string,
-    pairingDeviceId: string,
-  ): Promise<{ valid: boolean; deviceId?: string; reason?: string }> {
+    _pairingDeviceId: string,
+  ): Promise<{
+    valid: boolean;
+    deviceId?: string;
+    deviceName?: string;
+    reason?: string;
+  }> {
+    // Reload from storage in case code was generated in another tab
+    this.loadFromStorage();
+
     const authCode = this.activeCodes.get(code);
 
     if (!authCode) {
-      return { valid: false, reason: "Code not found" };
+      return {
+        valid: false,
+        reason:
+          "Code not found. Auth codes only work on the same device. " +
+          "Use QR code scanning for cross-device pairing.",
+      };
     }
 
     if (authCode.used) {
@@ -57,17 +129,23 @@ class AuthCodeService {
 
     if (new Date() > authCode.expiresAt) {
       this.activeCodes.delete(code);
+      this.saveToStorage();
       return { valid: false, reason: "Code expired" };
     }
 
     // Mark as used
     authCode.used = true;
+    this.saveToStorage();
 
     console.log(
-      `Auth code ${code} validated for device ${pairingDeviceId} to pair with ${authCode.deviceId}`,
+      `Auth code ${code} validated for pairing with ${authCode.deviceId}`,
     );
 
-    return { valid: true, deviceId: authCode.deviceId };
+    return {
+      valid: true,
+      deviceId: authCode.deviceId,
+      deviceName: authCode.deviceName,
+    };
   }
 
   /**
@@ -97,6 +175,7 @@ class AuthCodeService {
 
     if (cleanedCount > 0) {
       console.log(`Cleaned up ${cleanedCount} expired/used auth codes`);
+      this.saveToStorage();
     }
   }
 
@@ -104,14 +183,13 @@ class AuthCodeService {
    * Start periodic cleanup of expired codes
    */
   private startCleanupInterval(): void {
-    // Clean up every minute
     this.cleanupInterval = setInterval(() => {
       this.cleanupExpiredCodes();
     }, 60 * 1000);
   }
 
   /**
-   * Stop cleanup interval (for cleanup when service is destroyed)
+   * Stop cleanup interval
    */
   destroy(): void {
     if (this.cleanupInterval) {
@@ -125,15 +203,11 @@ class AuthCodeService {
    * Generate a cryptographically secure 6-digit code
    */
   private generateSecureCode(): string {
-    // Use crypto API for secure random numbers
     const randomValues = new Uint32Array(1);
     crypto.getRandomValues(randomValues);
-
-    // Generate 6-digit number (100000-999999)
     const code = (randomValues[0] % 900000) + 100000;
     return code.toString();
   }
 }
 
-// Export singleton instance
 export const authCodeService = new AuthCodeService();

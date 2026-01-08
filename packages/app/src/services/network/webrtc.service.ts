@@ -5,7 +5,8 @@ import type { ConnectionState, SignalMessage } from "../../types/network.types";
 
 // For development, assumes signaling server is running on localhost.
 // In a real app, this would be a public URL.
-const SIGNALING_SERVER_URL = "http://localhost:3001";
+// Default signaling server
+let SIGNALING_SERVER_URL = "http://localhost:3001";
 
 type DataReceivedCallback = (deviceId: string, data: unknown) => void;
 type ConnectionStateCallback = (
@@ -54,6 +55,24 @@ class WebRTCService {
     this.socket.on("disconnect", () => {
       console.log("Disconnected from signaling server.");
     });
+  }
+
+  /**
+   * Update the signaling server URL and reconnect if necessary
+   */
+  updateSignalingServerUrl(url: string): void {
+    if (url === SIGNALING_SERVER_URL) return;
+
+    SIGNALING_SERVER_URL = url;
+
+    if (this.socket) {
+      console.log("Updating signaling server URL, reconnecting...");
+      const oldDeviceId = this.currentDeviceId;
+      this.disconnect();
+      if (oldDeviceId) {
+        this.initialize(oldDeviceId);
+      }
+    }
   }
 
   /**

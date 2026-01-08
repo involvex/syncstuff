@@ -9,66 +9,13 @@
   "type": "module",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder -c electron-builder.yml",
+    "build": "electron-builder",
     "dev": "electron . --dev"
   },
   "devDependencies": {
     "electron": "^39.2.7",
     "electron-builder": "^26.4.0",
     "electron-is-dev": "^3.0.1"
-  },
-  "config": {
-    "electron-builder": {
-      "config": "electron-builder.yml"
-    }
-  },
-  "build": {
-    "appId": "com.syncstuff.app",
-    "productName": "Syncstuff",
-    "icon": "../public/favicon.png",
-    "directories": {
-      "output": "dist"
-    },
-    "files": [
-      "main.js",
-      "preload.js",
-      "../dist/**/*",
-      "../assets/**/*",
-      "../public/**/*",
-      "../node_modules/**/*",
-      "../app/**/*",
-      "../app/electron/**/*"
-    ],
-    "extraFiles": [
-      "../public/**/*",
-      "../node_modules/**/*",
-      "../app/**/*",
-      "../app/electron/**/*"
-    ],
-    "extraResources": [
-      "../public/**/*",
-      "../node_modules/**/*",
-      "../app/**/*",
-      "../app/electron/**/*"
-    ],
-    "asarUnpack": [
-      "../public/**/*",
-      "../node_modules/**/*",
-      "../app/**/*",
-      "../app/electron/**/*"
-    ],
-    "win": {
-      "target": "nsis",
-      "icon": "../public/icon.ico"
-    },
-    "mac": {
-      "target": "dmg",
-      "icon": "../public/icon.ico"
-    },
-    "linux": {
-      "target": "AppImage",
-      "icon": "../public/favicon.png"
-    }
   },
   "dependencies": {
     "electron-debug": "^4.1.0",

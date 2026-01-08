@@ -24,6 +24,7 @@ import { CloudAccounts } from "../components/settings/CloudAccounts";
 import { PermissionsSettings } from "../components/settings/PermissionsSettings";
 import { NotificationSettings } from "../components/settings/NotificationSettings";
 import { ElectronSettings } from "../components/settings/ElectronSettings";
+import { ConnectionSettings } from "../components/settings/ConnectionSettings";
 
 const SettingsPage: React.FC = () => {
   const { deviceName, deviceId, initialize } = useSettingsStore();
@@ -80,6 +81,8 @@ const SettingsPage: React.FC = () => {
           <PermissionsSettings />
 
           <NotificationSettings />
+
+          <ConnectionSettings />
 
           <ElectronSettings />
 
