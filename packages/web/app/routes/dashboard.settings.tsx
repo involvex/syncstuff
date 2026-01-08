@@ -2,6 +2,7 @@ import {
   type ActionFunctionArgs,
   type LoaderFunctionArgs,
   json,
+  redirect,
 } from "@remix-run/cloudflare";
 import {
   Form,
@@ -172,6 +173,73 @@ export async function action({ request, context }: ActionFunctionArgs) {
         error:
           "Network error: " +
           (error instanceof Error ? error.message : "Unknown"),
+      });
+    }
+  }
+
+  if (intent === "update_profile") {
+    const fullName = formData.get("full_name");
+
+    try {
+      const API_URL =
+        context.cloudflare.env.API_URL ||
+        "https://syncstuff-api.involvex.workers.dev";
+
+      const response = await fetch(`${API_URL}/api/auth/update-profile`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ fullName }),
+      });
+
+      if (!response.ok) {
+        const data = (await response.json()) as { error?: string };
+        return json({
+          success: false,
+          error: data.error || "Failed to update profile",
+        });
+      }
+
+      return json({ success: true, message: "Profile updated successfully" });
+    } catch (error) {
+      console.error("Update profile error:", error);
+      return json({
+        success: false,
+        error: "Failed to update profile. Please try again later.",
+      });
+    }
+  }
+
+  if (intent === "delete_account") {
+    try {
+      const API_URL =
+        context.cloudflare.env.API_URL ||
+        "https://syncstuff-api.involvex.workers.dev";
+
+      const response = await fetch(`${API_URL}/api/auth/delete-account`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        const data = (await response.json()) as { error?: string };
+        return json({
+          success: false,
+          error: data.error || "Failed to delete account",
+        });
+      }
+
+      // Logout after deletion
+      return redirect("/auth/logout");
+    } catch (error) {
+      console.error("Delete account error:", error);
+      return json({
+        success: false,
+        error: "Failed to delete account. Please try again later.",
       });
     }
   }
@@ -461,6 +529,50 @@ export default function Settings() {
                   Link Account
                 </a>
               )}
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* Danger Zone */}
+      <section className="overflow-hidden rounded-2xl border border-red-100 bg-white shadow-sm transition-all hover:shadow-md dark:border-red-900/30 dark:bg-gray-800">
+        <div className="p-6 sm:p-8">
+          <div className="mb-6">
+            <h3 className="text-xl font-bold text-red-600 dark:text-red-400">
+              Danger Zone
+            </h3>
+            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+              Permanently delete your account and all associated data. This
+              action cannot be undone.
+            </p>
+          </div>
+
+          <div className="rounded-xl bg-red-50 p-4 dark:bg-red-900/10">
+            <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+              <div className="text-sm text-red-800 dark:text-red-200">
+                Once you delete your account, there is no going back. Please be
+                certain.
+              </div>
+              <Form
+                method="post"
+                onSubmit={e => {
+                  if (
+                    !confirm(
+                      "Are you absolutely sure you want to delete your account? This action is permanent and cannot be undone.",
+                    )
+                  ) {
+                    e.preventDefault();
+                  }
+                }}
+              >
+                <button
+                  type="submit"
+                  name="intent"
+                  value="delete_account"
+                  className="w-full rounded-xl bg-red-600 px-6 py-2.5 text-sm font-bold text-white shadow-lg shadow-red-500/20 transition-all hover:bg-red-700 sm:w-auto"
+                >
+                  Delete Account
+                </button>
+              </Form>
             </div>
           </div>
         </div>

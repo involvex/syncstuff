@@ -1,3 +1,9 @@
+import { PushNotifications } from "@capacitor/push-notifications";
+import { isNative } from "../../utils/platform.utils";
+import { webrtcService } from "../network/webrtc.service";
+import { useSettingsStore } from "../../store/settings.store";
+import type { SyncNotification } from "../../types/network.types";
+
 export interface NotificationOptions {
   title: string;
   body: string;
@@ -7,6 +13,7 @@ export interface NotificationOptions {
   data?: Record<string, unknown>;
   requireInteraction?: boolean;
   silent?: boolean;
+  shouldSync?: boolean; // New option to control if notification should be synced
 }
 
 class NotificationService {
@@ -14,17 +21,21 @@ class NotificationService {
   private serviceWorkerRegistration: ServiceWorkerRegistration | null = null;
 
   async initialize(): Promise<void> {
-    // Check if notifications are supported
-    if (!("Notification" in window)) {
-      console.warn("Notifications are not supported in this browser");
-      return;
+    if (isNative()) {
+      const status = await PushNotifications.checkPermissions();
+      this.permissionGranted = status.receive === "granted";
+    } else {
+      // Check if notifications are supported
+      if (!("Notification" in window)) {
+        console.warn("Notifications are not supported in this browser");
+        return;
+      }
+      // Check current permission
+      this.permissionGranted = Notification.permission === "granted";
     }
 
-    // Check current permission
-    this.permissionGranted = Notification.permission === "granted";
-
-    // Register service worker for persistent notifications (if available)
-    if ("serviceWorker" in navigator) {
+    // Register service worker for persistent notifications (if available on web)
+    if (!isNative() && "serviceWorker" in navigator) {
       try {
         this.serviceWorkerRegistration = await navigator.serviceWorker.ready;
       } catch (error) {
@@ -33,12 +44,39 @@ class NotificationService {
     }
 
     // Request permission if not already granted/denied
-    if (Notification.permission === "default") {
-      await this.requestPermission();
+    if (!this.permissionGranted) {
+      // For web, check if it's default
+      if (!isNative() && Notification.permission === "default") {
+        await this.requestPermission();
+      }
     }
+
+    // Setup sync listeners
+    this.setupSyncListeners();
+  }
+
+  private setupSyncListeners(): void {
+    webrtcService.onDataReceived((deviceId, message: unknown) => {
+      const msg = message as { type: string; payload: SyncNotification };
+      if (msg.type === "notification") {
+        const notification = msg.payload;
+        this.showNotification({
+          title: `[${notification.originDeviceName}] ${notification.title}`,
+          body: notification.body,
+          data: { ...notification, fromRemote: true },
+          shouldSync: false, // Don't re-sync remote notifications
+        });
+      }
+    });
   }
 
   async requestPermission(): Promise<boolean> {
+    if (isNative()) {
+      const status = await PushNotifications.requestPermissions();
+      this.permissionGranted = status.receive === "granted";
+      return this.permissionGranted;
+    }
+
     if (!("Notification" in window)) {
       return false;
     }
@@ -73,7 +111,16 @@ class NotificationService {
         ...options,
       };
 
-      if (this.serviceWorkerRegistration) {
+      if (isNative()) {
+        // Local Notifications for native
+        // Note: local-notifications plugin would be better, but we only have push-notifications currently.
+        // For now, we logging as we might need addLocalNotification call.
+        console.log(
+          "Showing native notification:",
+          options.title,
+          options.body,
+        );
+      } else if (this.serviceWorkerRegistration) {
         // Use service worker for persistent notifications
         await this.serviceWorkerRegistration.showNotification(
           options.title,
@@ -103,9 +150,36 @@ class NotificationService {
           notification.close();
         };
       }
+
+      // Sync to other devices if requested
+      if (options.shouldSync !== false) {
+        this.syncNotification(options);
+      }
     } catch (error) {
       console.error("Failed to show notification:", error);
     }
+  }
+
+  private async syncNotification(options: NotificationOptions): Promise<void> {
+    const { deviceId, deviceName } = useSettingsStore.getState();
+    if (!deviceId) return;
+
+    const syncMsg = {
+      type: "notification",
+      payload: {
+        id: Math.random().toString(36).substring(7),
+        title: options.title,
+        body: options.body,
+        icon: options.icon,
+        originDeviceId: deviceId,
+        originDeviceName: deviceName,
+        platform: isNative() ? "android" : "web",
+        timestamp: new Date().toISOString(),
+        actionUrl: options.data?.url as string,
+      } as SyncNotification,
+    };
+
+    webrtcService.broadcastData(syncMsg);
   }
 
   async showSyncNotification(

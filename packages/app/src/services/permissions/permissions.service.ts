@@ -1,5 +1,9 @@
 import { Network } from "@capacitor/network";
 import { Capacitor } from "@capacitor/core";
+import { Filesystem } from "@capacitor/filesystem";
+import { PushNotifications } from "@capacitor/push-notifications";
+import { isNative } from "../../utils/platform.utils";
+import { BarcodeScanner } from "@capacitor-mlkit/barcode-scanning";
 
 export interface PermissionStatus {
   granted: boolean;
@@ -58,6 +62,16 @@ class PermissionsService {
 
   async checkCameraPermission(): Promise<PermissionStatus> {
     try {
+      if (isNative()) {
+        const status = await BarcodeScanner.checkPermissions();
+        return {
+          granted: status.camera === "granted",
+          denied: status.camera === "denied",
+          prompt:
+            status.camera === "prompt" ||
+            status.camera === "prompt-with-rationale",
+        };
+      }
       if (typeof navigator !== "undefined" && navigator.permissions) {
         const result = await navigator.permissions.query({
           name: "camera" as PermissionName,
@@ -78,6 +92,10 @@ class PermissionsService {
 
   async checkClipboardPermission(): Promise<PermissionStatus> {
     try {
+      if (isNative()) {
+        // Simple granted check for clipboard on native
+        return { granted: true, denied: false, prompt: false };
+      }
       if (typeof navigator !== "undefined" && navigator.permissions) {
         const readResult = await navigator.permissions
           .query({
@@ -110,6 +128,14 @@ class PermissionsService {
 
   async checkNotificationPermission(): Promise<PermissionStatus> {
     try {
+      if (isNative()) {
+        const status = await PushNotifications.checkPermissions();
+        return {
+          granted: status.receive === "granted",
+          denied: status.receive === "denied",
+          prompt: status.receive === "prompt",
+        };
+      }
       if (typeof Notification !== "undefined") {
         const permission = Notification.permission;
         return {
@@ -127,6 +153,14 @@ class PermissionsService {
 
   async checkStoragePermission(): Promise<PermissionStatus> {
     try {
+      if (isNative()) {
+        const status = await Filesystem.checkPermissions();
+        return {
+          granted: status.publicStorage === "granted",
+          denied: status.publicStorage === "denied",
+          prompt: status.publicStorage === "prompt",
+        };
+      }
       // Check if localStorage is available
       const testKey = "__permission_test__";
       localStorage.setItem(testKey, "test");
@@ -158,8 +192,11 @@ class PermissionsService {
 
   async requestCameraPermission(): Promise<boolean> {
     try {
+      if (isNative()) {
+        const status = await BarcodeScanner.requestPermissions();
+        return status.camera === "granted";
+      }
       // For web, we can't directly request - it happens on first use
-      // For native, this would use Capacitor plugins
       const status = await this.checkCameraPermission();
       return status.granted || status.prompt;
     } catch (error) {
@@ -170,6 +207,10 @@ class PermissionsService {
 
   async requestNotificationPermission(): Promise<boolean> {
     try {
+      if (isNative()) {
+        const status = await PushNotifications.requestPermissions();
+        return status.receive === "granted";
+      }
       if (typeof Notification !== "undefined") {
         const permission = await Notification.requestPermission();
         return permission === "granted";
@@ -177,6 +218,19 @@ class PermissionsService {
       return false;
     } catch (error) {
       console.error("Failed to request notification permission:", error);
+      return false;
+    }
+  }
+
+  async requestStoragePermission(): Promise<boolean> {
+    try {
+      if (isNative()) {
+        const status = await Filesystem.requestPermissions();
+        return status.publicStorage === "granted";
+      }
+      return true;
+    } catch (error) {
+      console.error("Failed to request storage permission:", error);
       return false;
     }
   }

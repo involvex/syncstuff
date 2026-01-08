@@ -186,6 +186,21 @@ class WebRTCService {
   }
 
   /**
+   * Broadcast data to all connected peers
+   */
+  broadcastData(data: unknown): void {
+    this.peers.forEach((peerInfo, deviceId) => {
+      if (peerInfo.state === "connected") {
+        try {
+          peerInfo.peer.send(JSON.stringify(data));
+        } catch (error) {
+          console.error(`Error broadcasting data to ${deviceId}:`, error);
+        }
+      }
+    });
+  }
+
+  /**
    * Close connection to a peer
    */
   closeConnection(deviceId: string): void {

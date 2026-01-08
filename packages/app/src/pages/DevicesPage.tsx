@@ -38,6 +38,7 @@ import { useDeviceDiscovery } from "../hooks/useDeviceDiscovery";
 import { useDeviceStore } from "../store/device.store";
 import { useTransfer } from "../hooks/useTransfer";
 import { authCodeService } from "../services/network/auth-code.service";
+import { remoteActionService } from "../services/remote/remote-action.service";
 import type { Device } from "../types/device.types";
 import { isDesktop, isNative } from "../utils/platform.utils";
 import "./DevicesPage.css";
@@ -469,6 +470,8 @@ const DevicesPage: React.FC = () => {
               onUnpair={unpairDevice}
               onConnect={connectToDevice}
               onSendFile={sendFile}
+              onPing={id => remoteActionService.sendPing(id)}
+              onRing={id => remoteActionService.ringDevice(id)}
               emptyMessage="No paired devices. Pair with a discovered device to get started."
             />
           )}

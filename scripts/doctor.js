@@ -17,13 +17,13 @@ const checkCommand = (cmd) => {
 console.log("--- 🛠️ Tools ---");
 console.log(`Node: ${process.version}`);
 console.log(
-  `Bun: ${checkCommand("bun --version") ? "✅ Found" : "❌ Not Found"}`
+  `Bun: ${checkCommand("bun --version") ? "✅ Found" : "❌ Not Found"}`,
 );
 console.log(
-  `ADB: ${checkCommand("adb version") ? "✅ Found" : "❌ Not Found"}`
+  `ADB: ${checkCommand("adb version") ? "✅ Found" : "❌ Not Found"}`,
 );
 console.log(
-  `Git: ${checkCommand("git --version") ? "✅ Found" : "❌ Not Found"}`
+  `Git: ${checkCommand("git --version") ? "✅ Found" : "❌ Not Found"}`,
 );
 
 // 2. Check workspaces
@@ -46,7 +46,7 @@ if (fs.existsSync(androidPath)) {
   try {
     const localProps = fs.readFileSync(
       path.join(androidPath, "local.properties"),
-      "utf8"
+      "utf8",
     );
     console.log("✅ local.properties: Found");
   } catch (e) {
@@ -63,7 +63,7 @@ const signalingPath = path.join(
   "..",
   "packages",
   "app",
-  "signaling-server.cjs"
+  "signaling-server.cjs",
 );
 if (fs.existsSync(signalingPath)) {
   console.log("✅ Signaling Server script: Found");
@@ -73,9 +73,9 @@ if (fs.existsSync(signalingPath)) {
 
 console.log("\n--- 📋 Recommendation ---");
 console.log(
-  'If you see ❌, please ensure you have run "bun install" and have the necessary tools installed.'
+  'If you see ❌, please ensure you have run "bun install" and have the necessary tools installed.',
 );
 console.log('To debug Android, try: "bun run debug:android"');
 console.log(
-  "To check Web port (3000), make sure no other process is using it.\n"
+  "To check Web port (3000), make sure no other process is using it.\n",
 );

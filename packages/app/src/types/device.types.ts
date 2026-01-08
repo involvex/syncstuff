@@ -15,6 +15,10 @@ export interface Device {
   lastSeen: Date;
   ipAddress?: string;
   port?: number;
+  battery?: {
+    level: number;
+    charging: boolean;
+  };
 }
 
 export interface DeviceInfo {

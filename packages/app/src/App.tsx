@@ -31,6 +31,8 @@ import { webrtcService } from "./services/network/webrtc.service";
 import { useCloudStore } from "./store/cloud.store";
 import { useSettingsStore } from "./store/settings.store";
 import { isElectron } from "./utils/electron.utils";
+import { PermissionRequestModal } from "./components/common/PermissionRequestModal";
+import { useState } from "react";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -67,6 +69,7 @@ const App: React.FC = () => {
   // Initialize theme
   useTheme();
   const { accounts } = useCloudStore();
+  const [showPermissionModal, setShowPermissionModal] = useState(false);
 
   // Initialize storage and settings
   useEffect(() => {
@@ -95,6 +98,15 @@ const App: React.FC = () => {
         console.error("Failed to initialize notifications:", error);
       }
 
+      // Initialize remote action service (KDE Connect features)
+      try {
+        const { remoteActionService } =
+          await import("./services/remote/remote-action.service");
+        remoteActionService.initialize();
+      } catch (error) {
+        console.error("Failed to initialize remote actions:", error);
+      }
+
       // Initialize Electron sync service if in Electron
       if (isElectron()) {
         try {
@@ -104,6 +116,21 @@ const App: React.FC = () => {
         } catch (error) {
           console.error("Failed to initialize Electron sync:", error);
         }
+      }
+      // Show permission modal if critical permissions are missing and not shown this session
+      const permissionState = await permissionsService.getPermissionsState();
+      const hasPrompted = sessionStorage.getItem(
+        "syncstuff_permission_prompted",
+      );
+
+      const needsCritical =
+        permissionState.camera.prompt ||
+        permissionState.notifications.prompt ||
+        permissionState.storage.prompt;
+
+      if (needsCritical && !hasPrompted) {
+        setShowPermissionModal(true);
+        sessionStorage.setItem("syncstuff_permission_prompted", "true");
       }
     };
     initializeAppSettings();
@@ -171,6 +198,10 @@ const App: React.FC = () => {
           </IonTabs>
         </IonReactRouter>
       </ResponsiveLayout>
+      <PermissionRequestModal
+        isOpen={showPermissionModal}
+        onDismiss={() => setShowPermissionModal(false)}
+      />
     </IonApp>
   );
 };

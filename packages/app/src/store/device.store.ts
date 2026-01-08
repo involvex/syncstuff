@@ -27,6 +27,7 @@ interface DeviceStore {
   pairedDevices: Device[];
   addPairedDevice: (device: Device) => void;
   removePairedDevice: (deviceId: string) => void;
+  updatePairedDevice: (deviceId: string, updates: Partial<Device>) => void;
   isPaired: (deviceId: string) => boolean;
   loadPairedDevices: () => Promise<void>;
   savePairedDevices: () => Promise<void>;
@@ -108,6 +109,14 @@ export const useDeviceStore = create<DeviceStore>((set, get) => ({
       pairedDevices: get().pairedDevices.filter(d => d.id !== deviceId),
     });
     await get().savePairedDevices();
+  },
+
+  updatePairedDevice: (deviceId, updates) => {
+    set({
+      pairedDevices: get().pairedDevices.map(d =>
+        d.id === deviceId ? { ...d, ...updates } : d,
+      ),
+    });
   },
 
   isPaired: deviceId => {

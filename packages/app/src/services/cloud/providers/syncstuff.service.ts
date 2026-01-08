@@ -182,22 +182,122 @@ export class SyncstuffService implements CloudProvider {
     localStorage.removeItem("syncstuff_token");
   }
 
-  async listFiles(_folderId?: string): Promise<CloudFile[]> {
+  async listFiles(folderId?: string): Promise<CloudFile[]> {
     if (!this.token) throw new Error("Not authenticated");
-    // TODO: Implement file listing API
-    return [];
+    try {
+      const url = folderId
+        ? `${this.API_URL}/files?folderId=${folderId}`
+        : `${this.API_URL}/files`;
+
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to list files");
+      }
+
+      const data = (await response.json()) as {
+        success: boolean;
+        data: {
+          id: string;
+          name: string;
+          size: number;
+          mime_type: string;
+          updated_at: string;
+          is_folder?: boolean;
+        }[];
+      };
+
+      if (!data.success) throw new Error("Failed to list files");
+
+      return data.data.map(file => ({
+        id: file.id,
+        name: file.name,
+        size: file.size,
+        mimeType: file.mime_type,
+        modifiedTime: new Date(file.updated_at),
+        parents: [],
+        provider: "syncstuff" as CloudProviderType,
+        accountId: this.token || "", // Using token as a placeholder accountId
+      }));
+    } catch (error) {
+      console.error("Syncstuff ListFiles Error:", error);
+      return [];
+    }
   }
 
-  async uploadFile(_file: File, _parentId?: string): Promise<CloudFile> {
+  async uploadFile(file: File, parentId?: string): Promise<CloudFile> {
     if (!this.token) throw new Error("Not authenticated");
-    // TODO: Implement upload API
-    throw new Error("Not implemented");
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      if (parentId) {
+        formData.append("parentId", parentId);
+      }
+
+      const response = await fetch(`${this.API_URL}/files/upload`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to upload file");
+      }
+
+      const data = (await response.json()) as {
+        success: boolean;
+        data: {
+          id: string;
+          name: string;
+          size: number;
+          mime_type: string;
+          updated_at: string;
+          is_folder?: boolean;
+        };
+      };
+
+      if (!data.success) throw new Error("Failed to upload file");
+
+      return {
+        id: data.data.id,
+        name: data.data.name,
+        size: data.data.size,
+        mimeType: data.data.mime_type,
+        modifiedTime: new Date(data.data.updated_at),
+        parents: [],
+        provider: "syncstuff" as CloudProviderType,
+        accountId: this.token || "",
+      };
+    } catch (error) {
+      console.error("Syncstuff UploadFile Error:", error);
+      throw error;
+    }
   }
 
-  async downloadFile(_fileId: string): Promise<Blob> {
+  async downloadFile(fileId: string): Promise<Blob> {
     if (!this.token) throw new Error("Not authenticated");
-    // TODO: Implement download API
-    throw new Error("Not implemented");
+    try {
+      const response = await fetch(`${this.API_URL}/files/download/${fileId}`, {
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to download file");
+      }
+
+      return await response.blob();
+    } catch (error) {
+      console.error("Syncstuff DownloadFile Error:", error);
+      throw error;
+    }
   }
 
   async getQuota(): Promise<{ used: number; total: number }> {

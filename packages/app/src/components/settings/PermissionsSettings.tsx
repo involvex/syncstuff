@@ -99,6 +99,9 @@ export const PermissionsSettings: React.FC = () => {
         case "camera":
           granted = await permissionsService.requestCameraPermission();
           break;
+        case "storage":
+          granted = await permissionsService.requestStoragePermission();
+          break;
         default:
           presentToast({
             message: "Permission request not available for this type",
@@ -240,7 +243,8 @@ export const PermissionsSettings: React.FC = () => {
                 !permission.granted &&
                 (permissionType === "notifications" ||
                   permissionType === "location" ||
-                  permissionType === "camera");
+                  permissionType === "camera" ||
+                  permissionType === "storage");
 
               return (
                 <IonItem key={permissionType}>

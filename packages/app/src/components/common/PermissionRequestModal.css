@@ -1,0 +1,141 @@
+.permission-modal {
+  --height: auto;
+  --border-radius: 28px;
+  align-items: flex-end;
+}
+
+@media (min-width: 768px) {
+  .permission-modal {
+    --width: 450px;
+    --height: auto;
+    align-items: center;
+  }
+}
+
+.permission-intro {
+  text-align: center;
+  margin-bottom: 32px;
+  padding: 0 16px;
+}
+
+.permission-icon-header {
+  width: 72px;
+  height: 72px;
+  background: var(--ion-color-primary-tint);
+  color: var(--ion-color-primary);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  font-size: 36px;
+}
+
+.dark .permission-icon-header {
+  background: rgba(var(--ion-color-primary-rgb), 0.2);
+}
+
+.permission-intro h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0 0 8px 0;
+  color: var(--ion-color-dark);
+}
+
+.permission-intro p {
+  font-size: 0.95rem;
+  color: var(--ion-color-step-600);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.permission-list {
+  background: transparent;
+}
+
+.permission-item {
+  --background: transparent;
+  --padding-start: 0;
+  --padding-end: 0;
+  --inner-padding-end: 0;
+  margin-bottom: 16px;
+}
+
+.permission-item-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  width: 100%;
+  padding: 8px 4px;
+}
+
+.permission-icon-box {
+  width: 44px;
+  height: 44px;
+  background: var(--ion-color-step-50);
+  color: var(--ion-color-step-700);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  transition: all 0.3s ease;
+}
+
+.dark .permission-icon-box {
+  background: var(--ion-color-step-150);
+}
+
+.permission-icon-box.granted {
+  background: var(--ion-color-success-tint);
+  color: var(--ion-color-success-shade);
+}
+
+.dark .permission-icon-box.granted {
+  background: rgba(var(--ion-color-success-rgb), 0.2);
+  color: var(--ion-color-success);
+}
+
+.permission-item-details {
+  flex: 1;
+}
+
+.permission-item-details h3 {
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin: 0 0 4px 0;
+  color: var(--ion-color-dark);
+}
+
+.permission-item-details p {
+  font-size: 0.85rem;
+  color: var(--ion-color-step-500);
+  line-height: 1.3;
+  margin: 0;
+}
+
+.granted-text {
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 0 8px;
+}
+
+.permission-footer-note {
+  text-align: center;
+  margin-top: 24px;
+  padding: 0 16px;
+}
+
+ion-footer ion-toolbar {
+  --padding-top: 16px;
+  --padding-bottom: 24px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+}
+
+ion-footer ion-button {
+  --border-radius: 14px;
+  --height: 48px;
+  font-weight: 700;
+  margin: 0;
+}

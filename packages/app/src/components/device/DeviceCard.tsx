@@ -19,6 +19,9 @@ import {
   wifi,
   closeCircle,
   documentAttach,
+  batteryFull,
+  batteryCharging,
+  notifications,
 } from "ionicons/icons";
 import type { Device } from "../../types/device.types";
 import "./DeviceCard.css";
@@ -30,6 +33,8 @@ interface DeviceCardProps {
   onUnpair?: (deviceId: string) => void;
   onConnect?: (deviceId: string) => void;
   onSendFile?: (file: File, deviceId: string) => void;
+  onPing?: (deviceId: string) => void;
+  onRing?: (deviceId: string) => void;
 }
 
 export const DeviceCard: React.FC<DeviceCardProps> = ({
@@ -39,6 +44,8 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
   onUnpair,
   onConnect,
   onSendFile,
+  onPing,
+  onRing,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -55,6 +62,18 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
       default:
         return laptop;
     }
+  };
+
+  const getBatteryIcon = () => {
+    if (!device.battery) return null;
+    return device.battery.charging ? batteryCharging : batteryFull;
+  };
+
+  const getBatteryColor = () => {
+    if (!device.battery) return "medium";
+    if (device.battery.level > 0.6) return "success";
+    if (device.battery.level > 0.2) return "warning";
+    return "danger";
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -102,6 +121,12 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
               <IonIcon icon={wifi} />
               {device.status}
             </IonBadge>
+            {device.battery && (
+              <IonBadge color={getBatteryColor()}>
+                <IonIcon icon={getBatteryIcon() || batteryFull} />
+                {Math.round(device.battery.level * 100)}%
+              </IonBadge>
+            )}
           </div>
 
           <div className="action-buttons">
@@ -131,6 +156,24 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
               >
                 <IonIcon slot="start" icon={documentAttach} />
                 Send File
+              </IonButton>
+            )}
+            {isPaired && onPing && (
+              <IonButton
+                fill="outline"
+                onClick={() => onPing(device.id)}
+                className="ping-button"
+              >
+                Ping
+              </IonButton>
+            )}
+            {isPaired && onRing && (
+              <IonButton
+                fill="outline"
+                onClick={() => onRing(device.id)}
+                className="ring-button"
+              >
+                <IonIcon slot="icon-only" icon={notifications} />
               </IonButton>
             )}
             {isPaired && onUnpair && (

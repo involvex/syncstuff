@@ -68,3 +68,41 @@ export interface ServiceTxtRecord {
   deviceId: string;
   deviceName: string;
 }
+
+// Notification Sync Types
+export interface SyncNotification {
+  id: string;
+  title: string;
+  body: string;
+  icon?: string;
+  originDeviceId: string;
+  originDeviceName: string;
+  platform: Platform;
+  timestamp: string;
+  actionUrl?: string;
+}
+
+// KDE Connect inspired sync messages
+export type SyncMessageType =
+  | "notification"
+  | "clipboard"
+  | "battery"
+  | "ring_device"
+  | "ping"
+  | "pong";
+
+export interface SyncMessage {
+  type: SyncMessageType;
+  payload: unknown;
+  timestamp: string;
+}
+
+export interface BatteryStatus {
+  charging: boolean;
+  level: number; // 0.0 to 1.0
+}
+
+export interface PingMessage {
+  deviceId: string;
+  message: string;
+}
