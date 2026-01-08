@@ -1,18 +1,29 @@
-const {
+import {
   app,
   BrowserWindow,
-  Tray,
+  ipcMain,
   Menu,
   nativeImage,
-  ipcMain,
   Notification,
-} = require("electron");
-const path = require("path");
-const isDev = require("electron-is-dev");
-const fs = require("fs");
+  Tray,
+} from "electron";
+import debug from "electron-debug";
+import isDev from "electron-is-dev";
+import reloader from "electron-reloader";
+import unhandled from "electron-unhandled";
+import fs from "fs";
+import * as path from "path";
+import { fileURLToPath } from "url";
+
+unhandled();
 
 let mainWindow = null;
 let tray = null;
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+try {
+  reloader(module);
+} catch (_) {}
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -34,12 +45,22 @@ function createWindow() {
     show: false, // Don't show until ready
   });
 
+  if (debug) {
+    mainWindow.webContents.openDevTools();
+  }
+
   // Load the app
   if (isDev) {
     mainWindow.loadURL("http://localhost:5173");
     mainWindow.webContents.openDevTools();
   } else {
-    mainWindow.loadFile(path.join(__dirname, "../dist/index.html"));
+    // In production, the app is packaged and the dist folder is in resources
+    const prodPath = path.join(process.resourcesPath, "dist", "index.html");
+    const devPath = path.join(__dirname, "../dist/index.html");
+
+    // Try production path first, fallback to dev path
+    const indexPath = fs.existsSync(prodPath) ? prodPath : devPath;
+    mainWindow.loadFile(indexPath);
   }
 
   // Show window when ready
@@ -109,7 +130,9 @@ function createWindow() {
       const notification = new Notification({
         title: options.title,
         body: options.body,
-        icon: options.icon || path.join(__dirname, "../public/favicon.png"),
+        icon:
+          options.icon ||
+          path.join(path.dirname(__dirname), "../public/favicon.png"),
       });
       notification.show();
 
@@ -237,8 +260,8 @@ function createTray() {
   // Try icon.ico first (Windows), fallback to favicon.png
   const iconPath =
     process.platform === "win32"
-      ? path.join(__dirname, "../public/icon.ico")
-      : path.join(__dirname, "../public/favicon.png");
+      ? path.join(path.dirname(__dirname), "../public/icon.ico")
+      : path.join(path.dirname(__dirname), "../public/favicon.png");
   const icon = nativeImage.createFromPath(iconPath);
 
   tray = new Tray(icon.resize({ width: 16, height: 16 }));

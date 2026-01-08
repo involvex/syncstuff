@@ -6,15 +6,21 @@
     "name": "Involvex"
   },
   "main": "main.js",
+  "type": "module",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder",
+    "build": "electron-builder -c electron-builder.yml",
     "dev": "electron . --dev"
   },
   "devDependencies": {
     "electron": "^39.2.7",
-    "electron-builder": "^24.9.1",
+    "electron-builder": "^26.4.0",
     "electron-is-dev": "^3.0.1"
+  },
+  "config": {
+    "electron-builder": {
+      "config": "electron-builder.yml"
+    }
   },
   "build": {
     "appId": "com.syncstuff.app",
@@ -27,7 +33,29 @@
       "main.js",
       "preload.js",
       "../dist/**/*",
-      "../assets/**/*"
+      "../assets/**/*",
+      "../public/**/*",
+      "../node_modules/**/*",
+      "../app/**/*",
+      "../app/electron/**/*"
+    ],
+    "extraFiles": [
+      "../public/**/*",
+      "../node_modules/**/*",
+      "../app/**/*",
+      "../app/electron/**/*"
+    ],
+    "extraResources": [
+      "../public/**/*",
+      "../node_modules/**/*",
+      "../app/**/*",
+      "../app/electron/**/*"
+    ],
+    "asarUnpack": [
+      "../public/**/*",
+      "../node_modules/**/*",
+      "../app/**/*",
+      "../app/electron/**/*"
     ],
     "win": {
       "target": "nsis",
@@ -41,5 +69,11 @@
       "target": "AppImage",
       "icon": "../public/favicon.png"
     }
+  },
+  "dependencies": {
+    "electron-debug": "^4.1.0",
+    "electron-reloader": "^1.2.3",
+    "electron-unhandled": "^5.0.0",
+    "is-extglob": "^2.1.1"
   }
 }

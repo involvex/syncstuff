@@ -1,0 +1,64 @@
+appId: "com.syncstuff.app"
+productName: "Syncstuff"
+artifactName: "Syncstuff-${version}-${platform}-${arch}.${ext}"
+compression: "maximum"
+executableName: "Syncstuff"
+
+files:
+  - "main.js"
+  - "preload.js"
+  - "node_modules/**/*"
+
+extraResources:
+  - from: "../dist"
+    to: "dist"
+    filter:
+      - "**/*"
+  - from: "../public"
+    to: "public"
+    filter:
+      - "**/*"
+
+asar: true
+asarUnpack:
+  - "**/node_modules/**/*.node"
+
+icon: "../public/icon.ico"
+
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  perMachine: false
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+
+win:
+  icon: "../public/icon.ico"
+  target:
+    - target: "nsis"
+      arch: "x64"
+    - target: "portable"
+      arch: "x64"
+  verifyUpdateCodeSignature: false
+
+mac:
+  icon: "../public/icon.icns"
+  target:
+    - target: "dmg"
+      arch:
+        - "x64"
+        - "arm64"
+
+linux:
+  icon: "../public/favicon.png"
+  target:
+    - target: "AppImage"
+      arch: "x64"
+    - target: "deb"
+      arch: "x64"
+
+directories:
+  output: "dist"
+
+extraMetadata:
+  homepage: "https://syncstuff-web.involvex.workers.dev"

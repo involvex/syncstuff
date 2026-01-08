@@ -116,3 +116,88 @@ Using flatDir should be avoided because it doesn't support any meta-data formats
 - implement FAQ @packages/web (FAQ)
 
 - Implement Cloudstorage service (offer for premium users), using cloudflare storage (free tier to start with(no implementation cost))
+
+-fix for electron build:
+@packages/app/electron fix file:///D:/repos/ionic/syncstuff/packages/app/electron/dist/win-unpacked/resources/dist/index.html for the compiled electron
+
+- implement into @packages/app:
+
+@capacitor/preferences (store settings)
+@capacitor/push-notifications (push notifications)
+@capacitor/share (share files)
+@ionic-enterprise/android-permissions (request permissions)
+
+@ionic-enterprise/network-information (to show optional network connection)
+
+@aparajita/capacitor-dark-mode (dark mode)
+
+@byteowls/capacitor-filesharer (file sharing)
+
+Update dependencies for @packages/app
+────────────────────────────────┬─────────┬────────┬────────┐
+│ Package │ Current │ Update │ Latest │
+├─────────────────────────────────┼─────────┼────────┼────────┤
+│ react │ 18.2.0 │ 18.2.0 │ 19.2.3 │  
+├─────────────────────────────────┼─────────┼────────┼────────┤
+│ react-dom │ 18.2.0 │ 18.2.0 │ 19.2.3 │
+├─────────────────────────────────┼─────────┼────────┼────────┤
+│ react-router │ 5.3.4 │ 5.3.4 │ 7.12.0 │
+├─────────────────────────────────┼─────────┼────────┼────────┤
+│ react-router-dom │ 5.3.4 │ 5.3.4 │ 7.12.0 │
+├─────────────────────────────────┼─────────┼────────┼────────┤
+│ @types/react (dev) │ 18.2.0 │ 18.2.0 │ 19.2.7 │
+├─────────────────────────────────┼─────────┼────────┼────────┤
+│ @types/react-dom (dev) │ 18.2.0 │ 18.2.0 │ 19.2.3 │
+├─────────────────────────────────┼─────────┼────────┼────────┤
+│ eslint-plugin-react-hooks (dev) │ 5.2.0 │ 5.2.0 │ 7.0.1 │
+└─────────────────────────────────┴─────────┴────────┴────────┘
+
+Update dependencies for @packages/web
+
+┌─────────────────────────────┬─────────┬─────────┬────────┐
+│ Package │ Current │ Update │ Latest │
+├─────────────────────────────┼─────────┼─────────┼────────┤
+│ @remix-run/cloudflare │ 2.17.2 │ 2.17.2 │ 2.17.3 │
+├─────────────────────────────┼─────────┼─────────┼────────┤  
+│ @remix-run/cloudflare-pages │ 2.17.2 │ 2.17.2 │ 2.17.3 │
+├─────────────────────────────┼─────────┼─────────┼────────┤
+│ @remix-run/react │ 2.17.2 │ 2.17.2 │ 2.17.3 │
+├─────────────────────────────┼─────────┼─────────┼────────┤
+│ @remix-run/server-runtime │ 2.17.2 │ 2.17.2 │ 2.17.3 │
+├─────────────────────────────┼─────────┼─────────┼────────┤
+│ react │ 18.2.0 │ 18.3.1 │ 19.2.3 │
+├─────────────────────────────┼─────────┼─────────┼────────┤
+│ react-dom │ 18.2.0 │ 18.3.1 │ 19.2.3 │
+├─────────────────────────────┼─────────┼─────────┼────────┤
+│ @remix-run/dev (dev) │ 2.17.2 │ 2.17.2 │ 2.17.3 │
+├─────────────────────────────┼─────────┼─────────┼────────┤
+│ @types/react (dev) │ 18.2.0 │ 18.3.27 │ 19.2.7 │
+├─────────────────────────────┼─────────┼─────────┼────────┤
+│ @types/react-dom (dev) │ 18.2.0 │ 18.3.7 │ 19.2.3 │
+├─────────────────────────────┼─────────┼─────────┼────────┤
+│ tailwindcss (dev) │ 3.4.19 │ 3.4.19 │ 4.1.18 │
+├─────────────────────────────┼─────────┼─────────┼────────┤
+│ vite (dev) │ 5.4.14 │ 5.4.14 │ 7.3.1 │
+└─────────────────────────────┴─────────┴─────────┴────────┘
+
+Verify that all dependencies are up to date
+Code is clean, formatted and linted and typesafe! (No any type errors/warnings/undefined variables/functions/undefined types/undefined properties)
+
+Write tests for all features
+run tests and make sure they pass
+
+Build and run app on all platforms
+
+Update capacitor to latest version (Read: packages/app/project-summary.md)
+
+@electron-builder.yml • cannot find path for dependency name=undefined reference=undefined
+
+file:///D:/assets/index-BEuo8xMI.css net::ERR_FILE_NOT_FOUND
+index.html:25 GET file:///D:/assets/index-CB7rRQ7W.js net::ERR_FILE_NOT_FOUND
+
+@packages/app Pairing with QR or Code doesnt work
+i tried both : on qr it scans the code then camera closes nothing happens
+
+for Enter code it alwayss says invalid code
+
+Share Link for qr code doesnt work

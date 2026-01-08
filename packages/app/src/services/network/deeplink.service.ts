@@ -3,6 +3,9 @@ import { useDeviceStore } from "../../store/device.store";
 import { useSettingsStore } from "../../store/settings.store";
 import { isNative } from "../../utils/platform.utils";
 
+// The web app URL for pairing links
+const WEB_APP_URL = "https://syncstuff-web.involvex.workers.dev";
+
 class DeepLinkService {
   /**
    * Initialize deep link listener
@@ -73,11 +76,21 @@ class DeepLinkService {
 
   /**
    * Generate a shareable pairing URL
+   * Uses the web app URL so the link works across all platforms
    */
   generatePairingUrl(): string {
     const { deviceId, deviceName } = useSettingsStore.getState();
-    const baseUrl = window.location.origin;
-    return `${baseUrl}/pair?id=${deviceId}&name=${encodeURIComponent(deviceName)}`;
+    // Always use web app URL for shareability
+    return `${WEB_APP_URL}/pair?id=${deviceId}&name=${encodeURIComponent(deviceName)}`;
+  }
+
+  /**
+   * Generate a syncstuff:// deep link URL
+   * This opens the native app directly if installed
+   */
+  generateDeepLinkUrl(): string {
+    const { deviceId, deviceName } = useSettingsStore.getState();
+    return `syncstuff://pair?id=${deviceId}&name=${encodeURIComponent(deviceName)}`;
   }
 }
 

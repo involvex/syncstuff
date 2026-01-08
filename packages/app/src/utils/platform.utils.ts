@@ -2,17 +2,26 @@ import { Capacitor } from "@capacitor/core";
 import type { Platform } from "../types/device.types";
 
 /**
+ * Check if running in Electron environment
+ */
+export const isElectronEnv = (): boolean => {
+  return typeof window !== "undefined" && window.electron?.isElectron === true;
+};
+
+/**
  * Get the current platform the app is running on
  */
 export const getPlatform = (): Platform => {
+  // Check Electron first since it also reports as "web" via Capacitor
+  if (isElectronEnv()) {
+    return "desktop";
+  }
+
   const platform = Capacitor.getPlatform();
 
   if (platform === "android") return "android";
   if (platform === "ios") return "ios";
-  if (platform === "web") return "web";
 
-  // Desktop (Electron/Tauri) will report as 'web' initially
-  // This will be refined when we add desktop support
   return "web";
 };
 
@@ -24,7 +33,7 @@ export const isNative = (): boolean => {
 };
 
 /**
- * Check if running on web
+ * Check if running on web (not Electron)
  */
 export const isWeb = (): boolean => {
   return getPlatform() === "web";
@@ -45,11 +54,10 @@ export const isIOS = (): boolean => {
 };
 
 /**
- * Check if running on desktop (Tauri)
- * For now, returns false. Will be implemented when desktop support is added.
+ * Check if running on desktop (Electron)
  */
 export const isDesktop = (): boolean => {
-  return false; // Will be implemented in Phase 2.5
+  return isElectronEnv();
 };
 
 /**
@@ -62,5 +70,27 @@ export const getDefaultStorageDirectory = (): string => {
   if (isIOS()) {
     return "Documents";
   }
-  return "Downloads"; // Web/Desktop
+  if (isDesktop()) {
+    return "Downloads"; // Electron can access file system directly
+  }
+  return "Downloads"; // Web
+};
+
+/**
+ * Get a human-readable platform name
+ */
+export const getPlatformName = (): string => {
+  const platform = getPlatform();
+  switch (platform) {
+    case "android":
+      return "Android";
+    case "ios":
+      return "iOS";
+    case "desktop":
+      return "Desktop";
+    case "web":
+      return "Web";
+    default:
+      return "Unknown";
+  }
 };

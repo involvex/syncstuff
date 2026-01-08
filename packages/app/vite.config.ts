@@ -17,8 +17,20 @@ export default defineConfig({
       protocolImports: true,
     }),
   ],
+  // Use relative paths for Electron compatibility
+  base: "./",
   build: {
     target: "es2020",
+    // Ensure assets use relative paths
+    assetsDir: "assets",
+    rollupOptions: {
+      output: {
+        // Use relative paths for chunks
+        chunkFileNames: "assets/[name]-[hash].js",
+        entryFileNames: "assets/[name]-[hash].js",
+        assetFileNames: "assets/[name]-[hash][extname]",
+      },
+    },
   },
   // test: {
   //   globals: true,

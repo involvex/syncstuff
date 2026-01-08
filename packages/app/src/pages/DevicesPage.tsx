@@ -38,6 +38,7 @@ import { useDeviceDiscovery } from "../hooks/useDeviceDiscovery";
 import { useTransfer } from "../hooks/useTransfer";
 import { authCodeService } from "../services/network/auth-code.service";
 import type { Device } from "../types/device.types";
+import { isDesktop, isNative } from "../utils/platform.utils";
 import "./DevicesPage.css";
 
 const DevicesPage: React.FC = () => {
@@ -69,8 +70,12 @@ const DevicesPage: React.FC = () => {
   useEffect(() => {
     return () => {
       stopDiscovery();
-      // Ensure scanner is stopped if component unmounts during scan
-      BarcodeScanner.stopScan();
+      // Only stop scanner on native platforms
+      if (isNative()) {
+        BarcodeScanner.stopScan().catch(() => {
+          // Ignore errors - scanner might not be running
+        });
+      }
       document.querySelector("body")?.classList.remove("scanner-active");
     };
   }, [stopDiscovery]);
@@ -269,14 +274,22 @@ const DevicesPage: React.FC = () => {
 
           {/* Platform Support Warning */}
           {!isSupported && (
-            <IonCard color="warning">
+            <IonCard color={isDesktop() ? "primary" : "warning"}>
               <IonCardContent>
                 <IonText>
-                  <p>
-                    <strong>Web Platform Limitation:</strong> Automatic device
-                    discovery is not supported on web. Use QR code scanning to
-                    connect to other devices.
-                  </p>
+                  {isDesktop() ? (
+                    <p>
+                      <strong>Desktop Mode:</strong> Use auth code pairing or QR
+                      code scanning to connect to mobile devices on your
+                      network.
+                    </p>
+                  ) : (
+                    <p>
+                      <strong>Web Platform Limitation:</strong> Automatic device
+                      discovery is not supported on web. Use QR code scanning or
+                      auth codes to connect to other devices.
+                    </p>
+                  )}
                 </IonText>
               </IonCardContent>
             </IonCard>
