@@ -1,0 +1,58 @@
+name: Desktop Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build-desktop:
+    name: Build Desktop
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+          cache-dependency-path: packages/app/package-lock.json
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: Install Dependencies
+        run: |
+          cd packages/app
+          bun install
+          # We need to install electron dependencies
+          cd electron
+          npm install
+
+      - name: Build Web Assets
+        run: |
+          cd packages/app
+          bun run build
+
+      - name: Build Electron App
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd packages/app
+          bun run electron:build --publish never
+
+      - name: Upload Artifacts
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            packages/app/dist/*.exe
+            packages/app/dist/*.AppImage
+            packages/app/dist/*.dmg
+            packages/app/dist/*.yml
+            packages/app/dist/*.blockmap
+          draft: true
+          prerelease: false

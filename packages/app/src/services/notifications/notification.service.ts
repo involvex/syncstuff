@@ -1,6 +1,7 @@
 import { PushNotifications } from "@capacitor/push-notifications";
 import { useSettingsStore } from "../../store/settings.store";
 import type { SyncNotification } from "../../types/network.types";
+import { isElectron } from "../../utils/electron.utils";
 import { isNative } from "../../utils/platform.utils";
 import { webrtcService } from "../network/webrtc.service";
 
@@ -120,6 +121,14 @@ class NotificationService {
           options.title,
           options.body,
         );
+      } else if (isElectron()) {
+        // Use Electron IPC
+        await (window as any).electron.showNotification({
+          title: options.title,
+          body: options.body,
+          icon: options.icon,
+          onClick: true,
+        });
       } else if (this.serviceWorkerRegistration) {
         // Use service worker for persistent notifications
         await this.serviceWorkerRegistration.showNotification(

@@ -27,7 +27,7 @@
     "android": " ionic cap run android -l --external",
     "gradle:stop": "cd android && ./gradlew.bat --stop",
     "gradle:clean": "cd android && ./gradlew.bat clean",
-    "electron:dev": "concurrently \"bun run dev\" \"bun run --cwd electron dev\"",
+    "electron:dev": "concurrently \"bun run start:signaling\" \"bun run dev\" \"bun run --cwd electron dev\"",
     "electron:build": "bun run build && bun run --cwd electron build",
     "electron:start": "bun run --cwd electron start"
   },

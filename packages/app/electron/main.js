@@ -43,6 +43,7 @@ function createWindow() {
         : "../public/favicon.png",
     ),
     show: false, // Don't show until ready
+    autoHideMenuBar: false, // Ensure menu bar is visible
   });
 
   if (debug) {
@@ -252,8 +253,123 @@ function createWindow() {
     return { success: true, updateAvailable: false };
   });
 
+  // Create menu
+  createMenu();
+
   // Create tray
   createTray();
+}
+
+function createMenu() {
+  const isMac = process.platform === "darwin";
+
+  const template = [
+    // { role: 'appMenu' }
+    ...(isMac
+      ? [
+          {
+            label: app.name,
+            submenu: [
+              { role: "about" },
+              { type: "separator" },
+              { role: "services" },
+              { type: "separator" },
+              { role: "hide" },
+              { role: "hideOthers" },
+              { role: "unhide" },
+              { type: "separator" },
+              { role: "quit" },
+            ],
+          },
+        ]
+      : []),
+    // { role: 'fileMenu' }
+    {
+      label: "File",
+      submenu: [
+        {
+          label: "Sync Now",
+          click: () => {
+            if (mainWindow) mainWindow.webContents.send("trigger-sync");
+          },
+        },
+        { type: "separator" },
+        isMac ? { role: "close" } : { role: "quit" },
+      ],
+    },
+    // { role: 'editMenu' }
+    {
+      label: "Edit",
+      submenu: [
+        { role: "undo" },
+        { role: "redo" },
+        { type: "separator" },
+        { role: "cut" },
+        { role: "copy" },
+        { role: "paste" },
+        ...(isMac
+          ? [
+              { role: "pasteAndMatchStyle" },
+              { role: "delete" },
+              { role: "selectAll" },
+              { type: "separator" },
+              {
+                label: "Speech",
+                submenu: [{ role: "startSpeaking" }, { role: "stopSpeaking" }],
+              },
+            ]
+          : [{ role: "delete" }, { type: "separator" }, { role: "selectAll" }]),
+      ],
+    },
+    // { role: 'viewMenu' }
+    {
+      label: "View",
+      submenu: [
+        { role: "reload" },
+        { role: "forceReload" },
+        { role: "toggleDevTools" },
+        { type: "separator" },
+        { role: "resetZoom" },
+        { role: "zoomIn" },
+        { role: "zoomOut" },
+        { type: "separator" },
+        { role: "togglefullscreen" },
+      ],
+    },
+    // { role: 'windowMenu' }
+    {
+      label: "Window",
+      submenu: [
+        { role: "minimize" },
+        { role: "zoom" },
+        ...(isMac
+          ? [
+              { type: "separator" },
+              { role: "front" },
+              { type: "separator" },
+              { role: "window" },
+            ]
+          : [{ role: "close" }]),
+      ],
+    },
+    {
+      role: "help",
+      submenu: [
+        {
+          label: "Learn More",
+          click: async () => {
+            const { shell } = await import("electron");
+            await shell.openExternal(
+              "https://syncstuff-web.involvex.workers.dev",
+            );
+          },
+        },
+      ],
+    },
+  ];
+
+  const menu = Menu.buildFromTemplate(template);
+  Menu.setApplicationMenu(menu);
 }
 
 function createTray() {
@@ -268,12 +384,18 @@ function createTray() {
 
   const contextMenu = Menu.buildFromTemplate([
     {
-      label: "Show Syncstuff",
+      label: "Open Dashboard",
       click: () => {
         if (mainWindow) {
           mainWindow.show();
           mainWindow.focus();
         }
+      },
+    },
+    {
+      label: "Sync Now",
+      click: () => {
+        if (mainWindow) mainWindow.webContents.send("trigger-sync");
       },
     },
     { type: "separator" },
@@ -283,7 +405,7 @@ function createTray() {
     },
     { type: "separator" },
     {
-      label: "Quit",
+      label: "Quit Syncstuff",
       click: () => {
         app.isQuitting = true;
         app.quit();
@@ -326,7 +448,12 @@ app.whenReady().then(() => {
 app.on("window-all-closed", () => {
   // On macOS, keep app running even when all windows are closed
   if (process.platform !== "darwin") {
-    app.quit();
+    // We want to keep running in tray on Windows/Linux too generally,
+    // but the 'close' event handler on mainWindow already handles minimize-to-tray.
+    // If somehow we get here, it means explicit quit or something else.
+    // To match typical behavior:
+    // app.quit();
+    // BUT since we have minimize-to-tray, we usually shouldn't hit this unless we strictly destroy windows.
   }
 });
 

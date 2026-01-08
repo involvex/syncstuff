@@ -39,6 +39,8 @@ win:
       arch: "x64"
     - target: "portable"
       arch: "x64"
+      # args:
+      #   - "--portable"
   verifyUpdateCodeSignature: false
 
 mac:
