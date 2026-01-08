@@ -54,3 +54,65 @@ packages/app
 ## Futureplan
 
 - Implement tests for each workspace
+
+- add connecting with qr / auth codes to seemlessly connect
+
+- add local network devices connecting / syncing
+
+- file sharing with bluetooth
+
+- fix stop discovery button not working in the app
+
+- improve device sync between @package.json @packages/app/electron @packages/cli
+
+- improve file transfer between @packages/app @packages/app/electron @packages/cli
+
+- improve qr code / auth code / pairing
+
+- fix app version bumping
+
+- fix app build process
+
+- update dependencies for @packages/app
+
+- update dependencies for @packages/app/electron
+
+- update dependencies for @packages/cli
+
+file:///D:/repos/ionic/syncstuff/node_modules/.bun/@capacitor+filesystem@8.0.0+15e98482558ccfe6/node_modules/@capacitor/filesystem/android/src/main/kotlin/com/capacitorjs/plugins/filesystem/LegacyFilesystemImplementation.kt:66:29 Java type mismatch: inferred type is 'String?', but 'String' was expected.
+Using flatDir should be avoided because it doesn't support any meta-data formats.
+
+- fix deprecated @capacitor/filesystem
+
+  file:///D:/repos/ionic/syncstuff/node_modules/.bun/@capacitor+filesystem@8.0.0+15e98482558ccfe6/node_modules/@capacitor/filesystem/android/src/main/kotlin/com/capacitorjs/plugins/filesystem/FilesystemPlugin.kt:335:31 'fun downloadFile(call: PluginCall): Unit' is deprecated. Use @capacitor/file-transfer plugin instead.
+
+- app permissions configuration
+
+- app permissions request
+
+- add notification permission request
+- notification sync between @packages/app @packages/app/electron @packages/cli
+
+- add push notification support
+
+- password reset
+
+- improve user experience (dark mode, better layout, better ui) for @packages/web @packages/app
+
+- implement contact formular @packages/web (email, name, message, discord, recaptcha)
+
+- implement user profile @packages/web (edit profile, change password, delete account)
+
+- implement About @packages/web (About, Premium, Campaigns, Blog, Affiliate Program, FAQ)
+
+- implement Premium @packages/web (Premium, Campaigns, Blog, Affiliate Program, FAQ)
+
+- implement Campaigns @packages/web (Campaigns, Blog, Affiliate Program, FAQ)
+
+- implement Blog @packages/web (Blog, Affiliate Program, FAQ)
+
+- implement Affiliate Program @packages/web (Affiliate Program, FAQ)
+
+- implement FAQ @packages/web (FAQ)
+
+- Implement Cloudstorage service (offer for premium users), using cloudflare storage (free tier to start with(no implementation cost))

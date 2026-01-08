@@ -1,39 +1,42 @@
-import React, { useEffect, useState } from "react";
+import { BarcodeScanner } from "@capacitor-mlkit/barcode-scanning";
 import {
-  IonContent,
-  IonHeader,
-  IonPage,
-  IonTitle,
-  IonToolbar,
   IonButton,
-  IonIcon,
-  IonSegment,
-  IonSegmentButton,
-  IonLabel,
-  IonRefresher,
-  IonRefresherContent,
-  RefresherEventDetail,
-  IonText,
   IonCard,
   IonCardContent,
-  IonGrid,
-  IonRow,
   IonCol,
+  IonContent,
+  IonGrid,
+  IonHeader,
+  IonIcon,
+  IonLabel,
+  IonPage,
+  IonRefresher,
+  IonRefresherContent,
+  IonRow,
+  IonSegment,
+  IonSegmentButton,
+  IonText,
+  IonTitle,
+  IonToolbar,
+  RefresherEventDetail,
 } from "@ionic/react";
 import {
-  playCircle,
-  stopCircle,
-  phonePortrait,
   checkmarkCircle,
+  keypad,
+  phonePortrait,
+  playCircle,
   qrCode,
   scan,
+  stopCircle,
 } from "ionicons/icons";
-import { useDeviceDiscovery } from "../hooks/useDeviceDiscovery";
-import { useTransfer } from "../hooks/useTransfer";
+import React, { useEffect, useState } from "react";
+import { AuthCodeModal } from "../components/device/AuthCodeModal";
 import { DeviceList } from "../components/device/DeviceList";
 import { PairingModal } from "../components/device/PairingModal";
 import { QrCodeModal } from "../components/device/QrCodeModal";
-import { BarcodeScanner } from "@capacitor-mlkit/barcode-scanning";
+import { useDeviceDiscovery } from "../hooks/useDeviceDiscovery";
+import { useTransfer } from "../hooks/useTransfer";
+import { authCodeService } from "../services/network/auth-code.service";
 import type { Device } from "../types/device.types";
 import "./DevicesPage.css";
 
@@ -57,6 +60,10 @@ const DevicesPage: React.FC = () => {
   );
   const [pairingDevice, setPairingDevice] = useState<Device | null>(null);
   const [showQrModal, setShowQrModal] = useState(false);
+  const [showAuthCodeModal, setShowAuthCodeModal] = useState(false);
+  const [authCodeMode, setAuthCodeMode] = useState<"display" | "enter">(
+    "display",
+  );
 
   // Stop discovery when the component unmounts
   useEffect(() => {
@@ -95,6 +102,35 @@ const DevicesPage: React.FC = () => {
     await stopDiscovery();
     await startDiscovery();
     event.detail.complete();
+  };
+
+  const handleAuthCodeEntered = async (code: string) => {
+    if (!currentDevice) return;
+
+    try {
+      const result = await authCodeService.validateCode(code, currentDevice.id);
+
+      if (result.valid && result.deviceId) {
+        // Create device from the validated code
+        const tempDevice: Device = {
+          id: result.deviceId,
+          name: `Device ${result.deviceId.substring(0, 6)}`,
+          platform: "web",
+          status: "discovered",
+          lastSeen: new Date(),
+        };
+
+        // Pair and connect
+        await pairDevice(tempDevice);
+        connectToDevice(result.deviceId);
+        setShowAuthCodeModal(false);
+      } else {
+        alert(`Invalid code: ${result.reason || "Unknown error"}`);
+      }
+    } catch (error) {
+      console.error("Error validating auth code:", error);
+      alert("Failed to validate pairing code");
+    }
   };
 
   const startScan = async () => {
@@ -177,24 +213,52 @@ const DevicesPage: React.FC = () => {
                 </div>
                 <IonGrid>
                   <IonRow>
-                    <IonCol>
+                    <IonCol size="6">
                       <IonButton
                         expand="block"
                         fill="outline"
                         onClick={() => setShowQrModal(true)}
                       >
                         <IonIcon slot="start" icon={qrCode} />
-                        Show My Code
+                        Show QR
                       </IonButton>
                     </IonCol>
-                    <IonCol>
+                    <IonCol size="6">
                       <IonButton
                         expand="block"
                         fill="outline"
                         onClick={startScan}
                       >
                         <IonIcon slot="start" icon={scan} />
-                        Scan Code
+                        Scan QR
+                      </IonButton>
+                    </IonCol>
+                  </IonRow>
+                  <IonRow>
+                    <IonCol size="6">
+                      <IonButton
+                        expand="block"
+                        fill="outline"
+                        onClick={() => {
+                          setAuthCodeMode("display");
+                          setShowAuthCodeModal(true);
+                        }}
+                      >
+                        <IonIcon slot="start" icon={keypad} />
+                        Show Code
+                      </IonButton>
+                    </IonCol>
+                    <IonCol size="6">
+                      <IonButton
+                        expand="block"
+                        fill="outline"
+                        onClick={() => {
+                          setAuthCodeMode("enter");
+                          setShowAuthCodeModal(true);
+                        }}
+                      >
+                        <IonIcon slot="start" icon={keypad} />
+                        Enter Code
                       </IonButton>
                     </IonCol>
                   </IonRow>
@@ -298,6 +362,15 @@ const DevicesPage: React.FC = () => {
           onDismiss={() => setShowQrModal(false)}
           textToShow={currentDevice?.id || ""}
           title="My Device ID"
+        />
+
+        {/* Auth Code Modal */}
+        <AuthCodeModal
+          isOpen={showAuthCodeModal}
+          deviceId={currentDevice?.id || ""}
+          mode={authCodeMode}
+          onCodeEntered={handleAuthCodeEntered}
+          onDismiss={() => setShowAuthCodeModal(false)}
         />
       </IonContent>
     </IonPage>

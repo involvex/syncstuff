@@ -475,7 +475,14 @@ function main() {
     log("\n📱 Building Android APK...", "cyan");
     try {
       exec("cd packages/app && ionic cap sync android", { silent: false });
-      exec("cd packages/app/android && ./gradlew.bat assembleDebug", {
+
+      // Use platform-specific gradlew command
+      const gradlewCmd =
+        process.platform === "win32"
+          ? ".\\gradlew.bat assembleDebug"
+          : "./gradlew assembleDebug";
+
+      exec(`cd packages/app/android && ${gradlewCmd}`, {
         silent: false,
       });
       success("Android APK built successfully");

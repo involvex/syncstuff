@@ -78,28 +78,44 @@ class DiscoveryService {
    */
   async stopDiscovery(): Promise<void> {
     if (!this.isRunning) {
+      console.log("Discovery not running, nothing to stop");
       return;
     }
 
     try {
-      // Remove the listener first to prevent any more callbacks
+      // Remove the listener FIRST to prevent any more callbacks during cleanup
       if (this.listenerHandle) {
         await this.listenerHandle.remove();
         this.listenerHandle = null;
+        console.log("Discovery listener removed");
       }
 
+      // Clear all callbacks to prevent memory leaks
+      this.onDeviceFoundCallbacks.clear();
+      this.onDeviceLostCallbacks.clear();
+
+      // Stop watching for services
       await ZeroConf.unwatch({
         domain: SYNCSTUFF_SERVICE_DOMAIN,
         type: SYNCSTUFF_SERVICE_TYPE,
       });
+
+      // Close the ZeroConf connection
       await ZeroConf.close();
+
+      // Mark as stopped
       this.isRunning = false;
-      console.log("Device discovery stopped");
+      console.log("Device discovery stopped successfully");
     } catch (error) {
       console.error("Failed to stop discovery:", error);
-      // Reset state even on error to allow restart
+
+      // Force reset state even on error to allow restart
       this.isRunning = false;
       this.listenerHandle = null;
+      this.onDeviceFoundCallbacks.clear();
+      this.onDeviceLostCallbacks.clear();
+
+      console.log("Discovery state reset despite error");
     }
   }
 
