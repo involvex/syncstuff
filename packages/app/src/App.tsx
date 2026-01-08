@@ -1,3 +1,4 @@
+import { AppState, App as CapacitorApp } from "@capacitor/app";
 import {
   IonApp,
   IonIcon,
@@ -15,8 +16,9 @@ import {
   settings,
   swapHorizontal,
 } from "ionicons/icons";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Redirect, Route } from "react-router-dom";
+import { PermissionRequestModal } from "./components/common/PermissionRequestModal";
 import { ResponsiveLayout } from "./components/common/ResponsiveLayout";
 import { useTheme } from "./hooks/useTheme";
 import ClipboardPage from "./pages/ClipboardPage";
@@ -25,14 +27,12 @@ import SettingsPage from "./pages/SettingsPage";
 import TransfersPage from "./pages/TransfersPage";
 import { deviceDetectionService } from "./services/device/device-detection.service";
 import { deepLinkService } from "./services/network/deeplink.service";
+import { webrtcService } from "./services/network/webrtc.service";
 import { notificationService } from "./services/notifications/notification.service";
 import { permissionsService } from "./services/permissions/permissions.service";
-import { webrtcService } from "./services/network/webrtc.service";
 import { useCloudStore } from "./store/cloud.store";
 import { useSettingsStore } from "./store/settings.store";
 import { isElectron } from "./utils/electron.utils";
-import { PermissionRequestModal } from "./components/common/PermissionRequestModal";
-import { useState } from "react";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -132,8 +132,43 @@ const App: React.FC = () => {
         setShowPermissionModal(true);
         sessionStorage.setItem("syncstuff_permission_prompted", "true");
       }
+
+      // Initialize notification sync
+      try {
+        const { notificationSyncService } =
+          await import("./services/notifications/notification-sync.service");
+        notificationSyncService.initialize();
+      } catch (error) {
+        console.error("Failed to initialize notification sync:", error);
+      }
     };
     initializeAppSettings();
+
+    // Listen for app state changes (background -> foreground)
+    const handleAppStateChange = async (state: AppState) => {
+      if (state.isActive) {
+        console.log("App resumed, refreshing permissions...");
+        // Refresh permissions when coming back from settings
+        await permissionsService.refresh();
+
+        // Re-evaluate if we need to show modal
+        const permissionState = await permissionsService.getPermissionsState();
+        const hasPrompted = sessionStorage.getItem(
+          "syncstuff_permission_prompted",
+        );
+        const needsCritical =
+          permissionState.camera.prompt ||
+          permissionState.notifications.prompt ||
+          permissionState.storage.prompt;
+
+        if (needsCritical && !hasPrompted) {
+          setShowPermissionModal(true);
+        }
+      }
+    };
+
+    // Add listener
+    CapacitorApp.addListener("appStateChange", handleAppStateChange);
   }, []);
 
   // Auto-detect device when user logs in with accounts

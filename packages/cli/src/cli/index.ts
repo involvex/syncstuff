@@ -72,6 +72,12 @@ export async function run() {
         await scanLocal(commandArgs, ctx);
       }
       break;
+    case "listen":
+      {
+        const { listen } = await import("./commands/listen.js");
+        await listen(commandArgs, ctx);
+      }
+      break;
     case "help":
       {
         const { showHelp } = await import("./commands/help.js");

@@ -5,7 +5,7 @@ export default function About() {
   return (
     <>
       <Navigation />
-      <div className="min-h-screen bg-white transition-colors dark:bg-gray-950">
+      <div className="min-h-screen bg-background transition-colors dark:bg-gray-950">
         <div className="relative isolate overflow-hidden py-24 sm:py-32">
           {/* ... existing content ... */}
           {/* Decorative elements */}

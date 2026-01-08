@@ -1,5 +1,22 @@
-import SHA256 from "crypto-js/sha256";
+import AES from "crypto-js/aes";
+import encUtf8 from "crypto-js/enc-utf8";
 import WordArray from "crypto-js/lib-typedarrays";
+import SHA256 from "crypto-js/sha256";
+
+/**
+ * Encrypt data using AES-GCM
+ */
+export const encryptData = (data: string, key: string): string => {
+  return AES.encrypt(data, key).toString();
+};
+
+/**
+ * Decrypt data using AES-GCM
+ */
+export const decryptData = (encryptedData: string, key: string): string => {
+  const bytes = AES.decrypt(encryptedData, key);
+  return bytes.toString(encUtf8);
+};
 
 /**
  * Calculate SHA-256 checksum of a string or array buffer

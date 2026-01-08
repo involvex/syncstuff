@@ -1,9 +1,9 @@
-import { Network } from "@capacitor/network";
+import { BarcodeScanner } from "@capacitor-mlkit/barcode-scanning";
 import { Capacitor } from "@capacitor/core";
 import { Filesystem } from "@capacitor/filesystem";
+import { Network } from "@capacitor/network";
 import { PushNotifications } from "@capacitor/push-notifications";
 import { isNative } from "../../utils/platform.utils";
-import { BarcodeScanner } from "@capacitor-mlkit/barcode-scanning";
 
 export interface PermissionStatus {
   granted: boolean;
@@ -258,6 +258,24 @@ class PermissionsService {
   async refresh(): Promise<PermissionsState> {
     this.permissionsState = null;
     return await this.initialize();
+  }
+
+  async openSettings(): Promise<void> {
+    try {
+      if (isNative()) {
+        const { NativeSettings, AndroidSettings, IOSSettings } =
+          await import("capacitor-native-settings");
+
+        await NativeSettings.open({
+          optionAndroid: AndroidSettings.ApplicationDetails,
+          optionIOS: IOSSettings.App,
+        });
+      } else {
+        console.warn("Cannot open settings on web");
+      }
+    } catch (error) {
+      console.error("Failed to open settings:", error);
+    }
   }
 }
 

@@ -57,6 +57,7 @@
     "@types/cypress": "1.1.6",
     "@types/react-router": "5.1.20",
     "@types/react-router-dom": "5.3.3",
+    "capacitor-native-settings": "7.0.2",
     "capacitor-zeroconf": "4.0.0",
     "crypto-js": "4.2.0",
     "ionicons": "8.0.13",

@@ -1,16 +1,22 @@
 import { useTransferStore } from "../../store/transfer.store";
-import { webrtcService } from "../network/webrtc.service";
-import { fileManagerService } from "../storage/file-manager.service";
 import type {
+  FileChunkPayload,
+  FileOfferPayload,
   FileTransfer,
   TransferMessage,
-  FileOfferPayload,
-  FileChunkPayload,
 } from "../../types/transfer.types";
-import { generateFileId } from "../../utils/crypto.utils";
+import {
+  decryptData,
+  encryptData,
+  generateFileId,
+} from "../../utils/crypto.utils";
+import { webrtcService } from "../network/webrtc.service";
+import { fileManagerService } from "../storage/file-manager.service";
 
 // Max chunk size (16KB is safe for WebRTC data channels)
 const CHUNK_SIZE = 16 * 1024;
+// Temporary shared key for MVP - in production this should be derived from pairing
+const ENCRYPTION_KEY = "syncstuff-secure-transfer-key";
 
 class TransferService {
   private sendingFiles: Map<string, File> = new Map(); // Keep reference to Blob/File objects
@@ -185,14 +191,18 @@ class TransferService {
           // Note: readAsDataURL gives base64, convenient for JSON transport
           // Optimization: readAsArrayBuffer is better but requires binary support in webrtc service
 
-          // For MVP, lets strip Data URL prefix if present or just send as string
+          // Strip Data URL prefix if present for cleaner encryption
+          const base64Content = data.includes(",") ? data.split(",")[1] : data;
+
+          // Encrypt the chunk
+          const encryptedData = encryptData(base64Content, ENCRYPTION_KEY);
 
           this.sendMessage(deviceId, {
             type: "FILE_CHUNK",
             transferId,
             payload: {
               chunkId,
-              data, // Base64
+              data: encryptedData, // Send encrypted data
               isLast: offset + slice.size >= file.size,
             },
           });
@@ -227,20 +237,25 @@ class TransferService {
     const payload = message.payload as FileChunkPayload;
 
     try {
-      // Data is a data URL (data:mime/type;base64,...), extract base64 part
-      const base64Data = payload.data.split(",")[1];
-      if (!base64Data) {
-        throw new Error("Invalid chunk data format");
+      // Decrypt the data
+      const decryptedBase64 = decryptData(payload.data, ENCRYPTION_KEY);
+
+      if (!decryptedBase64) {
+        throw new Error("Decryption failed");
       }
 
       await fileManagerService.writeFileChunk(
         transfer.file.name,
-        base64Data,
+        decryptedBase64,
         true, // append
       );
 
+      // Approximate size since we don't have original byte length easily from base64 string without decoding
+      // But for progress bar, this is "good enough" or we can calculate from base64 length
+      const chunkSize = (decryptedBase64.length * 3) / 4;
+
       const newTransferredBytes =
-        transfer.progress.transferredBytes + atob(base64Data).length;
+        transfer.progress.transferredBytes + chunkSize;
 
       getState().updateTransferProgress(
         message.transferId,

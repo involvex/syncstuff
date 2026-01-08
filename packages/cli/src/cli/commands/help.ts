@@ -98,6 +98,21 @@ ${chalk.bold("Examples:")}
   syncstuff scan              Scan for 10 seconds
   syncstuff scan --timeout 30 Scan for 30 seconds
   syncstuff scan --watch      Continuously monitor for devices`,
+
+  listen: `${chalk.cyan.bold("listen")}
+
+Start listening for incoming file transfers.
+
+${chalk.bold("Usage:")}
+  syncstuff listen
+
+${chalk.bold("Description:")}
+  Starts a local HTTP server and advertises this CLI on the network.
+  Allows other SyncStuff devices (like the Android app) to discover
+  this computer and send files to it directly via local network.
+
+${chalk.bold("Examples:")}
+  syncstuff listen`,
 };
 
 export async function showHelp(command?: string): Promise<void> {

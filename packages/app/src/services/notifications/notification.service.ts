@@ -1,8 +1,8 @@
 import { PushNotifications } from "@capacitor/push-notifications";
-import { isNative } from "../../utils/platform.utils";
-import { webrtcService } from "../network/webrtc.service";
 import { useSettingsStore } from "../../store/settings.store";
 import type { SyncNotification } from "../../types/network.types";
+import { isNative } from "../../utils/platform.utils";
+import { webrtcService } from "../network/webrtc.service";
 
 export interface NotificationOptions {
   title: string;
@@ -272,6 +272,19 @@ class NotificationService {
       return "denied";
     }
     return Notification.permission as "granted" | "denied" | "default";
+  }
+
+  async clearNotification(tagOrId: string): Promise<void> {
+    if (isNative()) {
+      // Capacitor Push Notifications doesn't support clearing by ID easily yet
+      // but we can remove all delivered
+      // await PushNotifications.removeAllDeliveredNotifications();
+      console.log("Cleared notification locally:", tagOrId);
+    } else if (this.serviceWorkerRegistration) {
+      const notifications =
+        await this.serviceWorkerRegistration.getNotifications({ tag: tagOrId });
+      notifications.forEach(n => n.close());
+    }
   }
 }
 

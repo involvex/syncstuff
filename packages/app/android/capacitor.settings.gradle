@@ -44,5 +44,8 @@ project(':capacitor-share').projectDir = new File('../../../node_modules/.bun/@c
 include ':capacitor-status-bar'
 project(':capacitor-status-bar').projectDir = new File('../../../node_modules/.bun/@capacitor+status-bar@8.0.0+15e98482558ccfe6/node_modules/@capacitor/status-bar/android')
 
+include ':capacitor-native-settings'
+project(':capacitor-native-settings').projectDir = new File('../../../node_modules/.bun/capacitor-native-settings@7.0.2+15e98482558ccfe6/node_modules/capacitor-native-settings/android')
+
 include ':capacitor-zeroconf'
 project(':capacitor-zeroconf').projectDir = new File('../../../node_modules/.bun/capacitor-zeroconf@4.0.0+627b1c270a5d5c96/node_modules/capacitor-zeroconf/android')

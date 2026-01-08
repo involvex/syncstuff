@@ -78,7 +78,7 @@ export default function Campaigns() {
   return (
     <>
       <Navigation />
-      <div className="min-h-screen bg-white transition-colors dark:bg-gray-950">
+      <div className="min-h-screen bg-background transition-colors dark:bg-gray-950">
         <div className="relative isolate overflow-hidden py-24 sm:py-32">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto max-w-2xl text-center">

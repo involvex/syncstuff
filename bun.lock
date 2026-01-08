@@ -58,6 +58,7 @@
         "@types/cypress": "1.1.6",
         "@types/react-router": "5.1.20",
         "@types/react-router-dom": "5.3.3",
+        "capacitor-native-settings": "7.0.2",
         "capacitor-zeroconf": "4.0.0",
         "crypto-js": "4.2.0",
         "ionicons": "8.0.13",
@@ -1287,6 +1288,8 @@
     "camelcase-keys": ["camelcase-keys@6.2.2", "", { "dependencies": { "camelcase": "^5.3.1", "map-obj": "^4.0.0", "quick-lru": "^4.0.1" } }, "sha512-YrwaA0vEKazPBkn0ipTiMpSajYDSe+KjQfrjhcBMxJt/znbvlHd8Pw/Vamaz5EB4Wfhs3SUR3Z9mwRu/P3s3Yg=="],
 
     "caniuse-lite": ["caniuse-lite@1.0.30001762", "", {}, "sha512-PxZwGNvH7Ak8WX5iXzoK1KPZttBXNPuaOvI2ZYU7NrlM+d9Ov+TUvlLOBNGzVXAntMSMMlJPd+jY6ovrVjSmUw=="],
+
+    "capacitor-native-settings": ["capacitor-native-settings@7.0.2", "", { "peerDependencies": { "@capacitor/core": ">=7.0.0" } }, "sha512-s6xsLW0mJ6tywPgGtPXMgfDGTH5UqdSry1ZRlqh9T124IEIuPQyA35zpBaCywfHkmDKEZYdBik3/8Mdncjbniw=="],
 
     "capacitor-zeroconf": ["capacitor-zeroconf@4.0.0", "", { "peerDependencies": { "@capacitor/core": ">=7.0.0", "bonjour": "^3.5.0" } }, "sha512-oU3mb/2fMWFk1JU4JEeJbWBzpTbaIsDtxX8xKdlvEzunI9MUqzP/rI1+983gGyZVQH5vUr/tsAxL7+NCROEl9g=="],
 

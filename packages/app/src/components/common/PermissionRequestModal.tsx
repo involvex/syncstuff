@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from "react";
 import {
-  IonModal,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
+  IonButton,
   IonContent,
-  IonList,
+  IonFooter,
+  IonHeader,
+  IonIcon,
   IonItem,
   IonLabel,
-  IonIcon,
-  IonButton,
-  IonText,
-  IonFooter,
+  IonList,
+  IonModal,
   IonNote,
+  IonText,
+  IonTitle,
+  IonToolbar,
 } from "@ionic/react";
 import {
   cameraOutline,
-  notificationsOutline,
-  folderOutline,
   clipboardOutline,
+  folderOutline,
+  notificationsOutline,
   shieldCheckmarkOutline,
 } from "ionicons/icons";
+import React, { useEffect, useState } from "react";
 import {
   permissionsService,
   PermissionsState,
@@ -144,7 +144,7 @@ export const PermissionRequestModal: React.FC<PermissionRequestModalProps> = ({
                 <div className="permission-item-content">
                   <div className="permission-item-left">
                     <div
-                      className={`permission-icon-box ${isGranted ? "granted" : ""}`}
+                      className={`permission-icon-box ${isGranted ? "granted" : status?.denied ? "denied" : ""}`}
                     >
                       <IonIcon icon={info.icon} />
                     </div>
@@ -160,6 +160,15 @@ export const PermissionRequestModal: React.FC<PermissionRequestModalProps> = ({
                       <IonText color="success" className="granted-text">
                         Granted
                       </IonText>
+                    ) : status?.denied ? (
+                      <IonButton
+                        size="small"
+                        fill="outline"
+                        color="warning"
+                        onClick={() => permissionsService.openSettings()}
+                      >
+                        Settings
+                      </IonButton>
                     ) : (
                       <IonButton
                         size="small"

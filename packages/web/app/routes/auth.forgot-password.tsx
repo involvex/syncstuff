@@ -118,7 +118,7 @@ export default function ForgotPassword() {
   }
 
   return (
-    <div className="min-h-screen bg-white transition-colors dark:bg-gray-950">
+    <div className="min-h-screen bg-background transition-colors dark:bg-gray-950">
       <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-12 sm:px-6 lg:px-8">
         {/* Background Gradients */}
         <div className="absolute left-[20%] top-[-10%] -z-10 size-[500px] rounded-full bg-blue-500/10 blur-[120px] dark:bg-blue-600/5"></div>

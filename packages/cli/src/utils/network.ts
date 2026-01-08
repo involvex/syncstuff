@@ -157,6 +157,51 @@ class NetworkScanner {
       });
     });
   }
+
+  /**
+   * Start advertising this device on the local network
+   */
+  startAdvertising(
+    deviceName: string,
+    port: number,
+    platform = "cli",
+  ): NodeJS.Timer {
+    const socket = createSocket({ type: "udp4", reuseAddr: true });
+
+    socket.bind(() => {
+      socket.setBroadcast(true);
+    });
+
+    const advertise = () => {
+      const message = JSON.stringify({
+        service: "syncstuff",
+        deviceId: "cli-device-" + Math.floor(Math.random() * 10000), // Simple random ID for CLI
+        deviceName,
+        platform,
+        port,
+        version: "0.0.6", // Should match package.json
+        timestamp: Date.now(),
+      });
+
+      const localIPs = this.getLocalIPs();
+      for (const ip of localIPs) {
+        const parts = ip.split(".");
+        parts[3] = "255";
+        const broadcastAddr = parts.join(".");
+
+        socket.send(message, 0, message.length, SYNCSTUFF_PORT, broadcastAddr);
+      }
+
+      // Also send to multicast group
+      socket.send(message, 0, message.length, SYNCSTUFF_PORT, "224.0.0.251");
+    };
+
+    // Advertise immediately
+    advertise();
+
+    // Then every 3 seconds
+    return setInterval(advertise, 3000);
+  }
 }
 
 export const networkScanner = new NetworkScanner();
