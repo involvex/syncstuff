@@ -42,9 +42,7 @@ packages/app
 ## Instructions
 
 - Keep Code clean, typesafe
-
 - Always format, lint, typecheck before commiting
-
 - Write a Implementation.md to keep current implementationstatus uptodate
 
 ## Tech
@@ -54,58 +52,37 @@ packages/app
 ## Futureplan
 
 - Implement tests for each workspace
-
-- [x] improve device sync between @package.json @packages/app/electron @packages/cli
-- [x] improve file transfer between @packages/app @packages/app/electron @packages/cli (WebRTC stability)
-- [x] improve qr code / auth code / pairing (metadata & queue)
-- [x] fix stop discovery button not working in the app
-- [ ] add local network devices connecting / syncing (UDP Broadcast)
-- [ ] file sharing with bluetooth
-
+- improve device sync between @package.json @packages/app/electron @packages/cli
+- improve file transfer between @packages/app @packages/app/electron @packages/cli (WebRTC stability)
+- improve qr code / auth code / pairing (metadata & queue)
+- fix stop discovery button not working in the app
+- add local network devices connecting / syncing (UDP Broadcast)
+- file sharing with bluetooth
 - fix app version bumping
-
 - update dependencies for @packages/app
-
 - update dependencies for @packages/cli
 
-file:///D:/repos/ionic/syncstuff/node_modules/.bun/@capacitor+filesystem@8.0.0+15e98482558ccfe6/node_modules/@capacitor/filesystem/android/src/main/kotlin/com/capacitorjs/plugins/filesystem/LegacyFilesystemImplementation.kt:66:29 Java type mismatch: inferred type is 'String?', but 'String' was expected.
+file:///D:/repos/ionic/syncstuff/node_modules/.bun/@[capacitor+filesystem@8.0.0](mailto:capacitor+filesystem@8.0.0)+15e98482558ccfe6/node_modules/@capacitor/filesystem/android/src/main/kotlin/com/capacitorjs/plugins/filesystem/LegacyFilesystemImplementation.kt:66:29 Java type mismatch: inferred type is 'String?', but 'String' was expected.
 Using flatDir should be avoided because it doesn't support any meta-data formats.
 
 - fix deprecated @capacitor/filesystem
-
-  file:///D:/repos/ionic/syncstuff/node_modules/.bun/@capacitor+filesystem@8.0.0+15e98482558ccfe6/node_modules/@capacitor/filesystem/android/src/main/kotlin/com/capacitorjs/plugins/filesystem/FilesystemPlugin.kt:335:31 'fun downloadFile(call: PluginCall): Unit' is deprecated. Use @capacitor/file-transfer plugin instead.
-
+file:///D:/repos/ionic/syncstuff/node_modules/.bun/@[capacitor+filesystem@8.0.0](mailto:capacitor+filesystem@8.0.0)+15e98482558ccfe6/node_modules/@capacitor/filesystem/android/src/main/kotlin/com/capacitorjs/plugins/filesystem/FilesystemPlugin.kt:335:31 'fun downloadFile(call: PluginCall): Unit' is deprecated. Use @capacitor/file-transfer plugin instead.
 - app permissions configuration
-
 - app permissions request
-
 - add notification permission request
 - notification sync between @packages/app @packages/app/electron @packages/cli
-
 - add push notification support
-
 - password reset
-
 - improve user experience (dark mode, better layout, better ui) for @packages/web @packages/app
-
 - implement contact formular @packages/web (email, name, message, discord, recaptcha)
-
 - implement user profile @packages/web (edit profile, change password, delete account)
-
 - implement About @packages/web (About, Premium, Campaigns, Blog, Affiliate Program, FAQ)
-
 - implement Premium @packages/web (Premium, Campaigns, Blog, Affiliate Program, FAQ)
-
 - implement Campaigns @packages/web (Campaigns, Blog, Affiliate Program, FAQ)
-
 - implement Blog @packages/web (Blog, Affiliate Program, FAQ)
-
 - implement Affiliate Program @packages/web (Affiliate Program, FAQ)
-
 - implement FAQ @packages/web (FAQ)
-
 - Implement Cloudstorage service (offer for premium users), using cloudflare storage (free tier to start with(no implementation cost))
-
 - implement into @packages/app: (No Paid)
 
 @capacitor/preferences (store settings)
@@ -179,9 +156,9 @@ for Enter code it alwayss says invalid code
 
 Share Link for qr code doesnt work
 
-le or directory 'D:\repos\ionic\syncstuff\node_modules\.bun\@capacitor+status-bar@8.0.0+15e98482558ccfe6\node_modules\@capacitor\status-bar\android\libs', not found
-file or directory 'D:\repos\ionic\syncstuff\node_modules\.bun\capacitor-zeroconf@4.0.0+627b1c270a5d5c96\node_modules\capacitor-zeroconf\android\libs', not found
-file or directory 'D:\repos\ionic\syncstuff\node_modules\.bun\@capacitor+android@8.0.0+15e98482558ccfe6\node_modules\@capacitor\android\capacitor\libs', not found
+le or directory 'D:\repos\ionic\syncstuff\node_modulesbun[capacitor+status-bar@8.0.0](mailto:capacitor+status-bar@8.0.0)+15e98482558ccfe6\node_modulescapacitor\status-bar\android\libs', not found
+file or directory 'D:\repos\ionic\syncstuff\node_modulesbun[capacitor-zeroconf@4.0.0](mailto:capacitor-zeroconf@4.0.0)](mailto:[capacitor-zeroconf@4.0.0](mailto:capacitor-zeroconf@4.0.0))+627b1c270a5d5c96\node_modules\capacitor-zeroconf\android\libs', not found
+file or directory 'D:\repos\ionic\syncstuff\node_modulesbun[capacitor+android@8.0.0](mailto:capacitor+android@8.0.0)+15e98482558ccfe6\node_modulescapacitor\android\capacitor\libs', not found
 file or directory 'D:\repos\ionic\syncstuff\packages\app\android\capacitor-cordova-android-plugins\src\main\libs', not found
 Resolve mutations for :app:packageDebug (Thread[#457,Execution worker Thread 2,5,main]) started.  
 :app:packageDebug (Thread[#457,Execution worker Thread 2,5,main]) started.
@@ -238,36 +215,31 @@ Improve UI of the Android app
 
 - Add logging to the app to help debug issues (in local development with debug setup (adb logcat + bun?))
 - Debug option in Android app (when deploying debug apk version)
-  (in packages/app -> bun run android --target emulator-5554 --verbose --debug)? better debugging setup possible?
-  -> Sort Logs on verbose level (show only logs that are relevant to debug the app)
+(in packages/app -> bun run android --target emulator-5554 --verbose --debug)? better debugging setup possible?
+-> Sort Logs on verbose level (show only logs that are relevant to debug the app)
 - Debug option in Web app
-  (in packages/app -> bun run dev --verbose --debug)? better debugging setup possible?
-  -> Sort Logs on verbose level (show only logs that are relevant to debug the app)
+(in packages/app -> bun run dev --verbose --debug)? better debugging setup possible?
+-> Sort Logs on verbose level (show only logs that are relevant to debug the app)
 - Debug option in Electron app
-  (in packages/app -> bun run electron --verbose --debug)? better debugging setup possible?
-  -> Sort Logs on verbose level (show only logs that are relevant to debug the app)
-
-  -> Setup Scripts for Debugging
+(in packages/app -> bun run electron --verbose --debug)? better debugging setup possible?
+-> Sort Logs on verbose level (show only logs that are relevant to debug the app)
+-> Setup Scripts for Debugging
   - Android App
   - Web App
   - Electron App
-    in Root folder
-
+  in Root folder
   debug:android
   debug:web
   debug:electron
   debug:app
   debug:cli
-
   -> Setup Debugging Environment
   - Android App
   - Web App
   - Electron App
   - CLI
-
   Enable Network Debugging
   -> Trace Network Requests, Websocket Requests from local network
-
   Setup Adb Network Debugging / deploy app to device over wifi
   (Like on react native (npx @react-native-community/cli run-android --verbose / npx @react-native-community/cli run-android log-android ))
 
@@ -292,7 +264,6 @@ Add doctor command to the cli
 - Use proper testing
 - Use proper documentation
 - Use proper version control
-
 - Use proper performance optimization
 - Extendable and maintainable code for future updates
 
@@ -320,7 +291,7 @@ Keep Root dir clear only Readme.md + Claude.md + Gemini.md
 Docs Folder structure:
 
 - docs/
-  index.md + Plan.md (Overall Plan + Overview)
+index.md + Plan.md (Overall Plan + Overview)
   - app/index.md + implementation.md + plan.md
   - cli/index.md + implementation.md + plan.md
   - api/index.md + implementation.md + plan.md
@@ -328,3 +299,4 @@ Docs Folder structure:
   - web/index.md + implementation.md + plan.md
   - electron/index.md + implementation.md + plan.md
   - android/index.md + implementation.md + plan.md
+

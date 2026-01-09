@@ -49,7 +49,8 @@ packages/web/.dev.vars
 # Wrangler local development
 .wrangler/
 **/.wrangler/
-packages/web/wrangler.toml
+# Note: wrangler.toml files are tracked (they contain non-sensitive config)
+# Only .wrangler/ directory (local dev cache) is ignored
 
 packages/app/build
 packages/app/dist
@@ -61,7 +62,7 @@ packages/app/android/app/build
 packages/app/android/.gradle
 
 packages/app/google_drive_client_secret.json
-packages/web/wrangler.toml
+# wrangler.toml files are tracked - they contain non-sensitive configuration
 
 packages/app/electron/node_modules
 packages/app/electron/dist

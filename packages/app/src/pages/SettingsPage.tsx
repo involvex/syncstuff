@@ -14,7 +14,6 @@ import {
   IonCardTitle,
   IonCardContent,
   IonToggle,
-  IonInput,
 } from "@ionic/react";
 import { ThemeToggle } from "../components/common/ThemeToggle";
 import { useSettingsStore } from "../store/settings.store";
@@ -27,21 +26,11 @@ import { PermissionsSettings } from "../components/settings/PermissionsSettings"
 import { NotificationSettings } from "../components/settings/NotificationSettings";
 import { ElectronSettings } from "../components/settings/ElectronSettings";
 import { ConnectionSettings } from "../components/settings/ConnectionSettings";
+import { DebugSettings } from "../components/settings/DebugSettings";
 
 const SettingsPage: React.FC = () => {
-  const {
-    deviceName,
-    deviceId,
-    initialize,
-    devMode,
-    setDevMode,
-    verboseLogging,
-    setVerboseLogging,
-    traceHandshake,
-    setTraceHandshake,
-    signalingServerUrl,
-    setSignalingServerUrl,
-  } = useSettingsStore();
+  const { deviceName, deviceId, initialize, devMode, setDevMode } =
+    useSettingsStore();
 
   useEffect(() => {
     initialize();
@@ -100,39 +89,7 @@ const SettingsPage: React.FC = () => {
 
           <ElectronSettings />
 
-          {devMode && (
-            <IonCard>
-              <IonCardHeader>
-                <IonCardTitle>Developer Options</IonCardTitle>
-              </IonCardHeader>
-              <IonCardContent>
-                <IonList>
-                  <IonItem>
-                    <IonLabel>Verbose Logging</IonLabel>
-                    <IonToggle
-                      checked={verboseLogging}
-                      onIonChange={e => setVerboseLogging(e.detail.checked)}
-                    />
-                  </IonItem>
-                  <IonItem>
-                    <IonLabel>Trace Handshake</IonLabel>
-                    <IonToggle
-                      checked={traceHandshake}
-                      onIonChange={e => setTraceHandshake(e.detail.checked)}
-                    />
-                  </IonItem>
-                  <IonItem>
-                    <IonLabel position="stacked">Signaling Server URL</IonLabel>
-                    <IonInput
-                      value={signalingServerUrl}
-                      onIonChange={e => setSignalingServerUrl(e.detail.value!)}
-                      placeholder="http://localhost:3001"
-                    />
-                  </IonItem>
-                </IonList>
-              </IonCardContent>
-            </IonCard>
-          )}
+          <DebugSettings />
 
           <IonCard>
             <IonCardHeader>
