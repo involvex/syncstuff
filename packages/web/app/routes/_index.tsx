@@ -51,13 +51,13 @@ export default function Index() {
 
       <main className="pt-20">
         {/* Hero Section */}
-        <section className="bg-surface dark:bg-surface">
+        <section className="bg-surface">
           <div className="mx-auto grid max-w-screen-xl px-4 py-8 lg:grid-cols-12 lg:gap-8 lg:py-16 xl:gap-0">
             <div className="mr-auto place-self-center lg:col-span-7">
               <h1 className="text-on-background mb-4 max-w-2xl text-4xl leading-none font-extrabold tracking-tight md:text-5xl xl:text-6xl">
                 Sync secure. Sync simple. Sync everything.
               </h1>
-              <p className="text-on-surface-variant mb-6 max-w-2xl text-lg font-light md:text-xl lg:mb-8">
+              <p className="text-onSurfaceVariant mb-6 max-w-2xl text-lg font-light md:text-xl lg:mb-8">
                 Securely transfer files, clipboard, and notifications across
                 your devices. No cloud required, or cloud optional. You choose.
               </p>
@@ -109,8 +109,8 @@ export default function Index() {
             </div>
             <div className="hidden lg:col-span-5 lg:mt-0 lg:flex">
               {/* <img src="/hero-mockup.png" alt="mockup" /> */}
-              <div className="hero-hover bg-surface-variant ml-20 flex items-end justify-end rounded-lg p-4">
-                <span className="text-on-surface-variant">
+              <div className="hero-hover bg-surfaceVariant ml-20 flex items-end justify-end rounded-lg p-4">
+                <span className="text-onSurfaceVariant">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="350"
@@ -134,10 +134,10 @@ export default function Index() {
         <section id="features" className="bg-background py-16">
           <div className="mx-auto max-w-screen-xl px-4 lg:px-6">
             <div className="mx-auto mb-12 max-w-screen-md text-center lg:mb-16">
-              <h2 className="text-on-background mb-4 text-4xl font-extrabold tracking-tight">
+              <h2 className="text-onBackground mb-4 text-4xl font-extrabold tracking-tight">
                 Designed for seamless productivity
               </h2>
-              <p className="text-on-surface-variant sm:text-xl">
+              <p className="text-onSurfaceVariant sm:text-xl">
                 Work across your phone, tablet, and computer without missing a
                 beat.
               </p>
@@ -159,7 +159,7 @@ export default function Index() {
                     ></path>
                   </svg>
                 </div>
-                <h3 className="text-on-background mb-3 text-2xl font-bold">
+                <h3 className="text-onBackground mb-3 text-2xl font-bold">
                   Universal Clipboard
                 </h3>
                 <p className="text-on-surface-variant">
@@ -179,7 +179,7 @@ export default function Index() {
                     <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"></path>
                   </svg>
                 </div>
-                <h3 className="text-on-background mb-3 text-2xl font-bold">
+                <h3 className="text-onBackground mb-3 text-2xl font-bold">
                   File Transfer
                 </h3>
                 <p className="text-on-surface-variant">
@@ -205,7 +205,7 @@ export default function Index() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-on-background mb-3 text-2xl font-bold">
+                <h3 className="text-onBackground mb-3 text-2xl font-bold">
                   CLI Integration
                 </h3>
                 <p className="text-on-surface-variant">
@@ -217,13 +217,13 @@ export default function Index() {
         </section>
 
         {/* Download Section */}
-        <section id="download" className="bg-surface dark:bg-surface">
+        <section id="download" className="bg-surface">
           <div className="mx-auto max-w-screen-xl px-4 py-8 sm:py-16 lg:px-6">
             <div className="mx-auto max-w-screen-md text-center">
-              <h2 className="text-on-background mb-4 text-4xl font-extrabold tracking-tight">
+              <h2 className="text-onBackground mb-4 text-4xl font-extrabold tracking-tight">
                 Download Syncstuff App
               </h2>
-              <p className="mb-8 text-gray-500 sm:text-xl dark:text-gray-400">
+              <p className="text-onSurfaceVariant mb-8 sm:text-xl">
                 Get the app on your device and start syncing today.
               </p>
               <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -248,7 +248,7 @@ export default function Index() {
                 </a>
 
                 {/* iOS Coming Soon */}
-                <div className="inline-flex cursor-not-allowed items-center justify-center gap-2 rounded-lg border border-gray-300 bg-gray-100 px-6 py-3 text-base font-medium text-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400">
+                <div className="border-outlineVariant bg-surfaceVariant text-onSurfaceVariant inline-flex cursor-not-allowed items-center justify-center gap-2 rounded-lg border px-6 py-3 text-base font-medium">
                   <svg
                     className="size-6"
                     fill="currentColor"
@@ -263,7 +263,7 @@ export default function Index() {
 
               {/* CLI Install */}
               <div className="mt-4">
-                <p className="mb-1 text-sm text-gray-500 dark:text-gray-400">
+                <p className="text-onSurfaceVariant mb-1 text-sm">
                   Or install via npm:
                 </p>
                 <code className="rounded bg-gray-100 px-3 py-2 text-sm text-gray-800 dark:bg-gray-800 dark:text-gray-200">
@@ -271,7 +271,7 @@ export default function Index() {
                 </code>
               </div>
               <div className="mt-2" style={{ marginBottom: "-2rem" }}>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+                <p className="text-onSurfaceVariant text-sm">
                   or quickstart with npx:
                 </p>
                 <code className="rounded bg-gray-100 px-3 py-2 text-sm text-gray-800 dark:bg-gray-800 dark:text-gray-200">

@@ -105,9 +105,9 @@ export default function Login() {
   const isSubmitting = navigation.state === "submitting";
 
   return (
-    <div className="flex min-h-screen flex-col justify-center bg-gray-50 px-6 py-12 lg:px-8 dark:bg-gray-900">
+    <div className="bg-background flex min-h-screen flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <h2 className="mt-10 text-center text-2xl leading-9 font-bold tracking-tight text-gray-900 dark:text-white">
+        <h2 className="text-onBackground mt-10 text-center text-2xl leading-9 font-bold tracking-tight">
           Sign in to your account
         </h2>
       </div>
@@ -128,7 +128,7 @@ export default function Login() {
                 type="email"
                 autoComplete="email"
                 required
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-600 focus:ring-inset sm:text-sm sm:leading-6 dark:bg-gray-800 dark:text-white dark:ring-gray-700"
+                className="bg-surface text-onSurface ring-outlineVariant placeholder:text-onSurfaceVariant focus:ring-primary block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
               />
             </div>
           </div>
@@ -144,7 +144,7 @@ export default function Login() {
               <div className="text-sm">
                 <Link
                   to="/auth/forgot-password"
-                  className="font-semibold text-indigo-600 hover:text-indigo-500"
+                  className="text-primary hover:text-primary/80 font-semibold"
                 >
                   Forgot password?
                 </Link>
@@ -157,7 +157,7 @@ export default function Login() {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-600 focus:ring-inset sm:text-sm sm:leading-6 dark:bg-gray-800 dark:text-white dark:ring-gray-700"
+                className="bg-surface text-onSurface ring-outlineVariant placeholder:text-onSurfaceVariant focus:ring-primary block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
               />
             </div>
           </div>
@@ -182,7 +182,7 @@ export default function Login() {
         <div className="mt-6">
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300 dark:border-gray-700" />
+              <div className="border-outlineVariant w-full border-t" />
             </div>
             <div className="relative flex justify-center text-sm">
               <span className="bg-gray-50 px-2 text-gray-500 dark:bg-gray-900 dark:text-gray-400">
@@ -194,7 +194,7 @@ export default function Login() {
           <div className="mt-6 grid grid-cols-2 gap-3">
             <a
               href="/auth/github"
-              className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-1.5 text-sm leading-6 font-semibold text-gray-900 shadow-sm ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus-visible:ring-transparent dark:bg-gray-800 dark:text-white dark:ring-gray-700 dark:hover:bg-gray-700"
+              className="bg-surface text-onSurface ring-outlineVariant hover:bg-surfaceVariant flex w-full items-center justify-center gap-3 rounded-md px-3 py-1.5 text-sm leading-6 font-semibold shadow-sm ring-1 ring-inset focus-visible:ring-transparent"
             >
               <svg
                 className="size-5"
@@ -227,11 +227,11 @@ export default function Login() {
           </div>
         </div>
 
-        <p className="mt-10 text-center text-sm text-gray-500">
+        <p className="text-onSurfaceVariant mt-10 text-center text-sm">
           Not a member?{" "}
           <Link
             to="/auth/signup"
-            className="leading-6 font-semibold text-indigo-600 hover:text-indigo-500"
+            className="text-primary hover:text-primary/80 leading-6 font-semibold"
           >
             Start a 14 day free trial
           </Link>

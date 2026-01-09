@@ -258,25 +258,25 @@ export default function Settings() {
   return (
     <div className="mx-auto max-w-4xl space-y-10">
       {/* Profile Section */}
-      <section className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-xl shadow-gray-200/50 transition-all hover:shadow-2xl dark:border-gray-800 dark:bg-gray-900 dark:shadow-none">
+      <section className="border-outlineVariant bg-surface shadow-outlineVariant/50 overflow-hidden rounded-3xl border shadow-xl transition-all hover:shadow-2xl">
         <div className="p-6 sm:p-8">
           <div className="mb-8">
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+            <h3 className="text-onSurface text-xl font-bold">
               Profile Information
             </h3>
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-onSurfaceVariant mt-1 text-sm">
               Manage your public-facing information and personal details.
             </p>
           </div>
 
           <div className="mb-8 flex items-center space-x-6">
             <div className="relative">
-              <div className="flex size-24 items-center justify-center rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-3xl font-bold text-white shadow-lg ring-4 ring-white dark:ring-gray-800">
+              <div className="from-primary to-primary-container text-primary-foreground ring-surface flex size-24 items-center justify-center rounded-full bg-gradient-to-tr text-3xl font-bold shadow-lg ring-4">
                 {user?.username?.charAt(0).toUpperCase() || "U"}
               </div>
               <span className="absolute right-0 bottom-0 flex size-8 items-center justify-center rounded-full bg-white shadow-md ring-2 ring-white dark:bg-gray-800 dark:ring-gray-800">
                 <svg
-                  className="size-4 text-gray-400"
+                  className="text-onSurfaceVariant size-4"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -303,7 +303,7 @@ export default function Settings() {
                 className="rounded-xl bg-gray-100 px-4 py-2 text-sm font-bold text-gray-500 transition-colors dark:bg-gray-800 dark:text-gray-400"
               >
                 Change Photo
-                <span className="ml-2 inline-flex items-center rounded-md bg-gray-200 px-1.5 py-0.5 text-xs font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-400">
+                <span className="bg-surfaceVariant text-onSurfaceVariant ml-2 inline-flex items-center rounded-md px-1.5 py-0.5 text-xs font-medium">
                   Soon
                 </span>
               </button>
@@ -318,7 +318,7 @@ export default function Settings() {
               <div className="space-y-2">
                 <label
                   htmlFor="username"
-                  className="text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400"
+                  className="text-onSurfaceVariant text-xs font-bold tracking-wider uppercase"
                 >
                   Username
                 </label>
@@ -335,7 +335,7 @@ export default function Settings() {
               <div className="space-y-2">
                 <label
                   htmlFor="email"
-                  className="text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400"
+                  className="text-onSurfaceVariant text-xs font-bold tracking-wider uppercase"
                 >
                   Email Address
                 </label>
@@ -352,7 +352,7 @@ export default function Settings() {
               <div className="space-y-2 sm:col-span-2">
                 <label
                   htmlFor="full_name"
-                  className="text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400"
+                  className="text-onSurfaceVariant text-xs font-bold tracking-wider uppercase"
                 >
                   Display Name
                 </label>
@@ -362,7 +362,7 @@ export default function Settings() {
                   id="full_name"
                   defaultValue={user?.full_name || ""}
                   placeholder="Sync User"
-                  className="block w-full rounded-xl border-gray-200 bg-white px-4 py-3 text-sm transition-all focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:focus:border-blue-400"
+                  className="border-outlineVariant bg-surface text-onSurface focus:border-primary focus:ring-primary/10 block w-full rounded-xl px-4 py-3 text-sm transition-all focus:ring-4"
                 />
               </div>
             </div>
@@ -382,13 +382,11 @@ export default function Settings() {
       </section>
 
       {/* Password Section */}
-      <section className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all hover:shadow-md dark:border-gray-700 dark:bg-gray-800">
+      <section className="border-outlineVariant bg-surface overflow-hidden rounded-2xl border shadow-sm transition-all hover:shadow-md">
         <div className="p-6 sm:p-8">
           <div className="mb-8">
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-              Security
-            </h3>
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            <h3 className="text-onSurface text-xl font-bold">Security</h3>
+            <p className="text-onSurfaceVariant mt-1 text-sm">
               {hasPassword
                 ? "Change your existing password."
                 : "Set a secure password for your account."}
@@ -402,7 +400,7 @@ export default function Settings() {
                 <div className="space-y-2 sm:col-span-2">
                   <label
                     htmlFor="current_password"
-                    className="text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400"
+                    className="text-onSurfaceVariant text-xs font-bold tracking-wider uppercase"
                   >
                     Current Password
                   </label>
@@ -419,7 +417,7 @@ export default function Settings() {
               <div className="space-y-2">
                 <label
                   htmlFor="new_password"
-                  className="text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400"
+                  className="text-onSurfaceVariant text-xs font-bold tracking-wider uppercase"
                 >
                   {hasPassword ? "New Password" : "Password"}
                 </label>
@@ -435,7 +433,7 @@ export default function Settings() {
               <div className="space-y-2">
                 <label
                   htmlFor="confirm_password"
-                  className="text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400"
+                  className="text-onSurfaceVariant text-xs font-bold tracking-wider uppercase"
                 >
                   Confirm Password
                 </label>
@@ -450,7 +448,7 @@ export default function Settings() {
             </div>
 
             {actionData?.error && (
-              <p className="text-sm font-medium text-red-600 dark:text-red-400">
+              <p className="text-error text-sm font-medium">
                 {actionData.error}
               </p>
             )}
@@ -464,7 +462,7 @@ export default function Settings() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="rounded-xl bg-gray-800 px-6 py-2.5 text-sm font-bold text-white transition-all hover:scale-[1.02] hover:bg-black focus:ring-4 focus:ring-gray-300 disabled:opacity-50 dark:bg-gray-700 dark:hover:bg-gray-600"
+                className="bg-surfaceVariant text-onSurface hover:bg-surfaceVariant/80 focus:ring-outlineVariant rounded-xl px-6 py-2.5 text-sm font-bold transition-all hover:scale-[1.02] focus:ring-4 disabled:opacity-50"
               >
                 {isSubmitting
                   ? "Processing..."
@@ -478,13 +476,13 @@ export default function Settings() {
       </section>
 
       {/* Connected Accounts */}
-      <section className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all hover:shadow-md dark:border-gray-700 dark:bg-gray-800">
+      <section className="border-outlineVariant bg-surface overflow-hidden rounded-2xl border shadow-sm transition-all hover:shadow-md">
         <div className="p-6 sm:p-8">
           <div className="mb-8">
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+            <h3 className="text-onSurface text-xl font-bold">
               Connected Services
             </h3>
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-onSurfaceVariant mt-1 text-sm">
               Link your accounts to enable cloud syncing and social login
               features.
             </p>
@@ -497,7 +495,7 @@ export default function Settings() {
             >
               <div className="flex items-center space-x-3">
                 <div
-                  className={`rounded-xl border border-gray-100 bg-white p-2 text-gray-900 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-white`}
+                  className={`border-outlineVariant bg-surface text-onSurface rounded-xl border p-2 shadow-sm`}
                 >
                   <svg
                     className="size-6"
@@ -515,20 +513,20 @@ export default function Settings() {
                   <h4 className="text-sm font-bold text-gray-900 dark:text-white">
                     GitHub
                   </h4>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className="text-onSurfaceVariant text-xs">
                     {user?.github_id ? "Authenticated" : "Not linked"}
                   </p>
                 </div>
               </div>
               {user?.github_id ? (
                 <div className="flex items-center text-[10px] font-bold tracking-widest text-emerald-600 uppercase dark:text-emerald-400">
-                  <span className="mr-2 size-2 animate-pulse rounded-full bg-emerald-500"></span>{" "}
+                  <span className="bg-primary mr-2 size-2 animate-pulse rounded-full"></span>{" "}
                   Connected
                 </div>
               ) : (
                 <a
                   href="/auth/github"
-                  className="text-xs font-bold text-blue-600 hover:underline dark:text-blue-400"
+                  className="text-primary text-xs font-bold hover:underline"
                 >
                   Link Account
                 </a>
@@ -555,20 +553,20 @@ export default function Settings() {
                   <h4 className="text-sm font-bold text-gray-900 dark:text-white">
                     Discord
                   </h4>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className="text-onSurfaceVariant text-xs">
                     {user?.discord_id ? "Authenticated" : "Not linked"}
                   </p>
                 </div>
               </div>
               {user?.discord_id ? (
                 <div className="flex items-center text-[10px] font-bold tracking-widest text-emerald-600 uppercase dark:text-emerald-400">
-                  <span className="mr-2 size-2 animate-pulse rounded-full bg-emerald-500"></span>{" "}
+                  <span className="bg-primary mr-2 size-2 animate-pulse rounded-full"></span>{" "}
                   Connected
                 </div>
               ) : (
                 <a
                   href="/auth/discord"
-                  className="text-xs font-bold text-blue-600 hover:underline dark:text-blue-400"
+                  className="text-primary text-xs font-bold hover:underline"
                 >
                   Link Account
                 </a>
@@ -578,19 +576,17 @@ export default function Settings() {
         </div>
       </section>
       {/* Danger Zone */}
-      <section className="overflow-hidden rounded-2xl border border-red-100 bg-white shadow-sm transition-all hover:shadow-md dark:border-red-900/30 dark:bg-gray-800">
+      <section className="border-error/30 bg-surface overflow-hidden rounded-2xl border shadow-sm transition-all hover:shadow-md">
         <div className="p-6 sm:p-8">
           <div className="mb-6">
-            <h3 className="text-xl font-bold text-red-600 dark:text-red-400">
-              Danger Zone
-            </h3>
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            <h3 className="text-error text-xl font-bold">Danger Zone</h3>
+            <p className="text-onSurfaceVariant mt-1 text-sm">
               Permanently delete your account and all associated data. This
               action cannot be undone.
             </p>
           </div>
 
-          <div className="rounded-xl bg-red-50 p-4 dark:bg-red-900/10">
+          <div className="bg-error/10 rounded-xl p-4">
             <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
               <div className="text-sm text-red-800 dark:text-red-200">
                 Once you delete your account, there is no going back. Please be
@@ -612,7 +608,7 @@ export default function Settings() {
                   type="submit"
                   name="intent"
                   value="delete_account"
-                  className="w-full rounded-xl bg-red-600 px-6 py-2.5 text-sm font-bold text-white shadow-lg shadow-red-500/20 transition-all hover:bg-red-700 sm:w-auto"
+                  className="bg-error text-error-foreground shadow-error/20 hover:bg-error/90 w-full rounded-xl px-6 py-2.5 text-sm font-bold shadow-lg transition-all sm:w-auto"
                 >
                   Delete Account
                 </button>

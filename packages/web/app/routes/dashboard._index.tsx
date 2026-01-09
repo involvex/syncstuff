@@ -103,8 +103,8 @@ export default function DashboardIndex() {
           />
         </svg>
       ),
-      color: "text-blue-600 dark:text-blue-400",
-      bgColor: "bg-blue-50 dark:bg-blue-900/20",
+      color: "text-primary",
+      bgColor: "bg-surfaceVariant",
       href: "#",
     },
     {
@@ -125,8 +125,8 @@ export default function DashboardIndex() {
           />
         </svg>
       ),
-      color: "text-purple-600 dark:text-purple-400",
-      bgColor: "bg-purple-50 dark:bg-purple-900/20",
+      color: "text-primary",
+      bgColor: "bg-surfaceVariant",
       href: "#",
     },
     {
@@ -195,8 +195,7 @@ export default function DashboardIndex() {
           />
         </svg>
       ),
-      color:
-        "bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600",
+      color: "bg-primary hover:bg-primary/90",
     },
     {
       name: "Device Settings",
@@ -229,7 +228,7 @@ export default function DashboardIndex() {
         {statCards.map(card => (
           <div
             key={card.name}
-            className="group overflow-hidden rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition-all hover:border-gray-200 hover:shadow-md dark:border-gray-700 dark:bg-gray-800 dark:hover:border-gray-600"
+            className="group border-outlineVariant bg-surface hover:border-outlineVariant overflow-hidden rounded-2xl border p-6 shadow-sm transition-all hover:shadow-md"
           >
             <div className="flex items-center space-x-5">
               <div
@@ -238,10 +237,10 @@ export default function DashboardIndex() {
                 {card.icon}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-gray-500 dark:text-gray-400">
+                <p className="text-onSurfaceVariant truncate text-sm font-medium">
                   {card.name}
                 </p>
-                <h4 className="mt-1 text-2xl font-bold text-gray-900 dark:text-white">
+                <h4 className="text-onSurface mt-1 text-2xl font-bold">
                   {String(card.value)}
                 </h4>
               </div>
@@ -253,8 +252,8 @@ export default function DashboardIndex() {
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         {/* User Profile Card */}
         <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50/50 px-6 py-4 dark:border-gray-700 dark:bg-gray-700/30">
-            <h3 className="text-sm font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400">
+          <div className="border-outlineVariant bg-surfaceVariant/50 flex items-center justify-between border-b px-6 py-4">
+            <h3 className="text-onSurfaceVariant text-sm font-bold tracking-wider uppercase">
               Account Overview
             </h3>
             <Link
@@ -262,7 +261,7 @@ export default function DashboardIndex() {
               className="rounded-lg p-1 transition-colors hover:bg-gray-200 dark:hover:bg-gray-600"
             >
               <svg
-                className="size-4 text-gray-400"
+                className="text-onSurfaceVariant size-4"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -285,26 +284,26 @@ export default function DashboardIndex() {
                 <h4 className="leading-none font-bold text-gray-900 dark:text-white">
                   {user?.full_name || user?.username || "Sync Device"}
                 </h4>
-                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                <p className="text-onSurfaceVariant mt-1 text-sm">
                   {user?.email}
                 </p>
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4 pt-2">
-              <div className="rounded-xl bg-gray-50 p-3 dark:bg-gray-700/50">
-                <p className="text-[10px] font-bold tracking-wider text-gray-400 uppercase dark:text-gray-500">
+              <div className="bg-surfaceVariant rounded-xl p-3">
+                <p className="text-onSurfaceVariant text-[10px] font-bold tracking-wider uppercase">
                   Status
                 </p>
-                <p className="mt-0.5 text-sm font-bold text-emerald-600 dark:text-emerald-400">
+                <p className="text-primary mt-0.5 text-sm font-bold">
                   {user?.status || "active"}
                 </p>
               </div>
-              <div className="rounded-xl bg-gray-50 p-3 dark:bg-gray-700/50">
-                <p className="text-[10px] font-bold tracking-wider text-gray-400 uppercase dark:text-gray-500">
+              <div className="bg-surfaceVariant rounded-xl p-3">
+                <p className="text-onSurfaceVariant text-[10px] font-bold tracking-wider uppercase">
                   Role
                 </p>
-                <p className="mt-0.5 text-sm font-bold text-blue-600 capitalize dark:text-blue-400">
+                <p className="text-primary mt-0.5 text-sm font-bold capitalize">
                   {user?.role || "user"}
                 </p>
               </div>
@@ -314,11 +313,11 @@ export default function DashboardIndex() {
 
         {/* Recent Activity Card */}
         <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm lg:col-span-2 dark:border-gray-700 dark:bg-gray-800">
-          <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50/50 px-6 py-4 dark:border-gray-700 dark:bg-gray-700/30">
-            <h3 className="text-sm font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400">
+          <div className="border-outlineVariant bg-surfaceVariant/50 flex items-center justify-between border-b px-6 py-4">
+            <h3 className="text-onSurfaceVariant text-sm font-bold tracking-wider uppercase">
               Recent Activity Triggers
             </h3>
-            <button className="text-xs font-bold text-blue-600 hover:underline dark:text-blue-400">
+            <button className="text-primary text-xs font-bold hover:underline">
               View All
             </button>
           </div>
@@ -326,7 +325,7 @@ export default function DashboardIndex() {
           <div className="divide-y divide-gray-100 dark:divide-gray-700">
             {activity.length === 0 ? (
               <div className="p-12 text-center">
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+                <p className="text-onSurfaceVariant text-sm">
                   No activity logged yet
                 </p>
               </div>
@@ -337,14 +336,14 @@ export default function DashboardIndex() {
                   className="group p-4 transition-colors hover:bg-gray-50 dark:hover:bg-gray-700/30"
                 >
                   <div className="flex items-center space-x-4">
-                    <div className="flex size-10 items-center justify-center rounded-lg border border-gray-100 bg-gray-100 text-xl shadow-sm transition-colors group-hover:bg-white dark:border-gray-600 dark:bg-gray-700 dark:group-hover:bg-gray-600">
+                    <div className="border-outlineVariant bg-surfaceVariant group-hover:bg-surface flex size-10 items-center justify-center rounded-lg border text-xl shadow-sm transition-colors">
                       {item.icon || "📋"}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-semibold text-gray-900 dark:text-white">
+                      <p className="text-onSurface truncate text-sm font-semibold">
                         {item.description}
                       </p>
-                      <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
+                      <p className="text-onSurfaceVariant mt-0.5 text-xs">
                         {new Date(item.date).toLocaleString([], {
                           dateStyle: "medium",
                           timeStyle: "short",
@@ -384,7 +383,7 @@ export default function DashboardIndex() {
             <Link
               key={action.name}
               to={action.href}
-              className={`group flex flex-col rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition-all hover:border-blue-200 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800 dark:hover:border-blue-900/50 ${
+              className={`group border-outlineVariant bg-surface hover:border-primary flex flex-col rounded-2xl border p-5 shadow-sm transition-all hover:shadow-lg ${
                 action.href === "#" ? "cursor-not-allowed grayscale" : ""
               }`}
             >
@@ -393,10 +392,10 @@ export default function DashboardIndex() {
               >
                 {action.icon}
               </div>
-              <h4 className="text-base font-bold text-gray-900 dark:text-white">
+              <h4 className="text-onSurface text-base font-bold">
                 {action.name}
               </h4>
-              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-onSurfaceVariant mt-1 text-sm">
                 {action.description}
               </p>
             </Link>

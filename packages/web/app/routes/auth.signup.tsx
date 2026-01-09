@@ -66,7 +66,7 @@ export default function Signup() {
   const isSubmitting = navigation.state === "submitting";
 
   return (
-    <div className="flex min-h-screen flex-col justify-center bg-gray-50 px-6 py-12 lg:px-8 dark:bg-gray-900">
+    <div className="bg-background flex min-h-screen flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <h2 className="mt-10 text-center text-2xl leading-9 font-bold tracking-tight text-gray-900 dark:text-white">
           Create your account
@@ -78,7 +78,7 @@ export default function Signup() {
           <div>
             <label
               htmlFor="username"
-              className="block text-sm leading-6 font-medium text-gray-900 dark:text-gray-200"
+              className="text-onSurface block text-sm leading-6 font-medium"
             >
               Username
             </label>
@@ -97,7 +97,7 @@ export default function Signup() {
           <div>
             <label
               htmlFor="email"
-              className="block text-sm leading-6 font-medium text-gray-900 dark:text-gray-200"
+              className="text-onSurface block text-sm leading-6 font-medium"
             >
               Email address
             </label>
@@ -116,7 +116,7 @@ export default function Signup() {
           <div>
             <label
               htmlFor="password"
-              className="block text-sm leading-6 font-medium text-gray-900 dark:text-gray-200"
+              className="text-onSurface block text-sm leading-6 font-medium"
             >
               Password
             </label>
@@ -142,18 +142,18 @@ export default function Signup() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm leading-6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:outline-primary flex w-full justify-center rounded-md px-3 py-1.5 text-sm leading-6 font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50"
             >
               {isSubmitting ? "Creating account..." : "Sign up"}
             </button>
           </div>
         </Form>
 
-        <p className="mt-10 text-center text-sm text-gray-500">
+        <p className="text-onSurfaceVariant mt-10 text-center text-sm">
           Already a member?{" "}
           <Link
             to="/auth/login"
-            className="leading-6 font-semibold text-indigo-600 hover:text-indigo-500"
+            className="text-primary hover:text-primary/80 leading-6 font-semibold"
           >
             Sign in
           </Link>

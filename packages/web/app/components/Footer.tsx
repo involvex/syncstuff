@@ -3,7 +3,7 @@ import { Link } from "@remix-run/react";
 export default function Footer() {
   return (
     // /* eslint-disable tailwindcss/no-custom-classname */
-    <footer className="bg-surface-container dark:bg-surface-container border-outline-variant/30 border-t px-4 pt-16 pb-8 sm:pt-24 lg:px-8">
+    <footer className="bg-surface-container border-outlineVariant border-t px-4 pt-16 pb-8 sm:pt-24 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="flex justify-center space-x-6 md:order-2">
           {/* Social Links Placeholder - kept from original design concepts if needed, or remove if not present */}
@@ -36,7 +36,7 @@ export default function Footer() {
               </Link>
             </li>
           </ul>
-          <p className="text-center text-xs leading-5 text-gray-500 dark:text-gray-400">
+          <p className="text-onSurfaceVariant text-center text-xs leading-5">
             &copy; 2026 Syncstuff&trade;. All Rights Reserved.
           </p>
         </div>

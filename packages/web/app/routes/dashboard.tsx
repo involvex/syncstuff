@@ -103,14 +103,14 @@ export default function DashboardLayout() {
   const isLoading = navigation.state === "loading";
 
   return (
-    <div className="flex min-h-screen bg-gray-50 transition-colors duration-200 dark:bg-gray-900">
+    <div className="bg-background flex min-h-screen transition-colors duration-200">
       {/* Sidebar for Desktop */}
-      <aside className="hidden border-r border-gray-200 bg-white backdrop-blur-sm md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col dark:border-gray-800 dark:bg-gray-800/50">
+      <aside className="border-outlineVariant bg-surface hidden border-r backdrop-blur-sm md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
         <div className="flex min-h-0 flex-1 flex-col">
-          <div className="flex h-16 shrink-0 items-center border-b border-gray-200 px-4 dark:border-gray-800">
+          <div className="border-outlineVariant flex h-16 shrink-0 items-center border-b px-4">
             <Link
               to="/"
-              className="text-2xl font-bold tracking-tight text-blue-600 dark:text-blue-400"
+              className="text-primary text-2xl font-bold tracking-tight"
             >
               Syncstuff
             </Link>
@@ -122,12 +122,12 @@ export default function DashboardLayout() {
                 to={item.href}
                 className={`flex items-center rounded-lg px-3 py-2 text-sm font-medium transition-all ${
                   item.current
-                    ? "bg-blue-50 text-blue-700 dark:bg-blue-900/40 dark:text-blue-200"
-                    : "text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700/50 dark:hover:text-white"
+                    ? "bg-surfaceVariant text-onSurface"
+                    : "text-onSurface hover:bg-surfaceVariant hover:text-primary"
                 }`}
               >
                 <span
-                  className={`mr-3 ${item.current ? "text-blue-600 dark:text-blue-400" : "text-gray-400 dark:text-gray-500"}`}
+                  className={`mr-3 ${item.current ? "text-primary" : "text-onSurfaceVariant"}`}
                 >
                   {item.icon}
                 </span>
@@ -135,16 +135,16 @@ export default function DashboardLayout() {
               </Link>
             ))}
           </nav>
-          <div className="shrink-0 border-t border-gray-200 p-4 dark:border-gray-800">
+          <div className="border-outlineVariant shrink-0 border-t p-4">
             <div className="flex items-center gap-3 px-2">
-              <div className="flex size-8 items-center justify-center rounded-full bg-blue-100 font-bold text-blue-600 dark:bg-blue-900 dark:text-blue-400">
+              <div className="bg-surfaceVariant text-primary flex size-8 items-center justify-center rounded-full font-bold">
                 {userId.charAt(0).toUpperCase()}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
+                <p className="text-onSurface truncate text-sm font-medium">
                   User
                 </p>
-                <p className="truncate text-xs text-gray-500 dark:text-gray-400">
+                <p className="text-onSurfaceVariant truncate text-xs">
                   ID: {userId.substring(0, 8)}
                 </p>
               </div>
@@ -152,7 +152,7 @@ export default function DashboardLayout() {
             <Form action="/auth/logout" method="post" className="mt-4">
               <button
                 type="submit"
-                className="flex w-full items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
+                className="border-outlineVariant bg-surface text-onSurface hover:bg-surfaceVariant flex w-full items-center justify-center rounded-lg border px-4 py-2 text-sm font-medium"
               >
                 Sign out
               </button>
@@ -164,7 +164,7 @@ export default function DashboardLayout() {
       {/* Main Content Area */}
       <div className="flex flex-1 flex-col md:pl-64">
         {/* Top Header */}
-        <header className="sticky top-0 z-10 flex h-16 shrink-0 border-b border-gray-200 bg-white/80 backdrop-blur-md dark:border-gray-800 dark:bg-gray-900/80">
+        <header className="border-outlineVariant bg-surface/80 sticky top-0 z-10 flex h-16 shrink-0 border-b backdrop-blur-md">
           <div className="flex flex-1 items-center justify-between px-4 sm:px-6 lg:px-8">
             <div className="flex md:hidden">
               <button
@@ -189,10 +189,7 @@ export default function DashboardLayout() {
                   />
                 </svg>
               </button>
-              <Link
-                to="/"
-                className="ml-4 text-xl font-bold text-blue-600 dark:text-blue-400"
-              >
+              <Link to="/" className="text-primary ml-4 text-xl font-bold">
                 Syncstuff
               </Link>
             </div>
@@ -202,7 +199,7 @@ export default function DashboardLayout() {
             <div className="flex items-center space-x-4">
               <ThemeToggle />
               {role === "admin" && (
-                <span className="hidden items-center rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-800 sm:inline-flex dark:bg-purple-900 dark:text-purple-200">
+                <span className="bg-surfaceVariant text-primary hidden items-center rounded-full px-2.5 py-0.5 text-xs font-medium sm:inline-flex">
                   Admin
                 </span>
               )}
@@ -212,9 +209,9 @@ export default function DashboardLayout() {
 
         {isLoading && (
           <div className="fixed inset-x-0 top-0 z-50">
-            <div className="h-1 bg-blue-100 dark:bg-blue-900">
+            <div className="bg-surfaceVariant h-1">
               <div
-                className="h-full animate-[progress_2s_ease-in-out_infinite] bg-blue-600 dark:bg-blue-400"
+                className="bg-primary h-full animate-[progress_2s_ease-in-out_infinite]"
                 style={{ width: "30%" }}
               />
             </div>
@@ -231,16 +228,14 @@ export default function DashboardLayout() {
       {/* Mobile Sidebar Overlay */}
       <div id="mobile-sidebar" className="fixed inset-0 z-40 hidden md:hidden">
         <div
-          className="fixed inset-0 bg-gray-600/75 backdrop-blur-sm"
+          className="bg-background/75 fixed inset-0 backdrop-blur-sm"
           onClick={() =>
             document.getElementById("mobile-sidebar")?.classList.add("hidden")
           }
         ></div>
-        <div className="fixed inset-y-0 left-0 flex w-full max-w-xs flex-col bg-white pt-5 pb-4 dark:bg-gray-800">
+        <div className="bg-surface fixed inset-y-0 left-0 flex w-full max-w-xs flex-col pt-5 pb-4">
           <div className="flex items-center justify-between px-4">
-            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-              Syncstuff
-            </div>
+            <div className="text-primary text-2xl font-bold">Syncstuff</div>
             <button
               type="button"
               className="p-2 text-gray-400 hover:text-gray-500 focus:outline-none"
@@ -272,8 +267,8 @@ export default function DashboardLayout() {
                 to={item.href}
                 className={`flex items-center rounded-lg px-3 py-2 text-base font-medium ${
                   item.current
-                    ? "bg-blue-50 text-blue-700 dark:bg-blue-900/40 dark:text-blue-200"
-                    : "text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700/50 dark:hover:text-white"
+                    ? "bg-surfaceVariant text-onSurface"
+                    : "text-onSurface hover:bg-surfaceVariant hover:text-primary"
                 }`}
                 onClick={() =>
                   document

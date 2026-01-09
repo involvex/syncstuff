@@ -60,7 +60,7 @@ const extendsConfig: Config = {
         surfaceVariant: "var(--surface-variant-color)", // Ensure this var is defined in CSS
         onSurfaceVariant: "var(--on-surface-variant-color)",
         outline: "#272C37",
-        outlineVariant: "#444955",
+        outlineVariant: "var(--outline-variant-color)",
         ...colors, // Spread original colors *after* custom ones to prevent conflicts if you name a custom color "blue"
       },
       // You can also explicitly define them here if you want to ensure they are available as bg- and text-

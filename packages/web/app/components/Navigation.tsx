@@ -12,7 +12,7 @@ export default function Navigation({ isLoggedIn = false }: NavigationProps) {
   return (
     // /* eslint-disable tailwindcss/no-custom-classname */
     // /* eslint-disable tailwindcss/no-custom-classname */
-    <nav className="bg-surface/80 dark:bg-surface/80 border-outline-variant/30 sticky start-0 top-0 z-50 w-full border-b backdrop-blur-md">
+    <nav className="bg-surface/80 border-outlineVariant sticky start-0 top-0 z-50 w-full border-b backdrop-blur-md">
       <div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
         <Link
           to="/"
@@ -54,7 +54,7 @@ export default function Navigation({ isLoggedIn = false }: NavigationProps) {
 
           <button
             type="button"
-            className="inline-flex size-10 items-center justify-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:ring-2 focus:ring-gray-200 focus:outline-none md:hidden dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+            className="text-onSurface hover:bg-surfaceVariant focus:ring-outlineVariant inline-flex size-10 items-center justify-center rounded-lg p-2 text-sm focus:ring-2 focus:outline-none md:hidden"
             aria-controls="navbar-sticky"
             aria-expanded={isMenuOpen}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -84,11 +84,11 @@ export default function Navigation({ isLoggedIn = false }: NavigationProps) {
           }`}
           id="navbar-sticky"
         >
-          <ul className="mt-4 flex flex-col rounded-xl border border-gray-100 bg-gray-50 p-4 font-medium md:mt-0 md:flex-row md:space-x-8 md:border-0 md:bg-transparent md:p-0 rtl:space-x-reverse dark:border-gray-700 dark:bg-gray-800 md:dark:bg-transparent">
+          <ul className="border-outlineVariant bg-surfaceVariant mt-4 flex flex-col rounded-xl border p-4 font-medium md:mt-0 md:flex-row md:space-x-8 md:border-0 md:bg-transparent md:p-0 rtl:space-x-reverse">
             <li>
               <Link
                 to="/"
-                className="text-on-surface hover:bg-surface-variant/50 md:hover:text-primary dark:text-on-surface md:dark:hover:text-primary block rounded-lg px-3 py-2 transition-colors md:p-0 md:hover:bg-transparent dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+                className="text-onSurface hover:bg-surfaceVariant/50 md:hover:text-primary block rounded-lg px-3 py-2 transition-colors md:p-0 md:hover:bg-transparent"
               >
                 Home
               </Link>
@@ -96,7 +96,7 @@ export default function Navigation({ isLoggedIn = false }: NavigationProps) {
             <li>
               <Link
                 to="/about"
-                className="text-on-surface hover:bg-surface-variant/50 md:hover:text-primary dark:text-on-surface md:dark:hover:text-primary block rounded-lg px-3 py-2 transition-colors md:p-0 md:hover:bg-transparent dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+                className="text-onSurface hover:bg-surfaceVariant/50 md:hover:text-primary block rounded-lg px-3 py-2 transition-colors md:p-0 md:hover:bg-transparent"
               >
                 About
               </Link>
@@ -104,7 +104,7 @@ export default function Navigation({ isLoggedIn = false }: NavigationProps) {
             <li>
               <Link
                 to="/premium"
-                className="text-on-surface hover:bg-surface-variant/50 md:hover:text-primary dark:text-on-surface md:dark:hover:text-primary block rounded-lg px-3 py-2 transition-colors md:p-0 md:hover:bg-transparent dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+                className="text-onSurface hover:bg-surfaceVariant/50 md:hover:text-primary block rounded-lg px-3 py-2 transition-colors md:p-0 md:hover:bg-transparent"
               >
                 Premium
               </Link>
@@ -112,7 +112,7 @@ export default function Navigation({ isLoggedIn = false }: NavigationProps) {
             <li>
               <Link
                 to="/campaigns"
-                className="text-on-surface hover:bg-surface-variant/50 md:hover:text-primary dark:text-on-surface md:dark:hover:text-primary block rounded-lg px-3 py-2 transition-colors md:p-0 md:hover:bg-transparent dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+                className="text-onSurface hover:bg-surfaceVariant/50 md:hover:text-primary block rounded-lg px-3 py-2 transition-colors md:p-0 md:hover:bg-transparent"
               >
                 Campaigns
               </Link>
@@ -120,7 +120,7 @@ export default function Navigation({ isLoggedIn = false }: NavigationProps) {
             <li>
               <Link
                 to="/faq"
-                className="text-on-surface hover:bg-surface-variant/50 md:hover:text-primary dark:text-on-surface md:dark:hover:text-primary block rounded-lg px-3 py-2 transition-colors md:p-0 md:hover:bg-transparent dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+                className="text-onSurface hover:bg-surfaceVariant/50 md:hover:text-primary block rounded-lg px-3 py-2 transition-colors md:p-0 md:hover:bg-transparent"
               >
                 FAQs
               </Link>
@@ -129,7 +129,7 @@ export default function Navigation({ isLoggedIn = false }: NavigationProps) {
               <li>
                 <Link
                   to="/dashboard/settings"
-                  className="text-on-surface hover:bg-surface-variant/50 md:hover:text-primary dark:text-on-surface md:dark:hover:text-primary block rounded-lg px-3 py-2 transition-colors md:p-0 md:hover:bg-transparent dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+                  className="text-onSurface hover:bg-surfaceVariant/50 md:hover:text-primary block rounded-lg px-3 py-2 transition-colors md:p-0 md:hover:bg-transparent"
                 >
                   Settings
                 </Link>
@@ -138,7 +138,7 @@ export default function Navigation({ isLoggedIn = false }: NavigationProps) {
             <li>
               <Link
                 to="/contact"
-                className="text-on-surface hover:bg-surface-variant/50 md:hover:text-primary dark:text-on-surface md:dark:hover:text-primary block rounded-lg px-3 py-2 transition-colors md:p-0 md:hover:bg-transparent dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+                className="text-onSurface hover:bg-surfaceVariant/50 md:hover:text-primary block rounded-lg px-3 py-2 transition-colors md:p-0 md:hover:bg-transparent"
               >
                 Contact
               </Link>
