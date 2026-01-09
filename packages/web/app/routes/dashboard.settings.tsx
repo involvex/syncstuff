@@ -274,7 +274,7 @@ export default function Settings() {
               <div className="flex size-24 items-center justify-center rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-3xl font-bold text-white shadow-lg ring-4 ring-white dark:ring-gray-800">
                 {user?.username?.charAt(0).toUpperCase() || "U"}
               </div>
-              <span className="absolute bottom-0 right-0 flex size-8 items-center justify-center rounded-full bg-white shadow-md ring-2 ring-white dark:bg-gray-800 dark:ring-gray-800">
+              <span className="absolute right-0 bottom-0 flex size-8 items-center justify-center rounded-full bg-white shadow-md ring-2 ring-white dark:bg-gray-800 dark:ring-gray-800">
                 <svg
                   className="size-4 text-gray-400"
                   fill="none"
@@ -318,7 +318,7 @@ export default function Settings() {
               <div className="space-y-2">
                 <label
                   htmlFor="username"
-                  className="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400"
+                  className="text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400"
                 >
                   Username
                 </label>
@@ -335,7 +335,7 @@ export default function Settings() {
               <div className="space-y-2">
                 <label
                   htmlFor="email"
-                  className="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400"
+                  className="text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400"
                 >
                   Email Address
                 </label>
@@ -352,7 +352,7 @@ export default function Settings() {
               <div className="space-y-2 sm:col-span-2">
                 <label
                   htmlFor="full_name"
-                  className="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400"
+                  className="text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400"
                 >
                   Display Name
                 </label>
@@ -402,7 +402,7 @@ export default function Settings() {
                 <div className="space-y-2 sm:col-span-2">
                   <label
                     htmlFor="current_password"
-                    className="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400"
+                    className="text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400"
                   >
                     Current Password
                   </label>
@@ -419,7 +419,7 @@ export default function Settings() {
               <div className="space-y-2">
                 <label
                   htmlFor="new_password"
-                  className="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400"
+                  className="text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400"
                 >
                   {hasPassword ? "New Password" : "Password"}
                 </label>
@@ -435,7 +435,7 @@ export default function Settings() {
               <div className="space-y-2">
                 <label
                   htmlFor="confirm_password"
-                  className="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400"
+                  className="text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400"
                 >
                   Confirm Password
                 </label>
@@ -521,7 +521,7 @@ export default function Settings() {
                 </div>
               </div>
               {user?.github_id ? (
-                <div className="flex items-center text-[10px] font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
+                <div className="flex items-center text-[10px] font-bold tracking-widest text-emerald-600 uppercase dark:text-emerald-400">
                   <span className="mr-2 size-2 animate-pulse rounded-full bg-emerald-500"></span>{" "}
                   Connected
                 </div>
@@ -561,7 +561,7 @@ export default function Settings() {
                 </div>
               </div>
               {user?.discord_id ? (
-                <div className="flex items-center text-[10px] font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
+                <div className="flex items-center text-[10px] font-bold tracking-widest text-emerald-600 uppercase dark:text-emerald-400">
                   <span className="mr-2 size-2 animate-pulse rounded-full bg-emerald-500"></span>{" "}
                   Connected
                 </div>

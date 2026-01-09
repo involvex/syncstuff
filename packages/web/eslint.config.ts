@@ -1,7 +1,6 @@
 import css from "@eslint/css";
 import js from "@eslint/js";
 import json from "@eslint/json";
-import tailwind from "eslint-plugin-tailwindcss";
 import { defineConfig } from "eslint/config";
 import globals from "globals";
 import tseslint from "typescript-eslint";
@@ -14,7 +13,6 @@ export default defineConfig([
     languageOptions: { globals: { ...globals.browser, ...globals.node } },
   },
   tseslint.configs.recommended,
-  tailwind.configs["flat/recommended"],
   {
     files: ["**/*.jsonc"],
     plugins: { json },

@@ -1,8 +1,8 @@
+import type { SignalData, Instance as SimplePeerInstance } from "simple-peer";
 import SimplePeer from "simple-peer";
-import type { Instance as SimplePeerInstance, SignalData } from "simple-peer";
 import { io, Socket } from "socket.io-client";
-import type { ConnectionState, SignalMessage } from "../../types/network.types";
 import { useSettingsStore } from "../../store/settings.store";
+import type { ConnectionState, SignalMessage } from "../../types/network.types";
 import { getPlatform } from "../../utils/platform.utils";
 import { logger } from "../logging/logger.service";
 
@@ -53,6 +53,7 @@ class WebRTCService {
     logger.info(
       `Initializing WebRTC for device ${deviceId} on ${SIGNALING_SERVER_URL}`,
     );
+    console.log("WebRTC Signaling URL:", SIGNALING_SERVER_URL);
     this.currentDeviceId = deviceId;
     this.socket = io(SIGNALING_SERVER_URL);
 

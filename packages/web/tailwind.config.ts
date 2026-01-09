@@ -1,23 +1,26 @@
+// tailwind.config.js
 import type { Config } from "tailwindcss";
-
-export default {
+import colors from "tailwindcss/colors";
+const extendsConfig: Config = {
   darkMode: "class",
   content: ["./app/**/{**,.client,.server}/**/*.{js,jsx,ts,tsx}"],
   theme: {
+    fontFamily: {
+      sans: [
+        "Inter",
+        "ui-sans-serif",
+        "system-ui",
+        "sans-serif",
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Noto Color Emoji",
+      ],
+    },
     extend: {
-      fontFamily: {
-        sans: [
-          "Inter",
-          "ui-sans-serif",
-          "system-ui",
-          "sans-serif",
-          "Apple Color Emoji",
-          "Segoe UI Emoji",
-          "Segoe UI Symbol",
-          "Noto Color Emoji",
-        ],
-      },
+      // Use extend to add to existing Tailwind utilities
       colors: {
+        // These are for general color usage, like text-primary, bg-primary
         primary: {
           DEFAULT: "#002C5B",
           foreground: "#FFFFFF",
@@ -48,16 +51,33 @@ export default {
           container: "#98000A",
           onContainer: "#FFFFFF",
         },
-        background: "#F9F9FF",
-        onBackground: "#191C22",
-        surface: "#F9F9FF",
-        onSurface: "#000000",
-        surfaceVariant: "#DDE2F1",
-        onSurfaceVariant: "#000000",
+        // These can be used directly as text-background, bg-background etc.
+        // Tailwind creates these utilities automatically when defined here.
+        background: "var(--background-color)",
+        onBackground: "var(--on-background-color)",
+        surface: "var(--surface-color)",
+        onSurface: "var(--on-surface-color)",
+        surfaceVariant: "var(--surface-variant-color)", // Ensure this var is defined in CSS
+        onSurfaceVariant: "var(--on-surface-variant-color)",
         outline: "#272C37",
         outlineVariant: "#444955",
+        ...colors, // Spread original colors *after* custom ones to prevent conflicts if you name a custom color "blue"
       },
+      // You can also explicitly define them here if you want to ensure they are available as bg- and text-
+      // But typically, defining them in `colors` under `extend` handles this for simple cases.
+      // If you had complex colors or wanted to override default color names, you might do this:
+      // backgroundColor: {
+      //   background: "#F9F9FF",
+      //   surface: "#F9F9FF",
+      //   // ...
+      // },
+      // textColor: {
+      //   onBackground: "#191C22",
+      //   onSurface: "#000000",
+      //   // ...
+      // },
     },
   },
-  plugins: [],
-} satisfies Config;
+};
+
+export default extendsConfig;

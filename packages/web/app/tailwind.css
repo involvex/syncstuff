@@ -1,16 +1,57 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-background: var(--background-color);
+  --color-on-background: var(--on-background-color);
+  --color-surface: var(--surface-color);
+  --color-on-surface: var(--on-surface-color);
+  --color-surface-variant: var(--surface-variant-color);
+  --color-on-surface-variant: var(--on-surface-variant-color);
+  --color-surface-container: var(--surface-container-color);
+  --color-outline-variant: var(--outline-variant-color);
+}
+
+:root {
+  /* Light theme variables */
+  --background-color: #f9fafb; /* gray-50 */
+  --on-background-color: #111827; /* gray-900 */
+  --surface-color: #ffffff; /* white */
+  --on-surface-color: #1f2937; /* gray-800 */
+  --surface-variant-color: #f3f4f6; /* gray-100 */
+  --on-surface-variant-color: #4b5563; /* gray-600 */
+  --surface-container-color: #ffffff; /* white - for cards */
+  --outline-variant-color: #e5e7eb; /* gray-200 */
+}
+
+html.dark {
+  /* Dark theme variables */
+  --background-color: #0f172a; /* slate-900 */
+  --on-background-color: #f8fafc; /* slate-50 */
+  --surface-color: #1e293b; /* slate-800 */
+  --on-surface-color: #e2e8f0; /* slate-200 */
+  --surface-variant-color: #334155; /* slate-700 */
+  --on-surface-variant-color: #cbd5e1; /* slate-300 */
+  --surface-container-color: #1e293b; /* slate-800 - same as surface, stands on bg */
+  --outline-variant-color: #334155; /* slate-700 */
+}
 
 html,
-body {
-  @apply bg-background text-onBackground dark:bg-gray-950 dark:text-gray-100;
+body,
+:host {
+  background-color: var(--background-color);
+  color: var(--on-background-color);
+  font-family:
+    Inter, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
 
-  @media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark) {
+  html {
     color-scheme: dark;
   }
 }
 
 .hero-hover {
-  @apply opacity-75 transition-all duration-300 ease-in-out hover:scale-105 hover:opacity-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:opacity-100;
+  @apply opacity-75 transition-all duration-300 ease-in-out hover:scale-105 hover:opacity-100;
+  @apply dark:bg-gray-800;
 }

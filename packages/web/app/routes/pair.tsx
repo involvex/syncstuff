@@ -53,7 +53,7 @@ export default function PairPage() {
                 <p className="mb-2 text-xs text-slate-500">
                   Manual Code for Enter Code section:
                 </p>
-                <div className="cursor-pointer select-all rounded bg-slate-900 p-3 font-mono text-blue-300">
+                <div className="cursor-pointer rounded bg-slate-900 p-3 font-mono text-blue-300 select-all">
                   {id}
                 </div>
               </div>

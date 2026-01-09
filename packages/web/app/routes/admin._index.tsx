@@ -324,9 +324,9 @@ export default function AdminOverview() {
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* User Status Breakdown */}
-        <div className="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-800 lg:col-span-2">
+        <div className="overflow-hidden rounded-lg bg-white shadow lg:col-span-2 dark:bg-gray-800">
           <div className="px-4 py-5 sm:p-6">
-            <h3 className="mb-4 text-base font-semibold leading-6 text-gray-900 dark:text-white">
+            <h3 className="mb-4 text-base leading-6 font-semibold text-gray-900 dark:text-white">
               User Status Breakdown
             </h3>
             <div className="space-y-4">
@@ -355,7 +355,7 @@ export default function AdminOverview() {
         {/* Quick Actions */}
         <div className="overflow-hidden rounded-lg bg-white shadow dark:bg-gray-800">
           <div className="px-4 py-5 sm:p-6">
-            <h3 className="mb-4 text-base font-semibold leading-6 text-gray-900 dark:text-white">
+            <h3 className="mb-4 text-base leading-6 font-semibold text-gray-900 dark:text-white">
               Quick Actions
             </h3>
             <div className="space-y-3">

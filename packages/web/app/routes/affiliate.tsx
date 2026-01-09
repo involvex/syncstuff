@@ -1,12 +1,12 @@
 export default function Affiliate() {
   return (
-    <div className="min-h-screen bg-white py-24 dark:bg-gray-950 sm:py-32">
+    <div className="min-h-screen bg-white py-24 sm:py-32 dark:bg-gray-950">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
-          <h2 className="text-sm font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400">
+          <h2 className="text-sm font-bold tracking-widest text-blue-600 uppercase dark:text-blue-400">
             Partnership
           </h2>
-          <p className="mt-2 text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+          <p className="mt-2 text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl dark:text-white">
             Join our Affiliate Program
           </p>
           <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-400">
@@ -19,7 +19,7 @@ export default function Affiliate() {
             </button>
             <a
               href="/faq"
-              className="text-sm font-bold leading-6 text-gray-900 dark:text-white"
+              className="text-sm leading-6 font-bold text-gray-900 dark:text-white"
             >
               Learn more <span aria-hidden="true">→</span>
             </a>

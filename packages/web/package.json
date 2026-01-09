@@ -17,14 +17,16 @@
     "publish": true
   },
   "dependencies": {
+    "@cloudflare/vite-plugin": "1.20.1",
     "@emailjs/browser": "4.4.1",
     "@eslint/css": "0.14.1",
     "@eslint/js": "9.39.2",
     "@eslint/json": "0.14.0",
-    "@remix-run/cloudflare": "2.17.2",
-    "@remix-run/cloudflare-pages": "2.17.2",
-    "@remix-run/react": "2.17.2",
-    "@remix-run/server-runtime": "2.17.2",
+    "@remix-run/cloudflare": "2.17.3",
+    "@remix-run/cloudflare-pages": "2.17.3",
+    "@remix-run/react": "2.17.3",
+    "@remix-run/server-runtime": "2.17.3",
+    "@tailwindcss/vite": "4.1.18",
     "@types/eslint-plugin-tailwindcss": "3.17.0",
     "eslint-plugin-tailwind": "0.2.1",
     "globals": "17.0.0",
@@ -39,7 +41,10 @@
     "typescript-eslint": "8.52.0"
   },
   "devDependencies": {
-    "@remix-run/dev": "2.17.2",
+    "@react-router/cloudflare": "7.12.0",
+    "@react-router/dev": "7.12.0",
+    "@remix-run/dev": "2.17.3",
+    "@remix-run/fs-routes": "2.17.3",
     "@types/react": "18.2.0",
     "@types/react-dom": "18.2.0",
     "@typescript-eslint/eslint-plugin": "8.52.0",
@@ -51,15 +56,13 @@
     "eslint-plugin-jsx-a11y": "6.10.2",
     "eslint-plugin-react": "7.37.5",
     "eslint-plugin-react-hooks": "7.0.1",
-    "eslint-plugin-tailwindcss": "3.18.2",
-    "postcss": "8.5.6",
     "prettier-plugin-organize-imports": "4.3.0",
     "prettier-plugin-tailwindcss": "0.7.2",
-    "tailwindcss": "3.4.19",
+    "tailwindcss": "4.1.18",
     "typescript": "5.9.3",
-    "vite": "5.4.14",
+    "vite": "7.3.1",
     "vite-tsconfig-paths": "6.0.3",
-    "wrangler": "4.57.0"
+    "wrangler": "4.58.0"
   },
   "engines": {
     "node": ">=20.0.0"

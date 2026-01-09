@@ -5,7 +5,7 @@ export default function About() {
   return (
     <>
       <Navigation />
-      <div className="min-h-screen bg-background transition-colors dark:bg-gray-950">
+      <div className="bg-background text-on-background min-h-screen transition-colors">
         <div className="relative isolate overflow-hidden py-24 sm:py-32">
           {/* ... existing content ... */}
           {/* Decorative elements */}
@@ -21,10 +21,10 @@ export default function About() {
 
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto max-w-2xl lg:mx-0">
-              <h2 className="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-6xl">
+              <h2 className="text-on-background text-4xl font-extrabold tracking-tight sm:text-6xl">
                 About SyncStuff
               </h2>
-              <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-400">
+              <p className="text-on-surface-variant/80 mt-6 text-lg leading-8">
                 SyncStuff was born out of a simple need: to make file and
                 clipboard synchronization across devices as effortless as
                 breathing. No cables, no complex setups, just pure connectivity.
@@ -33,7 +33,7 @@ export default function About() {
 
             <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-12 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
               <div className="flex flex-col">
-                <dt className="text-lg font-extrabold leading-7 text-gray-900 dark:text-white">
+                <dt className="text-on-background text-lg leading-7 font-extrabold">
                   <span className="mb-4 block size-10 rounded-lg bg-blue-600 p-2 text-white">
                     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path
@@ -46,7 +46,7 @@ export default function About() {
                   </span>
                   Our Mission
                 </dt>
-                <dd className="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-600 dark:text-gray-400">
+                <dd className="text-on-surface-variant/80 mt-4 flex flex-auto flex-col text-base leading-7">
                   <p className="flex-auto">
                     To democratize cross-device productivity by providing a
                     fast, secure, and open-source platform for synchronization.
@@ -54,7 +54,7 @@ export default function About() {
                 </dd>
               </div>
               <div className="flex flex-col">
-                <dt className="text-lg font-extrabold leading-7 text-gray-900 dark:text-white">
+                <dt className="text-on-background text-lg leading-7 font-extrabold">
                   <span className="mb-4 block size-10 rounded-lg bg-indigo-600 p-2 text-white">
                     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path
@@ -67,7 +67,7 @@ export default function About() {
                   </span>
                   Privacy First
                 </dt>
-                <dd className="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-600 dark:text-gray-400">
+                <dd className="text-on-surface-variant/80 mt-4 flex flex-auto flex-col text-base leading-7">
                   <p className="flex-auto">
                     Your data is yours. We use peer-to-peer WebRTC technology to
                     ensure your files never sit on our servers unless you want
@@ -76,7 +76,7 @@ export default function About() {
                 </dd>
               </div>
               <div className="flex flex-col">
-                <dt className="text-lg font-extrabold leading-7 text-gray-900 dark:text-white">
+                <dt className="text-on-background text-lg leading-7 font-extrabold">
                   <span className="mb-4 block size-10 rounded-lg bg-purple-600 p-2 text-white">
                     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path
@@ -89,7 +89,7 @@ export default function About() {
                   </span>
                   Community Driven
                 </dt>
-                <dd className="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-600 dark:text-gray-400">
+                <dd className="text-on-surface-variant/80 mt-4 flex flex-auto flex-col text-base leading-7">
                   <p className="flex-auto">
                     SyncStuff is part of the Involvex ecosystem, built with love
                     by developers for developers.
@@ -101,27 +101,27 @@ export default function About() {
         </div>
 
         <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+          <h2 className="text-on-background text-3xl font-bold tracking-tight sm:text-4xl">
             Our Team
           </h2>
-          <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-400">
+          <p className="text-on-surface-variant/80 mt-6 text-lg leading-8">
             The brilliant minds at Involvex dedicated to building the future of
             productivity.
           </p>
-          <div className="mx-auto mt-20 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 bg-gray-200 dark:bg-gray-800 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-1">
+          <div className="bg-surface-variant/30 mx-auto mt-20 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 rounded-2xl p-8 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-1">
             <div className="text-center">
               <a href="https://github.com/involvex" target="_blank">
-                <div className="mx-auto mt-6 size-32 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-200">
+                <div className="bg-surface mx-auto mt-6 size-32 overflow-hidden rounded-full">
                   <img
                     src="https://github.com/involvex.png"
                     alt="Involvex"
                     className="size-full object-cover"
                   />
                 </div>
-                <h3 className="mt-6 text-base font-bold leading-7 tracking-tight text-gray-900 dark:text-white">
+                <h3 className="text-on-background mt-6 text-base leading-7 font-bold tracking-tight">
                   Involvex
                 </h3>
-                <p className="text-sm leading-6 text-gray-600 dark:text-gray-400">
+                <p className="text-on-surface-variant text-sm leading-6">
                   Lead Developer & Founder
                 </p>
               </a>

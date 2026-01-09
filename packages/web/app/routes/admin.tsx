@@ -134,7 +134,7 @@ export default function AdminLayout() {
             </Link>
           </div>
           <nav className="mt-5 space-y-1 px-2">
-            <div className="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+            <div className="px-3 py-2 text-xs font-semibold tracking-wider text-gray-500 uppercase dark:text-gray-400">
               Admin
             </div>
             {navItems.map(item => (
@@ -152,7 +152,7 @@ export default function AdminLayout() {
               </Link>
             ))}
             <div className="mt-8 border-t border-gray-200 pt-4 dark:border-gray-700">
-              <div className="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+              <div className="px-3 py-2 text-xs font-semibold tracking-wider text-gray-500 uppercase dark:text-gray-400">
                 Dashboard
               </div>
               {dashboardNavItems.map(item => (
@@ -176,7 +176,7 @@ export default function AdminLayout() {
         {/* Main Content */}
         <div className="flex flex-1 flex-col pl-64">
           {isLoading && (
-            <div className="fixed left-64 right-0 top-0 z-50">
+            <div className="fixed top-0 right-0 left-64 z-50">
               <div className="h-1 bg-indigo-200 dark:bg-indigo-900">
                 <div
                   className="h-full animate-pulse bg-indigo-600 dark:bg-indigo-400"
@@ -228,13 +228,13 @@ export function ErrorBoundary({ error }: { error: Error }) {
         <div className="mt-6 flex justify-center gap-3">
           <Link
             to="/admin"
-            className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none"
           >
             Go to Admin
           </Link>
           <Link
             to="/dashboard"
-            className="rounded-md bg-gray-200 px-4 py-2 text-sm font-medium text-gray-900 shadow-sm hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
+            className="rounded-md bg-gray-200 px-4 py-2 text-sm font-medium text-gray-900 shadow-sm hover:bg-gray-300 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:outline-none dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
           >
             Back to Dashboard
           </Link>

@@ -105,7 +105,7 @@ export default function DashboardLayout() {
   return (
     <div className="flex min-h-screen bg-gray-50 transition-colors duration-200 dark:bg-gray-900">
       {/* Sidebar for Desktop */}
-      <aside className="hidden border-r border-gray-200 bg-white backdrop-blur-sm dark:border-gray-800 dark:bg-gray-800/50 md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
+      <aside className="hidden border-r border-gray-200 bg-white backdrop-blur-sm md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col dark:border-gray-800 dark:bg-gray-800/50">
         <div className="flex min-h-0 flex-1 flex-col">
           <div className="flex h-16 shrink-0 items-center border-b border-gray-200 px-4 dark:border-gray-800">
             <Link
@@ -202,7 +202,7 @@ export default function DashboardLayout() {
             <div className="flex items-center space-x-4">
               <ThemeToggle />
               {role === "admin" && (
-                <span className="hidden items-center rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-800 dark:bg-purple-900 dark:text-purple-200 sm:inline-flex">
+                <span className="hidden items-center rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-800 sm:inline-flex dark:bg-purple-900 dark:text-purple-200">
                   Admin
                 </span>
               )}
@@ -236,7 +236,7 @@ export default function DashboardLayout() {
             document.getElementById("mobile-sidebar")?.classList.add("hidden")
           }
         ></div>
-        <div className="fixed inset-y-0 left-0 flex w-full max-w-xs flex-col bg-white pb-4 pt-5 dark:bg-gray-800">
+        <div className="fixed inset-y-0 left-0 flex w-full max-w-xs flex-col bg-white pt-5 pb-4 dark:bg-gray-800">
           <div className="flex items-center justify-between px-4">
             <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
               Syncstuff
@@ -326,7 +326,7 @@ export function ErrorBoundary({ error }: { error: Error }) {
         <div className="mt-6 flex justify-center">
           <Link
             to="/dashboard"
-            className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none"
           >
             Go back to Dashboard
           </Link>

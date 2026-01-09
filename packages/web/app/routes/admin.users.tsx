@@ -102,13 +102,13 @@ export default function AdminUsers() {
       <div className="mt-8 flex flex-col">
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-            <div className="overflow-hidden shadow ring-1 ring-black/5 dark:ring-white/10 md:rounded-lg">
+            <div className="overflow-hidden shadow ring-1 ring-black/5 md:rounded-lg dark:ring-white/10">
               <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
                 <thead className="bg-gray-50 dark:bg-gray-800">
                   <tr>
                     <th
                       scope="col"
-                      className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-white sm:pl-6"
+                      className="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-6 dark:text-white"
                     >
                       Username
                     </th>
@@ -138,7 +138,7 @@ export default function AdminUsers() {
                     </th>
                     <th
                       scope="col"
-                      className="relative py-3.5 pl-3 pr-4 sm:pr-6"
+                      className="relative py-3.5 pr-4 pl-3 sm:pr-6"
                     >
                       <span className="sr-only">Edit</span>
                     </th>
@@ -148,26 +148,26 @@ export default function AdminUsers() {
                   {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                   {users.map((user: any) => (
                     <tr key={user.id}>
-                      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-white sm:pl-6">
+                      <td className="py-4 pr-3 pl-4 text-sm font-medium whitespace-nowrap text-gray-900 sm:pl-6 dark:text-white">
                         {user.username}
                       </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-300">
+                      <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-300">
                         {user.email}
                       </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-300">
+                      <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-300">
                         {user.role}
                       </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-300">
+                      <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-300">
                         <span
-                          className={`inline-flex rounded-full px-2 text-xs font-semibold leading-5 ${user.status === "active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}
+                          className={`inline-flex rounded-full px-2 text-xs leading-5 font-semibold ${user.status === "active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}
                         >
                           {user.status}
                         </span>
                       </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-300">
+                      <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 dark:text-gray-300">
                         {new Date(user.created_at).toLocaleDateString()}
                       </td>
-                      <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                      <td className="relative py-4 pr-4 pl-3 text-right text-sm font-medium whitespace-nowrap sm:pr-6">
                         <Form method="post" className="inline-block">
                           <input type="hidden" name="userId" value={user.id} />
                           <button

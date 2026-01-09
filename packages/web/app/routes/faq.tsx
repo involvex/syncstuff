@@ -42,13 +42,13 @@ export default function FAQ() {
   return (
     <>
       <Navigation />
-      <div className="min-h-screen bg-background py-24 dark:bg-gray-950 sm:py-32">
+      <div className="bg-background min-h-screen py-24 sm:py-32 dark:bg-gray-950">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-4xl text-center">
-            <h2 className="text-base font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400">
+            <h2 className="text-base font-bold tracking-widest text-blue-600 uppercase dark:text-blue-400">
               Support
             </h2>
-            <p className="mt-2 text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+            <p className="mt-2 text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl dark:text-white">
               Frequently Asked Questions
             </p>
             <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-400">
@@ -76,7 +76,7 @@ export default function FAQ() {
                       }
                       className="flex w-full items-start justify-between text-left text-gray-900 dark:text-white"
                     >
-                      <span className="text-base font-bold leading-7">
+                      <span className="text-base leading-7 font-bold">
                         {faq.question}
                       </span>
                       <span className="ml-6 flex h-7 items-center">

@@ -254,7 +254,7 @@ export default function DashboardIndex() {
         {/* User Profile Card */}
         <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
           <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50/50 px-6 py-4 dark:border-gray-700 dark:bg-gray-700/30">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+            <h3 className="text-sm font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400">
               Account Overview
             </h3>
             <Link
@@ -282,7 +282,7 @@ export default function DashboardIndex() {
                 {user?.username?.charAt(0).toUpperCase() || "U"}
               </div>
               <div>
-                <h4 className="font-bold leading-none text-gray-900 dark:text-white">
+                <h4 className="leading-none font-bold text-gray-900 dark:text-white">
                   {user?.full_name || user?.username || "Sync Device"}
                 </h4>
                 <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
@@ -293,7 +293,7 @@ export default function DashboardIndex() {
 
             <div className="grid grid-cols-2 gap-4 pt-2">
               <div className="rounded-xl bg-gray-50 p-3 dark:bg-gray-700/50">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+                <p className="text-[10px] font-bold tracking-wider text-gray-400 uppercase dark:text-gray-500">
                   Status
                 </p>
                 <p className="mt-0.5 text-sm font-bold text-emerald-600 dark:text-emerald-400">
@@ -301,10 +301,10 @@ export default function DashboardIndex() {
                 </p>
               </div>
               <div className="rounded-xl bg-gray-50 p-3 dark:bg-gray-700/50">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+                <p className="text-[10px] font-bold tracking-wider text-gray-400 uppercase dark:text-gray-500">
                   Role
                 </p>
-                <p className="mt-0.5 text-sm font-bold capitalize text-blue-600 dark:text-blue-400">
+                <p className="mt-0.5 text-sm font-bold text-blue-600 capitalize dark:text-blue-400">
                   {user?.role || "user"}
                 </p>
               </div>
@@ -313,9 +313,9 @@ export default function DashboardIndex() {
         </div>
 
         {/* Recent Activity Card */}
-        <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800 lg:col-span-2">
+        <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm lg:col-span-2 dark:border-gray-700 dark:bg-gray-800">
           <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50/50 px-6 py-4 dark:border-gray-700 dark:bg-gray-700/30">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+            <h3 className="text-sm font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400">
               Recent Activity Triggers
             </h3>
             <button className="text-xs font-bold text-blue-600 hover:underline dark:text-blue-400">
@@ -376,7 +376,7 @@ export default function DashboardIndex() {
 
       {/* Quick Actions */}
       <div>
-        <h3 className="mb-4 px-1 text-sm font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+        <h3 className="mb-4 px-1 text-sm font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400">
           Instant Operations
         </h3>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">

@@ -53,16 +53,16 @@ export default function Contact() {
       <div className="min-h-screen bg-white transition-colors dark:bg-gray-950">
         <div className="relative overflow-hidden py-24 sm:py-32">
           {/* Background Gradients */}
-          <div className="absolute left-[5%] top-[-10%] -z-10 size-2/5 rounded-full bg-blue-500/10 blur-[120px] dark:bg-blue-600/5"></div>
-          <div className="absolute bottom-[-10%] right-[5%] -z-10 size-[30%] rounded-full bg-indigo-500/10 blur-[100px] dark:bg-indigo-600/5"></div>
+          <div className="absolute top-[-10%] left-[5%] -z-10 size-2/5 rounded-full bg-blue-500/10 blur-[120px] dark:bg-blue-600/5"></div>
+          <div className="absolute right-[5%] bottom-[-10%] -z-10 size-[30%] rounded-full bg-indigo-500/10 blur-[100px] dark:bg-indigo-600/5"></div>
 
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto max-w-2xl text-center">
-              <h2 className="text-sm font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400">
+              <h2 className="text-sm font-bold tracking-widest text-blue-600 uppercase dark:text-blue-400">
                 Contact Us
               </h2>
               /* eslint-disable tailwindcss/no-custom-classname */
-              <p className="mt-2 text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-6xl">
+              <p className="mt-2 text-4xl font-extrabold tracking-tight text-gray-900 sm:text-6xl dark:text-white">
                 Get in touch
               </p>
               <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-400">
@@ -127,7 +127,7 @@ export default function Contact() {
                       <div className="space-y-2">
                         <label
                           htmlFor="name"
-                          className="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400"
+                          className="text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400"
                         >
                           Name
                         </label>
@@ -143,7 +143,7 @@ export default function Contact() {
                       <div className="space-y-2">
                         <label
                           htmlFor="email"
-                          className="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400"
+                          className="text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400"
                         >
                           Email
                         </label>
@@ -161,7 +161,7 @@ export default function Contact() {
                     <div className="space-y-2">
                       <label
                         htmlFor="subject"
-                        className="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400"
+                        className="text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400"
                       >
                         Subject
                       </label>
@@ -182,7 +182,7 @@ export default function Contact() {
                     <div className="space-y-2">
                       <label
                         htmlFor="message"
-                        className="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400"
+                        className="text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400"
                       >
                         Message
                       </label>

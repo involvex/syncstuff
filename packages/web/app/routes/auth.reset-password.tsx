@@ -201,11 +201,11 @@ export default function ResetPassword() {
   }
 
   return (
-    <div className="min-h-screen bg-background transition-colors dark:bg-gray-950">
+    <div className="bg-background min-h-screen transition-colors dark:bg-gray-950">
       <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-12 sm:px-6 lg:px-8">
         {/* Background Gradients */}
-        <div className="absolute left-[20%] top-[-10%] -z-10 size-[500px] rounded-full bg-blue-500/10 blur-[120px] dark:bg-blue-600/5"></div>
-        <div className="absolute bottom-[-10%] right-[20%] -z-10 size-[500px] rounded-full bg-indigo-500/10 blur-[100px] dark:bg-indigo-600/5"></div>
+        <div className="absolute top-[-10%] left-[20%] -z-10 size-[500px] rounded-full bg-blue-500/10 blur-[120px] dark:bg-blue-600/5"></div>
+        <div className="absolute right-[20%] bottom-[-10%] -z-10 size-[500px] rounded-full bg-indigo-500/10 blur-[100px] dark:bg-indigo-600/5"></div>
 
         <div className="w-full max-w-md space-y-8 rounded-3xl border border-gray-100 bg-white p-8 shadow-xl shadow-gray-200/50 dark:border-gray-800 dark:bg-gray-900 dark:shadow-none">
           <div>
@@ -292,7 +292,7 @@ export default function ResetPassword() {
               <div>
                 <label
                   htmlFor="password"
-                  className="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400"
+                  className="text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400"
                 >
                   New Password
                 </label>
@@ -313,7 +313,7 @@ export default function ResetPassword() {
               <div>
                 <label
                   htmlFor="confirm_password"
-                  className="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400"
+                  className="text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400"
                 >
                   Confirm Password
                 </label>
@@ -336,7 +336,7 @@ export default function ResetPassword() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="flex w-full justify-center rounded-xl bg-indigo-600 px-4 py-3 text-sm font-bold text-white shadow-lg shadow-indigo-500/20 transition-all hover:scale-[1.02] hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-500/20 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-indigo-500 dark:hover:bg-indigo-600"
+                className="flex w-full justify-center rounded-xl bg-indigo-600 px-4 py-3 text-sm font-bold text-white shadow-lg shadow-indigo-500/20 transition-all hover:scale-[1.02] hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-500/20 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:bg-indigo-500 dark:hover:bg-indigo-600"
               >
                 {isSubmitting ? (
                   <span className="flex items-center">

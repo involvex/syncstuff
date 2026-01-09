@@ -78,14 +78,14 @@ export default function Campaigns() {
   return (
     <>
       <Navigation />
-      <div className="min-h-screen bg-background transition-colors dark:bg-gray-950">
+      <div className="bg-background min-h-screen transition-colors dark:bg-gray-950">
         <div className="relative isolate overflow-hidden py-24 sm:py-32">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto max-w-2xl text-center">
-              <h2 className="text-base font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400">
+              <h2 className="text-base font-bold tracking-widest text-blue-600 uppercase dark:text-blue-400">
                 Community & Rewards
               </h2>
-              <p className="mt-2 text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-6xl">
+              <p className="mt-2 text-4xl font-extrabold tracking-tight text-gray-900 sm:text-6xl dark:text-white">
                 Active Campaigns
               </p>
               <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-400">
@@ -107,7 +107,7 @@ export default function Campaigns() {
                       >
                         {campaign.icon}
                       </div>
-                      <span className="inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20 dark:bg-green-900/30 dark:text-green-400 dark:ring-green-500/30">
+                      <span className="inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset dark:bg-green-900/30 dark:text-green-400 dark:ring-green-500/30">
                         {campaign.status}
                       </span>
                     </div>
@@ -121,7 +121,7 @@ export default function Campaigns() {
                   <div className="mt-8">
                     <Link
                       to={campaign.link}
-                      className="text-sm font-bold leading-6 text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
+                      className="text-sm leading-6 font-bold text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
                     >
                       Learn more <span aria-hidden="true">→</span>
                     </Link>
