@@ -35,6 +35,7 @@
     "doctor": "node scripts/doctor.js",
     "check-secrets": "node scripts/check-secrets.js",
     "build:ui": "bun run --cwd packages/ui build",
+    "build:shared": "bun run --cwd packages/shared build",
     "build:app": "bun run --cwd apps/mobileapp build",
     "build:web": "bun run --cwd apps/web build",
     "build:desktop": "bun run --cwd apps/desktop build",

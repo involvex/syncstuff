@@ -17,6 +17,10 @@
       "outputs": ["dist/**"],
       "inputs": ["src/**", "tsconfig.json"]
     },
+    "build:shared": {
+      "outputs": ["dist/**"],
+      "inputs": ["src/**", "tsconfig.json"]
+    },
     "dev": {
       "inputs": [
         "$TURBO_DEFAULT$",
