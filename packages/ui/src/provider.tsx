@@ -1,0 +1,50 @@
+import { TamaguiProvider, TamaguiProviderProps, Theme } from "tamagui";
+import { tamaguiConfig } from "./tamagui.config";
+import React, { useState, createContext, useContext, useEffect } from "react";
+
+type ThemeContextType = {
+  theme: "light" | "dark";
+  toggleTheme: () => void;
+  setTheme: (theme: "light" | "dark") => void;
+};
+
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+
+export const useAppTheme = () => {
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error("useAppTheme must be used within a ThemeProvider");
+  }
+  return context;
+};
+
+export function Provider({
+  children,
+  ...rest
+}: Omit<TamaguiProviderProps, "config">) {
+  const [theme, setThemeState] = useState<"light" | "dark">("light");
+
+  useEffect(() => {
+    // Check system preference on mount
+    if (
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+    ) {
+      setThemeState("dark");
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    setThemeState((prev) => (prev === "light" ? "dark" : "light"));
+  };
+
+  const setTheme = (val: "light" | "dark") => setThemeState(val);
+
+  return (
+    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
+      <TamaguiProvider config={tamaguiConfig} defaultTheme={theme} {...rest}>
+        <Theme name={theme}>{children}</Theme>
+      </TamaguiProvider>
+    </ThemeContext.Provider>
+  );
+}

@@ -34,7 +34,7 @@ function main() {
     ELECTRON_DEBUG: "true",
   };
 
-  const appPath = path.join(__dirname, "..", "packages", "app");
+  const appPath = path.join(__dirname, "..", "apps", "mobileapp");
   const electronProcess = spawn("bun", ["run", "electron:dev"], {
     cwd: appPath,
     env,

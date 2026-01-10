@@ -68,15 +68,15 @@ const versionType =
 const appPackagePath = path.join(
   __dirname,
   "..",
-  "packages",
-  "app",
+  "apps",
+  "mobileapp",
   "package.json",
 );
 const buildGradlePath = path.join(
   __dirname,
   "..",
-  "packages",
-  "app",
+  "apps",
+  "mobileapp",
   "android",
   "app",
   "build.gradle",
@@ -84,16 +84,16 @@ const buildGradlePath = path.join(
 const electronPackagePath = path.join(
   __dirname,
   "..",
-  "packages",
-  "app",
+  "apps",
+  "mobileapp",
   "electron",
   "package.json",
 );
 const androidManifestPath = path.join(
   __dirname,
   "..",
-  "packages",
-  "app",
+  "apps",
+  "mobileapp",
   "android",
   "app",
   "src",
@@ -154,7 +154,7 @@ function runTypecheck() {
   info("Running typecheck...");
 
   try {
-    exec("cd packages/app && bun run typecheck");
+    exec("cd apps/mobileapp && bun run typecheck");
     success("Typecheck passed");
   } catch (err) {
     error("Typecheck failed. Fix type errors before bumping version.");
@@ -229,7 +229,7 @@ function rollback() {
 
   try {
     // Reset any uncommitted changes to package.json
-    exec("git checkout packages/app/package.json", { ignoreError: true });
+    exec("git checkout apps/mobileapp/package.json", { ignoreError: true });
 
     // Remove any tags created
     const tags = exec("git tag --points-at HEAD", {
@@ -331,24 +331,39 @@ function main() {
     );
     success(`Updated package.json to ${newVersion}`);
 
-    // Step 4b: Update build.gradle versionName
+    // Step 4b: Update build.gradle versionName and versionCode
     if (fs.existsSync(buildGradlePath)) {
-      info("Updating build.gradle versionName...");
+      info("Updating build.gradle version...");
       let buildGradleContent = fs.readFileSync(buildGradlePath, "utf-8");
 
       // Update versionName in build.gradle
-      // Pattern: versionName "0.0.1" or versionName = "0.0.1"
       const versionNameRegex = /versionName\s+(?:=)?\s*["']([^"']+)["']/;
       if (versionNameRegex.test(buildGradleContent)) {
         buildGradleContent = buildGradleContent.replace(
           versionNameRegex,
           `versionName "${newVersion}"`,
         );
-        fs.writeFileSync(buildGradlePath, buildGradleContent);
         success(`Updated build.gradle versionName to ${newVersion}`);
       } else {
-        warning("Could not find versionName in build.gradle, skipping...");
+        warning("Could not find versionName in build.gradle");
       }
+
+      // Update versionCode in build.gradle (increment it)
+      const versionCodeRegex = /versionCode\s+(\d+)/;
+      if (versionCodeRegex.test(buildGradleContent)) {
+        const match = buildGradleContent.match(versionCodeRegex);
+        const currentVersionCode = parseInt(match[1], 10);
+        const newVersionCode = currentVersionCode + 1;
+        buildGradleContent = buildGradleContent.replace(
+          versionCodeRegex,
+          `versionCode ${newVersionCode}`,
+        );
+        success(`Updated build.gradle versionCode to ${newVersionCode}`);
+      } else {
+        warning("Could not find versionCode in build.gradle");
+      }
+
+      fs.writeFileSync(buildGradlePath, buildGradleContent);
     } else {
       warning(`build.gradle not found at ${buildGradlePath}, skipping...`);
     }
@@ -474,7 +489,7 @@ function main() {
     // Step 9: Build APK
     log("\n📱 Building Android APK...", "cyan");
     try {
-      exec("cd packages/app && ionic cap sync android", { silent: false });
+      exec("cd apps/mobileapp && ionic cap sync android", { silent: false });
 
       // Use platform-specific gradlew command
       const gradlewCmd =
@@ -482,7 +497,7 @@ function main() {
           ? ".\\gradlew.bat assembleDebug"
           : "./gradlew assembleDebug";
 
-      exec(`cd packages/app/android && ${gradlewCmd}`, {
+      exec(`cd apps/mobileapp/android && ${gradlewCmd}`, {
         silent: false,
       });
       success("Android APK built successfully");
@@ -490,8 +505,8 @@ function main() {
       // Copy APK to web downloads folder
       const apkSource = path.join(
         rootDir,
-        "packages",
-        "app",
+        "apps",
+        "mobileapp",
         "android",
         "app",
         "build",
@@ -502,7 +517,7 @@ function main() {
       );
       const apkDest = path.join(
         rootDir,
-        "packages",
+        "apps",
         "web",
         "public",
         "downloads",
@@ -515,14 +530,14 @@ function main() {
 
         log("\n🌐 Deploy to web?", "cyan");
         log("   To deploy the new APK to the web app, run:", "cyan");
-        log(`   cd packages/web && bun run deploy\n`, "bright");
+        log(`   cd apps/web && bun run deploy\n`, "bright");
       } else {
         warning("APK not found at expected location");
       }
     } catch (buildErr) {
       warning(`APK build failed: ${buildErr.message}`);
       log(
-        "   You can build manually with: cd packages/app && ionic cap sync android && cd android && ./gradlew.bat assembleDebug",
+        "   You can build manually with: cd apps/mobileapp && ionic cap sync android && cd android && ./gradlew.bat assembleDebug",
         "yellow",
       );
     }

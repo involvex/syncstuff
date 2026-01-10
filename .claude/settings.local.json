@@ -91,9 +91,33 @@
       "Bash(npm run typecheck:*)",
       "Bash(tree:*)",
       "Bash(npx wrangler pages deploy:*)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(cd:*)",
+      "Bash(npx tsc:*)",
+      "Bash(timeout 120 bun install:*)",
+      "Bash(bun pm:*)",
+      "Bash(timeout 60 bun run build:*)",
+      "Bash(timeout 120 bun run build:*)",
+      "Bash(timeout 30 bun run dev:*)",
+      "Bash(remix vite:build:*)",
+      "Bash(python -m json.tool:*)",
+      "Bash(timeout 15 bun run dev:*)",
+      "Bash(tasklist:*)",
+      "Bash(robocopy:*)",
+      "Bash(robocopy packages\\\\app apps\\\\mobileapp /E /MOVE /NFL /NDL /NJH /NJS)",
+      "Bash(pwsh:*)",
+      "Bash(timeout 60 bun install:*)",
+      "Bash(timeout 180 bun install:*)",
+      "Bash(./node_modules/.bin/turbo:*)",
+      "Bash(grep:*)",
+      "Bash(timeout 90 bun install:*)",
+      "Bash(npx remix vite:build:*)"
     ]
   },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "cloudflare-builds"
+  ],
   "hooks": {
     "UserPromptSubmit": [
       {
@@ -156,5 +180,8 @@
         ]
       }
     ]
+  },
+  "enabledPlugins": {
+    "claude-agents-offload@involvex-claude-marketplace": false
   }
 }

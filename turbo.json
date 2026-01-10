@@ -1,0 +1,50 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["**/.env*"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".env.production.local",
+        ".env.local",
+        ".env.production",
+        ".env"
+      ],
+      "outputs": ["dist/**", ".next/**", "build/**", "android/app/build/**"]
+    },
+    "build:ui": {
+      "outputs": ["dist/**"],
+      "inputs": ["src/**", "tsconfig.json"]
+    },
+    "dev": {
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".env.development.local",
+        ".env.local",
+        ".env.development",
+        ".env"
+      ],
+      "persistent": true,
+      "cache": false
+    },
+    "lint": {
+      "inputs": ["src/**", "*.config.*", "eslint.config.*"]
+    },
+    "lint:fix": {
+      "inputs": ["src/**", "*.config.*", "eslint.config.*"],
+      "cache": false
+    },
+    "format": {
+      "inputs": ["src/**", "*.config.*"],
+      "cache": false
+    },
+    "typecheck": {
+      "inputs": ["src/**", "tsconfig.json"],
+      "outputs": []
+    },
+    "clean": {
+      "cache": false
+    }
+  }
+}

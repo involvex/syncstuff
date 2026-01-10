@@ -1,0 +1,56 @@
+{
+  "name": "@syncstuff/ui",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./tamagui.config": {
+      "types": "./dist/tamagui.config.d.ts",
+      "default": "./dist/tamagui.config.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc && node copy-css.mjs",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@tamagui/core": "^1.144.1",
+    "@tamagui/config": "^1.144.1",
+    "tamagui": "^1.144.1",
+    "@tamagui/lucide-icons": "^1.144.1",
+    "@tamagui/themes": "^1.144.1",
+    "lucide-react": "^0.479.0"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-native-svg": "^15.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react-native-svg": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.2",
+    "@eslint/json": "0.14.0",
+    "@tamagui/cli": "1.125.7",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "eslint": "9.39.2",
+    "glob": "13.0.0",
+    "globals": "17.0.0",
+    "prettier": "3.7.4",
+    "tamagui-loader": "^1.125.7",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "8.52.0"
+  }
+}

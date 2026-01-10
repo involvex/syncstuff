@@ -1,0 +1,111 @@
+:root ._dsp-flex {
+  display: flex;
+}
+:root ._fb-auto {
+  flex-basis: auto;
+}
+:root ._bxs-border-box {
+  box-sizing: border-box;
+}
+:root ._mih-0px {
+  min-height: 0px;
+}
+:root ._miw-0px {
+  min-width: 0px;
+}
+:root ._fs-0 {
+  flex-shrink: 0;
+}
+:root ._fd-row {
+  flex-direction: row;
+}
+:root ._h-64px {
+  height: 64px;
+}
+:root ._ai-center {
+  align-items: center;
+}
+:root ._jc-space-betwe3241 {
+  justify-content: space-between;
+}
+:root ._pr-t-space-4 {
+  padding-right: var(--t-space-4);
+}
+:root ._pl-t-space-4 {
+  padding-left: var(--t-space-4);
+}
+:root ._bg-background {
+  background-color: var(--background);
+}
+:root ._bbw-1px {
+  border-bottom-width: 1px;
+}
+:root ._btc-borderColor {
+  border-top-color: var(--borderColor);
+}
+:root ._brc-borderColor {
+  border-right-color: var(--borderColor);
+}
+:root ._bbc-borderColor {
+  border-bottom-color: var(--borderColor);
+}
+:root ._blc-borderColor {
+  border-left-color: var(--borderColor);
+}
+:root ._pos-absolute {
+  position: absolute;
+}
+:root ._t-0px {
+  top: 0px;
+}
+:root ._l-0px {
+  left: 0px;
+}
+:root ._r-0px {
+  right: 0px;
+}
+:root ._zi-100 {
+  z-index: 100;
+}
+:root ._bbs-solid {
+  border-bottom-style: solid;
+}
+:root ._ff- {
+  font-family:;
+}
+:root ._dsp-inline {
+  display: inline;
+}
+:root ._ww-break-word {
+  word-wrap: break-word;
+}
+:root ._ws-pre-wrap {
+  white-space: pre-wrap;
+}
+:root ._mt-0px {
+  margin-top: 0px;
+}
+:root ._mr-0px {
+  margin-right: 0px;
+}
+:root ._mb-0px {
+  margin-bottom: 0px;
+}
+:root ._ml-0px {
+  margin-left: 0px;
+}
+:root ._col-color {
+  color: var(--color);
+}
+:root ._fos- {
+  font-size:;
+}
+:root ._fow-bold {
+  font-weight: bold;
+}
+:root ._fow-medium {
+  font-weight: medium;
+}
+:root ._cur-pointer {
+  cursor: pointer;
+}

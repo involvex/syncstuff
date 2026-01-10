@@ -42,6 +42,7 @@ syncstuff-monorepo/
 │   ├── app/          # Mobile application (Ionic + React)
 │   ├── app/electron/ # Electron application (Bun)
 │   ├── web/          # Web dashboard (Remix.js)
+│   ├── ui/           # Shared UI component library (Tamagui)
 │   ├── api/          # Backend API (Cloudflare Workers)
 │   ├── database/     # Database schema and migrations
 │   └── shared/       # Shared types and utilities
@@ -53,9 +54,9 @@ syncstuff-monorepo/
 
 ### Technology Stack
 
-- **Frontend**: React 18, Ionic 7, Tailwind CSS
-- **Mobile**: Capacitor 6, WebRTC, mDNS
-- **Backend**: Cloudflare Workers, D1 (SQLite)
+- **Frontend**: React 18, Ionic 8, Tailwind CSS, Tamagui
+- **Mobile**: Capacitor 8, WebRTC, mDNS
+- **Backend**: Cloudflare Workers, D1 (SQLite), R2 (Storage)
 - **Database**: Cloudflare D1 with migrations
 - **Build Tools**: Bun, Vite, Wrangler
 - **Type Safety**: TypeScript with strict mode
@@ -114,6 +115,7 @@ bun install
 bun run build:app    # Mobile app
 bun run build:web    # Web application
 bun run build:api    # Backend API
+bun run build:ui     # UI Library
 
 # Development commands
 bun run web          # Web dev server
@@ -125,7 +127,7 @@ bun run android      # Mobile app with live reload
 
 ```bash
 # Lint and format code
-bun run lint         # Run ESLint
+bun run lint         # Run ESLint for all packages
 bun run lint:fix     # Auto-fix linting issues
 bun run format       # Format with Prettier
 bun run typecheck    # TypeScript type checking
@@ -226,12 +228,13 @@ Create `.env` files for each package:
 GITHUB_OAUTH_CLIENT_ID=your-client-id
 GITHUB_OAUTH_CLIENT_SECRET=your-client-secret
 SESSION_SECRET=your-session-secret
+JWT_SECRET=your-jwt-secret
 ```
 
 **Web Configuration** (`packages/web/.env`):
 
 ```bash
-API_URL=https://syncstuff-web.involvex.workers.dev
+API_URL=https://syncstuff-api.involvex.workers.dev
 GITHUB_OAUTH_CALLBACK=https://syncstuff-web.involvex.workers.dev/auth/callback?provider=github
 ```
 
@@ -275,14 +278,16 @@ bun run db:studio
 - [x] Web landing page and dashboard
 - [x] Database schema and migrations
 - [x] Authentication flow with OAuth2
+- [x] Shared UI Library (@syncstuff/ui)
+- [x] Admin dashboard completion
+- [x] R2 Storage integration
 
 ### 🔄 In Progress
 
-- [ ] Full API implementation with user management
-- [ ] Admin dashboard completion
 - [ ] Background service support
 - [ ] Email notification system
 - [ ] Desktop application (Electron/Tauri)
+- [ ] Integration Tests for P2P
 
 ### ⚠️ Planned
 
@@ -327,6 +332,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Ionic Team** for the excellent mobile framework
 - **Cloudflare** for Workers and D1 database
 - **Simple Peer** for WebRTC implementation
+- **Tamagui** for the shared UI components
 - **All contributors** who have helped shape this project
 
 ---

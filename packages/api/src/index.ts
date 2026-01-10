@@ -13,6 +13,7 @@ import {
 
 export interface Env {
   syncstuff_db: D1Database;
+  syncstuff_storage: R2Bucket;
   JWT_SECRET?: string;
 }
 
@@ -602,6 +603,118 @@ export default {
             );
           }
           return handleDatabaseError(error, path, request.method);
+        }
+      }
+
+      // USER ACCOUNT DELETE
+      if (path === "/api/user/account" && request.method === "DELETE") {
+        const auth = request.headers.get("Authorization");
+        if (!auth?.startsWith("Bearer "))
+          return new Response(
+            JSON.stringify({ success: false, error: "Missing token" }),
+            { status: 401, headers },
+          );
+
+        const token = auth.split(" ")[1];
+        const payload = await verifyJWT(token, secret);
+        if (!payload || !payload.sub)
+          return new Response(
+            JSON.stringify({ success: false, error: "Invalid token" }),
+            { status: 401, headers },
+          );
+
+        try {
+          const userId = payload.sub as string;
+          await env.syncstuff_db
+            .prepare("DELETE FROM users WHERE id = ?")
+            .bind(userId)
+            .run();
+
+          return new Response(JSON.stringify({ success: true }), { headers });
+        } catch (__dbError) {
+          return handleDatabaseError(__dbError, path, request.method);
+        }
+      }
+
+      // ADMIN - GET all users
+      if (path === "/api/admin/users" && request.method === "GET") {
+        const auth = request.headers.get("Authorization");
+        if (!auth?.startsWith("Bearer "))
+          return new Response(
+            JSON.stringify({ success: false, error: "Missing token" }),
+            { status: 401, headers },
+          );
+
+        const token = auth.split(" ")[1];
+        const payload = await verifyJWT(token, secret);
+        if (!payload || !payload.sub || payload.role !== "admin")
+          return new Response(
+            JSON.stringify({ success: false, error: "Forbidden" }),
+            { status: 403, headers },
+          );
+
+        try {
+          const result = await env.syncstuff_db
+            .prepare(
+              "SELECT id, email, username, full_name, role, status, created_at, updated_at FROM users ORDER BY created_at DESC",
+            )
+            .all<D1User>();
+
+          const users = (result.results || []).map(mapUser);
+          return new Response(
+            JSON.stringify({ success: true, data: users }),
+            { headers },
+          );
+        } catch (__dbError) {
+          return handleDatabaseError(__dbError, path, request.method);
+        }
+      }
+
+      // ADMIN - POST toggle user status
+      if (path.startsWith("/api/admin/user/") && path.endsWith("/status") && request.method === "POST") {
+        const auth = request.headers.get("Authorization");
+        if (!auth?.startsWith("Bearer "))
+          return new Response(
+            JSON.stringify({ success: false, error: "Missing token" }),
+            { status: 401, headers },
+          );
+
+        const token = auth.split(" ")[1];
+        const payload = await verifyJWT(token, secret);
+        if (!payload || !payload.sub || payload.role !== "admin")
+          return new Response(
+            JSON.stringify({ success: false, error: "Forbidden" }),
+            { status: 403, headers },
+          );
+
+        const parts = path.split("/");
+        const userId = parts[parts.length - 2];
+
+        try {
+          const user = await env.syncstuff_db
+            .prepare("SELECT status FROM users WHERE id = ?")
+            .bind(userId)
+            .first<{ status: string }>();
+
+          if (!user) {
+            return new Response(
+              JSON.stringify({ success: false, error: "User not found" }),
+              { status: 404, headers },
+            );
+          }
+
+          const newStatus = user.status === "active" ? "suspended" : "active";
+          await env.syncstuff_db
+            .prepare("UPDATE users SET status = ?, updated_at = ? WHERE id = ?")
+            .bind(newStatus, Date.now(), userId)
+            .run();
+
+          return new Response(
+            JSON.stringify({ success: true, data: { status: newStatus } }),
+            { headers },
+          );
+        } catch (__dbError) {
+          return handleDatabaseError(__dbError, path, request.method);
         }
       }
 

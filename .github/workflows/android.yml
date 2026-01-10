@@ -38,15 +38,16 @@ jobs:
 
       - name: Install dependencies with Bun
         run: bun install
-        working-directory: packages/app
+
+      - name: Build UI Package
+        run: cd packages/ui && bun run build
 
       - name: Build Web Assets
-        run: bun run build
-        working-directory: packages/app
+        run: bun run build:app
 
       - name: Sync Capacitor Android
         run: bun x cap sync android
-        working-directory: packages/app
+        working-directory: apps/mobileapp
 
       - name: Accept Android SDK licenses
         run: |
@@ -60,11 +61,11 @@ jobs:
           fi
 
       - name: Grant execute permission for gradlew
-        working-directory: packages/app/android
+        working-directory: apps/mobileapp/android
         run: chmod +x gradlew
 
       - name: Build debug APK (no keystore required)
-        working-directory: packages/app/android
+        working-directory: apps/mobileapp/android
         run: ./gradlew assembleDebug --no-daemon --stacktrace --info
 
       - name: Get version
@@ -77,13 +78,13 @@ jobs:
           fi
 
       - name: Prepare APK for Release
-        run: cp packages/app/android/app/build/outputs/apk/debug/app-debug.apk packages/app/android/app/build/outputs/apk/debug/syncstuff-${{ steps.version.outputs.VERSION }}-debug.apk
+        run: cp apps/mobileapp/android/app/build/outputs/apk/debug/app-debug.apk apps/mobileapp/android/app/build/outputs/apk/debug/syncstuff-${{ steps.version.outputs.VERSION }}-debug.apk
 
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
         with:
           name: syncstuff-${{ steps.version.outputs.VERSION }}-debug
-          path: packages/app/android/app/build/outputs/apk/debug/syncstuff-${{ steps.version.outputs.VERSION }}-debug.apk
+          path: apps/mobileapp/android/app/build/outputs/apk/debug/syncstuff-${{ steps.version.outputs.VERSION }}-debug.apk
 
       - name: Create GitHub Release (Draft)
         if: startsWith(github.ref, 'refs/tags/')
@@ -93,6 +94,6 @@ jobs:
           generate_release_notes: true
           name: Release ${{ steps.version.outputs.VERSION }}
           files: |
-            packages/app/android/app/build/outputs/apk/debug/syncstuff-${{ steps.version.outputs.VERSION }}-debug.apk
+            apps/mobileapp/android/app/build/outputs/apk/debug/syncstuff-${{ steps.version.outputs.VERSION }}-debug.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -34,7 +34,7 @@ function main() {
     VITE_VERBOSE_LOGGING: verbose ? "true" : "false",
   };
 
-  const webPath = path.join(__dirname, "..", "packages", "web");
+  const webPath = path.join(__dirname, "..", "apps", "web");
   const devProcess = spawn("bun", ["run", "dev"], {
     cwd: webPath,
     env,

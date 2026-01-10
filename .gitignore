@@ -35,40 +35,73 @@ yarn-error.log*
 
 Warp.md
 
+# Legacy package paths (for backwards compatibility during migration)
 packages/app/node_modules
 packages/web/node_modules
 packages/api/node_modules
-packages/app/node_modules
 packages/shared/node_modules
 packages/database/node_modules
+packages/ui/node_modules
+packages/cli/node_modules
 
+# New apps directory structure
+apps/*/node_modules
+apps/*/.env
+apps/*/.env.*
+apps/*/build
+apps/*/dist
+
+# Specific app directories
+apps/mobileapp/android/build
+apps/mobileapp/android/app/build
+apps/mobileapp/android/.gradle
+apps/mobileapp/electron/node_modules
+apps/mobileapp/electron/dist
+apps/desktop/node_modules
+apps/desktop/dist
+
+# Sensitive files
+apps/mobileapp/google_drive_client_secret.json
+**/google_drive_client_secret.json
+**/*_client_secret.json
+**/*.pem
+**/*.p12
+**/*.key
+
+# Environment files
 packages/app/.env
 packages/web/.env
 packages/web/.dev.vars
+apps/web/.env
+apps/web/.dev.vars
+apps/mobileapp/.env
 
 # Wrangler local development
 .wrangler/
 **/.wrangler/
+**/.dev.vars
 # Note: wrangler.toml files are tracked (they contain non-sensitive config)
 # Only .wrangler/ directory (local dev cache) is ignored
 
+# Legacy paths (for backwards compatibility)
 packages/app/build
 packages/app/dist
-
 packages/app/Warp.md
-
 packages/app/android/build
 packages/app/android/app/build
 packages/app/android/.gradle
-
-packages/app/google_drive_client_secret.json
-# wrangler.toml files are tracked - they contain non-sensitive configuration
-
 packages/app/electron/node_modules
 packages/app/electron/dist
-
 packages/cli/node_modules
 packages/cli/dist
+packages/ui/node_modules
+packages/ui/dist
 
 .npmrc
 packages/cli/.npmrc
+apps/desktop/.npmrc
+
+.mcp.json
+
+# Turborepo
+.turbo
