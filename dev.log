@@ -1,0 +1,6 @@
+
+> @syncstuff/web@0.0.1 dev D:\repos\ionic\syncstuff\apps\web
+> cross-env NODE_OPTIONS=--max-old-space-size=8192 remix vite:dev
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3030[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.178.69:[1m3030[22m/[39m

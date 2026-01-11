@@ -18,10 +18,11 @@
  *   bun run app:version:patch --push    # Bump and push to remote
  *   bun run app:version:patch --dry-run # Preview without executing
  */
-
 const fs = require("fs");
 const path = require("path");
-const { execSync } = require("child_process");
+const {
+  execSync
+} = require("child_process");
 
 // ANSI color codes for terminal output
 const colors = {
@@ -31,26 +32,21 @@ const colors = {
   green: "\x1b[32m",
   yellow: "\x1b[33m",
   blue: "\x1b[34m",
-  cyan: "\x1b[36m",
+  cyan: "\x1b[36m"
 };
-
 function log(message, color = "reset") {
   console.log(`${colors[color]}${message}${colors.reset}`);
 }
-
 function error(message) {
   log(`❌ Error: ${message}`, "red");
   process.exit(1);
 }
-
 function success(message) {
   log(`✅ ${message}`, "green");
 }
-
 function info(message) {
   log(`ℹ️  ${message}`, "cyan");
 }
-
 function warning(message) {
   log(`⚠️  ${message}`, "yellow");
 }
@@ -59,47 +55,13 @@ function warning(message) {
 const args = process.argv.slice(2);
 const isDryRun = args.includes("--dry-run");
 const shouldPush = args.includes("--push");
-const versionType =
-  args
-    .find(arg => ["--major", "--minor", "--patch"].includes(arg))
-    ?.replace("--", "") || "patch";
+const versionType = args.find(arg => ["--major", "--minor", "--patch"].includes(arg))?.replace("--", "") || "patch";
 
 // Paths
-const appPackagePath = path.join(
-  __dirname,
-  "..",
-  "apps",
-  "mobileapp",
-  "package.json",
-);
-const buildGradlePath = path.join(
-  __dirname,
-  "..",
-  "apps",
-  "mobileapp",
-  "android",
-  "app",
-  "build.gradle",
-);
-const electronPackagePath = path.join(
-  __dirname,
-  "..",
-  "apps",
-  "mobileapp",
-  "electron",
-  "package.json",
-);
-const androidManifestPath = path.join(
-  __dirname,
-  "..",
-  "apps",
-  "mobileapp",
-  "android",
-  "app",
-  "src",
-  "main",
-  "AndroidManifest.xml",
-);
+const appPackagePath = path.join(__dirname, "..", "apps", "mobileapp", "package.json");
+const buildGradlePath = path.join(__dirname, "..", "apps", "mobileapp", "android", "app", "build.gradle");
+const electronPackagePath = path.join(__dirname, "..", "apps", "mobileapp", "electron", "package.json");
+const androidManifestPath = path.join(__dirname, "..", "apps", "mobileapp", "android", "app", "src", "main", "AndroidManifest.xml");
 const rootDir = path.join(__dirname, "..");
 
 /**
@@ -111,7 +73,7 @@ function exec(command, options = {}) {
       cwd: rootDir,
       encoding: "utf-8",
       stdio: options.silent ? "pipe" : "inherit",
-      ...options,
+      ...options
     });
     return result ? result.trim() : "";
   } catch (err) {
@@ -127,16 +89,12 @@ function exec(command, options = {}) {
  */
 function checkGitStatus() {
   info("Checking git working directory...");
-
-  const status = exec("git status --porcelain", { silent: true });
-
+  const status = exec("git status --porcelain", {
+    silent: true
+  });
   if (status) {
-    error(
-      "Git working directory is not clean. Commit or stash your changes first.\n\nModified files:\n" +
-        status,
-    );
+    error("Git working directory is not clean. Commit or stash your changes first.\n\nModified files:\n" + status);
   }
-
   success("Git working directory is clean");
 }
 
@@ -144,7 +102,9 @@ function checkGitStatus() {
  * Get current git branch
  */
 function getCurrentBranch() {
-  return exec("git branch --show-current", { silent: true });
+  return exec("git branch --show-current", {
+    silent: true
+  });
 }
 
 /**
@@ -152,7 +112,6 @@ function getCurrentBranch() {
  */
 function runTypecheck() {
   info("Running typecheck...");
-
   try {
     exec("cd apps/mobileapp && bun run typecheck");
     success("Typecheck passed");
@@ -166,7 +125,6 @@ function runTypecheck() {
  */
 function calculateNewVersion(currentVersion, bumpType) {
   const [major, minor, patch] = currentVersion.split(".").map(Number);
-
   switch (bumpType) {
     case "major":
       return `${major + 1}.0.0`;
@@ -182,7 +140,9 @@ function calculateNewVersion(currentVersion, bumpType) {
  * Check if a git tag already exists
  */
 function tagExists(tagName) {
-  const result = exec(`git tag -l ${tagName}`, { silent: true });
+  const result = exec(`git tag -l ${tagName}`, {
+    silent: true
+  });
   return result.trim() !== "";
 }
 
@@ -201,7 +161,6 @@ Changes:
 
 🚀 Released via automated version bump script
 `;
-
   if (isDryRun) {
     info(`Would create annotated tag: ${tagName}`);
     log("\nTag message:", "yellow");
@@ -212,7 +171,9 @@ Changes:
   // Check if tag already exists and delete it
   if (tagExists(tagName)) {
     warning(`Tag ${tagName} already exists, deleting...`);
-    exec(`git tag -d ${tagName}`, { ignoreError: true });
+    exec(`git tag -d ${tagName}`, {
+      ignoreError: true
+    });
   }
 
   // Create annotated tag with message
@@ -226,20 +187,23 @@ Changes:
  */
 function rollback() {
   warning("Rolling back changes...");
-
   try {
     // Reset any uncommitted changes to package.json
-    exec("git checkout apps/mobileapp/package.json", { ignoreError: true });
+    exec("git checkout apps/mobileapp/package.json", {
+      ignoreError: true
+    });
 
     // Remove any tags created
     const tags = exec("git tag --points-at HEAD", {
       silent: true,
-      ignoreError: true,
+      ignoreError: true
     });
     if (tags) {
       tags.split("\n").forEach(tag => {
         if (tag.trim()) {
-          exec(`git tag -d ${tag}`, { ignoreError: true });
+          exec(`git tag -d ${tag}`, {
+            ignoreError: true
+          });
         }
       });
     }
@@ -247,12 +211,13 @@ function rollback() {
     // Reset the commit if one was made
     const lastCommit = exec("git log -1 --pretty=%B", {
       silent: true,
-      ignoreError: true,
+      ignoreError: true
     });
     if (lastCommit && lastCommit.includes("chore: bump app version")) {
-      exec("git reset --hard HEAD~1", { ignoreError: true });
+      exec("git reset --hard HEAD~1", {
+        ignoreError: true
+      });
     }
-
     success("Rollback completed");
   } catch (err) {
     error(`Rollback failed: ${err.message}`);
@@ -266,7 +231,6 @@ function main() {
   log("\n" + "=".repeat(60), "bright");
   log("📦 Syncstuff Version Bump Script", "bright");
   log("=".repeat(60) + "\n", "bright");
-
   if (isDryRun) {
     warning("DRY RUN MODE - No changes will be made\n");
   }
@@ -274,7 +238,6 @@ function main() {
   // Step 1: Pre-flight checks
   const currentBranch = getCurrentBranch();
   info(`Current branch: ${currentBranch}`);
-
   if (!isDryRun) {
     checkGitStatus();
     runTypecheck();
@@ -284,7 +247,6 @@ function main() {
   if (!fs.existsSync(appPackagePath)) {
     error(`Package file not found: ${appPackagePath}`);
   }
-
   const appPackage = JSON.parse(fs.readFileSync(appPackagePath, "utf-8"));
   const currentVersion = appPackage.version;
   const newVersion = calculateNewVersion(currentVersion, versionType);
@@ -295,11 +257,9 @@ function main() {
   log(`   New:     ${newVersion}`, "green");
   log(`   Type:    ${versionType.toUpperCase()}`, "cyan");
   log("");
-
   if (isDryRun) {
     info("Skipping actual version bump (dry run)");
     createAnnotatedTag(newVersion, true);
-
     log("\n📋 Summary:", "bright");
     log(`   ✓ Would update package.json to ${newVersion}`);
     if (fs.existsSync(buildGradlePath)) {
@@ -325,10 +285,7 @@ function main() {
   try {
     info("Updating package.json...");
     appPackage.version = newVersion;
-    fs.writeFileSync(
-      appPackagePath,
-      JSON.stringify(appPackage, null, 2) + "\n",
-    );
+    fs.writeFileSync(appPackagePath, JSON.stringify(appPackage, null, 2) + "\n");
     success(`Updated package.json to ${newVersion}`);
 
     // Step 4b: Update build.gradle versionName and versionCode
@@ -339,10 +296,7 @@ function main() {
       // Update versionName in build.gradle
       const versionNameRegex = /versionName\s+(?:=)?\s*["']([^"']+)["']/;
       if (versionNameRegex.test(buildGradleContent)) {
-        buildGradleContent = buildGradleContent.replace(
-          versionNameRegex,
-          `versionName "${newVersion}"`,
-        );
+        buildGradleContent = buildGradleContent.replace(versionNameRegex, `versionName "${newVersion}"`);
         success(`Updated build.gradle versionName to ${newVersion}`);
       } else {
         warning("Could not find versionName in build.gradle");
@@ -354,15 +308,11 @@ function main() {
         const match = buildGradleContent.match(versionCodeRegex);
         const currentVersionCode = Number.parseInt(match[1], 10);
         const newVersionCode = currentVersionCode + 1;
-        buildGradleContent = buildGradleContent.replace(
-          versionCodeRegex,
-          `versionCode ${newVersionCode}`,
-        );
+        buildGradleContent = buildGradleContent.replace(versionCodeRegex, `versionCode ${newVersionCode}`);
         success(`Updated build.gradle versionCode to ${newVersionCode}`);
       } else {
         warning("Could not find versionCode in build.gradle");
       }
-
       fs.writeFileSync(buildGradlePath, buildGradleContent);
     } else {
       warning(`build.gradle not found at ${buildGradlePath}, skipping...`);
@@ -371,19 +321,12 @@ function main() {
     // Step 4c: Update Electron package.json version
     if (fs.existsSync(electronPackagePath)) {
       info("Updating Electron package.json version...");
-      const electronPackage = JSON.parse(
-        fs.readFileSync(electronPackagePath, "utf-8"),
-      );
+      const electronPackage = JSON.parse(fs.readFileSync(electronPackagePath, "utf-8"));
       electronPackage.version = newVersion;
-      fs.writeFileSync(
-        electronPackagePath,
-        JSON.stringify(electronPackage, null, 2) + "\n",
-      );
+      fs.writeFileSync(electronPackagePath, JSON.stringify(electronPackage, null, 2) + "\n");
       success(`Updated Electron package.json to ${newVersion}`);
     } else {
-      warning(
-        `Electron package.json not found at ${electronPackagePath}, skipping...`,
-      );
+      warning(`Electron package.json not found at ${electronPackagePath}, skipping...`);
     }
 
     // Step 4d: Update AndroidManifest.xml versionCode and versionName
@@ -395,15 +338,10 @@ function main() {
       // Pattern: android:versionName="0.0.1"
       const versionNameRegex = /android:versionName=["']([^"']+)["']/;
       if (versionNameRegex.test(manifestContent)) {
-        manifestContent = manifestContent.replace(
-          versionNameRegex,
-          `android:versionName="${newVersion}"`,
-        );
+        manifestContent = manifestContent.replace(versionNameRegex, `android:versionName="${newVersion}"`);
         success(`Updated AndroidManifest.xml versionName to ${newVersion}`);
       } else {
-        warning(
-          "Could not find android:versionName in AndroidManifest.xml, skipping...",
-        );
+        warning("Could not find android:versionName in AndroidManifest.xml, skipping...");
       }
 
       // Update versionCode (increment it)
@@ -412,22 +350,14 @@ function main() {
         const match = manifestContent.match(versionCodeRegex);
         const currentVersionCode = Number.parseInt(match[1], 10);
         const newVersionCode = currentVersionCode + 1;
-        manifestContent = manifestContent.replace(
-          versionCodeRegex,
-          `android:versionCode="${newVersionCode}"`,
-        );
+        manifestContent = manifestContent.replace(versionCodeRegex, `android:versionCode="${newVersionCode}"`);
         success(`Updated AndroidManifest.xml versionCode to ${newVersionCode}`);
       } else {
-        warning(
-          "Could not find android:versionCode in AndroidManifest.xml, skipping...",
-        );
+        warning("Could not find android:versionCode in AndroidManifest.xml, skipping...");
       }
-
       fs.writeFileSync(androidManifestPath, manifestContent);
     } else {
-      warning(
-        `AndroidManifest.xml not found at ${androidManifestPath}, skipping...`,
-      );
+      warning(`AndroidManifest.xml not found at ${androidManifestPath}, skipping...`);
     }
 
     // Step 5: Git operations
@@ -443,7 +373,6 @@ function main() {
       exec(`git add ${androidManifestPath}`);
     }
     success("Changes staged");
-
     info("Creating commit...");
     exec(`git commit -m "chore: bump app version to ${newVersion}"`);
     success("Commit created");
@@ -463,7 +392,6 @@ function main() {
     log("\n" + "=".repeat(60), "green");
     log("✨ Version Bump Completed Successfully!", "green");
     log("=".repeat(60) + "\n", "green");
-
     log("📋 Summary:", "bright");
     log(`   ✓ Updated app version: ${currentVersion} → ${newVersion}`);
     if (fs.existsSync(buildGradlePath)) {
@@ -477,7 +405,6 @@ function main() {
     }
     log(`   ✓ Created commit: "chore: bump app version to ${newVersion}"`);
     log(`   ✓ Created tag: v${newVersion}`);
-
     if (!shouldPush) {
       log("\n💡 Next steps:", "cyan");
       log("   Run the following to push to remote:", "cyan");
@@ -489,45 +416,23 @@ function main() {
     // Step 9: Build APK
     log("\n📱 Building Android APK...", "cyan");
     try {
-      exec("cd apps/mobileapp && ionic cap sync android", { silent: false });
+      exec("cd apps/mobileapp && ionic cap sync android", {
+        silent: false
+      });
 
       // Use platform-specific gradlew command
-      const gradlewCmd =
-        process.platform === "win32"
-          ? ".\\gradlew.bat assembleDebug"
-          : "./gradlew assembleDebug";
-
+      const gradlewCmd = process.platform === "win32" ? ".\\gradlew.bat assembleDebug" : "./gradlew assembleDebug";
       exec(`cd apps/mobileapp/android && ${gradlewCmd}`, {
-        silent: false,
+        silent: false
       });
       success("Android APK built successfully");
 
       // Copy APK to web downloads folder
-      const apkSource = path.join(
-        rootDir,
-        "apps",
-        "mobileapp",
-        "android",
-        "app",
-        "build",
-        "outputs",
-        "apk",
-        "debug",
-        "app-debug.apk",
-      );
-      const apkDest = path.join(
-        rootDir,
-        "apps",
-        "web",
-        "public",
-        "downloads",
-        `syncstuff-v${newVersion}.apk`,
-      );
-
+      const apkSource = path.join(rootDir, "apps", "mobileapp", "android", "app", "build", "outputs", "apk", "debug", "app-debug.apk");
+      const apkDest = path.join(rootDir, "apps", "web", "public", "downloads", `syncstuff-v${newVersion}.apk`);
       if (fs.existsSync(apkSource)) {
         fs.copyFileSync(apkSource, apkDest);
         success(`APK copied to: ${apkDest}`);
-
         log("\n🌐 Deploy to web?", "cyan");
         log("   To deploy the new APK to the web app, run:", "cyan");
         log("   cd apps/web && bun run deploy\n", "bright");
@@ -536,10 +441,7 @@ function main() {
       }
     } catch (buildErr) {
       warning(`APK build failed: ${buildErr.message}`);
-      log(
-        "   You can build manually with: cd apps/mobileapp && ionic cap sync android && cd android && ./gradlew.bat assembleDebug",
-        "yellow",
-      );
+      log("   You can build manually with: cd apps/mobileapp && ionic cap sync android && cd android && ./gradlew.bat assembleDebug", "yellow");
     }
   } catch (err) {
     error(`Version bump failed: ${err.message}`);

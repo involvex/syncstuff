@@ -13,7 +13,8 @@
     "./tamagui.config": {
       "types": "./dist/tamagui.config.d.ts",
       "import": "./dist/tamagui.config.js"
-    }
+    },
+    "./dist-cjs/tamagui.config.cjs": "./dist-cjs/tamagui.config.cjs"
   },
   "scripts": {
     "build": "tsc && tsc --project tsconfig.cjs.json && node copy-css.mjs && node copy-config-cjs.mjs",
@@ -27,6 +28,7 @@
     "@tamagui/core": "^1.144.1",
     "@tamagui/lucide-icons": "^1.144.1",
     "@tamagui/themes": "^1.144.1",
+    "@tamagui/web": "^1.144.1",
     "lucide-react": "^0.479.0",
     "tamagui": "^1.144.1"
   },

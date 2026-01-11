@@ -1,5 +1,5 @@
 {
-  "name": "syncstuff-electron",
+  "name": "@syncstuff/electron",
   "version": "0.0.10",
   "description": "Syncstuff Electron Desktop App",
   "author": {
@@ -10,7 +10,8 @@
   "scripts": {
     "start": "electron .",
     "build": "electron-builder",
-    "dev": "electron . --dev"
+    "dev": "electron . --dev",
+    "postinstall": "electron-builder install-app-deps"
   },
   "devDependencies": {
     "electron": "^39.2.7",

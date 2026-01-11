@@ -8,6 +8,12 @@ import type { AppLoadContext, EntryContext } from "@remix-run/cloudflare";
 import { RemixServer } from "@remix-run/react";
 import { isbot } from "isbot";
 import { renderToReadableStream } from "react-dom/server";
+import { tamaguiConfig } from "@syncstuff/ui/tamagui.config";
+
+// Ensure Tamagui is initialized on the server
+if (import.meta.env.DEV) {
+  console.log("Tamagui config initialized:", !!tamaguiConfig);
+}
 
 const ABORT_DELAY = 5000;
 

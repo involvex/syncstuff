@@ -45,7 +45,7 @@ export default defineConfig({
     extensions: [".web.js", ".js", ".ts", ".tsx", ".json"],
   },
   ssr: {
-    noExternal: ["@syncstuff/ui", "tamagui", "@tamagui/core"],
+    noExternal: ["tamagui", "@tamagui/core"],
   },
   server: {
     host: "0.0.0.0",
@@ -65,6 +65,14 @@ export default defineConfig({
       external: id => {
         // Externalize react-native and all its sub-paths
         if (id.startsWith("react-native")) return true;
+        // Externalize the node process shim injected by node polyfills to avoid resolution errors
+        if (id === "vite-plugin-node-polyfills/shims/process") return true;
+        // Externalize the UI package and its built provider to avoid bundling server-only shims
+        if (
+          id === "@syncstuff/ui" ||
+          id.endsWith("/packages/ui/dist/provider.js")
+        )
+          return true;
         return false;
       },
       output: {

@@ -7,13 +7,17 @@ import { useEffect, useState } from "react";
 export function ClientOnly({ children }: { children: React.ReactNode }) {
   const [hasMounted, setHasMounted] = useState(false);
 
+  console.log("ClientOnly render: hasMounted =", hasMounted);
+
   useEffect(() => {
+    console.log("ClientOnly mounted effect");
     setHasMounted(true);
   }, []);
 
   if (!hasMounted) {
-    return null;
+    return <div style={{ padding: 20, background: 'red', color: 'white' }}>ClientOnly: Not Mounted yet...</div>;
   }
 
+  console.log("ClientOnly rendering children");
   return <>{children}</>;
 }

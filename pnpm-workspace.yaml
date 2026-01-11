@@ -1,10 +1,13 @@
 packages:
   - apps/*
   - packages/*
+  - apps/mobileapp/electron
 
 onlyBuiltDependencies:
   - core-js
   - cypress
+  - electron
+  - electron-winstaller
   - esbuild
   - sharp
   - unrs-resolver

@@ -29,7 +29,11 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./app/*"]
+      "~/*": ["./app/*"],
+      "@syncstuff/ui": ["../../packages/ui/src/index.ts"],
+      "@syncstuff/ui/*": ["../../packages/ui/src/*"],
+      "@syncstuff/shared": ["../../packages/shared/src/index.ts"],
+      "@syncstuff/shared/*": ["../../packages/shared/src/*"]
     },
     "rootDirs": [
       "packages/web/**",

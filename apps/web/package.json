@@ -3,10 +3,14 @@
   "version": "0.0.1",
   "description": "Syncstuff Website",
   "publisher": "Syncstuff",
-  "maintainers": ["involvex@proton.me"],
+  "maintainers": [
+    "involvex@proton.me"
+  ],
   "cloudflare": {
     "label": "Syncstuff Website",
-    "products": ["Workers"],
+    "products": [
+      "Workers"
+    ],
     "categories": [],
     "preview_icon_url": "https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/d34bec43-c621-4a33-0f4c-e72ae7927400/public",
     "preview_image_url": "https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/d30ce022-758a-431e-6de1-3ac63504e100/preview",
@@ -35,9 +39,6 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native-web": "0.21.2",
-    "tamagui": "^1.144.1",
-    "@tamagui/config": "^1.144.1",
-    "@tamagui/core": "^1.144.1",
     "typescript-eslint": "8.52.0",
     "vite-plugin-external": "6.2.2"
   },
@@ -53,6 +54,7 @@
     "@typescript-eslint/eslint-plugin": "8.52.0",
     "@typescript-eslint/parser": "8.52.0",
     "autoprefixer": "10.4.23",
+    "cross-env": "7.0.3",
     "eslint": "9.39.2",
     "eslint-import-resolver-typescript": "4.4.4",
     "eslint-plugin-import": "2.32.0",
@@ -72,11 +74,12 @@
   },
   "private": true,
   "scripts": {
-    "build": "remix vite:build",
+    "build": "cross-env NODE_OPTIONS=--max-old-space-size=8192 remix vite:build",
     "cf-typegen": "wrangler types",
     "check": "tsc && remix vite:build && wrangler deploy --dry-run -c wrangler.toml",
     "deploy": "pnpm build && wrangler deploy -c wrangler.toml",
-    "dev": "remix vite:dev",
+    "dev": "cross-env NODE_OPTIONS=--max-old-space-size=8192 remix vite:dev",
+    "dev:mem": "cross-env NODE_OPTIONS=--max-old-space-size=8192 remix vite:dev",
     "wrangler:dev": "wrangler dev -c wrangler.toml",
     "wrangler:debug": "wrangler dev -c wrangler.toml --minify false -r --env-file .env --env development --log-level debug",
     "lint": "eslint . --ignore-pattern build --ignore-pattern .cache --ignore-pattern .wrangler",

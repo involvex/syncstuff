@@ -143,7 +143,12 @@
       "Bash(taskkill:*)",
       "Bash(timeout 20 pnpm dev:*)",
       "Bash(pnpm typecheck:*)",
-      "Bash(timeout 120 pnpm build:*)"
+      "Bash(timeout 120 pnpm build:*)",
+      "Bash(build \")",
+      "Bash(pnpm dev)",
+      "Bash(npx -y kill-port 3030)",
+      "Bash(pnpm lint:*)",
+      "Bash(pnpm lint:fix:*)"
     ]
   },
   "enableAllProjectMcpServers": true,

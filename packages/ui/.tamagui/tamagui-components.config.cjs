@@ -42,7 +42,7 @@ var __toESM = (mod, isNodeMode, target) => (
     mod,
   )
 );
-var __toCommonJS = (mod) =>
+var __toCommonJS = mod =>
   __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // ../../node_modules/.bun/@babel+runtime@7.28.4/node_modules/@babel/runtime/helpers/interopRequireDefault.js
@@ -75,7 +75,7 @@ var require_isDisabled = __commonJS({
     exports2.__esModule = true;
     exports2.default = void 0;
     var isDisabled = /* @__PURE__ */ __name(
-      (props) =>
+      props =>
         props.disabled ||
         (Array.isArray(props.accessibilityStates) &&
           props.accessibilityStates.indexOf("disabled") > -1),
@@ -109,7 +109,7 @@ var require_propsToAriaRole = __commonJS({
       summary: "region",
       text: null,
     };
-    var propsToAriaRole = /* @__PURE__ */ __name((_ref) => {
+    var propsToAriaRole = /* @__PURE__ */ __name(_ref => {
       var accessibilityRole = _ref.accessibilityRole,
         role = _ref.role;
       var _role = role || accessibilityRole;
@@ -447,8 +447,8 @@ var require_unitlessNumbers = __commonJS({
     var prefixKey = /* @__PURE__ */ __name((prefix, key) => {
       return prefix + key.charAt(0).toUpperCase() + key.substring(1);
     }, "prefixKey");
-    Object.keys(unitlessNumbers).forEach((prop) => {
-      prefixes.forEach((prefix) => {
+    Object.keys(unitlessNumbers).forEach(prop => {
+      prefixes.forEach(prefix => {
         unitlessNumbers[prefixKey(prefix, prop)] = unitlessNumbers[prop];
       });
     });
@@ -467,7 +467,7 @@ var require_isWebColor = __commonJS({
     exports2.__esModule = true;
     exports2.default = void 0;
     var isWebColor = /* @__PURE__ */ __name(
-      (color) =>
+      color =>
         color === "currentcolor" ||
         color === "currentColor" ||
         color === "inherit" ||
@@ -1082,7 +1082,7 @@ var require_processColor = __commonJS({
     exports2.__esModule = true;
     exports2.default = void 0;
     var _normalizeColors = _interopRequireDefault(require_normalize_colors());
-    var processColor = /* @__PURE__ */ __name((color) => {
+    var processColor = /* @__PURE__ */ __name(color => {
       if (color === void 0 || color === null) {
         return color;
       }
@@ -1442,7 +1442,7 @@ var require_hash = __commonJS({
     }
     __name(murmurhash2_32_gc, "murmurhash2_32_gc");
     var hash = /* @__PURE__ */ __name(
-      (str) => murmurhash2_32_gc(str, 1).toString(36),
+      str => murmurhash2_32_gc(str, 1).toString(36),
       "hash",
     );
     var _default = (exports2.default = hash);
@@ -2725,7 +2725,7 @@ var require_compiler = __commonJS({
       __name(atomicCompile, "atomicCompile");
       Object.keys(style)
         .sort()
-        .forEach((srcProp) => {
+        .forEach(srcProp => {
           var value = style[srcProp];
           if (value != null) {
             var localizeableValue;
@@ -2760,7 +2760,7 @@ var require_compiler = __commonJS({
               if (polyfillIndices.length > 0) {
                 var ltrPolyfillValues = [...values];
                 var rtlPolyfillValues = [...values];
-                polyfillIndices.forEach((i2) => {
+                polyfillIndices.forEach(i2 => {
                   var ltrVal = ltrPolyfillValues[i2];
                   if (typeof ltrVal === "string") {
                     var ltrPolyfill = PROPERTIES_I18N[ltrVal];
@@ -2977,11 +2977,11 @@ var require_compiler = __commonJS({
         (0, _createReactDOMStyle.default)(style),
       );
       var declarationsString = Object.keys(domStyle)
-        .map((property) => {
+        .map(property => {
           var value = domStyle[property];
           var prop = (0, _hyphenateStyleName.default)(property);
           if (Array.isArray(value)) {
-            return value.map((v) => prop + ":" + v).join(";");
+            return value.map(v => prop + ":" + v).join(";");
           } else {
             return prop + ":" + value;
           }
@@ -3008,14 +3008,14 @@ var require_compiler = __commonJS({
       var steps =
         "{" +
         Object.keys(keyframes)
-          .map((stepName) => {
+          .map(stepName => {
             var rule = keyframes[stepName];
             var block = createDeclarationBlock(rule);
             return "" + stepName + block;
           })
           .join("") +
         "}";
-      var rules = prefixes.map((prefix) => {
+      var rules = prefixes.map(prefix => {
         return "@" + prefix + "keyframes " + identifier + steps;
       });
       return [identifier, rules];
@@ -3030,7 +3030,7 @@ var require_compiler = __commonJS({
       var value = Array.isArray(keyframesValue)
         ? keyframesValue
         : [keyframesValue];
-      value.forEach((keyframes) => {
+      value.forEach(keyframes => {
         if (typeof keyframes === "string") {
           animationNames.push(keyframes);
         } else {
@@ -3148,7 +3148,7 @@ var require_createOrderedCSSStyleSheet = __commonJS({
          */
         getTextContent() {
           return getOrderedGroups(groups)
-            .map((group2) => {
+            .map(group2 => {
               var rules = groups[group2].rules;
               var marker = rules.shift();
               rules.sort();
@@ -3260,7 +3260,7 @@ var require_dom = __commonJS({
           sheet = (0, _createOrderedCSSStyleSheet.default)(
             (0, _createCSSStyleSheet.default)(id),
           );
-          initialRules.forEach((rule) => {
+          initialRules.forEach(rule => {
             sheet.insert(rule, 0);
           });
           roots.set(rootNode, sheets.length);
@@ -3285,7 +3285,7 @@ var require_dom = __commonJS({
           sheet = (0, _createOrderedCSSStyleSheet.default)(
             (0, _createCSSStyleSheet.default)(id),
           );
-          initialRules.forEach((rule) => {
+          initialRules.forEach(rule => {
             sheet.insert(rule, 0);
           });
           sheets.push(sheet);
@@ -3299,7 +3299,7 @@ var require_dom = __commonJS({
         },
         id,
         insert(cssText, groupValue) {
-          sheets.forEach((s) => {
+          sheets.forEach(s => {
             s.insert(cssText, groupValue);
           });
         },
@@ -3419,7 +3419,7 @@ var require_preprocess = __commonJS({
       height: 0,
       width: 0,
     };
-    var createBoxShadowValue = /* @__PURE__ */ __name((style) => {
+    var createBoxShadowValue = /* @__PURE__ */ __name(style => {
       var shadowColor = style.shadowColor,
         shadowOffset = style.shadowOffset,
         shadowOpacity = style.shadowOpacity,
@@ -3446,7 +3446,7 @@ var require_preprocess = __commonJS({
       }
     }, "createBoxShadowValue");
     exports2.createBoxShadowValue = createBoxShadowValue;
-    var createTextShadowValue = /* @__PURE__ */ __name((style) => {
+    var createTextShadowValue = /* @__PURE__ */ __name(style => {
       var textShadowColor = style.textShadowColor,
         textShadowOffset = style.textShadowOffset,
         textShadowRadius = style.textShadowRadius;
@@ -3472,7 +3472,7 @@ var require_preprocess = __commonJS({
       }
     }, "createTextShadowValue");
     exports2.createTextShadowValue = createTextShadowValue;
-    var mapBoxShadow = /* @__PURE__ */ __name((boxShadow) => {
+    var mapBoxShadow = /* @__PURE__ */ __name(boxShadow => {
       if (typeof boxShadow === "string") {
         return boxShadow;
       }
@@ -3500,11 +3500,11 @@ var require_preprocess = __commonJS({
         color
       );
     }, "mapBoxShadow");
-    var createBoxShadowArrayValue = /* @__PURE__ */ __name((value) => {
+    var createBoxShadowArrayValue = /* @__PURE__ */ __name(value => {
       return value.map(mapBoxShadow).join(", ");
     }, "createBoxShadowArrayValue");
     exports2.createBoxShadowArrayValue = createBoxShadowArrayValue;
-    var mapTransform = /* @__PURE__ */ __name((transform) => {
+    var mapTransform = /* @__PURE__ */ __name(transform => {
       var type = Object.keys(transform)[0];
       var value = transform[type];
       if (type === "matrix" || type === "matrix3d") {
@@ -3517,13 +3517,13 @@ var require_preprocess = __commonJS({
         return type + "(" + normalizedValue + ")";
       }
     }, "mapTransform");
-    var createTransformValue = /* @__PURE__ */ __name((value) => {
+    var createTransformValue = /* @__PURE__ */ __name(value => {
       return value.map(mapTransform).join(" ");
     }, "createTransformValue");
     exports2.createTransformValue = createTransformValue;
-    var createTransformOriginValue = /* @__PURE__ */ __name((value) => {
+    var createTransformOriginValue = /* @__PURE__ */ __name(value => {
       return value
-        .map((v) => (0, _normalizeValueWithProperty.default)(v))
+        .map(v => (0, _normalizeValueWithProperty.default)(v))
         .join(" ");
     }, "createTransformOriginValue");
     exports2.createTransformOriginValue = createTransformOriginValue;
@@ -4474,11 +4474,11 @@ var require_StyleSheet = __commonJS({
     }
     __name(customStyleq, "customStyleq");
     function insertRules(compiledOrderedRules) {
-      compiledOrderedRules.forEach((_ref) => {
+      compiledOrderedRules.forEach(_ref => {
         var rules = _ref[0],
           order = _ref[1];
         if (sheet != null) {
-          rules.forEach((rule) => {
+          rules.forEach(rule => {
             sheet.insert(rule, order);
           });
         }
@@ -4514,7 +4514,7 @@ var require_StyleSheet = __commonJS({
       x: (0, _objectSpread2.default)({}, absoluteFillObject),
     }).x;
     function create(styles) {
-      Object.keys(styles).forEach((key) => {
+      Object.keys(styles).forEach(key => {
         var styleObj = styles[key];
         if (styleObj != null && styleObj.$$css !== true) {
           var compiledStyles;
@@ -4540,7 +4540,7 @@ var require_StyleSheet = __commonJS({
       if (process.env.NODE_ENV !== "production") {
         var len = arguments.length;
         if (len > 2) {
-          var readableStyles = [...arguments].map((a) => flatten(a));
+          var readableStyles = [...arguments].map(a => flatten(a));
           throw new Error(
             "StyleSheet.compose() only accepts 2 arguments, received " +
               len +
@@ -5458,7 +5458,7 @@ var require_findNodeHandle = __commonJS({
     "use strict";
     exports2.__esModule = true;
     exports2.default = void 0;
-    var findNodeHandle = /* @__PURE__ */ __name((component) => {
+    var findNodeHandle = /* @__PURE__ */ __name(component => {
       throw new Error(
         "findNodeHandle is not supported on web. Use the ref property on the component instead.",
       );
@@ -5522,7 +5522,7 @@ var require_getBoundingClientRect = __commonJS({
     "use strict";
     exports2.__esModule = true;
     exports2.default = void 0;
-    var getBoundingClientRect2 = /* @__PURE__ */ __name((node) => {
+    var getBoundingClientRect2 = /* @__PURE__ */ __name(node => {
       if (node != null) {
         var isElement2 = node.nodeType === 1;
         if (isElement2 && typeof node.getBoundingClientRect === "function") {
@@ -5598,8 +5598,8 @@ var require_unitlessNumbers2 = __commonJS({
     var prefixKey = /* @__PURE__ */ __name((prefix, key) => {
       return prefix + key.charAt(0).toUpperCase() + key.substring(1);
     }, "prefixKey");
-    Object.keys(unitlessNumbers).forEach((prop) => {
-      prefixes.forEach((prefix) => {
+    Object.keys(unitlessNumbers).forEach(prop => {
+      prefixes.forEach(prefix => {
         unitlessNumbers[prefixKey(prefix, prop)] = unitlessNumbers[prop];
       });
     });
@@ -5700,7 +5700,7 @@ var require_UIManager = __commonJS({
     var _setValueForStyles = _interopRequireDefault(
       require_setValueForStyles(),
     );
-    var getRect = /* @__PURE__ */ __name((node) => {
+    var getRect = /* @__PURE__ */ __name(node => {
       var height = node.offsetHeight;
       var width = node.offsetWidth;
       var left = node.offsetLeft;
@@ -5919,7 +5919,7 @@ var require_AccessibilityInfo = __commonJS({
           if (!prefersReducedMotionMedia) {
             return;
           }
-          var listener = /* @__PURE__ */ __name((event) => {
+          var listener = /* @__PURE__ */ __name(event => {
             handler(event.matches);
           }, "listener");
           addChangeListener(listener);
@@ -6000,7 +6000,7 @@ var require_Platform = __commonJS({
     var Platform2 = {
       OS: "web",
       select: /* @__PURE__ */ __name(
-        (obj) => ("web" in obj ? obj.web : obj.default),
+        obj => ("web" in obj ? obj.web : obj.default),
         "select",
       ),
       get isTesting() {
@@ -6289,7 +6289,7 @@ var require_useElementLayout = __commonJS({
       if (_canUseDom.default && typeof window.ResizeObserver !== "undefined") {
         if (resizeObserver == null) {
           resizeObserver = new window.ResizeObserver(function (entries) {
-            entries.forEach((entry) => {
+            entries.forEach(entry => {
               var node = entry.target;
               var onLayout = node[DOM_LAYOUT_HANDLER_NAME];
               if (typeof onLayout === "function") {
@@ -6384,7 +6384,7 @@ var require_mergeRefs = __commonJS({
         args[_key] = arguments[_key];
       }
       return /* @__PURE__ */ __name(function forwardRef24(node) {
-        args.forEach((ref) => {
+        args.forEach(ref => {
           if (ref == null) {
             return;
           }
@@ -6482,9 +6482,9 @@ var require_usePlatformMethods = __commonJS({
     function usePlatformMethods(_ref) {
       var pointerEvents = _ref.pointerEvents,
         style = _ref.style;
-      var ref = (0, _useStable.default)(() => (hostNode) => {
+      var ref = (0, _useStable.default)(() => hostNode => {
         if (hostNode != null) {
-          hostNode.measure = (callback) =>
+          hostNode.measure = callback =>
             _UIManager.default.measure(hostNode, callback);
           hostNode.measureLayout = (relativeToNode, success, failure) =>
             _UIManager.default.measureLayout(
@@ -6493,7 +6493,7 @@ var require_usePlatformMethods = __commonJS({
               failure,
               success,
             );
-          hostNode.measureInWindow = (callback) =>
+          hostNode.measureInWindow = callback =>
             _UIManager.default.measureInWindow(hostNode, callback);
         }
       });
@@ -6556,7 +6556,7 @@ var require_createResponderEvent = __commonJS({
           : emptyFunction;
       var timestamp = domEvent.timeStamp;
       function normalizeTouches(touches2) {
-        return Array.prototype.slice.call(touches2).map((touch) => {
+        return Array.prototype.slice.call(touches2).map(touch => {
           return {
             force: touch.force,
             identifier: normalizeIdentifier(touch.identifier),
@@ -7067,11 +7067,11 @@ var require_ResponderTouchHistoryStore = __commonJS({
       recordTouchTrack(topLevelType, nativeEvent) {
         var touchHistory = this._touchHistory;
         if ((0, _ResponderEventTypes.isMoveish)(topLevelType)) {
-          nativeEvent.changedTouches.forEach((touch) =>
+          nativeEvent.changedTouches.forEach(touch =>
             recordTouchMove(touch, touchHistory),
           );
         } else if ((0, _ResponderEventTypes.isStartish)(topLevelType)) {
-          nativeEvent.changedTouches.forEach((touch) =>
+          nativeEvent.changedTouches.forEach(touch =>
             recordTouchStart(touch, touchHistory),
           );
           touchHistory.numberActiveTouches = nativeEvent.touches.length;
@@ -7080,7 +7080,7 @@ var require_ResponderTouchHistoryStore = __commonJS({
               nativeEvent.touches[0].identifier;
           }
         } else if ((0, _ResponderEventTypes.isEndish)(topLevelType)) {
-          nativeEvent.changedTouches.forEach((touch) =>
+          nativeEvent.changedTouches.forEach(touch =>
             recordTouchEnd(touch, touchHistory),
           );
           touchHistory.numberActiveTouches = nativeEvent.touches.length;
@@ -7502,10 +7502,10 @@ var require_ResponderSystem = __commonJS({
     function attachListeners() {
       if (_canUseDom.default && window.__reactResponderSystemActive == null) {
         window.addEventListener("blur", eventListener);
-        documentEventsBubblePhase.forEach((eventType) => {
+        documentEventsBubblePhase.forEach(eventType => {
           document.addEventListener(eventType, eventListener);
         });
-        documentEventsCapturePhase.forEach((eventType) => {
+        documentEventsCapturePhase.forEach(eventType => {
           document.addEventListener(eventType, eventListener, true);
         });
         window.__reactResponderSystemActive = true;
@@ -7719,7 +7719,7 @@ var require_View = __commonJS({
       },
     );
     var pickProps = /* @__PURE__ */ __name(
-      (props) => (0, _pick.default)(props, forwardPropsList),
+      props => (0, _pick.default)(props, forwardPropsList),
       "pickProps",
     );
     var View13 = /* @__PURE__ */ React79.forwardRef((props, forwardedRef) => {
@@ -7747,7 +7747,7 @@ var require_View = __commonJS({
           props.onStartShouldSetResponderCapture,
         rest = (0, _objectWithoutPropertiesLoose2.default)(props, _excluded);
       if (process.env.NODE_ENV !== "production") {
-        React79.Children.toArray(props.children).forEach((item) => {
+        React79.Children.toArray(props.children).forEach(item => {
           if (typeof item === "string") {
             console.error(
               "Unexpected text node: " +
@@ -8165,7 +8165,7 @@ var require_Dimensions = __commonJS({
     function handleResize() {
       update();
       if (Array.isArray(listeners["change"])) {
-        listeners["change"].forEach((handler) => handler(dimensions));
+        listeners["change"].forEach(handler => handler(dimensions));
       }
     }
     __name(handleResize, "handleResize");
@@ -8213,7 +8213,7 @@ var require_Dimensions = __commonJS({
       static removeEventListener(type, handler) {
         if (Array.isArray(listeners[type])) {
           listeners[type] = listeners[type].filter(
-            (_handler) => _handler !== handler,
+            _handler => _handler !== handler,
           );
         }
       }
@@ -8397,7 +8397,7 @@ var require_ScrollViewBase = __commonJS({
         var scrollTimeout = React79.useRef(null);
         var scrollRef = React79.useRef(null);
         function createPreventableScrollHandler(handler) {
-          return (e) => {
+          return e => {
             if (scrollEnabled) {
               if (handler) {
                 handler(e);
@@ -8634,18 +8634,18 @@ var require_ScrollView = __commonJS({
         this.scrollResponderHandleScrollShouldSetResponder = () => {
           return this.isTouching;
         };
-        this.scrollResponderHandleStartShouldSetResponderCapture = (e) => {
+        this.scrollResponderHandleStartShouldSetResponderCapture = e => {
           return this.scrollResponderIsAnimating();
         };
         this.scrollResponderHandleTerminationRequest = () => {
           return !this.observedScrollSinceBecomingResponder;
         };
-        this.scrollResponderHandleTouchEnd = (e) => {
+        this.scrollResponderHandleTouchEnd = e => {
           var nativeEvent = e.nativeEvent;
           this.isTouching = nativeEvent.touches.length !== 0;
           this.props.onTouchEnd && this.props.onTouchEnd(e);
         };
-        this.scrollResponderHandleResponderRelease = (e) => {
+        this.scrollResponderHandleResponderRelease = e => {
           this.props.onResponderRelease && this.props.onResponderRelease(e);
           var currentlyFocusedTextInput =
             _TextInputState.default.currentlyFocusedField();
@@ -8661,36 +8661,36 @@ var require_ScrollView = __commonJS({
             _TextInputState.default.blurTextInput(currentlyFocusedTextInput);
           }
         };
-        this.scrollResponderHandleScroll = (e) => {
+        this.scrollResponderHandleScroll = e => {
           this.observedScrollSinceBecomingResponder = true;
           this.props.onScroll && this.props.onScroll(e);
         };
-        this.scrollResponderHandleResponderGrant = (e) => {
+        this.scrollResponderHandleResponderGrant = e => {
           this.observedScrollSinceBecomingResponder = false;
           this.props.onResponderGrant && this.props.onResponderGrant(e);
           this.becameResponderWhileAnimating =
             this.scrollResponderIsAnimating();
         };
-        this.scrollResponderHandleScrollBeginDrag = (e) => {
+        this.scrollResponderHandleScrollBeginDrag = e => {
           this.props.onScrollBeginDrag && this.props.onScrollBeginDrag(e);
         };
-        this.scrollResponderHandleScrollEndDrag = (e) => {
+        this.scrollResponderHandleScrollEndDrag = e => {
           this.props.onScrollEndDrag && this.props.onScrollEndDrag(e);
         };
-        this.scrollResponderHandleMomentumScrollBegin = (e) => {
+        this.scrollResponderHandleMomentumScrollBegin = e => {
           this.lastMomentumScrollBeginTime = Date.now();
           this.props.onMomentumScrollBegin &&
             this.props.onMomentumScrollBegin(e);
         };
-        this.scrollResponderHandleMomentumScrollEnd = (e) => {
+        this.scrollResponderHandleMomentumScrollEnd = e => {
           this.lastMomentumScrollEndTime = Date.now();
           this.props.onMomentumScrollEnd && this.props.onMomentumScrollEnd(e);
         };
-        this.scrollResponderHandleTouchStart = (e) => {
+        this.scrollResponderHandleTouchStart = e => {
           this.isTouching = true;
           this.props.onTouchStart && this.props.onTouchStart(e);
         };
-        this.scrollResponderHandleTouchMove = (e) => {
+        this.scrollResponderHandleTouchMove = e => {
           this.props.onTouchMove && this.props.onTouchMove(e);
         };
         this.scrollResponderIsAnimating = () => {
@@ -8772,21 +8772,21 @@ var require_ScrollView = __commonJS({
           this.additionalOffset = 0;
           this.preventNegativeScrollOffset = false;
         };
-        this.scrollResponderKeyboardWillShow = (e) => {
+        this.scrollResponderKeyboardWillShow = e => {
           this.keyboardWillOpenTo = e;
           this.props.onKeyboardWillShow && this.props.onKeyboardWillShow(e);
         };
-        this.scrollResponderKeyboardWillHide = (e) => {
+        this.scrollResponderKeyboardWillHide = e => {
           this.keyboardWillOpenTo = null;
           this.props.onKeyboardWillHide && this.props.onKeyboardWillHide(e);
         };
-        this.scrollResponderKeyboardDidShow = (e) => {
+        this.scrollResponderKeyboardDidShow = e => {
           if (e) {
             this.keyboardWillOpenTo = e;
           }
           this.props.onKeyboardDidShow && this.props.onKeyboardDidShow(e);
         };
-        this.scrollResponderKeyboardDidHide = (e) => {
+        this.scrollResponderKeyboardDidHide = e => {
           this.keyboardWillOpenTo = null;
           this.props.onKeyboardDidHide && this.props.onKeyboardDidHide(e);
         };
@@ -8825,7 +8825,7 @@ var require_ScrollView = __commonJS({
             animated: animated !== false,
           });
         };
-        this.scrollToEnd = (options) => {
+        this.scrollToEnd = options => {
           var animated = (options && options.animated) !== false;
           var horizontal = this.props.horizontal;
           var scrollResponderNode = this.getScrollableNode();
@@ -8837,13 +8837,13 @@ var require_ScrollView = __commonJS({
             animated,
           });
         };
-        this._handleContentOnLayout = (e) => {
+        this._handleContentOnLayout = e => {
           var _e$nativeEvent$layout = e.nativeEvent.layout,
             width = _e$nativeEvent$layout.width,
             height = _e$nativeEvent$layout.height;
           this.props.onContentSizeChange(width, height);
         };
-        this._handleScroll = (e) => {
+        this._handleScroll = e => {
           if (process.env.NODE_ENV !== "production") {
             if (this.props.onScroll && this.props.scrollEventThrottle == null) {
               console.log(
@@ -8856,10 +8856,10 @@ var require_ScrollView = __commonJS({
           }
           this.scrollResponderHandleScroll(e);
         };
-        this._setInnerViewRef = (node) => {
+        this._setInnerViewRef = node => {
           this._innerViewRef = node;
         };
-        this._setScrollNodeRef = (node) => {
+        this._setScrollNodeRef = node => {
           this._scrollNodeRef = node;
           if (node != null) {
             node.getScrollResponder = this.getScrollResponder;
@@ -9135,7 +9135,7 @@ var require_ScrollView = __commonJS({
         if (process.env.NODE_ENV !== "production" && this.props.style) {
           var style = _StyleSheet.default.flatten(this.props.style);
           var childLayoutProps = ["alignItems", "justifyContent"].filter(
-            (prop) => style && style[prop] !== void 0,
+            prop => style && style[prop] !== void 0,
           );
           (0, _invariant.default)(
             childLayoutProps.length === 0,
@@ -9345,17 +9345,17 @@ var require_TaskQueue = __commonJS({
         this._getCurrentQueue().push(task);
       }
       enqueueTasks(tasks) {
-        tasks.forEach((task) => this.enqueue(task));
+        tasks.forEach(task => this.enqueue(task));
       }
       cancelTasks(tasksToCancel) {
         this._queueStack = this._queueStack
-          .map((queue) =>
+          .map(queue =>
             (0, _objectSpread2.default)(
               (0, _objectSpread2.default)({}, queue),
               {},
               {
                 tasks: queue.tasks.filter(
-                  (task) => tasksToCancel.indexOf(task) === -1,
+                  task => tasksToCancel.indexOf(task) === -1,
                 ),
               },
             ),
@@ -9418,7 +9418,7 @@ var require_TaskQueue = __commonJS({
             stackItem.popable = true;
             this.hasTasksToProcess() && this._onMoreTasks();
           })
-          .catch((ex) => {
+          .catch(ex => {
             setTimeout(() => {
               ex.message =
                 "TaskQueue: Error resolving Promise in task " +
@@ -9593,7 +9593,7 @@ var require_InteractionManager = __commonJS({
        */
       runAfterInteractions(task) {
         var tasks = [];
-        var promise = new Promise((resolve) => {
+        var promise = new Promise(resolve => {
           _scheduleUpdate();
           if (task) {
             tasks.push(task);
@@ -9661,8 +9661,8 @@ var require_InteractionManager = __commonJS({
     function _processUpdate() {
       _nextUpdateHandle = 0;
       var interactionCount = _interactionSet.size;
-      _addInteractionSet.forEach((handle) => _interactionSet.add(handle));
-      _deleteInteractionSet.forEach((handle) => _interactionSet.delete(handle));
+      _addInteractionSet.forEach(handle => _interactionSet.add(handle));
+      _deleteInteractionSet.forEach(handle => _interactionSet.delete(handle));
       var nextInteractionCount = _interactionSet.size;
       if (interactionCount !== 0 && nextInteractionCount === 0) {
         _emitter.emit(InteractionManager.Events.interactionComplete);
@@ -10106,7 +10106,7 @@ var require_FillRateHelper = __commonJS({
         _listeners.push(callback);
         return {
           remove: /* @__PURE__ */ __name(() => {
-            _listeners = _listeners.filter((listener) => callback !== listener);
+            _listeners = _listeners.filter(listener => callback !== listener);
           }, "remove"),
         };
       }
@@ -10178,7 +10178,7 @@ var require_FillRateHelper = __commonJS({
             info,
           });
         }
-        _listeners.forEach((listener) => listener(info));
+        _listeners.forEach(listener => listener(info));
         this._resetData();
       }
       computeBlankness(props, cellsAroundViewport, scrollMetrics) {
@@ -10533,12 +10533,12 @@ var require_ViewabilityHelper = __commonJS({
         onViewableItemsChanged,
         createViewToken,
       ) {
-        viewableIndicesToCheck = viewableIndicesToCheck.filter((ii) =>
+        viewableIndicesToCheck = viewableIndicesToCheck.filter(ii =>
           this._viewableIndices.includes(ii),
         );
         var prevItems = this._viewableItems;
         var nextItems = new Map(
-          viewableIndicesToCheck.map((ii) => {
+          viewableIndicesToCheck.map(ii => {
             var viewable2 = createViewToken(ii, true, props);
             return [viewable2.key, viewable2];
           }),
@@ -10774,7 +10774,7 @@ var require_VirtualizedListCellRenderer = __commonJS({
             );
           }, "updateProps"),
         };
-        this._onLayout = (nativeEvent) => {
+        this._onLayout = nativeEvent => {
           this.props.onCellLayout &&
             this.props.onCellLayout(
               nativeEvent,
@@ -10798,7 +10798,7 @@ var require_VirtualizedListCellRenderer = __commonJS({
       // reused by SectionList and we can keep VirtualizedList simpler.
       // $FlowFixMe[missing-local-annot]
       updateSeparatorProps(newProps) {
-        this.setState((state) => ({
+        this.setState(state => ({
           separatorProps: (0, _objectSpread2.default)(
             (0, _objectSpread2.default)({}, state.separatorProps),
             newProps,
@@ -11438,10 +11438,10 @@ var require_VirtualizedList = __commonJS({
         );
       }
       recordInteraction() {
-        this._nestedChildLists.forEach((childList) => {
+        this._nestedChildLists.forEach(childList => {
           childList.recordInteraction();
         });
-        this._viewabilityTuples.forEach((t) => {
+        this._viewabilityTuples.forEach(t => {
           t.viewabilityHelper.recordInteraction();
         });
         this._updateViewableItems(this.props, this.state.cellsAroundViewport);
@@ -11503,22 +11503,22 @@ var require_VirtualizedList = __commonJS({
             return this;
           }
         };
-        this._registerAsNestedChild = (childList) => {
+        this._registerAsNestedChild = childList => {
           this._nestedChildLists.add(childList.ref, childList.cellKey);
           if (this._hasInteracted) {
             childList.ref.recordInteraction();
           }
         };
-        this._unregisterAsNestedChild = (childList) => {
+        this._unregisterAsNestedChild = childList => {
           this._nestedChildLists.remove(childList.ref);
         };
         this._onUpdateSeparators = (keys, newProps) => {
-          keys.forEach((key) => {
+          keys.forEach(key => {
             var ref = key != null && this._cellRefs[key];
             ref && ref.updateSeparatorProps(newProps);
           });
         };
-        this._getSpacerKey = (isVertical) => (isVertical ? "height" : "width");
+        this._getSpacerKey = isVertical => (isVertical ? "height" : "width");
         this._averageCellLength = 0;
         this._cellRefs = {};
         this._frames = {};
@@ -11551,10 +11551,10 @@ var require_VirtualizedList = __commonJS({
         this._totalCellLength = 0;
         this._totalCellsMeasured = 0;
         this._viewabilityTuples = [];
-        this._captureScrollRef = (ref) => {
+        this._captureScrollRef = ref => {
           this._scrollRef = ref;
         };
-        this._defaultRenderScrollComponent = (props) => {
+        this._defaultRenderScrollComponent = props => {
           var onRefresh = props.onRefresh;
           if (this._isNestedWithSameOrientation()) {
             return /* @__PURE__ */ React79.createElement(_View.default, props);
@@ -11630,7 +11630,7 @@ var require_VirtualizedList = __commonJS({
           this._computeBlankness();
           this._updateViewableItems(this.props, this.state.cellsAroundViewport);
         };
-        this._onCellUnmount = (cellKey) => {
+        this._onCellUnmount = cellKey => {
           delete this._cellRefs[cellKey];
           var curr = this._frames[cellKey];
           if (curr) {
@@ -11643,7 +11643,7 @@ var require_VirtualizedList = __commonJS({
             );
           }
         };
-        this._onLayout = (e) => {
+        this._onLayout = e => {
           if (this._isNestedWithSameOrientation()) {
             this.measureLayoutRelativeToContainingList();
           } else {
@@ -11655,14 +11655,14 @@ var require_VirtualizedList = __commonJS({
           this._scheduleCellsToRenderUpdate();
           this._maybeCallOnEdgeReached();
         };
-        this._onLayoutEmpty = (e) => {
+        this._onLayoutEmpty = e => {
           this.props.onLayout && this.props.onLayout(e);
         };
-        this._onLayoutFooter = (e) => {
+        this._onLayoutFooter = e => {
           this._triggerRemeasureForChildListsInCell(this._getFooterCellKey());
           this._footerLength = this._selectLength(e.nativeEvent.layout);
         };
-        this._onLayoutHeader = (e) => {
+        this._onLayoutHeader = e => {
           this._headerLength = this._selectLength(e.nativeEvent.layout);
         };
         this._onContentSizeChange = (width, height) => {
@@ -11702,7 +11702,7 @@ var require_VirtualizedList = __commonJS({
           this._scheduleCellsToRenderUpdate();
           this._maybeCallOnEdgeReached();
         };
-        this._convertParentScrollMetrics = (metrics) => {
+        this._convertParentScrollMetrics = metrics => {
           var offset4 = metrics.offset - this._offsetFromParentVirtualizedList;
           var visibleLength = metrics.visibleLength;
           var dOffset = offset4 - this._scrollMetrics.offset;
@@ -11714,8 +11714,8 @@ var require_VirtualizedList = __commonJS({
             dOffset,
           };
         };
-        this._onScroll = (e) => {
-          this._nestedChildLists.forEach((childList) => {
+        this._onScroll = e => {
+          this._nestedChildLists.forEach(childList => {
             childList._onScroll(e);
           });
           if (this.props.onScroll) {
@@ -11784,18 +11784,18 @@ var require_VirtualizedList = __commonJS({
           this._computeBlankness();
           this._scheduleCellsToRenderUpdate();
         };
-        this._onScrollBeginDrag = (e) => {
-          this._nestedChildLists.forEach((childList) => {
+        this._onScrollBeginDrag = e => {
+          this._nestedChildLists.forEach(childList => {
             childList._onScrollBeginDrag(e);
           });
-          this._viewabilityTuples.forEach((tuple) => {
+          this._viewabilityTuples.forEach(tuple => {
             tuple.viewabilityHelper.recordInteraction();
           });
           this._hasInteracted = true;
           this.props.onScrollBeginDrag && this.props.onScrollBeginDrag(e);
         };
-        this._onScrollEndDrag = (e) => {
-          this._nestedChildLists.forEach((childList) => {
+        this._onScrollEndDrag = e => {
+          this._nestedChildLists.forEach(childList => {
             childList._onScrollEndDrag(e);
           });
           var velocity = e.nativeEvent.velocity;
@@ -11805,15 +11805,15 @@ var require_VirtualizedList = __commonJS({
           this._computeBlankness();
           this.props.onScrollEndDrag && this.props.onScrollEndDrag(e);
         };
-        this._onMomentumScrollBegin = (e) => {
-          this._nestedChildLists.forEach((childList) => {
+        this._onMomentumScrollBegin = e => {
+          this._nestedChildLists.forEach(childList => {
             childList._onMomentumScrollBegin(e);
           });
           this.props.onMomentumScrollBegin &&
             this.props.onMomentumScrollBegin(e);
         };
-        this._onMomentumScrollEnd = (e) => {
-          this._nestedChildLists.forEach((childList) => {
+        this._onMomentumScrollEnd = e => {
+          this._nestedChildLists.forEach(childList => {
             childList._onMomentumScrollEnd(e);
           });
           this._scrollMetrics.velocity = 0;
@@ -11908,7 +11908,7 @@ var require_VirtualizedList = __commonJS({
           }
           return frame;
         };
-        this._getNonViewportRenderRegions = (props) => {
+        this._getNonViewportRenderRegions = props => {
           if (
             !(
               this._lastFocusedCellKey &&
@@ -11979,7 +11979,7 @@ var require_VirtualizedList = __commonJS({
         );
         if (this.props.viewabilityConfigCallbackPairs) {
           this._viewabilityTuples =
-            this.props.viewabilityConfigCallbackPairs.map((pair) => ({
+            this.props.viewabilityConfigCallbackPairs.map(pair => ({
               viewabilityHelper: new _ViewabilityHelper.default(
                 pair.viewabilityConfig,
               ),
@@ -12006,7 +12006,7 @@ var require_VirtualizedList = __commonJS({
             initialRenderRegion,
           ),
         };
-        this.invertedWheelEventHandler = (ev) => {
+        this.invertedWheelEventHandler = ev => {
           var scrollOffset = this.props.horizontal
             ? ev.target.scrollLeft
             : ev.target.scrollTop;
@@ -12263,7 +12263,7 @@ var require_VirtualizedList = __commonJS({
           var cellKeyForIndex = this._indicesToKeys.get(ii);
           if (
             cellKeyForIndex != null &&
-            this._nestedChildLists.anyInCell(cellKeyForIndex, (childList) =>
+            this._nestedChildLists.anyInCell(cellKeyForIndex, childList =>
               childList.hasMore(),
             )
           ) {
@@ -12290,7 +12290,7 @@ var require_VirtualizedList = __commonJS({
         this._updateCellsToRenderBatcher.dispose({
           abort: true,
         });
-        this._viewabilityTuples.forEach((tuple) => {
+        this._viewabilityTuples.forEach(tuple => {
           tuple.viewabilityHelper.dispose();
         });
         this._fillRateHelper.deactivateAndFlush();
@@ -12384,11 +12384,11 @@ var require_VirtualizedList = __commonJS({
                   prevCellKey,
                   onUpdateSeparators: _this._onUpdateSeparators,
                   onCellFocusCapture: /* @__PURE__ */ __name(
-                    (e) => _this._onCellFocusCapture(key),
+                    e => _this._onCellFocusCapture(key),
                     "onCellFocusCapture",
                   ),
                   onUnmount: _this._onCellUnmount,
-                  ref: /* @__PURE__ */ __name((_ref) => {
+                  ref: /* @__PURE__ */ __name(_ref => {
                     _this._cellRefs[key] = _ref;
                   }, "ref"),
                   renderItem,
@@ -12505,7 +12505,7 @@ var require_VirtualizedList = __commonJS({
                 key: "$empty",
               },
               /* @__PURE__ */ React79.cloneElement(_element2, {
-                onLayout: /* @__PURE__ */ __name((event) => {
+                onLayout: /* @__PURE__ */ __name(event => {
                   this._onLayoutEmpty(event);
                   if (_element2.props.onLayout) {
                     _element2.props.onLayout(event);
@@ -12521,7 +12521,7 @@ var require_VirtualizedList = __commonJS({
           _keylessItemComponentName = "";
           var spacerKey = this._getSpacerKey(!horizontal);
           var renderRegions = this.state.renderMask.enumerateRegions();
-          var lastSpacer = findLastWhere(renderRegions, (r) => r.isSpacer);
+          var lastSpacer = findLastWhere(renderRegions, r => r.isSpacer);
           for (
             var _iterator = (0, _createForOfIteratorHelperLoose2.default)(
                 renderRegions,
@@ -12673,7 +12673,7 @@ var require_VirtualizedList = __commonJS({
           data = _this$props7.data,
           extraData = _this$props7.extraData;
         if (data !== prevProps.data || extraData !== prevProps.extraData) {
-          this._viewabilityTuples.forEach((tuple) => {
+          this._viewabilityTuples.forEach(tuple => {
             tuple.viewabilityHelper.resetViewableIndices();
           });
         }
@@ -12702,7 +12702,7 @@ var require_VirtualizedList = __commonJS({
         this._updateCellsToRender();
       }
       _triggerRemeasureForChildListsInCell(cellKey) {
-        this._nestedChildLists.forEachInCell(cellKey, (childList) => {
+        this._nestedChildLists.forEachInCell(cellKey, childList => {
           childList.measureLayoutRelativeToContainingList();
         });
       }
@@ -12732,12 +12732,12 @@ var require_VirtualizedList = __commonJS({
               if (metricsChanged) {
                 this._scrollMetrics.visibleLength = scrollMetrics.visibleLength;
                 this._scrollMetrics.offset = scrollMetrics.offset;
-                this._nestedChildLists.forEach((childList) => {
+                this._nestedChildLists.forEach(childList => {
                   childList.measureLayoutRelativeToContainingList();
                 });
               }
             },
-            (error2) => {
+            error2 => {
               console.warn(
                 "VirtualizedList: Encountered an error while measuring a list's offset from its containing VirtualizedList.",
               );
@@ -12948,7 +12948,7 @@ var require_VirtualizedList = __commonJS({
        * fractional indices.
        */
       _updateViewableItems(props, cellsAroundViewport) {
-        this._viewabilityTuples.forEach((tuple) => {
+        this._viewabilityTuples.forEach(tuple => {
           tuple.viewabilityHelper.onUpdate(
             props,
             this._scrollMetrics.offset,
@@ -13209,7 +13209,7 @@ var require_FlatList = __commonJS({
       constructor(_props) {
         super(_props);
         this._virtualizedListPairs = [];
-        this._captureRef = (ref) => {
+        this._captureRef = ref => {
           this._listRef = ref;
         };
         this._getItem = (data, index3) => {
@@ -13228,7 +13228,7 @@ var require_FlatList = __commonJS({
             return data[index3];
           }
         };
-        this._getItemCount = (data) => {
+        this._getItemCount = data => {
           if (data != null && isArrayLike(data)) {
             var numColumns = numColumnsOrDefault(this.props.numColumns);
             return numColumns > 1
@@ -13266,7 +13266,7 @@ var require_FlatList = __commonJS({
           extraData,
         ) => {
           var cols = numColumnsOrDefault(numColumns);
-          var render = /* @__PURE__ */ __name((props) => {
+          var render = /* @__PURE__ */ __name(props => {
             if (ListItemComponent2) {
               return /* @__PURE__ */ React79.createElement(
                 ListItemComponent2,
@@ -13278,7 +13278,7 @@ var require_FlatList = __commonJS({
               return null;
             }
           }, "render");
-          var renderProp = /* @__PURE__ */ __name((info) => {
+          var renderProp = /* @__PURE__ */ __name(info => {
             if (cols > 1) {
               var _item2 = info.item,
                 _index = info.index;
@@ -13325,7 +13325,7 @@ var require_FlatList = __commonJS({
         this._checkProps(this.props);
         if (this.props.viewabilityConfigCallbackPairs) {
           this._virtualizedListPairs =
-            this.props.viewabilityConfigCallbackPairs.map((pair) => ({
+            this.props.viewabilityConfigCallbackPairs.map(pair => ({
               viewabilityConfig: pair.viewabilityConfig,
               onViewableItemsChanged: this._createOnViewableItemsChanged(
                 pair.onViewableItemsChanged,
@@ -13422,16 +13422,16 @@ var require_FlatList = __commonJS({
         });
       }
       _createOnViewableItemsChanged(onViewableItemsChanged) {
-        return (info) => {
+        return info => {
           var numColumns = numColumnsOrDefault(this.props.numColumns);
           if (onViewableItemsChanged) {
             if (numColumns > 1) {
               var changed = [];
               var viewableItems = [];
-              info.viewableItems.forEach((v) =>
+              info.viewableItems.forEach(v =>
                 this._pushMultiColumnViewable(viewableItems, v),
               );
-              info.changed.forEach((v) =>
+              info.changed.forEach(v =>
                 this._pushMultiColumnViewable(changed, v),
               );
               onViewableItemsChanged({
@@ -14252,7 +14252,7 @@ var require_NativeAnimatedHelper = __commonJS({
     }
     __name(isSupportedInterpolationParam, "isSupportedInterpolationParam");
     function validateTransform(configs) {
-      configs.forEach((config) => {
+      configs.forEach(config => {
         if (!isSupportedTransformProp(config.property)) {
           throw new Error(
             "Property '" +
@@ -14474,7 +14474,7 @@ var require_AnimatedNode = __commonJS({
         this.__nativeAnimatedValueListener =
           _NativeAnimatedHelper.default.nativeEventEmitter.addListener(
             "onAnimatedValueUpdate",
-            (data) => {
+            data => {
               if (data.tag !== this.__getNativeTag()) {
                 return;
               }
@@ -14669,7 +14669,7 @@ var require_AnimatedInterpolation = __commonJS({
     var _invariant = _interopRequireDefault(require_invariant());
     var _normalizeColors = _interopRequireDefault(require_normalize_colors());
     var __DEV__ = process.env.NODE_ENV !== "production";
-    var linear = /* @__PURE__ */ __name((t) => t, "linear");
+    var linear = /* @__PURE__ */ __name(t => t, "linear");
     function createInterpolation(config) {
       if (config.outputRange && typeof config.outputRange[0] === "string") {
         return createInterpolationFromStringOutputRange(config);
@@ -14702,7 +14702,7 @@ var require_AnimatedInterpolation = __commonJS({
       } else if (config.extrapolate !== void 0) {
         extrapolateRight = config.extrapolate;
       }
-      return (input) => {
+      return input => {
         (0, _invariant.default)(
           typeof input === "number",
           "Cannot interpolation an input which is not a number",
@@ -14795,7 +14795,7 @@ var require_AnimatedInterpolation = __commonJS({
       outputRange = outputRange.map(colorToRgba);
       checkPattern(outputRange);
       var outputRanges = outputRange[0].match(stringShapeRegex).map(() => []);
-      outputRange.forEach((value) => {
+      outputRange.forEach(value => {
         value.match(stringShapeRegex).forEach((number, i) => {
           outputRanges[i].push(+number);
         });
@@ -14814,7 +14814,7 @@ var require_AnimatedInterpolation = __commonJS({
           );
         });
       var shouldRound = isRgbOrRgba(outputRange[0]);
-      return (input) => {
+      return input => {
         var i = 0;
         return outputRange[0].replace(stringShapeRegex, () => {
           var val = +interpolations[i++](input);
@@ -14979,7 +14979,7 @@ var require_AnimatedValue = __commonJS({
       }
       __name(findAnimatedStyles, "findAnimatedStyles");
       findAnimatedStyles(rootNode);
-      animatedStyles.forEach((animatedStyle) => animatedStyle.update());
+      animatedStyles.forEach(animatedStyle => animatedStyle.update());
     }
     __name(_flush, "_flush");
     function _executeAsAnimatedBatch(id, operation) {
@@ -15008,7 +15008,7 @@ var require_AnimatedValue = __commonJS({
       }
       __detach() {
         if (this.__isNative) {
-          NativeAnimatedAPI.getValue(this.__getNativeTag(), (value) => {
+          NativeAnimatedAPI.getValue(this.__getNativeTag(), value => {
             this._value = value - this._offset;
           });
         }
@@ -15149,14 +15149,14 @@ var require_AnimatedValue = __commonJS({
         this._animation = animation;
         animation.start(
           this._value,
-          (value) => {
+          value => {
             this._updateValue(
               value,
               true,
               /* flush */
             );
           },
-          (result) => {
+          result => {
             this._animation = null;
             if (handle !== null) {
               _InteractionManager.default.clearInteractionHandle(handle);
@@ -15245,7 +15245,7 @@ var require_AnimatedEvent = __commonJS({
       );
       traverse(argMapping[0].nativeEvent, []);
       if (viewRef != null) {
-        eventMappings.forEach((mapping) => {
+        eventMappings.forEach(mapping => {
           _NativeAnimatedHelper.default.API.addAnimatedEventToView(
             viewRef,
             eventName,
@@ -15256,7 +15256,7 @@ var require_AnimatedEvent = __commonJS({
       return {
         detach() {
           if (viewRef != null) {
-            eventMappings.forEach((mapping) => {
+            eventMappings.forEach(mapping => {
               _NativeAnimatedHelper.default.API.removeAnimatedEventFromView(
                 viewRef,
                 eventName,
@@ -15342,7 +15342,7 @@ var require_AnimatedEvent = __commonJS({
       }
       __removeListener(callback) {
         this._listeners = this._listeners.filter(
-          (listener) => listener !== callback,
+          listener => listener !== callback,
         );
       }
       __attach(viewRef, eventName) {
@@ -15428,7 +15428,7 @@ var require_AnimatedEvent = __commonJS({
         ) {
           args[_key4] = arguments[_key4];
         }
-        this._listeners.forEach((listener) => listener(...args));
+        this._listeners.forEach(listener => listener(...args));
       }
     };
     exports2.AnimatedEvent = AnimatedEvent;
@@ -15461,7 +15461,7 @@ var require_AnimatedTransform = __commonJS({
         this._transforms = transforms;
       }
       __makeNative() {
-        this._transforms.forEach((transform) => {
+        this._transforms.forEach(transform => {
           for (var key in transform) {
             var value = transform[key];
             if (value instanceof _AnimatedNode.default) {
@@ -15472,7 +15472,7 @@ var require_AnimatedTransform = __commonJS({
         super.__makeNative();
       }
       __getValue() {
-        return this._transforms.map((transform) => {
+        return this._transforms.map(transform => {
           var result = {};
           for (var key in transform) {
             var value = transform[key];
@@ -15486,7 +15486,7 @@ var require_AnimatedTransform = __commonJS({
         });
       }
       __getAnimatedValue() {
-        return this._transforms.map((transform) => {
+        return this._transforms.map(transform => {
           var result = {};
           for (var key in transform) {
             var value = transform[key];
@@ -15500,7 +15500,7 @@ var require_AnimatedTransform = __commonJS({
         });
       }
       __attach() {
-        this._transforms.forEach((transform) => {
+        this._transforms.forEach(transform => {
           for (var key in transform) {
             var value = transform[key];
             if (value instanceof _AnimatedNode.default) {
@@ -15510,7 +15510,7 @@ var require_AnimatedTransform = __commonJS({
         });
       }
       __detach() {
-        this._transforms.forEach((transform) => {
+        this._transforms.forEach(transform => {
           for (var key in transform) {
             var value = transform[key];
             if (value instanceof _AnimatedNode.default) {
@@ -15522,7 +15522,7 @@ var require_AnimatedTransform = __commonJS({
       }
       __getNativeConfig() {
         var transConfigs = [];
-        this._transforms.forEach((transform) => {
+        this._transforms.forEach(transform => {
           for (var key in transform) {
             var value = transform[key];
             if (value instanceof _AnimatedNode.default) {
@@ -15873,7 +15873,7 @@ var require_useRefEffect = __commonJS({
     function useRefEffect(effect) {
       var cleanupRef = (0, _react.useRef)(void 0);
       return (0, _react.useCallback)(
-        (instance) => {
+        instance => {
           if (cleanupRef.current) {
             cleanupRef.current();
             cleanupRef.current = void 0;
@@ -15910,7 +15910,7 @@ var require_useAnimatedProps = __commonJS({
     var _react = require("react");
     var _useLayoutEffect = _interopRequireDefault(require_useLayoutEffect());
     function useAnimatedProps(props) {
-      var _useReducer = (0, _react.useReducer)((count2) => count2 + 1, 0),
+      var _useReducer = (0, _react.useReducer)(count2 => count2 + 1, 0),
         scheduleUpdate = _useReducer[1];
       var onUpdateRef = (0, _react.useRef)(null);
       var node = (0, _react.useMemo)(
@@ -15922,7 +15922,7 @@ var require_useAnimatedProps = __commonJS({
       );
       useAnimatedPropsLifecycle(node);
       var refEffect = (0, _react.useCallback)(
-        (instance) => {
+        instance => {
           node.setNativeView(instance);
           onUpdateRef.current = () => {
             scheduleUpdate();
@@ -16027,7 +16027,7 @@ var require_useMergeRefs2 = __commonJS({
         refs[_key] = arguments[_key];
       }
       return (0, _react.useCallback)(
-        (current) => {
+        current => {
           for (var _i = 0, _refs = refs; _i < _refs.length; _i++) {
             var ref = _refs[_i];
             if (ref != null) {
@@ -16207,7 +16207,7 @@ var require_ImageLoader = __commonJS({
         if (imageUris.length + 1 > _ImageUriCache._maximumEntries) {
           var leastRecentlyUsedKey;
           var leastRecentlyUsedEntry;
-          imageUris.forEach((uri) => {
+          imageUris.forEach(uri => {
             var entry = entries[uri];
             if (
               (!leastRecentlyUsedEntry ||
@@ -16276,7 +16276,7 @@ var require_ImageLoader = __commonJS({
         id += 1;
         var image = new window.Image();
         image.onerror = onError;
-        image.onload = (e) => {
+        image.onload = e => {
           var onDecode = /* @__PURE__ */ __name(
             () =>
               onLoad({
@@ -16309,7 +16309,7 @@ var require_ImageLoader = __commonJS({
       },
       queryCache(uris) {
         var result = {};
-        uris.forEach((u) => {
+        uris.forEach(u => {
           if (ImageUriCache.has(u)) {
             result[u] = "disk/memory";
           }
@@ -16952,7 +16952,7 @@ var require_VirtualizedSectionList = __commonJS({
           var info = this._subExtractor(index3);
           return (info && info.key) || String(index3);
         };
-        this._convertViewable = (viewable) => {
+        this._convertViewable = viewable => {
           var _info$index;
           (0, _invariant.default)(
             viewable.index != null,
@@ -16984,7 +16984,7 @@ var require_VirtualizedSectionList = __commonJS({
             },
           );
         };
-        this._onViewableItemsChanged = (_ref) => {
+        this._onViewableItemsChanged = _ref => {
           var viewableItems = _ref.viewableItems,
             changed = _ref.changed;
           var onViewableItemsChanged = this.props.onViewableItemsChanged;
@@ -16998,9 +16998,9 @@ var require_VirtualizedSectionList = __commonJS({
           }
         };
         this._renderItem =
-          (listItemCount) =>
+          listItemCount =>
           // eslint-disable-next-line react/no-unstable-nested-components
-          (_ref2) => {
+          _ref2 => {
             var item = _ref2.item,
               index3 = _ref2.index;
             var info = this._subExtractor(index3);
@@ -17085,7 +17085,7 @@ var require_VirtualizedSectionList = __commonJS({
         };
         this._updateHighlightMap = {};
         this._updatePropsMap = {};
-        this._captureRef = (ref) => {
+        this._captureRef = ref => {
           this._listRef = ref;
         };
       }
@@ -17432,7 +17432,7 @@ var require_SectionList = __commonJS({
       }
       constructor() {
         super(...arguments);
-        this._captureRef = (ref) => {
+        this._captureRef = ref => {
           this._wrapperListRef = ref;
         };
       }
@@ -17503,7 +17503,7 @@ var require_SectionList = __commonJS({
             stickySectionHeadersEnabled,
             ref: this._captureRef,
             getItemCount: /* @__PURE__ */ __name(
-              (items) => items.length,
+              items => items.length,
               "getItemCount",
             ),
             getItem: /* @__PURE__ */ __name(
@@ -17649,7 +17649,7 @@ var require_Text = __commonJS({
       },
     );
     var pickProps = /* @__PURE__ */ __name(
-      (props) => (0, _pick.default)(props, forwardPropsList),
+      props => (0, _pick.default)(props, forwardPropsList),
       "pickProps",
     );
     var Text6 = /* @__PURE__ */ React79.forwardRef((props, forwardedRef) => {
@@ -17704,7 +17704,7 @@ var require_Text = __commonJS({
         onStartShouldSetResponderCapture,
       });
       var handleClick = React79.useCallback(
-        (e) => {
+        e => {
           if (onClick != null) {
             onClick(e);
           } else if (onPress != null) {
@@ -18469,7 +18469,7 @@ var require_AnimatedValueXY = __commonJS({
        */
       addListener(callback) {
         var id = String(_uniqueId++);
-        var jointCallback = /* @__PURE__ */ __name((_ref) => {
+        var jointCallback = /* @__PURE__ */ __name(_ref => {
           var number = _ref.value;
           callback(this.__getValue());
         }, "jointCallback");
@@ -18807,7 +18807,7 @@ var require_AnimatedColor = __commonJS({
       a: 1,
     };
     var _uniqueId = 1;
-    var processColorObject = /* @__PURE__ */ __name((color) => {
+    var processColorObject = /* @__PURE__ */ __name(color => {
       return color;
     }, "processColorObject");
     function processColor(color) {
@@ -18986,7 +18986,7 @@ var require_AnimatedColor = __commonJS({
        */
       addListener(callback) {
         var id = String(_uniqueId++);
-        var jointCallback = /* @__PURE__ */ __name((_ref) => {
+        var jointCallback = /* @__PURE__ */ __name(_ref => {
           var number = _ref.value;
           callback(this.__getValue());
         }, "jointCallback");
@@ -19619,7 +19619,7 @@ var require_Easing = __commonJS({
        * n = 5: http://easings.net/#easeInQuint
        */
       static poly(n) {
-        return (t) => Math.pow(t, n);
+        return t => Math.pow(t, n);
       }
       /**
        * A sinusoidal function.
@@ -19660,7 +19660,7 @@ var require_Easing = __commonJS({
           bounciness = 1;
         }
         var p = bounciness * Math.PI;
-        return (t) =>
+        return t =>
           1 - Math.pow(Math.cos((t * Math.PI) / 2), 3) * Math.cos(t * p);
       }
       /**
@@ -19675,7 +19675,7 @@ var require_Easing = __commonJS({
         if (s === void 0) {
           s = 1.70158;
         }
-        return (t) => t * t * ((s + 1) * t - s);
+        return t => t * t * ((s + 1) * t - s);
       }
       /**
        * Provides a simple bouncing effect.
@@ -19717,7 +19717,7 @@ var require_Easing = __commonJS({
        * Runs an easing function backwards.
        */
       static out(easing) {
-        return (t) => 1 - easing(1 - t);
+        return t => 1 - easing(1 - t);
       }
       /**
        * Makes any easing function symmetrical. The easing function will run
@@ -19725,7 +19725,7 @@ var require_Easing = __commonJS({
        * duration.
        */
       static inOut(easing) {
-        return (t) => {
+        return t => {
           if (t < 0.5) {
             return easing(t * 2) / 2;
           }
@@ -20611,7 +20611,7 @@ var require_AnimatedMock = __commonJS({
     var _AnimatedColor = _interopRequireDefault(require_AnimatedColor());
     var inAnimationCallback = false;
     function mockAnimationStart(start) {
-      return (callback) => {
+      return callback => {
         var guardedCallback =
           callback == null
             ? callback
@@ -20643,13 +20643,13 @@ var require_AnimatedMock = __commonJS({
       }, "_isUsingNativeDriver"),
     };
     var mockCompositeAnimation = /* @__PURE__ */ __name(
-      (animations) =>
+      animations =>
         (0, _objectSpread2.default)(
           (0, _objectSpread2.default)({}, emptyAnimation),
           {},
           {
-            start: mockAnimationStart((callback) => {
-              animations.forEach((animation) => animation.start());
+            start: mockAnimationStart(callback => {
+              animations.forEach(animation => animation.start());
               callback == null
                 ? void 0
                 : callback({
@@ -20666,7 +20666,7 @@ var require_AnimatedMock = __commonJS({
         (0, _objectSpread2.default)({}, emptyAnimation),
         {},
         {
-          start: mockAnimationStart((callback) => {
+          start: mockAnimationStart(callback => {
             anyValue.setValue(config.toValue);
             callback == null
               ? void 0
@@ -20683,7 +20683,7 @@ var require_AnimatedMock = __commonJS({
         (0, _objectSpread2.default)({}, emptyAnimation),
         {},
         {
-          start: mockAnimationStart((callback) => {
+          start: mockAnimationStart(callback => {
             anyValue.setValue(config.toValue);
             callback == null
               ? void 0
@@ -20837,7 +20837,7 @@ var require_Appearance = __commonJS({
       addChangeListener(listener) {
         var mappedListener = listenerMapping.get(listener);
         if (!mappedListener) {
-          mappedListener = /* @__PURE__ */ __name((_ref) => {
+          mappedListener = /* @__PURE__ */ __name(_ref => {
             var matches = _ref.matches;
             listener({
               colorScheme: matches ? "dark" : "light",
@@ -20986,7 +20986,7 @@ var require_renderApplication = __commonJS({
           initialProps,
         ),
       );
-      var getStyleElement = /* @__PURE__ */ __name((props) => {
+      var getStyleElement = /* @__PURE__ */ __name(props => {
         var sheet = _StyleSheet.default.getSheet();
         return /* @__PURE__ */ _react.default.createElement(
           "style",
@@ -21030,7 +21030,7 @@ var require_AppRegistry = __commonJS({
     var emptyObject = {};
     var runnables = {};
     var componentProviderInstrumentationHook = /* @__PURE__ */ __name(
-      (component) => component(),
+      component => component(),
       "componentProviderInstrumentationHook",
     );
     var wrapperComponentProvider;
@@ -21053,7 +21053,7 @@ var require_AppRegistry = __commonJS({
       static registerComponent(appKey, componentProvider) {
         runnables[appKey] = {
           getApplication: /* @__PURE__ */ __name(
-            (appParameters) =>
+            appParameters =>
               (0, _renderApplication.getApplication)(
                 componentProviderInstrumentationHook(componentProvider),
                 appParameters ? appParameters.initialProps : emptyObject,
@@ -21063,7 +21063,7 @@ var require_AppRegistry = __commonJS({
             "getApplication",
           ),
           run: /* @__PURE__ */ __name(
-            (appParameters) =>
+            appParameters =>
               (0, _renderApplication.default)(
                 componentProviderInstrumentationHook(componentProvider),
                 wrapperComponentProvider &&
@@ -21082,7 +21082,7 @@ var require_AppRegistry = __commonJS({
         return appKey;
       }
       static registerConfig(config) {
-        config.forEach((_ref) => {
+        config.forEach(_ref => {
           var appKey = _ref.appKey,
             component = _ref.component,
             run = _ref.run;
@@ -21527,7 +21527,7 @@ var require_Linking = __commonJS({
         }
         var listeners = this._eventCallbacks[event];
         if (listeners != null && Array.isArray(listeners)) {
-          listeners.map((listener) => {
+          listeners.map(listener => {
             listener(...data);
           });
         }
@@ -21546,7 +21546,7 @@ var require_Linking = __commonJS({
           remove() {
             var callbacks = _this._eventCallbacks[eventType];
             var filteredCallbacks = callbacks.filter(
-              (c) => c.toString() !== callback.toString(),
+              c => c.toString() !== callback.toString(),
             );
             _this._eventCallbacks[eventType] = filteredCallbacks;
           },
@@ -21564,7 +21564,7 @@ var require_Linking = __commonJS({
         );
         var callbacks = this._eventCallbacks[eventType];
         var filteredCallbacks = callbacks.filter(
-          (c) => c.toString() !== callback.toString(),
+          c => c.toString() !== callback.toString(),
         );
         this._eventCallbacks[eventType] = filteredCallbacks;
       }
@@ -22137,7 +22137,7 @@ var require_PanResponder = __commonJS({
           // on any pan target that is under a mouse cursor when it is released.
           // Browsers will natively cancel 'click' events on a target if a non-mouse
           // active pointer moves.
-          onClickCapture: /* @__PURE__ */ __name((event) => {
+          onClickCapture: /* @__PURE__ */ __name(event => {
             if (interactionState.shouldCancelClick === true) {
               event.stopPropagation();
               event.preventDefault();
@@ -22276,7 +22276,7 @@ var require_Vibration = __commonJS({
     "use strict";
     exports2.__esModule = true;
     exports2.default = void 0;
-    var vibrate = /* @__PURE__ */ __name((pattern) => {
+    var vibrate = /* @__PURE__ */ __name(pattern => {
       if ("vibrate" in window.navigator) {
         window.navigator.vibrate(pattern);
       }
@@ -22318,7 +22318,7 @@ var require_ActivityIndicator = __commonJS({
     var _View = _interopRequireDefault(require_View());
     var _excluded = ["animating", "color", "hidesWhenStopped", "size", "style"];
     var createSvgCircle = /* @__PURE__ */ __name(
-      (style) =>
+      style =>
         /* @__PURE__ */ React79.createElement("circle", {
           cx: "16",
           cy: "16",
@@ -22485,36 +22485,35 @@ var require_PressResponder = __commonJS({
       },
     });
     var getElementRole = /* @__PURE__ */ __name(
-      (element) => element.getAttribute("role"),
+      element => element.getAttribute("role"),
       "getElementRole",
     );
     var getElementType = /* @__PURE__ */ __name(
-      (element) => element.tagName.toLowerCase(),
+      element => element.tagName.toLowerCase(),
       "getElementType",
     );
     var isActiveSignal = /* @__PURE__ */ __name(
-      (signal) =>
+      signal =>
         signal === RESPONDER_ACTIVE_PRESS_START ||
         signal === RESPONDER_ACTIVE_LONG_PRESS_START,
       "isActiveSignal",
     );
     var isButtonRole = /* @__PURE__ */ __name(
-      (element) => getElementRole(element) === "button",
+      element => getElementRole(element) === "button",
       "isButtonRole",
     );
     var isPressStartSignal = /* @__PURE__ */ __name(
-      (signal) =>
+      signal =>
         signal === RESPONDER_INACTIVE_PRESS_START ||
         signal === RESPONDER_ACTIVE_PRESS_START ||
         signal === RESPONDER_ACTIVE_LONG_PRESS_START,
       "isPressStartSignal",
     );
     var isTerminalSignal = /* @__PURE__ */ __name(
-      (signal) =>
-        signal === RESPONDER_TERMINATED || signal === RESPONDER_RELEASE,
+      signal => signal === RESPONDER_TERMINATED || signal === RESPONDER_RELEASE,
       "isTerminalSignal",
     );
-    var isValidKeyPress = /* @__PURE__ */ __name((event) => {
+    var isValidKeyPress = /* @__PURE__ */ __name(event => {
       var key = event.key,
         target = event.target;
       var isSpacebar = key === " " || key === "Spacebar";
@@ -22589,10 +22588,10 @@ var require_PressResponder = __commonJS({
             this._handleLongPress(event);
           }, delayLongPress + delayPressStart);
         }, "start");
-        var end = /* @__PURE__ */ __name((event) => {
+        var end = /* @__PURE__ */ __name(event => {
           this._receiveSignal(RESPONDER_RELEASE, event);
         }, "end");
-        var keyupHandler = /* @__PURE__ */ __name((event) => {
+        var keyupHandler = /* @__PURE__ */ __name(event => {
           var onPress = this._config.onPress;
           var target = event.target;
           if (this._touchState !== NOT_RESPONDER && isValidKeyPress(event)) {
@@ -22619,7 +22618,7 @@ var require_PressResponder = __commonJS({
           }
         }, "keyupHandler");
         return {
-          onStartShouldSetResponder: /* @__PURE__ */ __name((event) => {
+          onStartShouldSetResponder: /* @__PURE__ */ __name(event => {
             var disabled = this._config.disabled;
             if (disabled && isButtonRole(event.currentTarget)) {
               event.stopPropagation();
@@ -22629,7 +22628,7 @@ var require_PressResponder = __commonJS({
             }
             return !disabled;
           }, "onStartShouldSetResponder"),
-          onKeyDown: /* @__PURE__ */ __name((event) => {
+          onKeyDown: /* @__PURE__ */ __name(event => {
             var disabled = this._config.disabled;
             var key = event.key,
               target = event.target;
@@ -22653,10 +22652,10 @@ var require_PressResponder = __commonJS({
             }
           }, "onKeyDown"),
           onResponderGrant: /* @__PURE__ */ __name(
-            (event) => start(event),
+            event => start(event),
             "onResponderGrant",
           ),
-          onResponderMove: /* @__PURE__ */ __name((event) => {
+          onResponderMove: /* @__PURE__ */ __name(event => {
             if (this._config.onPressMove != null) {
               this._config.onPressMove(event);
             }
@@ -22670,16 +22669,16 @@ var require_PressResponder = __commonJS({
             }
           }, "onResponderMove"),
           onResponderRelease: /* @__PURE__ */ __name(
-            (event) => end(event),
+            event => end(event),
             "onResponderRelease",
           ),
-          onResponderTerminate: /* @__PURE__ */ __name((event) => {
+          onResponderTerminate: /* @__PURE__ */ __name(event => {
             if (event.nativeEvent.type === "selectionchange") {
               this._selectionTerminated = true;
             }
             this._receiveSignal(RESPONDER_TERMINATED, event);
           }, "onResponderTerminate"),
-          onResponderTerminationRequest: /* @__PURE__ */ __name((event) => {
+          onResponderTerminationRequest: /* @__PURE__ */ __name(event => {
             var _this$_config = this._config,
               cancelable = _this$_config.cancelable,
               disabled = _this$_config.disabled,
@@ -22705,7 +22704,7 @@ var require_PressResponder = __commonJS({
           // * The `onPress` callback is only be called on the first ancestor of the native
           //   `click` target that is using the PressResponder.
           // * The event's `nativeEvent` is a `MouseEvent` not a `TouchEvent`.
-          onClick: /* @__PURE__ */ __name((event) => {
+          onClick: /* @__PURE__ */ __name(event => {
             var _this$_config2 = this._config,
               disabled = _this$_config2.disabled,
               onPress = _this$_config2.onPress;
@@ -22724,7 +22723,7 @@ var require_PressResponder = __commonJS({
           }, "onClick"),
           // If `onLongPress` is provided and a touch pointer is being used, prevent the
           // default context menu from opening.
-          onContextMenu: /* @__PURE__ */ __name((event) => {
+          onContextMenu: /* @__PURE__ */ __name(event => {
             var _this$_config3 = this._config,
               disabled = _this$_config3.disabled,
               onLongPress = _this$_config3.onLongPress;
@@ -23019,7 +23018,7 @@ var require_TouchableOpacity = __commonJS({
         [setOpacityOverride, setDuration],
       );
       var setOpacityActive = (0, _react.useCallback)(
-        (duration2) => {
+        duration2 => {
           setOpacityTo(
             activeOpacity !== null && activeOpacity !== void 0
               ? activeOpacity
@@ -23030,7 +23029,7 @@ var require_TouchableOpacity = __commonJS({
         [activeOpacity, setOpacityTo],
       );
       var setOpacityInactive = (0, _react.useCallback)(
-        (duration2) => {
+        duration2 => {
           setOpacityTo(null, duration2);
         },
         [setOpacityTo],
@@ -23437,7 +23436,7 @@ var require_KeyboardAvoidingView = __commonJS({
       constructor() {
         super(...arguments);
         this.frame = null;
-        this.onLayout = (event) => {
+        this.onLayout = event => {
           this.frame = event.nativeEvent.layout;
         };
       }
@@ -23561,7 +23560,7 @@ var require_ModalAnimation = __commonJS({
       var wasRendering = React79.useRef(false);
       var isAnimated = animationType && animationType !== "none";
       var animationEndCallback = React79.useCallback(
-        (e) => {
+        e => {
           if (e && e.currentTarget !== e.target) {
             return;
           }
@@ -23721,7 +23720,7 @@ var require_ModalContent = __commonJS({
           rest = (0, _objectWithoutPropertiesLoose2.default)(props, _excluded);
         React79.useEffect(() => {
           if (_canUseDom.default) {
-            var closeOnEscape = /* @__PURE__ */ __name((e) => {
+            var closeOnEscape = /* @__PURE__ */ __name(e => {
               if (active && e.key === "Escape") {
                 e.stopPropagation();
                 if (onRequestClose) {
@@ -23836,7 +23835,7 @@ var require_ModalFocusTrap = __commonJS({
       return false;
     }
     __name(focusLastDescendant, "focusLastDescendant");
-    var ModalFocusTrap = /* @__PURE__ */ __name((_ref) => {
+    var ModalFocusTrap = /* @__PURE__ */ __name(_ref => {
       var active = _ref.active,
         children = _ref.children;
       var trapElementRef = React79.useRef();
@@ -23959,7 +23958,7 @@ var require_Modal = __commonJS({
         return;
       }
       var activeModalId = activeModalStack[activeModalStack.length - 1];
-      activeModalStack.forEach((modalId) => {
+      activeModalStack.forEach(modalId => {
         if (modalId in activeModalListeners) {
           activeModalListeners[modalId](modalId === activeModalId);
         }
@@ -24225,7 +24224,7 @@ var require_addEventListener = __commonJS({
     function addEventListener(target, type, listener, options) {
       var opts = getOptions(options);
       var compatListener = /* @__PURE__ */ __name(
-        (e) => listener(normalizeEvent(e)),
+        e => listener(normalizeEvent(e)),
         "compatListener",
       );
       target.addEventListener(type, compatListener, opts);
@@ -24488,7 +24487,7 @@ var require_modality = __commonJS({
         activeModality,
         modality,
       };
-      listeners.forEach((listener) => {
+      listeners.forEach(listener => {
         listener(value);
       });
     }
@@ -24556,7 +24555,7 @@ var require_useEvent = __commonJS({
       });
       (0, _useLayoutEffect.default)(() => {
         return () => {
-          targetListeners.forEach((removeListener) => {
+          targetListeners.forEach(removeListener => {
             removeListener();
           });
           targetListeners.clear();
@@ -24853,7 +24852,7 @@ var require_Pressable = __commonJS({
         pressed,
       };
       var blurHandler = React79.useCallback(
-        (e) => {
+        e => {
           if (e.nativeEvent.target === hostRef.current) {
             setFocused(false);
             if (onBlur != null) {
@@ -24864,7 +24863,7 @@ var require_Pressable = __commonJS({
         [hostRef, setFocused, onBlur],
       );
       var focusHandler = React79.useCallback(
-        (e) => {
+        e => {
           if (e.nativeEvent.target === hostRef.current) {
             setFocused(true);
             if (onFocus != null) {
@@ -24875,7 +24874,7 @@ var require_Pressable = __commonJS({
         [hostRef, setFocused, onFocus],
       );
       var contextMenuHandler = React79.useCallback(
-        (e) => {
+        e => {
           if (onContextMenuPress != null) {
             onContextMenuPress(e);
           }
@@ -24886,7 +24885,7 @@ var require_Pressable = __commonJS({
         [onContextMenu, onContextMenuPress],
       );
       var keyDownHandler = React79.useCallback(
-        (e) => {
+        e => {
           if (onKeyDownPress != null) {
             onKeyDownPress(e);
           }
@@ -25141,10 +25140,10 @@ var require_multiplyStyleLengthValue = __commonJS({
     exports2.default = void 0;
     var CSS_UNIT_RE = /^[+-]?\d*(?:\.\d+)?(?:[Ee][+-]?\d+)?(%|\w*)/;
     var getUnit = /* @__PURE__ */ __name(
-      (str) => str.match(CSS_UNIT_RE)[1],
+      str => str.match(CSS_UNIT_RE)[1],
       "getUnit",
     );
-    var isNumeric = /* @__PURE__ */ __name((n) => {
+    var isNumeric = /* @__PURE__ */ __name(n => {
       return !isNaN(parseFloat(n)) && isFinite(n);
     }, "isNumeric");
     var multiplyStyleLengthValue = /* @__PURE__ */ __name((value, multiple) => {
@@ -25504,7 +25503,7 @@ var require_TextInput = __commonJS({
       },
     );
     var pickProps = /* @__PURE__ */ __name(
-      (props) => (0, _pick.default)(props, forwardPropsList),
+      props => (0, _pick.default)(props, forwardPropsList),
       "pickProps",
     );
     function isEventComposing(nativeEvent) {
@@ -25635,7 +25634,7 @@ var require_TextInput = __commonJS({
           prevSecureTextEntry.current = secureTextEntry;
         }, [secureTextEntry]);
         var handleContentSizeChange = React79.useCallback(
-          (hostNode) => {
+          hostNode => {
             if (multiline && onContentSizeChange && hostNode != null) {
               var newHeight = hostNode.scrollHeight;
               var newWidth = hostNode.scrollWidth;
@@ -25659,7 +25658,7 @@ var require_TextInput = __commonJS({
           [multiline, onContentSizeChange],
         );
         var imperativeRef = React79.useMemo(
-          () => (hostNode) => {
+          () => hostNode => {
             if (hostNode != null) {
               hostNode.clear = function () {
                 if (hostNode != null) {
@@ -26025,7 +26024,7 @@ var require_Touchable = __commonJS({
     var _UIManager = _interopRequireDefault(require_UIManager());
     var _View = _interopRequireDefault(require_View());
     var _warnOnce = require_warnOnce();
-    var extractSingleTouch = /* @__PURE__ */ __name((nativeEvent) => {
+    var extractSingleTouch = /* @__PURE__ */ __name(nativeEvent => {
       var touches = nativeEvent.touches;
       var changedTouches = nativeEvent.changedTouches;
       var hasTouches = touches && touches.length > 0;
@@ -26184,7 +26183,7 @@ var require_Touchable = __commonJS({
         );
         var touchableNode = this.getTouchableNode && this.getTouchableNode();
         if (touchableNode && touchableNode.addEventListener) {
-          this._touchableBlurListener = (e) => {
+          this._touchableBlurListener = e => {
             if (this._isTouchableKeyboardActive) {
               if (
                 this.state.touchable.touchState &&
@@ -26781,7 +26780,7 @@ var require_Touchable = __commonJS({
       /**
        * Renders a debugging overlay to visualize touch target with hitSlop (might not work on Android).
        */
-      renderDebugView: /* @__PURE__ */ __name((_ref) => {
+      renderDebugView: /* @__PURE__ */ __name(_ref => {
         var color = _ref.color,
           hitSlop = _ref.hitSlop;
         if (!Touchable.TOUCH_TARGET_DEBUG) {
@@ -27114,7 +27113,7 @@ var require_TouchableWithoutFeedback = __commonJS({
       testID: true,
     };
     var pickProps = /* @__PURE__ */ __name(
-      (props) => (0, _pick.default)(props, forwardPropsList),
+      props => (0, _pick.default)(props, forwardPropsList),
       "pickProps",
     );
     function TouchableWithoutFeedback(props, forwardedRef) {
@@ -28503,7 +28502,7 @@ var idFn = /* @__PURE__ */ __name(() => {}, "idFn");
 function useForceUpdate() {
   return isServerSide
     ? idFn
-    : import_react2.default.useReducer((x) => Math.random(), 0)[1];
+    : import_react2.default.useReducer(x => Math.random(), 0)[1];
 }
 __name(useForceUpdate, "useForceUpdate");
 
@@ -28533,7 +28532,7 @@ __name(useConstant, "useConstant");
 var React5 = __toESM(require("react"), 1);
 var import_jsx_runtime = require("react/jsx-runtime");
 var PresenceContext = React5.createContext(null);
-var ResetPresence = /* @__PURE__ */ __name((props) => {
+var ResetPresence = /* @__PURE__ */ __name(props => {
   const parent = React5.useContext(PresenceContext);
   return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PresenceContext.Provider, {
     value: props.disable ? parent : null,
@@ -28637,11 +28636,11 @@ __name(newChildrenMap, "newChildrenMap");
 // ../../node_modules/.bun/@tamagui+animate-presence@1.144.1+0bee5583ac684eb8/node_modules/@tamagui/animate-presence/dist/esm/AnimatePresence.mjs
 var import_jsx_runtime3 = require("react/jsx-runtime");
 var getChildKey = /* @__PURE__ */ __name(
-  (child) => child.key || "",
+  child => child.key || "",
   "getChildKey",
 );
 function updateChildLookup(children, allChildren) {
-  children.forEach((child) => {
+  children.forEach(child => {
     const key = getChildKey(child);
     allChildren.set(key, child);
   });
@@ -28650,7 +28649,7 @@ __name(updateChildLookup, "updateChildLookup");
 function onlyElements(children) {
   const filtered = [];
   return (
-    import_react5.Children.forEach(children, (child) => {
+    import_react5.Children.forEach(children, child => {
       (0, import_react5.isValidElement)(child) && filtered.push(child);
     }),
     filtered
@@ -28697,7 +28696,7 @@ var AnimatePresence = /* @__PURE__ */ __name(
       return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
         import_jsx_runtime3.Fragment,
         {
-          children: filteredChildren.map((child) =>
+          children: filteredChildren.map(child =>
             /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
               PresenceChild,
               {
@@ -28725,7 +28724,7 @@ var AnimatePresence = /* @__PURE__ */ __name(
     }
     return (
       exitBeforeEnter && exiting.size && (childrenToRender = []),
-      exiting.forEach((key) => {
+      exiting.forEach(key => {
         if (targetKeys.indexOf(key) !== -1) return;
         const child = allChildren.get(key);
         if (!child) return;
@@ -28737,7 +28736,7 @@ var AnimatePresence = /* @__PURE__ */ __name(
               onExitComplete: /* @__PURE__ */ __name(() => {
                 (allChildren.delete(key), exiting.delete(key));
                 const removeIndex = presentChildren.current.findIndex(
-                  (presentChild) => presentChild.key === key,
+                  presentChild => presentChild.key === key,
                 );
                 (presentChildren.current.splice(removeIndex, 1),
                   exiting.size ||
@@ -28756,7 +28755,7 @@ var AnimatePresence = /* @__PURE__ */ __name(
           );
         childrenToRender.splice(insertionIndex, 0, exitingComponent);
       }),
-      (childrenToRender = childrenToRender.map((child) => {
+      (childrenToRender = childrenToRender.map(child => {
         const key = child.key;
         return exiting.has(key)
           ? child
@@ -28781,7 +28780,7 @@ var AnimatePresence = /* @__PURE__ */ __name(
           children: exiting.size
             ? childrenToRender
             : // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
-              childrenToRender.map((child) =>
+              childrenToRender.map(child =>
                 (0, import_react5.cloneElement)(child),
               ),
         },
@@ -28853,7 +28852,7 @@ __name(clamp, "clamp");
 function composeEventHandlers(og, next, { checkDefaultPrevented = true } = {}) {
   return !og || !next
     ? next || og || void 0
-    : (event) => {
+    : event => {
         if (
           (og?.(event),
           !event ||
@@ -29288,12 +29287,12 @@ var React10 = __toESM(require("react"), 1);
 
 // ../../node_modules/.bun/@tamagui+start-transition@1.144.1+5e44392892a7cd3e/node_modules/@tamagui/start-transition/dist/esm/index.mjs
 var import_react7 = require("react");
-var startTransition = /* @__PURE__ */ __name((callback) => {
+var startTransition = /* @__PURE__ */ __name(callback => {
   (0, import_react7.startTransition)(callback);
 }, "startTransition");
 
 // ../../node_modules/.bun/@tamagui+use-controllable-state@1.144.1+ac14ffbd23be179c/node_modules/@tamagui/use-controllable-state/dist/esm/useControllableState.mjs
-var emptyCallbackFn = /* @__PURE__ */ __name((_) => _(), "emptyCallbackFn");
+var emptyCallbackFn = /* @__PURE__ */ __name(_ => _(), "emptyCallbackFn");
 function useControllableState({
   prop,
   defaultProp,
@@ -29320,7 +29319,7 @@ function useControllableState({
         (state !== previous.current &&
           ((previous.current = state), onChangeCb(state)));
     }, [onChangeCb, state, propWins]));
-  const setter = useEvent((next) => {
+  const setter = useEvent(next => {
     if (!preventUpdate)
       if (propWins) {
         const nextValue =
@@ -29363,7 +29362,7 @@ var _Collapsible = React11.forwardRef((props, forwardedRef) => {
     contentId: React11.useId(),
     open,
     onOpenToggle: React11.useCallback(
-      () => setOpen((prevOpen) => !prevOpen),
+      () => setOpen(prevOpen => !prevOpen),
       [setOpen],
     ),
     children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_web.Stack, {
@@ -29458,7 +29457,7 @@ function setRef(ref, value) {
 }
 __name(setRef, "setRef");
 function composeRefs(...refs) {
-  return (node) => refs.forEach((ref) => setRef(ref, node));
+  return node => refs.forEach(ref => setRef(ref, node));
 }
 __name(composeRefs, "composeRefs");
 function useComposedRefs(...refs) {
@@ -29483,7 +29482,7 @@ function createCollection(name) {
       },
       "Toast",
     ),
-    CollectionProvider = /* @__PURE__ */ __name((props) => {
+    CollectionProvider = /* @__PURE__ */ __name(props => {
       const { scope, children } = props,
         ref = import_react8.default.useRef(void 0),
         itemMap = import_react8.default.useRef(
@@ -29616,7 +29615,7 @@ var fullscreenStyle = {
   bottom: 0,
 };
 var getInset = /* @__PURE__ */ __name(
-  (val) =>
+  val =>
     val && typeof val == "object"
       ? val
       : {
@@ -29691,12 +29690,12 @@ var stepTokenUpOrDown = /* @__PURE__ */ __name(
         (cacheWholeKeys[type] = []),
         (cacheWholeVariables[type] = []));
       const sorted = Object.keys(tokens)
-        .map((k) => tokens[k])
+        .map(k => tokens[k])
         .sort((a, b) => a.val - b.val);
       for (const token of sorted)
         (cacheKeys[type].push(token.key), cacheVariables[type].push(token));
       const sortedExcludingHalfSteps = sorted.filter(
-        (x) => !x.key.endsWith(".5"),
+        x => !x.key.endsWith(".5"),
       );
       for (const token of sortedExcludingHalfSteps)
         (cacheWholeKeys[type].push(token.key),
@@ -29983,7 +29982,7 @@ function getDefaultSizeToken(font) {
     sizeDefault = sizeTokens.$true,
     sizeDefaultSpecific = sizeDefault
       ? Object.keys(sizeTokens).find(
-          (x) => x !== "$true" && sizeTokens[x].val === sizeDefault.val,
+          x => x !== "$true" && sizeTokens[x].val === sizeDefault.val,
         )
       : null;
   return !sizeDefault || !sizeDefaultSpecific
@@ -30305,13 +30304,13 @@ var AccordionImplMultiple = React17.forwardRef((props, forwardedRef) => {
       onChange: onValueChange,
     }),
     handleItemOpen = React17.useCallback(
-      (itemValue) => setValue((prevValue = []) => [...prevValue, itemValue]),
+      itemValue => setValue((prevValue = []) => [...prevValue, itemValue]),
       [setValue],
     ),
     handleItemClose = React17.useCallback(
-      (itemValue) =>
+      itemValue =>
         setValue((prevValue = []) =>
-          prevValue.filter((value2) => value2 !== itemValue),
+          prevValue.filter(value2 => value2 !== itemValue),
         ),
       [setValue],
     );
@@ -30347,14 +30346,14 @@ var AccordionImpl = React17.forwardRef((props, forwardedRef) => {
     composedRef = useComposedRefs(accordionRef, forwardedRef),
     getItems = useCollection(__scopeAccordion || ACCORDION_CONTEXT),
     isDirectionLTR = useDirection(dir) === "ltr",
-    handleKeyDown = composeEventHandlers(props.onKeyDown, (event) => {
+    handleKeyDown = composeEventHandlers(props.onKeyDown, event => {
       if (!ACCORDION_KEYS.includes(event.key)) return;
       const target = event.target,
         triggerCollection = getItems().filter(
-          (item) => !item.ref.current?.disabled,
+          item => !item.ref.current?.disabled,
         ),
         triggerIndex = triggerCollection.findIndex(
-          (item) => item.ref.current === target,
+          item => item.ref.current === target,
         ),
         triggerCount = triggerCollection.length;
       if (triggerIndex === -1) return;
@@ -30438,7 +30437,7 @@ var AccordionItem = React17.forwardRef((props, forwardedRef) => {
       ref: forwardedRef,
       disabled,
       open,
-      onOpenChange: /* @__PURE__ */ __name((open2) => {
+      onOpenChange: /* @__PURE__ */ __name(open2 => {
         open2
           ? valueContext.onItemOpen(value)
           : valueContext.onItemClose(value);
@@ -30586,7 +30585,7 @@ var ZIndexHardcodedContext = (0, import_react11.createContext)(void 0);
 // ../../node_modules/.bun/@tamagui+z-index-stack@1.144.1+5e44392892a7cd3e/node_modules/@tamagui/z-index-stack/dist/esm/useStackedZIndex.mjs
 var ZIndicesByContext = {};
 var CurrentPortalZIndices = {};
-var useStackedZIndex = /* @__PURE__ */ __name((props) => {
+var useStackedZIndex = /* @__PURE__ */ __name(props => {
   if (process.env.TAMAGUI_STACK_Z_INDEX_GLOBAL) {
     const { stackZIndex, zIndex: zIndexProp } = props,
       id = (0, import_react12.useId)(),
@@ -30627,7 +30626,7 @@ var useStackedZIndex = /* @__PURE__ */ __name((props) => {
           const entries = Object.values(stackContext),
             baseForLayer = stackLayer * 5e3,
             nextLayerBase = (stackLayer + 1) * 5e3,
-            validEntries = entries.filter((z) => z < nextLayerBase),
+            validEntries = entries.filter(z => z < nextLayerBase),
             highest =
               validEntries.length > 0
                 ? Math.max(...validEntries)
@@ -30687,14 +30686,14 @@ var import_react_dom = require("react-dom");
 // ../../node_modules/.bun/@tamagui+portal@1.144.1+0bee5583ac684eb8/node_modules/@tamagui/portal/dist/esm/helpers.mjs
 var import_web7 = require("@tamagui/core");
 var getStackedZIndexProps = /* @__PURE__ */ __name(
-  (propsIn) => ({
+  propsIn => ({
     stackZIndex: propsIn.stackZIndex,
     zIndex: resolveViewZIndex(propsIn.zIndex),
   }),
   "getStackedZIndexProps",
 );
 var resolveViewZIndex = /* @__PURE__ */ __name(
-  (zIndex) =>
+  zIndex =>
     typeof zIndex > "u" || zIndex === "unset"
       ? void 0
       : typeof zIndex == "number"
@@ -30705,7 +30704,7 @@ var resolveViewZIndex = /* @__PURE__ */ __name(
 
 // ../../node_modules/.bun/@tamagui+portal@1.144.1+0bee5583ac684eb8/node_modules/@tamagui/portal/dist/esm/Portal.mjs
 var import_jsx_runtime10 = require("react/jsx-runtime");
-var Portal = React18.memo((propsIn) => {
+var Portal = React18.memo(propsIn => {
   if (isServer) return null;
   const body = globalThis.document?.body;
   if (!body) return propsIn.children;
@@ -30744,7 +30743,7 @@ var portalListeners = {};
 
 // ../../node_modules/.bun/@tamagui+portal@1.144.1+0bee5583ac684eb8/node_modules/@tamagui/portal/dist/esm/GorhomPortal.mjs
 var import_jsx_runtime11 = require("react/jsx-runtime");
-var ACTIONS = /* @__PURE__ */ ((ACTIONS2) => (
+var ACTIONS = /* @__PURE__ */ (ACTIONS2 => (
   (ACTIONS2[(ACTIONS2.REGISTER_HOST = 0)] = "REGISTER_HOST"),
   (ACTIONS2[(ACTIONS2.DEREGISTER_HOST = 1)] = "DEREGISTER_HOST"),
   (ACTIONS2[(ACTIONS2.ADD_UPDATE_PORTAL = 2)] = "ADD_UPDATE_PORTAL"),
@@ -30763,9 +30762,7 @@ var deregisterHost = /* @__PURE__ */ __name(
 var addUpdatePortal = /* @__PURE__ */ __name(
   (state, hostName, portalName, node) => {
     hostName in state || (state = registerHost(state, hostName));
-    const index3 = state[hostName].findIndex(
-      (item) => item.name === portalName,
-    );
+    const index3 = state[hostName].findIndex(item => item.name === portalName);
     return (
       index3 !== -1
         ? (state[hostName][index3].node = node)
@@ -30786,7 +30783,7 @@ var removePortal = /* @__PURE__ */ __name((state, hostName, portalName) => {
       ),
       state
     );
-  const index3 = state[hostName].findIndex((item) => item.name === portalName);
+  const index3 = state[hostName].findIndex(item => item.name === portalName);
   return (index3 !== -1 && state[hostName].splice(index3, 1), state);
 }, "removePortal");
 var reducer = /* @__PURE__ */ __name((state, action) => {
@@ -30829,7 +30826,7 @@ var reducer = /* @__PURE__ */ __name((state, action) => {
 }, "reducer");
 var PortalStateContext = (0, import_react14.createContext)(null);
 var PortalDispatchContext = (0, import_react14.createContext)(null);
-var usePortalState = /* @__PURE__ */ __name((hostName) => {
+var usePortalState = /* @__PURE__ */ __name(hostName => {
   const state = (0, import_react14.useContext)(PortalStateContext);
   if (state === null)
     throw new Error(
@@ -30863,7 +30860,7 @@ var usePortal = /* @__PURE__ */ __name((hostName = "root") => {
         node,
       });
     }, []),
-    removePortal2 = (0, import_react14.useCallback)((name) => {
+    removePortal2 = (0, import_react14.useCallback)(name => {
       dispatch({
         type: 3,
         hostName,
@@ -30885,7 +30882,7 @@ var PortalProviderComponent = /* @__PURE__ */ __name(
         INITIAL_STATE,
       ),
       transitionDispatch = (0, import_react14.useMemo)(
-        () => (value) => {
+        () => value => {
           startTransition(() => {
             dispatch(value);
           });
@@ -30917,7 +30914,7 @@ var PortalProviderComponent = /* @__PURE__ */ __name(
 var PortalProvider = (0, import_react14.memo)(PortalProviderComponent);
 PortalProvider.displayName = "PortalProvider";
 var defaultRenderer = /* @__PURE__ */ __name(
-  (children) =>
+  children =>
     /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
       import_jsx_runtime11.Fragment,
       {
@@ -30947,10 +30944,10 @@ function PortalHostWeb(props) {
       style: {
         display: "contents",
       },
-      ref: /* @__PURE__ */ __name((node) => {
+      ref: /* @__PURE__ */ __name(node => {
         node &&
           (allPortalHosts.set(props.name, node),
-          portalListeners[props.name]?.forEach((x) => x(node)));
+          portalListeners[props.name]?.forEach(x => x(node)));
       }, "ref"),
     })
   );
@@ -30973,11 +30970,11 @@ function PortalHostNonNative(props) {
     }, []),
     render(
       forwardProps
-        ? state.map((item) => {
+        ? state.map(item => {
             let next = item.node;
             const { children, ...restForwardProps } = forwardProps;
             return forwardProps
-              ? import_react14.default.Children.map(next, (child) =>
+              ? import_react14.default.Children.map(next, child =>
                   import_react14.default.isValidElement(child)
                     ? import_react14.default.cloneElement(child, {
                         key: child.key,
@@ -30987,7 +30984,7 @@ function PortalHostNonNative(props) {
                 )
               : next;
           })
-        : state.map((item) => item.node),
+        : state.map(item => item.node),
     )
   );
 }
@@ -30996,14 +30993,14 @@ __name(PortalHostNonNative, "PortalHostNonNative");
 // ../../node_modules/.bun/@tamagui+portal@1.144.1+0bee5583ac684eb8/node_modules/@tamagui/portal/dist/esm/GorhomPortalItem.mjs
 var import_react15 = require("react");
 var import_react_dom2 = require("react-dom");
-var GorhomPortalItem = /* @__PURE__ */ __name((props) => {
+var GorhomPortalItem = /* @__PURE__ */ __name(props => {
   !props.hostName && !props.passThrough && console.warn("No hostName");
   const cur = allPortalHosts.get(props.hostName || ""),
     [node, setNode] = (0, import_react15.useState)(cur);
   if (
     (useIsomorphicLayoutEffect(() => {
       if (!props.hostName) return;
-      const listener = /* @__PURE__ */ __name((newNode) => {
+      const listener = /* @__PURE__ */ __name(newNode => {
         setNode(newNode);
       }, "listener");
       return (
@@ -31034,7 +31031,7 @@ var AdaptContext = (0, import_core7.createStyledContext)({
   scopeName: "",
   portalName: "",
   platform: null,
-  setPlatform: /* @__PURE__ */ __name((x) => {}, "setPlatform"),
+  setPlatform: /* @__PURE__ */ __name(x => {}, "setPlatform"),
   when: null,
   setChildren: null,
   setWhen: /* @__PURE__ */ __name(() => {}, "setWhen"),
@@ -31062,7 +31059,7 @@ var ProvideAdaptContext = /* @__PURE__ */ __name(
   },
   "ProvideAdaptContext",
 );
-var useAdaptContext = /* @__PURE__ */ __name((scope) => {
+var useAdaptContext = /* @__PURE__ */ __name(scope => {
   const lastScope = (0, import_react16.useContext)(LastAdaptContextScope),
     adaptScope = scope ?? lastScope;
   return AdaptContext.useStyledContext(adaptScope);
@@ -31178,7 +31175,7 @@ var Adapt = withStaticProperties(
     Contents: AdaptContents,
   },
 );
-var AdaptPortalContents = /* @__PURE__ */ __name((props) => {
+var AdaptPortalContents = /* @__PURE__ */ __name(props => {
   const isActive = useAdaptIsActive(props.scope),
     { portalName } = useAdaptContext(props.scope);
   return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(GorhomPortalItem, {
@@ -31210,7 +31207,7 @@ var useAdaptIsActiveGiven = /* @__PURE__ */ __name(
   },
   "useAdaptIsActiveGiven",
 );
-var useAdaptIsActive = /* @__PURE__ */ __name((scope) => {
+var useAdaptIsActive = /* @__PURE__ */ __name(scope => {
   const props = useAdaptContext(scope);
   return useAdaptIsActiveGiven(props);
 }, "useAdaptIsActive");
@@ -31281,7 +31278,7 @@ function createContextScope(scopeName, createContextScopeDeps = []) {
   }
   __name(createContext22, "createContext2");
   const createScope = /* @__PURE__ */ __name(() => {
-    const scopeContexts = defaultContexts.map((defaultContext) =>
+    const scopeContexts = defaultContexts.map(defaultContext =>
       React21.createContext(defaultContext),
     );
     return function (scope) {
@@ -31310,7 +31307,7 @@ function composeContextScopes(...scopes) {
   const baseScope = scopes[0];
   if (scopes.length === 1) return baseScope;
   const createScope = /* @__PURE__ */ __name(() => {
-    const scopeHooks = scopes.map((createScope2) => ({
+    const scopeHooks = scopes.map(createScope2 => ({
       useScope: createScope2(),
       scopeName: createScope2.scopeName,
     }));
@@ -31363,7 +31360,7 @@ function useEscapeKeydown(
 ) {
   const onEscapeKeyDown = useCallbackRef(onEscapeKeyDownProp);
   import_react17.default.useEffect(() => {
-    const handleKeyDown = /* @__PURE__ */ __name((event) => {
+    const handleKeyDown = /* @__PURE__ */ __name(event => {
       event.key === "Escape" && onEscapeKeyDown(event);
     }, "handleKeyDown");
     return (
@@ -31408,7 +31405,7 @@ var Dismissable = React24.forwardRef((props, forwardedRef) => {
     context2 = React24.useContext(DismissableContext),
     [node, setNode] = React24.useState(null),
     [, force] = React24.useState({}),
-    composedRefs = useComposedRefs(forwardedRef, (node2) => setNode(node2)),
+    composedRefs = useComposedRefs(forwardedRef, node2 => setNode(node2)),
     layers = Array.from(context2.layers),
     [highestLayerWithOutsidePointerEventsDisabled] = [
       ...context2.layersWithOutsidePointerEventsDisabled,
@@ -31421,9 +31418,9 @@ var Dismissable = React24.forwardRef((props, forwardedRef) => {
       context2.layersWithOutsidePointerEventsDisabled.size > 0,
     isPointerEventsEnabled =
       index3 >= highestLayerWithOutsidePointerEventsDisabledIndex,
-    pointerDownOutside = usePointerDownOutside((event) => {
+    pointerDownOutside = usePointerDownOutside(event => {
       const target = event.target,
-        isPointerDownOnBranch = [...context2.branches].some((branch) =>
+        isPointerDownOnBranch = [...context2.branches].some(branch =>
           branch.contains(target),
         );
       !isPointerEventsEnabled ||
@@ -31432,15 +31429,15 @@ var Dismissable = React24.forwardRef((props, forwardedRef) => {
         onInteractOutside?.(event),
         event.defaultPrevented || onDismiss?.());
     }),
-    focusOutside = useFocusOutside((event) => {
+    focusOutside = useFocusOutside(event => {
       const target = event.target;
-      [...context2.branches].some((branch) => branch.contains(target)) ||
+      [...context2.branches].some(branch => branch.contains(target)) ||
         (onFocusOutside?.(event),
         onInteractOutside?.(event),
         event.defaultPrevented || onDismiss?.());
     });
   return (
-    useEscapeKeydown((event) => {
+    useEscapeKeydown(event => {
       index3 === context2.layers.size - 1 &&
         (onEscapeKeyDown?.(event),
         !event.defaultPrevented &&
@@ -31543,7 +31540,7 @@ function usePointerDownOutside(onPointerDownOutside) {
     handleClickRef = React24.useRef(() => {});
   return (
     React24.useEffect(() => {
-      const handlePointerDown = /* @__PURE__ */ __name((event) => {
+      const handlePointerDown = /* @__PURE__ */ __name(event => {
           if (event.target && !isPointerInsideReactTreeRef.current) {
             let handleAndDispatchPointerDownOutsideEvent =
               /* @__PURE__ */ __name(function () {
@@ -31593,7 +31590,7 @@ function useFocusOutside(onFocusOutside) {
     isFocusInsideReactTreeRef = React24.useRef(false);
   return (
     React24.useEffect(() => {
-      const handleFocus = /* @__PURE__ */ __name((event) => {
+      const handleFocus = /* @__PURE__ */ __name(event => {
         event.target &&
           !isFocusInsideReactTreeRef.current &&
           handleAndDispatchCustomEvent(
@@ -31671,7 +31668,7 @@ function useAsyncEffectOfType(type, cb, deps = []) {
     try {
       const value = cb(signal, ...deps);
       Promise.resolve(value)
-        .then(async (res) => {
+        .then(async res => {
           if (res && typeof res == "function") {
             if (signal.aborted) return res();
             signal.addEventListener("abort", res);
@@ -31702,18 +31699,18 @@ __name(useAsyncEffectOfType, "useAsyncEffectOfType");
 
 // ../../node_modules/.bun/@tamagui+use-async@1.144.1+5e44392892a7cd3e/node_modules/@tamagui/use-async/dist/esm/sleep.mjs
 var sleep = /* @__PURE__ */ __name(async (ms, signal) => {
-  if ((await new Promise((res) => setTimeout(res, ms)), signal?.aborted))
+  if ((await new Promise(res => setTimeout(res, ms)), signal?.aborted))
     throw new AbortError();
 }, "sleep");
 
 // ../../node_modules/.bun/@tamagui+use-async@1.144.1+5e44392892a7cd3e/node_modules/@tamagui/use-async/dist/esm/idle.mjs
 var idleCb =
   typeof requestIdleCallback > "u"
-    ? (cb) => setTimeout(cb, 1)
+    ? cb => setTimeout(cb, 1)
     : requestIdleCallback;
 var idleAsync = /* @__PURE__ */ __name(
   () =>
-    new Promise((res) => {
+    new Promise(res => {
       idleCb(res);
     }),
   "idleAsync",
@@ -31733,7 +31730,7 @@ var idle = /* @__PURE__ */ __name(async (signal, options) => {
   )
     throw new AbortError();
 }, "idle");
-var fullyIdle = /* @__PURE__ */ __name(async (signal) => {
+var fullyIdle = /* @__PURE__ */ __name(async signal => {
   for (;;) {
     const startTime = Date.now();
     if ((await idle(signal), Date.now() - startTime < 15)) break;
@@ -31859,7 +31856,7 @@ function useFocusScope(props, forwardedRef) {
     onUnmountAutoFocus = useEvent(onUnmountAutoFocusProp),
     lastFocusedElementRef = React26.useRef(null),
     setContainerTransition = React26.useCallback(
-      (node) => {
+      node => {
         startTransition(() => {
           setContainer(node);
         });
@@ -31916,7 +31913,7 @@ function useFocusScope(props, forwardedRef) {
     );
   }, [trapped, forceUnmount, container, focusScope.paused]),
     useAsyncEffect(
-      async (signal) => {
+      async signal => {
         if (!enabled || !container || forceUnmount) return;
         focusScopesStack.add(focusScope);
         const previouslyFocusedElement = document.activeElement;
@@ -31940,7 +31937,7 @@ function useFocusScope(props, forwardedRef) {
               ));
             const allCandidates = getTabbableCandidates(container),
               visibleCandidates = removeLinks(allCandidates).filter(
-                (candidate) =>
+                candidate =>
                   !isHidden(candidate, {
                     upTo: container,
                   }),
@@ -31986,7 +31983,7 @@ function useFocusScope(props, forwardedRef) {
       ],
     ));
   const handleKeyDown = React26.useCallback(
-    (event) => {
+    event => {
       if (!trapped || !loop || focusScope.paused || !enabled || !container)
         return;
       const isTabKey =
@@ -32018,7 +32015,7 @@ function useFocusScope(props, forwardedRef) {
   );
   React26.useEffect(() => {
     if (!container || !trapped || !loop || !enabled) return;
-    const handleKeyDownCapture = /* @__PURE__ */ __name((event) => {
+    const handleKeyDownCapture = /* @__PURE__ */ __name(event => {
       event.key === "Tab" && handleKeyDown(event);
     }, "handleKeyDownCapture");
     return (
@@ -32030,7 +32027,7 @@ function useFocusScope(props, forwardedRef) {
   }, [container, trapped, loop, enabled, handleKeyDown]);
   const existingOnKeyDown = scopeProps.onKeyDown,
     composedOnKeyDown = React26.useCallback(
-      (event) => {
+      event => {
         existingOnKeyDown?.(event);
       },
       [existingOnKeyDown],
@@ -32064,7 +32061,7 @@ __name(getTabbableEdges, "getTabbableEdges");
 function getTabbableCandidates(container) {
   const nodes = [],
     walker = document.createTreeWalker(container, NodeFilter.SHOW_ELEMENT, {
-      acceptNode: /* @__PURE__ */ __name((node) => {
+      acceptNode: /* @__PURE__ */ __name(node => {
         const isHiddenInput =
           node.tagName === "INPUT" && node.type === "hidden";
         return node.disabled || node.hidden || isHiddenInput
@@ -32140,7 +32137,7 @@ function arrayRemove(array, item) {
 }
 __name(arrayRemove, "arrayRemove");
 function removeLinks(items) {
-  return items.filter((item) => item.tagName !== "A");
+  return items.filter(item => item.tagName !== "A");
 }
 __name(removeLinks, "removeLinks");
 
@@ -32153,7 +32150,7 @@ var canUseDOM = /* @__PURE__ */ __name(
 );
 var refCount = 0;
 var previousBodyStyle = null;
-var useDisableBodyScroll = /* @__PURE__ */ __name((enabled) => {
+var useDisableBodyScroll = /* @__PURE__ */ __name(enabled => {
   (0, import_react19.useEffect)(() => {
     if (!enabled || !canUseDOM()) return;
     const bodyEl = document.documentElement;
@@ -32177,7 +32174,7 @@ var useDisableBodyScroll = /* @__PURE__ */ __name((enabled) => {
 
 // ../../node_modules/.bun/@tamagui+remove-scroll@1.144.1+5e44392892a7cd3e/node_modules/@tamagui/remove-scroll/dist/esm/RemoveScroll.mjs
 var RemoveScroll = /* @__PURE__ */ __name(
-  (props) => (useDisableBodyScroll(!!props.enabled), props.children),
+  props => (useDisableBodyScroll(!!props.enabled), props.children),
   "RemoveScroll",
 );
 
@@ -32258,9 +32255,9 @@ var useSheetController = /* @__PURE__ */ __name(() => {
 var SheetControllerContext = import_react22.default.createContext(null);
 
 // ../../node_modules/.bun/@tamagui+sheet@1.144.1+0bee5583ac684eb8/node_modules/@tamagui/sheet/dist/esm/useSheetOpenState.mjs
-var useSheetOpenState = /* @__PURE__ */ __name((props) => {
+var useSheetOpenState = /* @__PURE__ */ __name(props => {
   const { isHidden: isHidden2, controller } = useSheetController(),
-    onOpenChangeInternal = /* @__PURE__ */ __name((val) => {
+    onOpenChangeInternal = /* @__PURE__ */ __name(val => {
       (controller?.onOpenChange?.(val), props.onOpenChange?.(val));
     }, "onOpenChangeInternal"),
     propVal = props.preferAdaptParentOpenState
@@ -32311,7 +32308,7 @@ function useSheetProviderProps(props, state, options = {}) {
     position = state.open === false ? -1 : position_,
     { open } = state,
     setPosition = import_react23.default.useCallback(
-      (next) => {
+      next => {
         props.dismissOnSnapToBottom && next === snapPoints.length - 1
           ? state.setOpen(false)
           : setPositionImmediate(next);
@@ -32325,7 +32322,7 @@ function useSheetProviderProps(props, state, options = {}) {
     );
   (process.env.NODE_ENV === "development" &&
     (snapPointsMode === "mixed" &&
-      snapPoints.some((p) => {
+      snapPoints.some(p => {
         if (typeof p == "string") {
           if (p === "fit") return false;
           if (p.endsWith("%")) {
@@ -32351,12 +32348,12 @@ function useSheetProviderProps(props, state, options = {}) {
         "\u26A0\uFE0F Invalid snapPoint given, there are no snap points when snapPointsMode is fit",
       ),
     snapPointsMode === "constant" &&
-      snapPoints.some((p) => typeof p != "number" || p < 0) &&
+      snapPoints.some(p => typeof p != "number" || p < 0) &&
       console.warn(
         "\u26A0\uFE0F Invalid snapPoint given, snapPoints must be positive numeric values when snapPointsMode is constant",
       ),
     snapPointsMode === "percent" &&
-      snapPoints.some((p) => typeof p != "number" || p < 0 || p > 100) &&
+      snapPoints.some(p => typeof p != "number" || p < 0 || p > 100) &&
       console.warn(
         "\u26A0\uFE0F Invalid snapPoint given, snapPoints must be numeric values between 0 and 100 when snapPointsMode is percent",
       )),
@@ -32389,7 +32386,7 @@ function useSheetProviderProps(props, state, options = {}) {
           scrollLock: false,
           isParentDragging: false,
           onParentDragging: /* @__PURE__ */ __name(
-            (cb) => (
+            cb => (
               parentDragListeners.add(cb),
               () => {
                 parentDragListeners.delete(cb);
@@ -32397,10 +32394,10 @@ function useSheetProviderProps(props, state, options = {}) {
             ),
             "onParentDragging",
           ),
-          setParentDragging: /* @__PURE__ */ __name((val) => {
+          setParentDragging: /* @__PURE__ */ __name(val => {
             val !== bridge.isParentDragging &&
               ((bridge.isParentDragging = val),
-              parentDragListeners.forEach((cb) => cb(val)));
+              parentDragListeners.forEach(cb => cb(val)));
           }, "setParentDragging"),
         };
       return bridge;
@@ -32509,7 +32506,7 @@ var SheetImplementationCustom = import_react24.default.forwardRef(
       sheetInsideSheet = import_react24.default.useContext(
         SheetInsideSheetContext,
       ),
-      onInnerSheet = import_react24.default.useCallback((hasChild) => {
+      onInnerSheet = import_react24.default.useCallback(hasChild => {
         setIsShowingInnerSheet(hasChild);
       }, []),
       stableFrameSize = import_react24.default.useRef(frameSize);
@@ -32518,7 +32515,7 @@ var SheetImplementationCustom = import_react24.default.forwardRef(
     }, [open, frameSize]);
     const positions = import_react24.default.useMemo(
         () =>
-          snapPoints.map((point) =>
+          snapPoints.map(point =>
             // FIX: Use stable frameSize when closing to prevent position jumps
             getYPositions(
               snapPointsMode,
@@ -32564,7 +32561,7 @@ var SheetImplementationCustom = import_react24.default.forwardRef(
         hostRef: sheetRef,
       },
       import_react24.default.useCallback(
-        (value) => {
+        value => {
           ((at.current = value), (scrollBridge.paneY = value));
         },
         [animationDriver],
@@ -32577,7 +32574,7 @@ var SheetImplementationCustom = import_react24.default.forwardRef(
           (scrollBridge.onFinishAnimate = void 0)));
     }
     __name(stopSpring, "stopSpring");
-    const animateTo = (0, import_core9.useEvent)((position2) => {
+    const animateTo = (0, import_core9.useEvent)(position2 => {
       if (frameSize === 0) return;
       let toValue =
         isHidden2 || position2 === -1 ? screenSize : positions[position2];
@@ -32693,7 +32690,7 @@ var SheetImplementationCustom = import_react24.default.forwardRef(
           }, "grant");
         let isExternalDrag = false;
         return (
-          (scrollBridge.drag = (dy) => {
+          (scrollBridge.drag = dy => {
             isExternalDrag || ((isExternalDrag = true), grant());
             const to = dy + startY;
             animatedNumber.setValue(resisted(to, minY), {
@@ -32728,7 +32725,7 @@ var SheetImplementationCustom = import_react24.default.forwardRef(
         setPosition,
       ]),
       handleAnimationViewLayout = import_react24.default.useCallback(
-        (e) => {
+        e => {
           if (!open && stableFrameSize.current !== 0) return;
           const next = Math.min(
             e.nativeEvent?.layout.height,
@@ -32738,14 +32735,14 @@ var SheetImplementationCustom = import_react24.default.forwardRef(
         },
         [open],
       ),
-      handleMaxContentViewLayout = import_react24.default.useCallback((e) => {
+      handleMaxContentViewLayout = import_react24.default.useCallback(e => {
         const next = Math.min(
           e.nativeEvent?.layout.height,
           import_react_native_web.Dimensions.get(relativeDimensionTo).height,
         );
         next && setMaxContentSize(next);
       }, []),
-      animatedStyle = useAnimatedNumberStyle(animatedNumber, (val) => {
+      animatedStyle = useAnimatedNumberStyle(animatedNumber, val => {
         "worklet";
         return {
           transform: [
@@ -32760,7 +32757,7 @@ var SheetImplementationCustom = import_react24.default.forwardRef(
       if (isWeb || !moveOnKeyboardChange) return;
       const keyboardShowListener = import_react_native_web.Keyboard.addListener(
           currentPlatform === "ios" ? "keyboardWillShow" : "keyboardDidShow",
-          (e) => {
+          e => {
             sizeBeforeKeyboard.current === null &&
               ((sizeBeforeKeyboard.current =
                 isHidden2 || position === -1
@@ -32810,7 +32807,7 @@ var SheetImplementationCustom = import_react24.default.forwardRef(
         : snapPointsMode === "percent"
           ? `${maxSnapPoint}${isWeb ? "dvh" : "%"}`
           : maxSnapPoint,
-      setHasScrollView = import_react24.default.useCallback((val) => {
+      setHasScrollView = import_react24.default.useCallback(val => {
         hasScrollView.current = val;
       }, []);
     let contents = /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
@@ -32993,7 +32990,7 @@ var SheetScrollView = import_react25.default.forwardRef(
         defaultProp: true,
       }),
       scrollRef = import_react25.default.useRef(null),
-      setScrollEnabled = /* @__PURE__ */ __name((next) => {
+      setScrollEnabled = /* @__PURE__ */ __name(next => {
         (scrollRef.current?.setNativeProps?.({
           scrollEnabled: next,
         }),
@@ -33045,7 +33042,7 @@ var SheetScrollView = import_react25.default.forwardRef(
       if (!node) return;
       node.addEventListener(
         "touchmove",
-        (e) => {
+        e => {
           scrollBridge.isParentDragging &&
             node.scrollTo({
               top: scrollBridge.y,
@@ -33057,7 +33054,7 @@ var SheetScrollView = import_react25.default.forwardRef(
           passive: false,
         },
       );
-      const disposeBridgeListen = scrollBridge.onParentDragging((val) => {});
+      const disposeBridgeListen = scrollBridge.onParentDragging(val => {});
       return () => {
         (disposeBridgeListen(), controller.abort());
       };
@@ -33076,7 +33073,7 @@ var SheetScrollView = import_react25.default.forwardRef(
         scrollBridge.hasScrollableContent = hasScrollableContent;
       }, [hasScrollableContent]),
       /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(ScrollView, {
-        onLayout: /* @__PURE__ */ __name((e) => {
+        onLayout: /* @__PURE__ */ __name(e => {
           ((parentHeight.current = Math.ceil(e.nativeEvent.layout.height)),
             setIsScrollable());
         }, "onLayout"),
@@ -33086,7 +33083,7 @@ var SheetScrollView = import_react25.default.forwardRef(
         onResponderRelease: release,
         className: "_ovs-contain",
         scrollEnabled: scrollable,
-        onScroll: /* @__PURE__ */ __name((e) => {
+        onScroll: /* @__PURE__ */ __name(e => {
           const { y } = e.nativeEvent.contentOffset;
           ((scrollBridge.y = y),
             import_core10.isWeb && (scrollBridge.scrollLock = y > 0),
@@ -33102,13 +33099,13 @@ var SheetScrollView = import_react25.default.forwardRef(
           "onStartShouldSetResponder",
         ),
         onMoveShouldSetResponder: /* @__PURE__ */ __name(
-          (e) => scrollable,
+          e => scrollable,
           "onMoveShouldSetResponder",
         ),
         contentContainerStyle: {
           minHeight: "100%",
         },
-        onResponderMove: /* @__PURE__ */ __name((e) => {
+        onResponderMove: /* @__PURE__ */ __name(e => {
           if (import_core10.isWeb) {
             const { pageY } = e.nativeEvent;
             state.current.isScrolling ||
@@ -33151,7 +33148,7 @@ var SheetScrollView = import_react25.default.forwardRef(
             inset: 0,
             pointerEvents: "none",
             zIndex: -1,
-            onLayout: /* @__PURE__ */ __name((e) => {
+            onLayout: /* @__PURE__ */ __name(e => {
               ((contentHeight.current = Math.floor(
                 e.nativeEvent.layout.height,
               )),
@@ -33221,7 +33218,7 @@ function createSheet({ Handle: Handle2, Frame: Frame2, Overlay: Overlay2 }) {
       },
     ),
     SheetOverlay = Overlay2.extractable(
-      (0, import_react26.memo)((propsIn) => {
+      (0, import_react26.memo)(propsIn => {
         const { __scopeSheet, ...props } = propsIn,
           context2 = useSheetContext(SHEET_OVERLAY_NAME, __scopeSheet),
           element = (0, import_react26.useMemo)(
@@ -33511,7 +33508,7 @@ __name(getNativeSheet, "getNativeSheet");
 function setupNativeSheet(platform2, RNIOSModal) {
   const { ModalSheetView, ModalSheetViewMainContent } = RNIOSModal;
   platform2 === "ios" &&
-    (nativeSheets[platform2] = (props) => {
+    (nativeSheets[platform2] = props => {
       const state = useSheetOpenState(props),
         providerProps = useSheetProviderProps(props, state),
         { open, setOpen } = state,
@@ -33868,15 +33865,12 @@ var DialogContentModal = React34.forwardRef(
       ref: composedRefs,
       trapFocus: context2.open,
       disableOutsidePointerEvents: true,
-      onCloseAutoFocus: composeEventHandlers(
-        props.onCloseAutoFocus,
-        (event) => {
-          (event.preventDefault(), context2.triggerRef.current?.focus());
-        },
-      ),
+      onCloseAutoFocus: composeEventHandlers(props.onCloseAutoFocus, event => {
+        (event.preventDefault(), context2.triggerRef.current?.focus());
+      }),
       onPointerDownOutside: composeEventHandlers(
         props.onPointerDownOutside,
-        (event) => {
+        event => {
           const originalEvent = event.detail.originalEvent,
             ctrlLeftClick =
               originalEvent.button === 0 && originalEvent.ctrlKey === true;
@@ -33884,7 +33878,7 @@ var DialogContentModal = React34.forwardRef(
             event.preventDefault();
         },
       ),
-      onFocusOutside: composeEventHandlers(props.onFocusOutside, (event) =>
+      onFocusOutside: composeEventHandlers(props.onFocusOutside, event =>
         event.preventDefault(),
       ),
       ...(!props.unstyled && {
@@ -33901,7 +33895,7 @@ var DialogContentNonModal = React34.forwardRef((props, forwardedRef) => {
     ref: forwardedRef,
     trapFocus: false,
     disableOutsidePointerEvents: false,
-    onCloseAutoFocus: /* @__PURE__ */ __name((event) => {
+    onCloseAutoFocus: /* @__PURE__ */ __name(event => {
       (props.onCloseAutoFocus?.(event),
         event.defaultPrevented ||
           (hasInteractedOutsideRef.current ||
@@ -33909,7 +33903,7 @@ var DialogContentNonModal = React34.forwardRef((props, forwardedRef) => {
           event.preventDefault()),
         (hasInteractedOutsideRef.current = false));
     }, "onCloseAutoFocus"),
-    onInteractOutside: /* @__PURE__ */ __name((event) => {
+    onInteractOutside: /* @__PURE__ */ __name(event => {
       (props.onInteractOutside?.(event),
         event.defaultPrevented || (hasInteractedOutsideRef.current = true));
       const target = event.target,
@@ -34130,7 +34124,7 @@ var Dialog = withStaticProperties(
         onChange: onOpenChange,
       }),
       onOpenToggle = React34.useCallback(() => {
-        setOpen((prevOpen) => !prevOpen);
+        setOpen(prevOpen => !prevOpen);
       }, [setOpen]),
       adaptScope = `DialogAdapt${scope}`,
       context2 = {
@@ -34191,11 +34185,11 @@ var Dialog = withStaticProperties(
     Adapt,
   },
 );
-var DialogSheetController = /* @__PURE__ */ __name((props) => {
+var DialogSheetController = /* @__PURE__ */ __name(props => {
   const context2 = useDialogContext(props.scope),
     isAdapted = useAdaptIsActive(context2.adaptScope);
   return /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(SheetController, {
-    onOpenChange: /* @__PURE__ */ __name((val) => {
+    onOpenChange: /* @__PURE__ */ __name(val => {
       isAdapted && props.onOpenChange?.(val);
     }, "onOpenChange"),
     open: context2.open,
@@ -34208,7 +34202,7 @@ var DialogSheetController = /* @__PURE__ */ __name((props) => {
 var React35 = __toESM(require("react"), 1);
 var import_jsx_runtime24 = require("react/jsx-runtime");
 var getAlertDialogScope = /* @__PURE__ */ __name(
-  (scope) => scope,
+  scope => scope,
   "getAlertDialogScope",
 );
 var ROOT_NAME = "AlertDialog";
@@ -34290,7 +34284,7 @@ var AlertDialogContent = React35.forwardRef(function (props, forwardedRef) {
             ref: composedRefs,
             onOpenAutoFocus: composeEventHandlers(
               contentProps.onOpenAutoFocus,
-              (event) => {
+              event => {
                 (event.preventDefault(),
                   isWeb &&
                     cancelRef.current?.focus({
@@ -34299,11 +34293,11 @@ var AlertDialogContent = React35.forwardRef(function (props, forwardedRef) {
               },
             ),
             onPointerDownOutside: /* @__PURE__ */ __name(
-              (event) => event.preventDefault(),
+              event => event.preventDefault(),
               "onPointerDownOutside",
             ),
             onInteractOutside: /* @__PURE__ */ __name(
-              (event) => event.preventDefault(),
+              event => event.preventDefault(),
               "onInteractOutside",
             ),
             children: [
@@ -34409,7 +34403,7 @@ var DescriptionWarning2 = /* @__PURE__ */ __name(
   ),
   "DescriptionWarning",
 );
-var AlertDialogInner = /* @__PURE__ */ __name((props) => {
+var AlertDialogInner = /* @__PURE__ */ __name(props => {
   const { scope, native, ...alertDialogProps } = props,
     dialogScope = getAlertDialogScope(scope);
   return /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(Dialog, {
@@ -34473,7 +34467,7 @@ var Image = StyledImage.styleable((inProps, ref) => {
           async function run() {
             if (typeof src == "string")
               try {
-                await fetch(src).then((res) => res.text());
+                await fetch(src).then(res => res.text());
               } catch {
                 console.error(`Error loading image: ${src}`, {
                   props,
@@ -34717,13 +34711,13 @@ var getFontSizeToken = /* @__PURE__ */ __name((inSize, opts) => {
 
 // ../../node_modules/.bun/@tamagui+helpers-tamagui@1.144.1+0bee5583ac684eb8/node_modules/@tamagui/helpers-tamagui/dist/esm/prevent.mjs
 var prevent = /* @__PURE__ */ __name(
-  (e) => [e.preventDefault(), e.stopPropagation()],
+  e => [e.preventDefault(), e.stopPropagation()],
   "prevent",
 );
 
 // ../../node_modules/.bun/@tamagui+helpers-tamagui@1.144.1+0bee5583ac684eb8/node_modules/@tamagui/helpers-tamagui/dist/esm/useCurrentColor.mjs
 var import_web11 = require("@tamagui/core");
-var useCurrentColor = /* @__PURE__ */ __name((colorProp) => {
+var useCurrentColor = /* @__PURE__ */ __name(colorProp => {
   const theme = (0, import_web11.useTheme)();
   return colorProp
     ? (0, import_web11.getVariable)(colorProp)
@@ -34732,9 +34726,9 @@ var useCurrentColor = /* @__PURE__ */ __name((colorProp) => {
 
 // ../../node_modules/.bun/@tamagui+helpers-tamagui@1.144.1+0bee5583ac684eb8/node_modules/@tamagui/helpers-tamagui/dist/esm/useGetThemedIcon.mjs
 var import_react30 = __toESM(require("react"), 1);
-var useGetThemedIcon = /* @__PURE__ */ __name((props) => {
+var useGetThemedIcon = /* @__PURE__ */ __name(props => {
   const color = useCurrentColor(props.color);
-  return (el) =>
+  return el =>
     el &&
     (import_react30.default.isValidElement(el)
       ? import_react30.default.cloneElement(el, {
@@ -34847,7 +34841,7 @@ var ButtonText = (0, import_web12.styled)(SizableText2, {
     unstyled: process.env.TAMAGUI_HEADLESS === "1",
   },
 });
-var ButtonIcon = /* @__PURE__ */ __name((props) => {
+var ButtonIcon = /* @__PURE__ */ __name(props => {
   const { children, scaleIcon = 1 } = props,
     { size: size4, color } = (0, import_react31.useContext)(ButtonContext),
     iconSize =
@@ -35158,7 +35152,7 @@ var CheckboxFrame = (0, import_core20.styled)(ThemeableStack, {
     },
     size: {
       "...size": /* @__PURE__ */ __name(
-        (val) => ({
+        val => ({
           borderRadius: (0, import_core20.getVariableValue)(getSize(val)) / 8,
         }),
         "...size",
@@ -35178,7 +35172,7 @@ var registerFocusable = /* @__PURE__ */ __name(
   (id, input) => () => {},
   "registerFocusable",
 );
-var focusFocusable = /* @__PURE__ */ __name((id) => {}, "focusFocusable");
+var focusFocusable = /* @__PURE__ */ __name(id => {}, "focusFocusable");
 
 // ../../node_modules/.bun/@tamagui+focusable@1.144.1+0bee5583ac684eb8/node_modules/@tamagui/focusable/dist/esm/focusableInputHOC.mjs
 var import_web14 = require("@tamagui/core");
@@ -35187,14 +35181,14 @@ function useFocusable({ isInput, props, ref }) {
   const { id, onChangeText, value, defaultValue: defaultValue2 } = props,
     inputValue = import_react32.default.useRef(value || defaultValue2 || ""),
     unregisterFocusable = import_react32.default.useRef(void 0),
-    focusAndSelect = import_react32.default.useCallback((input) => {
+    focusAndSelect = import_react32.default.useCallback(input => {
       (input.focus(),
         input.setSelection &&
           typeof inputValue.current == "string" &&
           input.setSelection(0, inputValue.current.length));
     }, []),
     registerFocusableHandler = import_react32.default.useCallback(
-      (input) => {
+      input => {
         !id ||
           !input ||
           (unregisterFocusable.current?.(),
@@ -35211,12 +35205,12 @@ function useFocusable({ isInput, props, ref }) {
       [id, isInput, focusAndSelect],
     ),
     inputRef = import_react32.default.useCallback(
-      (input) => {
+      input => {
         input && registerFocusableHandler(input);
       },
       [registerFocusableHandler],
     ),
-    handleChangeText = (0, import_web14.useEvent)((value2) => {
+    handleChangeText = (0, import_web14.useEvent)(value2 => {
       ((inputValue.current = value2), onChangeText?.(value2));
     });
   return (
@@ -35321,13 +35315,13 @@ var LabelComponent = React40.forwardRef((props, forwardedRef) => {
         htmlFor,
         ...labelProps,
         ref: composedRefs,
-        onMouseDown: /* @__PURE__ */ __name((event) => {
+        onMouseDown: /* @__PURE__ */ __name(event => {
           (props.onMouseDown?.(event),
             !event.defaultPrevented &&
               event.detail > 1 &&
               event.preventDefault());
         }, "onMouseDown"),
-        onPress: /* @__PURE__ */ __name((event) => {
+        onPress: /* @__PURE__ */ __name(event => {
           if ((props.onPress?.(event), isWeb)) {
             if (htmlFor || !controlRef.current || event.defaultPrevented)
               return;
@@ -35344,7 +35338,7 @@ var LabelComponent = React40.forwardRef((props, forwardedRef) => {
 });
 LabelComponent.displayName = NAME;
 var Label = LabelFrame.extractable((0, import_web15.themeable)(LabelComponent));
-var useLabelContext = /* @__PURE__ */ __name((element) => {
+var useLabelContext = /* @__PURE__ */ __name(element => {
   const context2 = useLabelContextImpl("LabelConsumer"),
     { controlRef } = context2;
   return (
@@ -35396,7 +35390,7 @@ __name(getState4, "getState");
 
 // ../../node_modules/.bun/@tamagui+checkbox-headless@1.144.1+0bee5583ac684eb8/node_modules/@tamagui/checkbox-headless/dist/esm/BubbleInput.mjs
 var import_jsx_runtime29 = require("react/jsx-runtime");
-var BubbleInput = /* @__PURE__ */ __name((props) => {
+var BubbleInput = /* @__PURE__ */ __name(props => {
   const {
       checked,
       bubbles = true,
@@ -35467,15 +35461,15 @@ function useCheckbox(props, [checked, setChecked], ref) {
     parentKeyDown = props.onKeyDown,
     handleKeyDown = (0, import_react33.useMemo)(
       () =>
-        composeEventHandlers(parentKeyDown, (event) => {
+        composeEventHandlers(parentKeyDown, event => {
           event.key === "Enter" && event.preventDefault();
         }),
       [parentKeyDown],
     ),
     handlePress = (0, import_react33.useMemo)(
       () =>
-        composeEventHandlers(props.onPress, (event) => {
-          (setChecked((prevChecked) =>
+        composeEventHandlers(props.onPress, event => {
+          (setChecked(prevChecked =>
             isIndeterminate(prevChecked) ? true : !prevChecked,
           ),
             isFormControl &&
@@ -35528,7 +35522,7 @@ var CheckboxContext = import_react34.default.createContext({
   checked: false,
   disabled: false,
 });
-var ensureContext = /* @__PURE__ */ __name((x) => {
+var ensureContext = /* @__PURE__ */ __name(x => {
   x.context || (x.context = CheckboxContext);
 }, "ensureContext");
 function createCheckbox(createProps) {
@@ -35656,7 +35650,7 @@ function createCheckbox(createProps) {
             color: theme.color,
           });
         children = import_react34.default.Children.toArray(childrenProp).map(
-          (child) =>
+          child =>
             disablePassStyles || !import_react34.default.isValidElement(child)
               ? child
               : getThemedIcon(child),
@@ -35717,7 +35711,7 @@ var FormComponent = FormFrame.extractable(function ({ onSubmit, ...props }) {
     onSubmit,
     children: /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(FormFrame, {
       ...props,
-      onSubmit: /* @__PURE__ */ __name((e) => e.preventDefault(), "onSubmit"),
+      onSubmit: /* @__PURE__ */ __name(e => e.preventDefault(), "onSubmit"),
     }),
   });
 });
@@ -35788,9 +35782,7 @@ function useIndexedChildren(children) {
 }
 __name(useIndexedChildren, "useIndexedChildren");
 function parseIndexPath(indexPathString) {
-  return indexPathString
-    .split(".")
-    .map((index3) => Number.parseInt(index3, 10));
+  return indexPathString.split(".").map(index3 => Number.parseInt(index3, 10));
 }
 __name(parseIndexPath, "parseIndexPath");
 
@@ -35891,11 +35883,11 @@ function createGroup(verticalDefault) {
           }),
         ),
         onItemMount = import_react35.default.useCallback(
-          () => setItemChildrenCount((prev) => prev + 1),
+          () => setItemChildrenCount(prev => prev + 1),
           [],
         ),
         onItemUnmount = import_react35.default.useCallback(
-          () => setItemChildrenCount((prev) => prev - 1),
+          () => setItemChildrenCount(prev => prev - 1),
           [],
         );
       return /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(GroupProvider, {
@@ -36415,7 +36407,7 @@ var max = Math.max;
 var round = Math.round;
 var floor = Math.floor;
 var createCoords = /* @__PURE__ */ __name(
-  (v) => ({
+  v => ({
     x: v,
     y: v,
   }),
@@ -36497,7 +36489,7 @@ __name(getExpandedPlacements, "getExpandedPlacements");
 function getOppositeAlignmentPlacement(placement) {
   return placement.replace(
     /start|end/g,
-    (alignment) => oppositeAlignmentMap[alignment],
+    alignment => oppositeAlignmentMap[alignment],
   );
 }
 __name(getOppositeAlignmentPlacement, "getOppositeAlignmentPlacement");
@@ -36523,7 +36515,7 @@ function getOppositeAxisPlacements(placement, flipAlignment, direction, rtl) {
   const alignment = getAlignment(placement);
   let list = getSideList(getSide(placement), direction === "start", rtl);
   if (alignment) {
-    list = list.map((side) => side + "-" + alignment);
+    list = list.map(side => side + "-" + alignment);
     if (flipAlignment) {
       list = list.concat(list.map(getOppositeAlignmentPlacement));
     }
@@ -36534,7 +36526,7 @@ __name(getOppositeAxisPlacements, "getOppositeAxisPlacements");
 function getOppositePlacement(placement) {
   return placement.replace(
     /left|right|bottom|top/g,
-    (side) => oppositeSideMap[side],
+    side => oppositeSideMap[side],
   );
 }
 __name(getOppositePlacement, "getOppositePlacement");
@@ -36805,7 +36797,7 @@ async function detectOverflow(state, options) {
 }
 __name(detectOverflow, "detectOverflow");
 var arrow = /* @__PURE__ */ __name(
-  (options) => ({
+  options => ({
     name: "arrow",
     options,
     async fn(state) {
@@ -36965,7 +36957,7 @@ var flip = /* @__PURE__ */ __name(function (options) {
           overflows,
         },
       ];
-      if (!overflows.every((side2) => side2 <= 0)) {
+      if (!overflows.every(side2 => side2 <= 0)) {
         var _middlewareData$flip2, _overflowsData$filter;
         const nextIndex =
           (((_middlewareData$flip2 = middlewareData.flip) == null
@@ -36980,7 +36972,7 @@ var flip = /* @__PURE__ */ __name(function (options) {
           if (
             !ignoreCrossAxisOverflow || // We leave the current main axis only if every placement on that axis
             // overflows the main axis.
-            overflowsData.every((d) =>
+            overflowsData.every(d =>
               getSideAxis(d.placement) === initialSideAxis
                 ? d.overflows[0] > 0
                 : true,
@@ -36999,7 +36991,7 @@ var flip = /* @__PURE__ */ __name(function (options) {
         }
         let resetPlacement =
           (_overflowsData$filter = overflowsData
-            .filter((d) => d.overflows[0] <= 0)
+            .filter(d => d.overflows[0] <= 0)
             .sort((a, b) => a.overflows[1] - b.overflows[1])[0]) == null
             ? void 0
             : _overflowsData$filter.placement;
@@ -37009,7 +37001,7 @@ var flip = /* @__PURE__ */ __name(function (options) {
               var _overflowsData$filter2;
               const placement2 =
                 (_overflowsData$filter2 = overflowsData
-                  .filter((d) => {
+                  .filter(d => {
                     if (hasFallbackAxisSideDirection) {
                       const currentSideAxis = getSideAxis(d.placement);
                       return (
@@ -37020,10 +37012,10 @@ var flip = /* @__PURE__ */ __name(function (options) {
                     }
                     return true;
                   })
-                  .map((d) => [
+                  .map(d => [
                     d.placement,
                     d.overflows
-                      .filter((overflow2) => overflow2 > 0)
+                      .filter(overflow2 => overflow2 > 0)
                       .reduce((acc, overflow2) => acc + overflow2, 0),
                   ])
                   .sort((a, b) => a[1] - b[1])[0]) == null
@@ -37134,7 +37126,7 @@ var shift = /* @__PURE__ */ __name(function (options) {
         mainAxis: checkMainAxis = true,
         crossAxis: checkCrossAxis = false,
         limiter = {
-          fn: /* @__PURE__ */ __name((_ref) => {
+          fn: /* @__PURE__ */ __name(_ref => {
             let { x: x2, y: y2 } = _ref;
             return {
               x: x2,
@@ -37369,7 +37361,7 @@ function isTableElement(element) {
 __name(isTableElement, "isTableElement");
 var topLayerSelectors = [":popover-open", ":modal"];
 function isTopLayer(element) {
-  return topLayerSelectors.some((selector) => {
+  return topLayerSelectors.some(selector => {
     try {
       return element.matches(selector);
     } catch (_e) {
@@ -37400,14 +37392,14 @@ function isContainingBlock(elementOrCss) {
     ? getComputedStyle2(elementOrCss)
     : elementOrCss;
   return (
-    transformProperties.some((value) =>
+    transformProperties.some(value =>
       css[value] ? css[value] !== "none" : false,
     ) ||
     (css.containerType ? css.containerType !== "normal" : false) ||
     (!webkit && (css.backdropFilter ? css.backdropFilter !== "none" : false)) ||
     (!webkit && (css.filter ? css.filter !== "none" : false)) ||
-    willChangeValues.some((value) => (css.willChange || "").includes(value)) ||
-    containValues.some((value) => (css.contain || "").includes(value))
+    willChangeValues.some(value => (css.willChange || "").includes(value)) ||
+    containValues.some(value => (css.contain || "").includes(value))
   );
 }
 __name(isContainingBlock, "isContainingBlock");
@@ -37866,7 +37858,7 @@ function getClippingElementAncestors(element, cache3) {
     return cachedResult;
   }
   let result = getOverflowAncestors(element, [], false).filter(
-    (el) => isElement(el) && getNodeName(el) !== "body",
+    el => isElement(el) && getNodeName(el) !== "body",
   );
   let currentContainingBlockComputedStyle = null;
   const elementIsFixed = getComputedStyle2(element).position === "fixed";
@@ -37887,7 +37879,7 @@ function getClippingElementAncestors(element, cache3) {
           !currentNodeIsContaining &&
           hasFixedPositionAncestor(element, currentNode));
     if (shouldDropCurrentNode) {
-      result = result.filter((ancestor) => ancestor !== currentNode);
+      result = result.filter(ancestor => ancestor !== currentNode);
     } else {
       currentContainingBlockComputedStyle = computedStyle;
     }
@@ -38190,7 +38182,7 @@ function autoUpdate(reference, floating, update, options) {
           ...getOverflowAncestors(floating),
         ]
       : [];
-  ancestors.forEach((ancestor) => {
+  ancestors.forEach(ancestor => {
     ancestorScroll &&
       ancestor.addEventListener("scroll", update, {
         passive: true,
@@ -38202,7 +38194,7 @@ function autoUpdate(reference, floating, update, options) {
   let reobserveFrame = -1;
   let resizeObserver = null;
   if (elementResize) {
-    resizeObserver = new ResizeObserver((_ref) => {
+    resizeObserver = new ResizeObserver(_ref => {
       let [firstEntry] = _ref;
       if (firstEntry && firstEntry.target === referenceEl && resizeObserver) {
         resizeObserver.unobserve(floating);
@@ -38237,7 +38229,7 @@ function autoUpdate(reference, floating, update, options) {
   update();
   return () => {
     var _resizeObserver2;
-    ancestors.forEach((ancestor) => {
+    ancestors.forEach(ancestor => {
       ancestorScroll && ancestor.removeEventListener("scroll", update);
       ancestorResize && ancestor.removeEventListener("resize", update);
     });
@@ -38380,13 +38372,13 @@ function useFloating(options) {
   }
   const [_reference, _setReference] = React47.useState(null);
   const [_floating, _setFloating] = React47.useState(null);
-  const setReference = React47.useCallback((node) => {
+  const setReference = React47.useCallback(node => {
     if (node !== referenceRef.current) {
       referenceRef.current = node;
       _setReference(node);
     }
   }, []);
-  const setFloating = React47.useCallback((node) => {
+  const setFloating = React47.useCallback(node => {
     if (node !== floatingRef.current) {
       floatingRef.current = node;
       _setFloating(node);
@@ -38414,7 +38406,7 @@ function useFloating(options) {
       config.platform = platformRef.current;
     }
     computePosition2(referenceRef.current, floatingRef.current, config).then(
-      (data2) => {
+      data2 => {
         const fullData = {
           ...data2,
           // The floating element's position may be recomputed while it's closed
@@ -38435,7 +38427,7 @@ function useFloating(options) {
   index(() => {
     if (open === false && dataRef.current.isPositioned) {
       dataRef.current.isPositioned = false;
-      setData((data2) => ({
+      setData(data2 => ({
         ...data2,
         isPositioned: false,
       }));
@@ -38518,7 +38510,7 @@ function useFloating(options) {
   );
 }
 __name(useFloating, "useFloating");
-var arrow$1 = /* @__PURE__ */ __name((options) => {
+var arrow$1 = /* @__PURE__ */ __name(options => {
   function isRef(value) {
     return {}.hasOwnProperty.call(value, "current");
   }
@@ -38588,7 +38580,7 @@ var arrow3 = /* @__PURE__ */ __name(
 var import_react38 = __toESM(require("react"), 1);
 var FloatingOverrideContext = import_react38.default.createContext(null);
 var useFloating2 = /* @__PURE__ */ __name(
-  (props) =>
+  props =>
     (
       import_react38.default.useContext(FloatingOverrideContext) || useFloating
     )?.({
@@ -38741,7 +38733,7 @@ function Popper(props) {
     return (
       resize &&
         og &&
-        (floating.getFloatingProps = (props2) =>
+        (floating.getFloatingProps = props2 =>
           og({
             ...props2,
             style: {
@@ -38797,7 +38789,7 @@ var PopperAnchor = YStack.extractable(
     }, [virtualRef]);
     const stackProps = anchorProps,
       safeSetReference = React49.useCallback(
-        (node) => {
+        node => {
           startTransition(() => {
             refs.setReference(node);
           });
@@ -38820,13 +38812,13 @@ var PopperAnchor = YStack.extractable(
         // this helps us with handling scoped poppers with many different targets
         // basically we wait for mouseEnter to ever set a reference and remove it on leave
         // otherwise floating ui gets confused by having >1 reference
-        onMouseEnter: /* @__PURE__ */ __name((e) => {
+        onMouseEnter: /* @__PURE__ */ __name(e => {
           ref.current instanceof HTMLElement &&
             (refs.setReference(ref.current),
             refProps.onPointerEnter?.(e),
             update());
         }, "onMouseEnter"),
-        onMouseLeave: /* @__PURE__ */ __name((e) => {
+        onMouseLeave: /* @__PURE__ */ __name(e => {
           refProps?.onMouseLeave?.(e);
         }, "onMouseLeave"),
       }),
@@ -38878,7 +38870,7 @@ var PopperContent = React49.forwardRef(function (props, forwardedRef) {
       isPositioned,
     } = context2,
     safeSetFloating = React49.useCallback(
-      (node) => {
+      node => {
         startTransition(() => {
           refs.setFloating(node);
         });
@@ -39079,7 +39071,7 @@ function getUserAgent() {
   const uaData = navigator.userAgentData;
   if (uaData && Array.isArray(uaData.brands)) {
     return uaData.brands
-      .map((_ref) => {
+      .map(_ref => {
         let { brand, version } = _ref;
         return brand + "/" + version;
       })
@@ -39208,7 +39200,7 @@ function getNodeChildren(nodes, id, onlyOpenChildren) {
   if (onlyOpenChildren === void 0) {
     onlyOpenChildren = true;
   }
-  const directChildren = nodes.filter((node) => {
+  const directChildren = nodes.filter(node => {
     var _node$context;
     return (
       node.parentId === id &&
@@ -39216,7 +39208,7 @@ function getNodeChildren(nodes, id, onlyOpenChildren) {
         ((_node$context = node.context) == null ? void 0 : _node$context.open))
     );
   });
-  return directChildren.flatMap((child) => [
+  return directChildren.flatMap(child => [
     child,
     ...getNodeChildren(nodes, child.id, onlyOpenChildren),
   ]);
@@ -39231,24 +39223,24 @@ function getDeepestNode(nodes, id) {
       maxDepth = depth;
     }
     const children = getNodeChildren(nodes, nodeId);
-    children.forEach((child) => {
+    children.forEach(child => {
       findDeepest(child.id, depth + 1);
     });
   }
   __name(findDeepest, "findDeepest");
   findDeepest(id, 0);
-  return nodes.find((node) => node.id === deepestNodeId);
+  return nodes.find(node => node.id === deepestNodeId);
 }
 __name(getDeepestNode, "getDeepestNode");
 function getNodeAncestors(nodes, id) {
   var _nodes$find;
   let allAncestors = [];
   let currentParentId =
-    (_nodes$find = nodes.find((node) => node.id === id)) == null
+    (_nodes$find = nodes.find(node => node.id === id)) == null
       ? void 0
       : _nodes$find.parentId;
   while (currentParentId) {
-    const currentNode = nodes.find((node) => node.id === currentParentId);
+    const currentNode = nodes.find(node => node.id === currentParentId);
     currentParentId = currentNode == null ? void 0 : currentNode.parentId;
     if (currentNode) {
       allAncestors = allAncestors.concat(currentNode);
@@ -39317,7 +39309,7 @@ function useLatestRef2(value) {
 }
 __name(useLatestRef2, "useLatestRef");
 var useInsertionEffect = SafeReact.useInsertionEffect;
-var useSafeInsertionEffect = useInsertionEffect || ((fn) => fn());
+var useSafeInsertionEffect = useInsertionEffect || (fn => fn());
 function useEffectEvent(callback) {
   const ref = React50.useRef(() => {
     if (process.env.NODE_ENV !== "production") {
@@ -39537,9 +39529,9 @@ function createGridCellMap(sizes, cols, dense) {
       }
       if (
         (startIndex % cols) + width <= cols &&
-        targetCells.every((cell) => cellMap[cell] == null)
+        targetCells.every(cell => cellMap[cell] == null)
       ) {
-        targetCells.forEach((cell) => {
+        targetCells.forEach(cell => {
           cellMap[cell] = index3;
         });
         itemPlaced = true;
@@ -39640,7 +39632,7 @@ function disableFocusInside(container) {
     container,
     getTabbableOptions(),
   );
-  tabbableElements.forEach((element) => {
+  tabbableElements.forEach(element => {
     element.dataset.tabindex = element.getAttribute("tabindex") || "";
     element.setAttribute("tabindex", "-1");
   });
@@ -39648,7 +39640,7 @@ function disableFocusInside(container) {
 __name(disableFocusInside, "disableFocusInside");
 function enableFocusInside(container) {
   const elements = container.querySelectorAll("[data-tabindex]");
-  elements.forEach((element) => {
+  elements.forEach(element => {
     const tabindex = element.dataset.tabindex;
     delete element.dataset.tabindex;
     if (tabindex) {
@@ -39751,7 +39743,7 @@ function createEventEmitter() {
     emit(event, data) {
       var _map$get;
       (_map$get = map.get(event)) == null ||
-        _map$get.forEach((listener) => listener(data));
+        _map$get.forEach(listener => listener(data));
     },
     on(event, listener) {
       if (!map.has(event)) {
@@ -40108,7 +40100,7 @@ function useHover(context2, props) {
         const parentFloating =
           tree == null ||
           (_tree$nodesRef$curren = tree.nodesRef.current.find(
-            (node) => node.id === parentId,
+            node => node.id === parentId,
           )) == null ||
           (_tree$nodesRef$curren = _tree$nodesRef$curren.context) == null
             ? void 0
@@ -40230,7 +40222,7 @@ function FloatingDelayGroup(props) {
     },
   );
   const initialCurrentIdRef = React51.useRef(null);
-  const setCurrentId = React51.useCallback((currentId) => {
+  const setCurrentId = React51.useCallback(currentId => {
     setState({
       currentId,
     });
@@ -40407,13 +40399,13 @@ var supportsInert = /* @__PURE__ */ __name(
   "supportsInert",
 );
 var unwrapHost = /* @__PURE__ */ __name(
-  (node) => node && (node.host || unwrapHost(node.parentNode)),
+  node => node && (node.host || unwrapHost(node.parentNode)),
   "unwrapHost",
 );
 var correctElements = /* @__PURE__ */ __name(
   (parent, targets) =>
     targets
-      .map((target) => {
+      .map(target => {
         if (parent.contains(target)) {
           return target;
         }
@@ -40423,7 +40415,7 @@ var correctElements = /* @__PURE__ */ __name(
         }
         return null;
       })
-      .filter((x) => x != null),
+      .filter(x => x != null),
   "correctElements",
 );
 function applyAttributeToOthers(
@@ -40457,7 +40449,7 @@ function applyAttributeToOthers(
     if (!parent || elementsToStop.has(parent)) {
       return;
     }
-    [].forEach.call(parent.children, (node) => {
+    [].forEach.call(parent.children, node => {
       if (getNodeName(node) === "script") return;
       if (elementsToKeep.has(node)) {
         deep(node);
@@ -40490,7 +40482,7 @@ function applyAttributeToOthers(
   __name(deep, "deep");
   lockCount$1++;
   return () => {
-    hiddenElements.forEach((element) => {
+    hiddenElements.forEach(element => {
       const counterMap = getCounterMap(controlAttribute);
       const currentCounterValue = counterMap.get(element) || 0;
       const counterValue = currentCounterValue - 1;
@@ -40694,7 +40686,7 @@ function FloatingPortal(props) {
           /* @__PURE__ */ (0, import_jsx_runtime38.jsx)(FocusGuard, {
             "data-type": "outside",
             ref: beforeOutsideRef,
-            onFocus: /* @__PURE__ */ __name((event) => {
+            onFocus: /* @__PURE__ */ __name(event => {
               if (isOutsideEvent(event, portalNode)) {
                 var _beforeInsideRef$curr;
                 (_beforeInsideRef$curr = beforeInsideRef.current) == null ||
@@ -40721,7 +40713,7 @@ function FloatingPortal(props) {
           /* @__PURE__ */ (0, import_jsx_runtime38.jsx)(FocusGuard, {
             "data-type": "outside",
             ref: afterOutsideRef,
-            onFocus: /* @__PURE__ */ __name((event) => {
+            onFocus: /* @__PURE__ */ __name(event => {
               if (isOutsideEvent(event, portalNode)) {
                 var _afterInsideRef$curre;
                 (_afterInsideRef$curre = afterInsideRef.current) == null ||
@@ -40756,8 +40748,8 @@ var usePortalContext = /* @__PURE__ */ __name(
 );
 function useLiteMergeRefs(refs) {
   return React51.useMemo(() => {
-    return (value) => {
-      refs.forEach((ref) => {
+    return value => {
+      refs.forEach(ref => {
         if (ref) {
           ref.current = value;
         }
@@ -40770,7 +40762,7 @@ var LIST_LIMIT = 20;
 var previouslyFocusedElements = [];
 function clearDisconnectedPreviouslyFocusedElements() {
   previouslyFocusedElements = previouslyFocusedElements.filter(
-    (el) => el.isConnected,
+    el => el.isConnected,
   );
 }
 __name(
@@ -40818,7 +40810,7 @@ function handleTabIndex(floatingFocusElement, orderRef) {
     floatingFocusElement,
     options,
   );
-  const tabbableContent = focusableElements.filter((element) => {
+  const tabbableContent = focusableElements.filter(element => {
     const dataTabIndex = element.getAttribute("data-tabindex") || "";
     return (
       (0, import_tabbable2.isTabbable)(element, options) ||
@@ -40912,10 +40904,10 @@ function FloatingFocusManager(props) {
       ? (0, import_tabbable2.tabbable)(container, getTabbableOptions())
       : [];
   });
-  const getTabbableElements = useEffectEvent((container) => {
+  const getTabbableElements = useEffectEvent(container => {
     const content = getTabbableContent(container);
     return orderRef.current
-      .map((type) => {
+      .map(type => {
         if (domReference && type === "reference") {
           return domReference;
         }
@@ -41022,7 +41014,7 @@ function FloatingFocusManager(props) {
           (relatedTarget != null &&
             relatedTarget.hasAttribute(createAttribute("focus-guard"))) ||
           (tree &&
-            (getNodeChildren(tree.nodesRef.current, nodeId).find((node) => {
+            (getNodeChildren(tree.nodesRef.current, nodeId).find(node => {
               var _node$context, _node$context2;
               return (
                 contains(
@@ -41039,7 +41031,7 @@ function FloatingFocusManager(props) {
                 )
               );
             }) ||
-              getNodeAncestors(tree.nodesRef.current, nodeId).find((node) => {
+              getNodeAncestors(tree.nodesRef.current, nodeId).find(node => {
                 var _node$context3, _node$context4, _node$context5;
                 return (
                   [
@@ -41166,7 +41158,7 @@ function FloatingFocusManager(props) {
       ? getNodeAncestors(tree.nodesRef.current, getNodeId())
       : [];
     const rootAncestorComboboxDomReference =
-      (_ancestors$find = ancestors.find((node) => {
+      (_ancestors$find = ancestors.find(node => {
         var _node$context6;
         return isTypeableCombobox(
           ((_node$context6 = node.context) == null
@@ -41190,7 +41182,7 @@ function FloatingFocusManager(props) {
       orderRef.current.includes("reference") || isUntrappedTypeableCombobox
         ? domReference
         : null,
-    ].filter((x) => x != null);
+    ].filter(x => x != null);
     const cleanup2 =
       modal || isUntrappedTypeableCombobox
         ? markOthers(insideElements, !useInert, useInert)
@@ -41298,7 +41290,7 @@ function FloatingFocusManager(props) {
         contains(floating, activeEl) ||
         (tree &&
           getNodeChildren(tree.nodesRef.current, getNodeId(), false).some(
-            (node) => {
+            node => {
               var _node$context7;
               return contains(
                 (_node$context7 = node.context) == null
@@ -41385,7 +41377,7 @@ function FloatingFocusManager(props) {
       {
         ref: location === "start" ? startDismissButtonRef : endDismissButtonRef,
         onClick: /* @__PURE__ */ __name(
-          (event) => onOpenChange(false, event.nativeEvent),
+          event => onOpenChange(false, event.nativeEvent),
           "onClick",
         ),
         children:
@@ -41409,7 +41401,7 @@ function FloatingFocusManager(props) {
           /* @__PURE__ */ (0, import_jsx_runtime38.jsx)(FocusGuard, {
             "data-type": "inside",
             ref: mergedBeforeGuardRef,
-            onFocus: /* @__PURE__ */ __name((event) => {
+            onFocus: /* @__PURE__ */ __name(event => {
               if (modal) {
                 const els = getTabbableElements();
                 enqueueFocus(
@@ -41440,7 +41432,7 @@ function FloatingFocusManager(props) {
           /* @__PURE__ */ (0, import_jsx_runtime38.jsx)(FocusGuard, {
             "data-type": "inside",
             ref: mergedAfterGuardRef,
-            onFocus: /* @__PURE__ */ __name((event) => {
+            onFocus: /* @__PURE__ */ __name(event => {
               if (modal) {
                 enqueueFocus(getTabbableElements()[0]);
               } else if (
@@ -41706,7 +41698,7 @@ var captureHandlerKeys = {
   mousedown: "onMouseDownCapture",
   click: "onClickCapture",
 };
-var normalizeProp = /* @__PURE__ */ __name((normalizable) => {
+var normalizeProp = /* @__PURE__ */ __name(normalizable => {
   var _normalizable$escapeK, _normalizable$outside;
   return {
     escapeKey:
@@ -41757,7 +41749,7 @@ function useDismiss(context2, props) {
   const { escapeKey: escapeKeyCapture, outsidePress: outsidePressCapture } =
     normalizeProp(capture);
   const isComposingRef = React51.useRef(false);
-  const closeOnEscapeKeyDown = useEffectEvent((event) => {
+  const closeOnEscapeKeyDown = useEffectEvent(event => {
     var _dataRef$current$floa;
     if (!open || !enabled || !escapeKey || event.key !== "Escape") {
       return;
@@ -41774,7 +41766,7 @@ function useDismiss(context2, props) {
       event.stopPropagation();
       if (children.length > 0) {
         let shouldDismiss = true;
-        children.forEach((child) => {
+        children.forEach(child => {
           var _child$context;
           if (
             (_child$context = child.context) != null &&
@@ -41796,7 +41788,7 @@ function useDismiss(context2, props) {
       "escape-key",
     );
   });
-  const closeOnEscapeKeyDownCapture = useEffectEvent((event) => {
+  const closeOnEscapeKeyDownCapture = useEffectEvent(event => {
     var _getTarget2;
     const callback = /* @__PURE__ */ __name(() => {
       var _getTarget;
@@ -41807,7 +41799,7 @@ function useDismiss(context2, props) {
     (_getTarget2 = getTarget(event)) == null ||
       _getTarget2.addEventListener("keydown", callback);
   });
-  const closeOnPressOutside = useEffectEvent((event) => {
+  const closeOnPressOutside = useEffectEvent(event => {
     var _dataRef$current$floa2;
     const insideReactTree = dataRef.current.insideReactTree;
     dataRef.current.insideReactTree = false;
@@ -41841,9 +41833,7 @@ function useDismiss(context2, props) {
       !isRootElement(target) && // Clicked on a direct ancestor (e.g. FloatingOverlay).
       !contains(target, elements.floating) && // If the target root element contains none of the markers, then the
       // element was injected after the floating element rendered.
-      Array.from(markers).every(
-        (marker) => !contains(targetRootAncestor, marker),
-      )
+      Array.from(markers).every(marker => !contains(targetRootAncestor, marker))
     ) {
       return;
     }
@@ -41881,7 +41871,7 @@ function useDismiss(context2, props) {
         : _dataRef$current$floa2.nodeId;
     const targetIsInsideChildren =
       tree &&
-      getNodeChildren(tree.nodesRef.current, nodeId).some((node) => {
+      getNodeChildren(tree.nodesRef.current, nodeId).some(node => {
         var _node$context;
         return isEventTargetWithin(
           event,
@@ -41900,7 +41890,7 @@ function useDismiss(context2, props) {
     const children = tree ? getNodeChildren(tree.nodesRef.current, nodeId) : [];
     if (children.length > 0) {
       let shouldDismiss = true;
-      children.forEach((child) => {
+      children.forEach(child => {
         var _child$context2;
         if (
           (_child$context2 = child.context) != null &&
@@ -41917,7 +41907,7 @@ function useDismiss(context2, props) {
     }
     onOpenChange(false, event, "outside-press");
   });
-  const closeOnPressOutsideCapture = useEffectEvent((event) => {
+  const closeOnPressOutsideCapture = useEffectEvent(event => {
     var _getTarget4;
     const callback = /* @__PURE__ */ __name(() => {
       var _getTarget3;
@@ -41989,7 +41979,7 @@ function useDismiss(context2, props) {
         );
       }
     }
-    ancestors = ancestors.filter((ancestor) => {
+    ancestors = ancestors.filter(ancestor => {
       var _doc$defaultView;
       return (
         ancestor !==
@@ -41998,7 +41988,7 @@ function useDismiss(context2, props) {
           : _doc$defaultView.visualViewport)
       );
     });
-    ancestors.forEach((ancestor) => {
+    ancestors.forEach(ancestor => {
       ancestor.addEventListener("scroll", onScroll, {
         passive: true,
       });
@@ -42021,7 +42011,7 @@ function useDismiss(context2, props) {
             : closeOnPressOutside,
           outsidePressCapture,
         );
-      ancestors.forEach((ancestor) => {
+      ancestors.forEach(ancestor => {
         ancestor.removeEventListener("scroll", onScroll);
       });
       window.clearTimeout(compositionTimeout);
@@ -42052,7 +42042,7 @@ function useDismiss(context2, props) {
     () => ({
       onKeyDown: closeOnEscapeKeyDown,
       ...(referencePress && {
-        [bubbleHandlerKeys[referencePressEvent]]: (event) => {
+        [bubbleHandlerKeys[referencePressEvent]]: event => {
           onOpenChange(false, event.nativeEvent, "reference-press");
         },
         ...(referencePressEvent !== "click" && {
@@ -42189,7 +42179,7 @@ function useFloating3(options) {
     },
   });
   const setPositionReference = React51.useCallback(
-    (node) => {
+    node => {
       const computedPositionReference = isElement(node)
         ? {
             getBoundingClientRect: /* @__PURE__ */ __name(
@@ -42209,7 +42199,7 @@ function useFloating3(options) {
     [position.refs],
   );
   const setReference = React51.useCallback(
-    (node) => {
+    node => {
       if (isElement(node) || node === null) {
         domReferenceRef.current = node;
         setDomReference(node);
@@ -42257,7 +42247,7 @@ function useFloating3(options) {
     const node =
       tree == null
         ? void 0
-        : tree.nodesRef.current.find((node2) => node2.id === nodeId);
+        : tree.nodesRef.current.find(node2 => node2.id === nodeId);
     if (node) {
       node.context = context2;
     }
@@ -42419,7 +42409,7 @@ function mergeProps(userProps, propsList, elementKey) {
     }),
     ...domUserProps,
     ...propsList
-      .map((value) => {
+      .map(value => {
         const propsOrGetProps = value ? value[elementKey] : null;
         if (typeof propsOrGetProps === "function") {
           return userProps ? propsOrGetProps(userProps) : null;
@@ -42431,7 +42421,7 @@ function mergeProps(userProps, propsList, elementKey) {
         if (!props) {
           return acc;
         }
-        Object.entries(props).forEach((_ref) => {
+        Object.entries(props).forEach(_ref => {
           let [key, value] = _ref;
           if (isItem && [ACTIVE_KEY, SELECTED_KEY].includes(key)) {
             return;
@@ -42455,8 +42445,8 @@ function mergeProps(userProps, propsList, elementKey) {
                 return (_map$get2 = map.get(key)) == null
                   ? void 0
                   : _map$get2
-                      .map((fn) => fn(...args))
-                      .find((val) => val !== void 0);
+                      .map(fn => fn(...args))
+                      .find(val => val !== void 0);
               };
             }
           } else {
@@ -42472,25 +42462,25 @@ function useInteractions(propsList) {
   if (propsList === void 0) {
     propsList = [];
   }
-  const referenceDeps = propsList.map((key) =>
+  const referenceDeps = propsList.map(key =>
     key == null ? void 0 : key.reference,
   );
-  const floatingDeps = propsList.map((key) =>
+  const floatingDeps = propsList.map(key =>
     key == null ? void 0 : key.floating,
   );
-  const itemDeps = propsList.map((key) => (key == null ? void 0 : key.item));
+  const itemDeps = propsList.map(key => (key == null ? void 0 : key.item));
   const getReferenceProps = React51.useCallback(
-    (userProps) => mergeProps(userProps, propsList, "reference"),
+    userProps => mergeProps(userProps, propsList, "reference"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     referenceDeps,
   );
   const getFloatingProps = React51.useCallback(
-    (userProps) => mergeProps(userProps, propsList, "floating"),
+    userProps => mergeProps(userProps, propsList, "floating"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     floatingDeps,
   );
   const getItemProps = React51.useCallback(
-    (userProps) => mergeProps(userProps, propsList, "item"),
+    userProps => mergeProps(userProps, propsList, "item"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     itemDeps,
   );
@@ -42647,7 +42637,7 @@ function useListNavigation(context2, props) {
       runFocus(initialItem);
     }
     const scheduler = forceSyncFocusRef.current
-      ? (v) => v()
+      ? v => v()
       : requestAnimationFrame;
     scheduler(() => {
       const waitedItem = listRef.current[indexRef.current] || initialItem;
@@ -42758,13 +42748,13 @@ function useListNavigation(context2, props) {
     }
     const nodes = tree.nodesRef.current;
     const parent =
-      (_nodes$find = nodes.find((node) => node.id === parentId)) == null ||
+      (_nodes$find = nodes.find(node => node.id === parentId)) == null ||
       (_nodes$find = _nodes$find.context) == null
         ? void 0
         : _nodes$find.elements.floating;
     const activeEl = activeElement(getDocument(elements.floating));
     const treeContainsActiveEl = nodes.some(
-      (node) =>
+      node =>
         node.context && contains(node.context.elements.floating, activeEl),
     );
     if (parent && !treeContainsActiveEl && isPointerModalityRef.current) {
@@ -42818,7 +42808,7 @@ function useListNavigation(context2, props) {
         forceSyncFocusRef.current = true;
         syncCurrentTarget(currentTarget);
       },
-      onClick: /* @__PURE__ */ __name((_ref2) => {
+      onClick: /* @__PURE__ */ __name(_ref2 => {
         let { currentTarget } = _ref2;
         return currentTarget.focus({
           preventScroll: true,
@@ -42868,14 +42858,14 @@ function useListNavigation(context2, props) {
       ? parentOrientation
       : tree == null ||
           (_tree$nodesRef$curren = tree.nodesRef.current.find(
-            (node) => node.id === parentId,
+            node => node.id === parentId,
           )) == null ||
           (_tree$nodesRef$curren = _tree$nodesRef$curren.context) == null ||
           (_tree$nodesRef$curren = _tree$nodesRef$curren.dataRef) == null
         ? void 0
         : _tree$nodesRef$curren.current.orientation;
   }, [parentId, tree, parentOrientation]);
-  const commonOnKeyDown = useEffectEvent((event) => {
+  const commonOnKeyDown = useEffectEvent(event => {
     isPointerModalityRef.current = false;
     forceSyncFocusRef.current = true;
     if (event.which === 229) {
@@ -42934,7 +42924,7 @@ function useListNavigation(context2, props) {
         );
       const cellMap = createGridCellMap(sizes, cols, dense);
       const minGridIndex = cellMap.findIndex(
-        (index4) =>
+        index4 =>
           index4 != null &&
           !isListIndexDisabled(listRef, index4, disabledIndices),
       );
@@ -42950,7 +42940,7 @@ function useListNavigation(context2, props) {
         cellMap[
           getGridNavigatedIndex(
             {
-              current: cellMap.map((itemIndex) =>
+              current: cellMap.map(itemIndex =>
                 itemIndex != null ? listRef.current[itemIndex] : null,
               ),
             },
@@ -43143,7 +43133,7 @@ function useListNavigation(context2, props) {
           const rootNode =
             tree == null
               ? void 0
-              : tree.nodesRef.current.find((node) => node.parentId == null);
+              : tree.nodesRef.current.find(node => node.parentId == null);
           const deepestNode =
             tree && rootNode
               ? getDeepestNode(tree.nodesRef.current, rootNode.id)
@@ -43167,7 +43157,7 @@ function useListNavigation(context2, props) {
                     : _deepestNode$context2.elements.domReference
                   : isCrossOpenKey
                     ? listRef.current.find(
-                        (item2) =>
+                        item2 =>
                           (item2 == null ? void 0 : item2.id) === activeId,
                       )
                     : null;
@@ -43360,7 +43350,7 @@ function useRole(context2, props) {
     };
   }, [ariaRole, floatingId, referenceId, role]);
   const item = React51.useCallback(
-    (_ref) => {
+    _ref => {
       let { active, selected } = _ref;
       const commonProps = {
         role: "option",
@@ -43435,7 +43425,7 @@ function useTypeahead(context2, props) {
           : -1;
     }
   }, [open, selectedIndex, activeIndex]);
-  const setTypingChange = useEffectEvent((value) => {
+  const setTypingChange = useEffectEvent(value => {
     if (value) {
       if (!dataRef.current.typing) {
         dataRef.current.typing = value;
@@ -43448,12 +43438,12 @@ function useTypeahead(context2, props) {
       }
     }
   });
-  const onKeyDown = useEffectEvent((event) => {
+  const onKeyDown = useEffectEvent(event => {
     function getMatchingIndex(list, orderedList, string) {
       const str = findMatchRef.current
         ? findMatchRef.current(orderedList, string)
         : orderedList.find(
-            (text) =>
+            text =>
               (text == null
                 ? void 0
                 : text
@@ -43487,7 +43477,7 @@ function useTypeahead(context2, props) {
       stopEvent(event);
       setTypingChange(true);
     }
-    const allowRapidSuccessionOfFirstLetter = listContent.every((text) => {
+    const allowRapidSuccessionOfFirstLetter = listContent.every(text => {
       var _text$, _text$2;
       return text
         ? ((_text$ = text[0]) == null ? void 0 : _text$.toLocaleLowerCase()) !==
@@ -43564,7 +43554,7 @@ function getArgsWithCustomFloatingHeight(state, height) {
 }
 __name(getArgsWithCustomFloatingHeight, "getArgsWithCustomFloatingHeight");
 var inner = /* @__PURE__ */ __name(
-  (props) => ({
+  props => ({
     name: "inner",
     options: props,
     async fn(state) {
@@ -43625,7 +43615,7 @@ var inner = /* @__PURE__ */ __name(
       const diffY = max(0, overflow.top);
       const nextY = nextArgs.y + diffY;
       const isScrollable = scrollEl.scrollHeight > scrollEl.clientHeight;
-      const rounder = isScrollable ? (v) => v : round;
+      const rounder = isScrollable ? v => v : round;
       const maxHeight = rounder(
         max(
           0,
@@ -43697,7 +43687,7 @@ function useInnerOffset(context2, props) {
       if ((!isAtTop && dY > 0) || (!isAtBottom && dY < 0)) {
         e.preventDefault();
         ReactDOM3.flushSync(() => {
-          onChange((d) => d + Math[method](dY, remainingScroll * sign));
+          onChange(d => d + Math[method](dY, remainingScroll * sign));
         });
       } else if (/firefox/i.test(getUserAgent())) {
         el.scrollTop += dY;
@@ -43746,7 +43736,7 @@ function useInnerOffset(context2, props) {
             (overflowRef.current.bottom < -0.5 && scrollDiff < -1) ||
             (overflowRef.current.top < -0.5 && scrollDiff > 1)
           ) {
-            ReactDOM3.flushSync(() => onChange((d) => d + scrollDiff));
+            ReactDOM3.flushSync(() => onChange(d => d + scrollDiff));
           }
         }
         requestAnimationFrame(() => {
@@ -43771,7 +43761,7 @@ function getNodeChildren2(nodes, id, onlyOpenChildren) {
   if (onlyOpenChildren === void 0) {
     onlyOpenChildren = true;
   }
-  const directChildren = nodes.filter((node) => {
+  const directChildren = nodes.filter(node => {
     var _node$context;
     return (
       node.parentId === id &&
@@ -43779,7 +43769,7 @@ function getNodeChildren2(nodes, id, onlyOpenChildren) {
         ((_node$context = node.context) == null ? void 0 : _node$context.open))
     );
   });
-  return directChildren.flatMap((child) => [
+  return directChildren.flatMap(child => [
     child,
     ...getNodeChildren2(nodes, child.id, onlyOpenChildren),
   ]);
@@ -43846,7 +43836,7 @@ function safePolygon(options) {
     return speed;
   }
   __name(getCursorSpeed, "getCursorSpeed");
-  const fn = /* @__PURE__ */ __name((_ref) => {
+  const fn = /* @__PURE__ */ __name(_ref => {
     let { x, y, placement, elements, onClose, nodeId, tree } = _ref;
     return /* @__PURE__ */ __name(function onMouseMove(event) {
       function close() {
@@ -44133,7 +44123,7 @@ __name(safePolygon, "safePolygon");
 var useFloatingContext = /* @__PURE__ */ __name(
   ({ open, setOpen, disable, disableFocus, hoverable }) =>
     import_react40.default.useCallback(
-      (props) => {
+      props => {
         const floating = useFloating3({
             ...props,
             open,
@@ -44236,7 +44226,7 @@ var PopoverTrigger = React53.forwardRef(function (props, forwardedRef) {
                 ),
                 ...(!isWeb && {
                   measure: /* @__PURE__ */ __name(
-                    (c) =>
+                    c =>
                       c(
                         anchorTo?.x,
                         anchorTo?.y,
@@ -44246,7 +44236,7 @@ var PopoverTrigger = React53.forwardRef(function (props, forwardedRef) {
                     "measure",
                   ),
                   measureInWindow: /* @__PURE__ */ __name(
-                    (c) =>
+                    c =>
                       c(
                         anchorTo?.x,
                         anchorTo?.y,
@@ -44329,7 +44319,7 @@ var PopoverContent = PopoverContentFrame.extractable(
                         ? void 0
                         : composeEventHandlers(
                             props.onCloseAutoFocus,
-                            (event) => {
+                            event => {
                               event.defaultPrevented ||
                                 (event.preventDefault(),
                                 isRightClickOutsideRef.current ||
@@ -44338,7 +44328,7 @@ var PopoverContent = PopoverContentFrame.extractable(
                           ),
                     onPointerDownOutside: composeEventHandlers(
                       props.onPointerDownOutside,
-                      (event) => {
+                      event => {
                         const originalEvent = event.detail.originalEvent,
                           ctrlLeftClick =
                             originalEvent.button === 0 &&
@@ -44353,7 +44343,7 @@ var PopoverContent = PopoverContentFrame.extractable(
                     ),
                     onFocusOutside: composeEventHandlers(
                       props.onFocusOutside,
-                      (event) => event.preventDefault(),
+                      event => event.preventDefault(),
                       {
                         checkDefaultPrevented: false,
                       },
@@ -44366,7 +44356,7 @@ var PopoverContent = PopoverContentFrame.extractable(
     );
   }),
 );
-var useParentContexts = /* @__PURE__ */ __name((scope) => {
+var useParentContexts = /* @__PURE__ */ __name(scope => {
   const context2 = usePopoverContext(scope),
     popperContext = usePopperContext(scope),
     adaptContext = useAdaptContext(context2.adaptScope);
@@ -44643,7 +44633,7 @@ var PopoverInner = React53.forwardRef(function (props, forwardedRef) {
     [open, setOpen] = useControllableState({
       prop: openProp,
       defaultProp: defaultOpen || false,
-      onChange: /* @__PURE__ */ __name((val) => {
+      onChange: /* @__PURE__ */ __name(val => {
         onOpenChange?.(val, viaRef.current);
       }, "onChange"),
     }),
@@ -44662,7 +44652,7 @@ var PopoverInner = React53.forwardRef(function (props, forwardedRef) {
     setAnchorTo = (0, import_core27.useCreateShallowSetState)(setAnchorToRaw);
   React53.useImperativeHandle(forwardedRef, () => ({
     anchorTo: setAnchorTo,
-    toggle: /* @__PURE__ */ __name(() => setOpen((prev) => !prev), "toggle"),
+    toggle: /* @__PURE__ */ __name(() => setOpen(prev => !prev), "toggle"),
     open: /* @__PURE__ */ __name(() => setOpen(true), "open"),
     close: /* @__PURE__ */ __name(() => setOpen(false), "close"),
     setOpen,
@@ -44740,7 +44730,7 @@ var PopoverSheetController = /* @__PURE__ */ __name(
       breakpointActive = context2.breakpointActive,
       getShowSheet = (0, import_core27.useGet)(showSheet);
     return /* @__PURE__ */ (0, import_jsx_runtime39.jsx)(SheetController, {
-      onOpenChange: /* @__PURE__ */ __name((val) => {
+      onOpenChange: /* @__PURE__ */ __name(val => {
         getShowSheet() && props.onOpenChange?.(val);
       }, "onOpenChange"),
       open: context2.open,
@@ -44750,7 +44740,7 @@ var PopoverSheetController = /* @__PURE__ */ __name(
   },
   "PopoverSheetController",
 );
-var useShowPopoverSheet = /* @__PURE__ */ __name((context2) => {
+var useShowPopoverSheet = /* @__PURE__ */ __name(context2 => {
   const isAdapted = useAdaptIsActive(context2.adaptScope);
   return context2.open === false ? false : isAdapted;
 }, "useShowPopoverSheet");
@@ -44841,7 +44831,7 @@ var ProgressFrame = (0, import_core28.styled)(ThemeableStack, {
       },
     },
     size: {
-      "...size": /* @__PURE__ */ __name((val) => {
+      "...size": /* @__PURE__ */ __name(val => {
         const size4 = Math.round(
           (0, import_core28.getVariableValue)(getSize(val)) * 0.25,
         );
@@ -44890,7 +44880,7 @@ var Progress = withStaticProperties(
           size: size4,
         }),
         ...progressProps,
-        onLayout: /* @__PURE__ */ __name((e) => {
+        onLayout: /* @__PURE__ */ __name(e => {
           (setWidth(e.nativeEvent.layout.width), progressProps.onLayout?.(e));
         }, "onLayout"),
         ref: forwardedRef,
@@ -45018,7 +45008,7 @@ var import_react43 = require("react");
 // ../../node_modules/.bun/@tamagui+radio-headless@1.144.1+0bee5583ac684eb8/node_modules/@tamagui/radio-headless/dist/esm/BubbleInput.mjs
 var import_react42 = __toESM(require("react"), 1);
 var import_jsx_runtime41 = require("react/jsx-runtime");
-var BubbleInput2 = /* @__PURE__ */ __name((props) => {
+var BubbleInput2 = /* @__PURE__ */ __name(props => {
   const {
       checked,
       bubbles = true,
@@ -45116,7 +45106,7 @@ function useRadioGroup(params) {
 }
 __name(useRadioGroup, "useRadioGroup");
 var ARROW_KEYS = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
-var useRadioGroupItem = /* @__PURE__ */ __name((params) => {
+var useRadioGroupItem = /* @__PURE__ */ __name(params => {
   const {
       radioGroupContext,
       value,
@@ -45140,7 +45130,7 @@ var useRadioGroupItem = /* @__PURE__ */ __name((params) => {
     [button, setButton] = (0, import_react43.useState)(null),
     hasConsumerStoppedPropagationRef = (0, import_react43.useRef)(false),
     ref = (0, import_react43.useRef)(null),
-    composedRefs = useComposedRefs(refProp, (node) => setButton(node), ref),
+    composedRefs = useComposedRefs(refProp, node => setButton(node), ref),
     isArrowKeyPressedRef = (0, import_react43.useRef)(false),
     isFormControl = isWeb ? (button ? !!button.closest("form") : true) : false,
     checked = groupValue === value,
@@ -45148,7 +45138,7 @@ var useRadioGroupItem = /* @__PURE__ */ __name((params) => {
     labelledBy = ariaLabelledby || labelId;
   (0, import_react43.useEffect)(() => {
     if (isWeb) {
-      const handleKeyDown = /* @__PURE__ */ __name((event) => {
+      const handleKeyDown = /* @__PURE__ */ __name(event => {
           ARROW_KEYS.includes(event.key) &&
             (isArrowKeyPressedRef.current = true);
         }, "handleKeyDown"),
@@ -45202,7 +45192,7 @@ var useRadioGroupItem = /* @__PURE__ */ __name((params) => {
         value,
       }),
       id,
-      onPress: composeEventHandlers(onPress, (event) => {
+      onPress: composeEventHandlers(onPress, event => {
         (checked || onChange?.(value),
           isFormControl &&
             ((hasConsumerStoppedPropagationRef.current =
@@ -45211,7 +45201,7 @@ var useRadioGroupItem = /* @__PURE__ */ __name((params) => {
               event.stopPropagation()));
       }),
       ...(isWeb && {
-        onKeyDown: composeEventHandlers(onKeyDown, (event) => {
+        onKeyDown: composeEventHandlers(onKeyDown, event => {
           event.key === "Enter" && event.preventDefault();
         }),
         onFocus: composeEventHandlers(onFocus, () => {
@@ -45290,16 +45280,16 @@ var RovingFocusGroupImpl = React56.forwardRef((props, forwardedRef) => {
       loop,
       currentTabStopId,
       onItemFocus: React56.useCallback(
-        (tabStopId) => setCurrentTabStopId(tabStopId),
+        tabStopId => setCurrentTabStopId(tabStopId),
         [setCurrentTabStopId],
       ),
       onItemShiftTab: React56.useCallback(() => setIsTabbingBackOut(true), []),
       onFocusableItemAdd: React56.useCallback(
-        () => setFocusableItemsCount((prevCount) => prevCount + 1),
+        () => setFocusableItemsCount(prevCount => prevCount + 1),
         [],
       ),
       onFocusableItemRemove: React56.useCallback(
-        () => setFocusableItemsCount((prevCount) => prevCount - 1),
+        () => setFocusableItemsCount(prevCount => prevCount - 1),
         [],
       ),
       children: /* @__PURE__ */ (0, import_jsx_runtime43.jsx)(
@@ -45318,7 +45308,7 @@ var RovingFocusGroupImpl = React56.forwardRef((props, forwardedRef) => {
           onMouseDown: composeEventHandlers(props.onMouseDown, () => {
             isClickFocusRef.current = true;
           }),
-          onFocus: composeEventHandlers(props.onFocus, (event) => {
+          onFocus: composeEventHandlers(props.onFocus, event => {
             const isKeyboardFocus = !isClickFocusRef.current;
             if (
               event.target === event.currentTarget &&
@@ -45333,14 +45323,14 @@ var RovingFocusGroupImpl = React56.forwardRef((props, forwardedRef) => {
                 (event.currentTarget.dispatchEvent(entryFocusEvent),
                 !entryFocusEvent.defaultPrevented)
               ) {
-                const items = getItems().filter((item) => item.focusable),
-                  activeItem = items.find((item) => item.active),
+                const items = getItems().filter(item => item.focusable),
+                  activeItem = items.find(item => item.active),
                   currentItem = items.find(
-                    (item) => item.id === currentTabStopId,
+                    item => item.id === currentTabStopId,
                   ),
                   candidateNodes = [activeItem, currentItem, ...items]
                     .filter(Boolean)
-                    .map((item) => item.ref.current);
+                    .map(item => item.ref.current);
                 focusFirst2(candidateNodes);
               }
             }
@@ -45388,14 +45378,14 @@ var RovingFocusGroupItem = React56.forwardRef((props, forwardedRef) => {
           "data-orientation": context2.orientation,
           ...itemProps,
           ref: forwardedRef,
-          onMouseDown: composeEventHandlers(props.onMouseDown, (event) => {
+          onMouseDown: composeEventHandlers(props.onMouseDown, event => {
             focusable2 ? context2.onItemFocus(id) : event.preventDefault();
           }),
           onFocus: composeEventHandlers(props.onFocus, () =>
             context2.onItemFocus(id),
           ),
           ...(isWeb && {
-            onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
+            onKeyDown: composeEventHandlers(props.onKeyDown, event => {
               if (event.key === "Tab" && event.shiftKey) {
                 context2.onItemShiftTab();
                 return;
@@ -45409,8 +45399,8 @@ var RovingFocusGroupItem = React56.forwardRef((props, forwardedRef) => {
               if (focusIntent !== void 0) {
                 event.preventDefault();
                 let candidateNodes = getItems()
-                  .filter((item) => item.focusable)
-                  .map((item) => item.ref.current);
+                  .filter(item => item.focusable)
+                  .map(item => item.ref.current);
                 if (focusIntent === "last") candidateNodes.reverse();
                 else if (focusIntent === "prev" || focusIntent === "next") {
                   focusIntent === "prev" && candidateNodes.reverse();
@@ -45508,7 +45498,7 @@ __name(wrapArray, "wrapArray");
 
 // ../../node_modules/.bun/@tamagui+radio-group@1.144.1+0bee5583ac684eb8/node_modules/@tamagui/radio-group/dist/esm/createRadioGroup.mjs
 var import_jsx_runtime44 = require("react/jsx-runtime");
-var ensureContext2 = /* @__PURE__ */ __name((x) => {
+var ensureContext2 = /* @__PURE__ */ __name(x => {
   x.context || (x.context = RadioGroupContext);
 }, "ensureContext");
 var RadioGroupContext = import_react44.default.createContext({});
@@ -45753,7 +45743,7 @@ function useDebounceValue(val, amt = 0) {
   return (
     React58.useEffect(() => {
       const tm = setTimeout(() => {
-        setState((prev) => (prev === val ? prev : val));
+        setState(prev => (prev === val ? prev : val));
       }, amt);
       return () => {
         clearTimeout(tm);
@@ -45799,7 +45789,7 @@ var import_core35 = require("@tamagui/core");
 var import_react46 = __toESM(require("react"), 1);
 
 // ../../node_modules/.bun/@tamagui+select@1.144.1+0bee5583ac684eb8/node_modules/@tamagui/select/dist/esm/useSelectBreakpointActive.mjs
-var useShowSelectSheet = /* @__PURE__ */ __name((context2) => {
+var useShowSelectSheet = /* @__PURE__ */ __name(context2 => {
   const breakpointActive = useAdaptIsActive(context2.adaptScope);
   return context2.open === false ? false : breakpointActive;
 }, "useShowSelectSheet");
@@ -45881,7 +45871,7 @@ var VIEWPORT_NAME = "SelectViewport";
 
 // ../../node_modules/.bun/@tamagui+select@1.144.1+0bee5583ac684eb8/node_modules/@tamagui/select/dist/esm/SelectImpl.mjs
 var import_jsx_runtime47 = require("react/jsx-runtime");
-var SelectInlineImpl = /* @__PURE__ */ __name((props) => {
+var SelectInlineImpl = /* @__PURE__ */ __name(props => {
   const { scope, children, open = false, listContentRef } = props,
     selectContext = useSelectContext(scope),
     selectItemParentContext = useSelectItemParentContext(scope),
@@ -45918,7 +45908,7 @@ var SelectInlineImpl = /* @__PURE__ */ __name((props) => {
       isClient &&
       useIsomorphicLayoutEffect(() => {
         if (!open) return;
-        const mouseUp = /* @__PURE__ */ __name((e) => {
+        const mouseUp = /* @__PURE__ */ __name(e => {
           state.current.isMouseOutside && setOpen(false);
         }, "mouseUp");
         return (
@@ -45991,7 +45981,7 @@ var SelectInlineImpl = /* @__PURE__ */ __name((props) => {
     ),
     [update, open],
   );
-  const onMatch = (0, import_core36.useEvent)((index3) =>
+  const onMatch = (0, import_core36.useEvent)(index3 =>
       (open ? setActiveIndex : setSelectedIndex)(index3),
     ),
     interactionsProps = [
@@ -46023,7 +46013,7 @@ var SelectInlineImpl = /* @__PURE__ */ __name((props) => {
         onMatch,
         selectedIndex,
         activeIndex,
-        onTypingChange: /* @__PURE__ */ __name((e) => {
+        onTypingChange: /* @__PURE__ */ __name(e => {
           state.current.isTyping = e;
         }, "onTypingChange"),
       }),
@@ -46229,7 +46219,7 @@ var SelectItem = ListItemFrame.styleable(
       [isSelected, setSelected] = React61.useState(initialValue2 === value);
     (React61.useEffect(
       () =>
-        activeIndexSubscribe((i) => {
+        activeIndexSubscribe(i => {
           index3 === i &&
             (onActiveChange(value, index3), listRef?.current[index3]?.focus());
         }),
@@ -46237,13 +46227,13 @@ var SelectItem = ListItemFrame.styleable(
     ),
       React61.useEffect(
         () =>
-          valueSubscribe((val) => {
+          valueSubscribe(val => {
             setSelected(val === value);
           }),
         [value],
       ));
     const textId = React61.useId(),
-      refCallback = React61.useCallback((node) => {
+      refCallback = React61.useCallback(node => {
         isWeb &&
           node instanceof HTMLElement &&
           listRef &&
@@ -46386,7 +46376,7 @@ var SelectItemText = SelectItemTextFrame.styleable(
       }, []),
       (0, import_core38.useIsomorphicLayoutEffect)(
         () =>
-          itemParentContext.valueSubscribe((val) => {
+          itemParentContext.valueSubscribe(val => {
             val === itemContext.value &&
               context2.setSelectedItem(contents.current);
           }),
@@ -46466,7 +46456,7 @@ var SelectScrollButtonImpl = React63.memo(
       }),
       composedRef = useComposedRefs(forwardedRef, refs.setFloating);
     if (!isVisible) return null;
-    const onScroll = /* @__PURE__ */ __name((amount) => {
+    const onScroll = /* @__PURE__ */ __name(amount => {
       const floating = floatingRef;
       floating &&
         (fallback
@@ -46476,7 +46466,7 @@ var SelectScrollButtonImpl = React63.memo(
               setScrollTop(floating.current?.scrollTop ?? 0),
             ))
           : (0, import_react_dom6.flushSync)(() =>
-              setInnerOffset((value) => value - amount),
+              setInnerOffset(value => value - amount),
             ));
     }, "onScroll");
     return /* @__PURE__ */ (0, import_jsx_runtime50.jsx)(YStack, {
@@ -46781,7 +46771,7 @@ var SelectValue = SelectValueFrame.styleable(function (
   });
 });
 function unwrapSelectItem(selectValueChildren) {
-  return React65.Children.map(selectValueChildren, (child) => {
+  return React65.Children.map(selectValueChildren, child => {
     if (child) {
       if (child.type?.staticConfig?.componentName === ITEM_TEXT_NAME)
         return child.props.children;
@@ -46886,7 +46876,7 @@ var SelectGroup = React65.forwardRef((props, forwardedRef) => {
           children: /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(
             NativeSelectTextFrame,
             {
-              onChange: /* @__PURE__ */ __name((event) => {
+              onChange: /* @__PURE__ */ __name(event => {
                 itemParentContext.onChange(event.currentTarget.value);
               }, "onChange"),
               size: size4,
@@ -46937,13 +46927,13 @@ SelectLabel.displayName = LABEL_NAME;
 var SelectSeparator = (0, import_core41.styled)(Separator, {
   name: "SelectSeparator",
 });
-var SelectSheetController = /* @__PURE__ */ __name((props) => {
+var SelectSheetController = /* @__PURE__ */ __name(props => {
   const context2 = useSelectContext(props.scope),
     showSheet = useShowSelectSheet(context2),
     isAdapted = useAdaptIsActive(context2.adaptScope),
     getShowSheet = (0, import_core41.useGet)(showSheet);
   return /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(SheetController, {
-    onOpenChange: /* @__PURE__ */ __name((val) => {
+    onOpenChange: /* @__PURE__ */ __name(val => {
       getShowSheet() && props.onOpenChange(val);
     }, "onOpenChange"),
     open: context2.open,
@@ -46952,7 +46942,7 @@ var SelectSheetController = /* @__PURE__ */ __name((props) => {
   });
 }, "SelectSheetController");
 var SelectSheetImpl = /* @__PURE__ */ __name(
-  (props) =>
+  props =>
     /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(
       import_jsx_runtime53.Fragment,
       {
@@ -46995,11 +46985,11 @@ var Select = withStaticProperties(
 function useEmitter() {
   const listeners = React65.useRef(null);
   listeners.current || (listeners.current = /* @__PURE__ */ new Set());
-  const emit = /* @__PURE__ */ __name((value) => {
-      listeners.current.forEach((l) => l(value));
+  const emit = /* @__PURE__ */ __name(value => {
+      listeners.current.forEach(l => l(value));
     }, "emit"),
     subscribe3 = React65.useCallback(
-      (listener) => (
+      listener => (
         listeners.current.add(listener),
         () => {
           listeners.current.delete(listener);
@@ -47070,8 +47060,8 @@ function SelectInner(props) {
         native === "web" ||
         (Array.isArray(native) && native.includes("web"))),
     setActiveIndexDebounced = useDebounce(
-      (index3) => {
-        setActiveIndex((prev) =>
+      index3 => {
+        setActiveIndex(prev =>
           prev !== index3
             ? (typeof index3 == "number" && emitActiveIndex(index3), index3)
             : prev,
@@ -47093,7 +47083,7 @@ function SelectInner(props) {
       valueSubscribe,
       setOpen,
       id,
-      onChange: React65.useCallback((val) => {
+      onChange: React65.useCallback(val => {
         (setValue(val), emitValue(val));
       }, []),
       onActiveChange: (0, import_core41.useEvent)((value2, index3) => {
@@ -47197,7 +47187,7 @@ function getLabel(index3, totalValues) {
 __name(getLabel, "getLabel");
 function getClosestValueIndex(values, nextValue) {
   if (values.length === 1) return 0;
-  const distances = values.map((value) => Math.abs(value - nextValue)),
+  const distances = values.map(value => Math.abs(value - nextValue)),
     closestDistance = Math.min(...distances);
   return distances.indexOf(closestDistance);
 }
@@ -47221,7 +47211,7 @@ function hasMinStepsBetweenValues(values, minStepsBetweenValues) {
 }
 __name(hasMinStepsBetweenValues, "hasMinStepsBetweenValues");
 function linearScale(input, output) {
-  return (value) => {
+  return value => {
     if (input[0] === input[1] || output[0] === output[1]) return output[0];
     const ratio = (output[1] - output[0]) / (input[1] - input[0]);
     return output[0] + ratio * (value - input[0]);
@@ -47287,7 +47277,7 @@ var SliderImpl = React66.forwardRef((props, forwardedRef) => {
     "data-orientation": sliderProps.orientation,
     ref: forwardedRef,
     ...(isWeb && {
-      onKeyDown: /* @__PURE__ */ __name((event) => {
+      onKeyDown: /* @__PURE__ */ __name(event => {
         event.key === "Home"
           ? (onHomeKeyDown(event), event.preventDefault())
           : event.key === "End"
@@ -47320,7 +47310,7 @@ var SliderImpl = React66.forwardRef((props, forwardedRef) => {
       () => false,
       "onResponderTerminationRequest",
     ),
-    onResponderGrant: composeEventHandlers(props.onResponderGrant, (event) => {
+    onResponderGrant: composeEventHandlers(props.onResponderGrant, event => {
       const target = event.target,
         thumbIndex = context2.thumbs.get(target),
         isStartingOnThumb = thumbIndex !== void 0;
@@ -47333,12 +47323,12 @@ var SliderImpl = React66.forwardRef((props, forwardedRef) => {
           (context2.valueIndexToChangeRef.current = thumbIndex),
         onSlideStart(event, isStartingOnThumb ? "thumb" : "track"));
     }),
-    onResponderMove: composeEventHandlers(props.onResponderMove, (event) => {
+    onResponderMove: composeEventHandlers(props.onResponderMove, event => {
       (event.stopPropagation(), onSlideMove(event));
     }),
     onResponderRelease: composeEventHandlers(
       props.onResponderRelease,
-      (event) => {
+      event => {
         onSlideEnd(event);
       },
     ),
@@ -47353,7 +47343,7 @@ isWeb &&
   (process.env.TAMAGUI_DISABLE_SLIDER_INTERVAL ||
     setInterval?.(
       () => {
-        activeSliderMeasureListeners.forEach((cb) => cb());
+        activeSliderMeasureListeners.forEach(cb => cb());
       },
       // really doesn't need to be super often
       1e3,
@@ -47407,7 +47397,7 @@ var SliderHorizontal = React67.forwardRef((props, forwardedRef) => {
               }, 200)));
           }, "debouncedMeasure"),
           io = new IntersectionObserver(
-            (entries) => {
+            entries => {
               (debouncedMeasure(),
                 entries?.[0].isIntersecting
                   ? activeSliderMeasureListeners.add(debouncedMeasure)
@@ -47445,19 +47435,19 @@ var SliderHorizontal = React67.forwardRef((props, forwardedRef) => {
           const value = getValueFromPointer(event.nativeEvent.locationX);
           value && onSlideStart?.(value, target, event);
         }, "onSlideStart"),
-        onSlideMove: /* @__PURE__ */ __name((event) => {
+        onSlideMove: /* @__PURE__ */ __name(event => {
           const value = getValueFromPointer(
             event.nativeEvent.pageX - state.offset,
           );
           value && onSlideMove?.(value, event);
         }, "onSlideMove"),
-        onSlideEnd: /* @__PURE__ */ __name((event) => {
+        onSlideEnd: /* @__PURE__ */ __name(event => {
           const value = getValueFromPointer(
             event.nativeEvent.pageX - state.offset,
           );
           value && onSlideEnd?.(event, value);
         }, "onSlideEnd"),
-        onStepKeyDown: /* @__PURE__ */ __name((event) => {
+        onStepKeyDown: /* @__PURE__ */ __name(event => {
           const isBackKey = BACK_KEYS[direction].includes(event.key);
           onStepKeyDown?.({
             event,
@@ -47530,19 +47520,19 @@ var SliderVertical = React67.forwardRef((props, forwardedRef) => {
           const value = getValueFromPointer(event.nativeEvent.locationY);
           value && onSlideStart?.(value, target, event);
         }, "onSlideStart"),
-        onSlideMove: /* @__PURE__ */ __name((event) => {
+        onSlideMove: /* @__PURE__ */ __name(event => {
           const value = getValueFromPointer(
             event.nativeEvent.pageY - state.offset,
           );
           value && onSlideMove?.(value, event);
         }, "onSlideMove"),
-        onSlideEnd: /* @__PURE__ */ __name((event) => {
+        onSlideEnd: /* @__PURE__ */ __name(event => {
           const value = getValueFromPointer(
             event.nativeEvent.pageY - state.offset,
           );
           onSlideEnd?.(event, value);
         }, "onSlideEnd"),
-        onStepKeyDown: /* @__PURE__ */ __name((event) => {
+        onStepKeyDown: /* @__PURE__ */ __name(event => {
           const isBackKey = BACK_KEYS.ltr.includes(event.key);
           onStepKeyDown?.({
             event,
@@ -47599,7 +47589,7 @@ var SliderTrackActive = React67.forwardRef((props, forwardedRef) => {
     ref = React67.useRef(null),
     composedRefs = useComposedRefs(forwardedRef, ref),
     valuesCount = context2.values.length,
-    percentages = context2.values.map((value) =>
+    percentages = context2.values.map(value =>
       convertValueToPercentage(value, context2.min, context2.max),
     ),
     offsetStart = valuesCount > 1 ? Math.min(...percentages) : 0,
@@ -47625,7 +47615,7 @@ var SliderTrackActive = React67.forwardRef((props, forwardedRef) => {
   });
 });
 SliderTrackActive.displayName = RANGE_NAME;
-var getThumbSize = /* @__PURE__ */ __name((val) => {
+var getThumbSize = /* @__PURE__ */ __name(val => {
   const tokens = (0, import_core44.getTokens)(),
     size4 =
       typeof val == "number"
@@ -47734,7 +47724,7 @@ var SliderThumb = SliderThumbFrame.styleable(
       size: sizeIn,
       circular: circular2,
       ...thumbProps,
-      onLayout: /* @__PURE__ */ __name((e) => {
+      onLayout: /* @__PURE__ */ __name(e => {
         setSize(e.nativeEvent.layout[orientation.sizeProp]);
       }, "onLayout"),
       onFocus: composeEventHandlers(props.onFocus, () => {
@@ -47775,7 +47765,7 @@ var SliderComponent = React67.forwardRef((props, forwardedRef) => {
       prop: value,
       defaultProp: defaultValue2,
       transition: true,
-      onChange: /* @__PURE__ */ __name((value2) => {
+      onChange: /* @__PURE__ */ __name(value2 => {
         (updateThumbFocus(valueIndexToChangeRef.current),
           onValueChange(value2));
       }, "onChange"),
@@ -47784,7 +47774,7 @@ var SliderComponent = React67.forwardRef((props, forwardedRef) => {
     React67.useEffect(() => {
       const node = sliderRef.current;
       if (!node) return;
-      const preventDefault = /* @__PURE__ */ __name((e) => {
+      const preventDefault = /* @__PURE__ */ __name(e => {
         e.preventDefault();
       }, "preventDefault");
       return (
@@ -47901,7 +47891,7 @@ function getState7(checked) {
   return checked ? "checked" : "unchecked";
 }
 __name(getState7, "getState");
-var BubbleInput3 = /* @__PURE__ */ __name((props) => {
+var BubbleInput3 = /* @__PURE__ */ __name(props => {
   const { control, checked, bubbles = true, ...inputProps } = props,
     ref = React68.useRef(null),
     prevChecked = usePrevious(checked);
@@ -47960,8 +47950,8 @@ function useSwitch(props, [checked, setChecked], ref) {
             }
           : {}),
         "aria-labelledby": ariaLabelledBy,
-        onPress: composeEventHandlers(props.onPress, (event) => {
-          (setChecked((prevChecked) => !prevChecked),
+        onPress: composeEventHandlers(props.onPress, event => {
+          (setChecked(prevChecked => !prevChecked),
             isWeb &&
               isFormControl &&
               ((hasConsumerStoppedPropagationRef.current =
@@ -48021,7 +48011,7 @@ var SwitchThumb = (0, import_core46.styled)(ThemeableStack, {
       true: {},
     },
     size: {
-      "...size": /* @__PURE__ */ __name((val) => {
+      "...size": /* @__PURE__ */ __name(val => {
         const size4 = getSwitchHeight(val);
         return {
           height: size4,
@@ -48035,11 +48025,11 @@ var SwitchThumb = (0, import_core46.styled)(ThemeableStack, {
   },
 });
 var getSwitchHeight = /* @__PURE__ */ __name(
-  (val) => Math.round((0, import_core46.getVariableValue)(getSize(val)) * 0.65),
+  val => Math.round((0, import_core46.getVariableValue)(getSize(val)) * 0.65),
   "getSwitchHeight",
 );
 var getSwitchWidth = /* @__PURE__ */ __name(
-  (val) => getSwitchHeight(val) * 2,
+  val => getSwitchHeight(val) * 2,
   "getSwitchWidth",
 );
 var SwitchFrame = (0, import_core46.styled)(YStack, {
@@ -48064,7 +48054,7 @@ var SwitchFrame = (0, import_core46.styled)(YStack, {
       true: {},
     },
     size: {
-      "...size": /* @__PURE__ */ __name((val) => {
+      "...size": /* @__PURE__ */ __name(val => {
         const height = getSwitchHeight(val) + 4,
           width = getSwitchWidth(val) + 4;
         return {
@@ -48140,13 +48130,10 @@ function createSwitch(createProps) {
         }),
         alignSelf: initialChecked ? "flex-end" : "flex-start",
         x,
-        onLayout: (0, import_core47.composeEventHandlers)(
-          props.onLayout,
-          (e) => {
-            const next = e.nativeEvent.layout.width;
-            next !== thumbWidth && setThumbWidth(next);
-          },
-        ),
+        onLayout: (0, import_core47.composeEventHandlers)(props.onLayout, e => {
+          const next = e.nativeEvent.layout.width;
+          next !== thumbWidth && setThumbWidth(next);
+        }),
         checked,
         disabled,
         ...thumbProps,
@@ -48228,7 +48215,7 @@ function createSwitch(createProps) {
             }),
             [checked, disabled, frameWidth],
           ),
-          handleLayout = /* @__PURE__ */ __name((e) => {
+          handleLayout = /* @__PURE__ */ __name(e => {
             const next = e.nativeEvent.layout.width;
             next !== frameWidth && setFrameInnerWidth(next);
           }, "handleLayout"),
@@ -48443,7 +48430,7 @@ function createTabs(createProps) {
               children: /* @__PURE__ */ (0, import_jsx_runtime58.jsx)(
                 TabFrame,
                 {
-                  onLayout: /* @__PURE__ */ __name((event) => {
+                  onLayout: /* @__PURE__ */ __name(event => {
                     isWeb || setLayout(event.nativeEvent.layout);
                   }, "onLayout"),
                   onHoverIn: composeEventHandlers(props.onHoverIn, () => {
@@ -48470,7 +48457,7 @@ function createTabs(createProps) {
                   ref: composeRefs(forwardedRef, triggerRef),
                   onPress: composeEventHandlers(
                     props.onPress ?? void 0,
-                    (event) => {
+                    event => {
                       const webChecks =
                         !isWeb ||
                         (event.button === 0 && event.ctrlKey === false);
@@ -48481,14 +48468,11 @@ function createTabs(createProps) {
                   ),
                   ...(isWeb && {
                     type: "button",
-                    onKeyDown: composeEventHandlers(
-                      props.onKeyDown,
-                      (event) => {
-                        [" ", "Enter"].includes(event.key) &&
-                          (context2.onChange(value), event.preventDefault());
-                      },
-                    ),
-                    onFocus: composeEventHandlers(props.onFocus, (event) => {
+                    onKeyDown: composeEventHandlers(props.onKeyDown, event => {
+                      [" ", "Enter"].includes(event.key) &&
+                        (context2.onChange(value), event.preventDefault());
+                    }),
+                    onFocus: composeEventHandlers(props.onFocus, event => {
                       layout && onInteraction?.("focus", layout);
                       const isAutomaticActivation =
                         context2.activationMode !== "manual";
@@ -48556,10 +48540,10 @@ function createTabs(createProps) {
         }),
         [triggersCount, setTriggersCount] = React70.useState(0),
         registerTrigger = (0, import_web18.useEvent)(() =>
-          setTriggersCount((v) => v + 1),
+          setTriggersCount(v => v + 1),
         ),
         unregisterTrigger = (0, import_web18.useEvent)(() =>
-          setTriggersCount((v) => v - 1),
+          setTriggersCount(v => v - 1),
         );
       return /* @__PURE__ */ (0, import_jsx_runtime58.jsx)(TabsProvider, {
         scope: __scopeTabs,
@@ -48868,7 +48852,7 @@ var Toggle = React71.forwardRef(function (props, forwardedRef) {
     ...buttonProps,
     ref: forwardedRef,
     onPress: composeEventHandlers(props.onPress ?? void 0, () => {
-      props.disabled || setPressed((prev) => !prev);
+      props.disabled || setPressed(prev => !prev);
     }),
   });
 });
@@ -48911,7 +48895,7 @@ var ToggleGroupItem = ToggleFrame.styleable((props, forwardedRef) => {
       color: (pressed && toggledColor ? toggledColor : color) || theme.color,
     }),
     children = import_react50.default.Children.toArray(props.children).map(
-      (child) =>
+      child =>
         props.disablePassStyles || !import_react50.default.isValidElement(child)
           ? child
           : import_react50.default.cloneElement(getThemedIcon(child), {
@@ -48975,7 +48959,7 @@ var ToggleGroupItemImpl = import_react50.default.forwardRef(
       ...typeProps,
       ...itemProps,
       ref: forwardedRef,
-      onPressedChange: /* @__PURE__ */ __name((pressed) => {
+      onPressedChange: /* @__PURE__ */ __name(pressed => {
         pressed
           ? valueContext.onItemActivate(value)
           : valueContext.onItemDeactivate(value);
@@ -49078,13 +49062,13 @@ var ToggleGroupImplMultiple = import_react50.default.forwardRef(
         onChange: onValueChange,
       }),
       handleButtonActivate = import_react50.default.useCallback(
-        (itemValue) => setValue((prevValue = []) => [...prevValue, itemValue]),
+        itemValue => setValue((prevValue = []) => [...prevValue, itemValue]),
         [setValue],
       ),
       handleButtonDeactivate = import_react50.default.useCallback(
-        (itemValue) =>
+        itemValue =>
           setValue((prevValue = []) =>
-            prevValue.filter((value2) => value2 !== itemValue),
+            prevValue.filter(value2 => value2 !== itemValue),
           ),
         [setValue],
       );
@@ -49259,7 +49243,7 @@ var TooltipGroup = /* @__PURE__ */ __name(
 );
 var setOpens = /* @__PURE__ */ new Set();
 var closeOpenTooltips = /* @__PURE__ */ __name(() => {
-  setOpens.forEach((x) => x(false));
+  setOpens.forEach(x => x(false));
 }, "closeOpenTooltips");
 var TooltipComponent = React73.forwardRef(function (props, ref) {
   const {
@@ -49287,7 +49271,7 @@ var TooltipComponent = React73.forwardRef(function (props, ref) {
       onChange: onOpenChangeProp,
     }),
     id = props.groupId,
-    onOpenChange = (0, import_core50.useEvent)((open2) => {
+    onOpenChange = (0, import_core50.useEvent)(open2 => {
       (open2 && setCurrentId(id), setOpen(open2));
     });
   React73.useEffect(() => {
@@ -49304,7 +49288,7 @@ var TooltipComponent = React73.forwardRef(function (props, ref) {
       }
     );
   }, [open, disableAutoCloseOnScroll]);
-  const useFloatingFn = /* @__PURE__ */ __name((props2) => {
+  const useFloatingFn = /* @__PURE__ */ __name(props2 => {
       const floating = useFloating3({
           ...props2,
           open,
@@ -49523,7 +49507,7 @@ __name(getWindowSize, "getWindowSize");
 var cbs = /* @__PURE__ */ new Set();
 if (isClient) {
   let flushUpdate = /* @__PURE__ */ __name(function () {
-      ((lastUpdate = Date.now()), cbs.forEach((cb) => cb(getWindowSize())));
+      ((lastUpdate = Date.now()), cbs.forEach(cb => cb(getWindowSize())));
     }, "flushUpdate"),
     lastUpdate = Date.now(),
     tm;
@@ -49595,11 +49579,10 @@ var import_core51 = require("@tamagui/core");
 var createTamagui =
   process.env.NODE_ENV !== "development"
     ? import_core51.createTamagui
-    : (conf) => {
+    : conf => {
         const sizeTokenKeys = ["$true"],
           hasKeys = /* @__PURE__ */ __name(
-            (expectedKeys, obj) =>
-              expectedKeys.every((k) => typeof obj[k] < "u"),
+            (expectedKeys, obj) => expectedKeys.every(k => typeof obj[k] < "u"),
             "hasKeys",
           ),
           tamaguiConfig = (0, import_core51.createTamagui)(conf);
@@ -49635,7 +49618,7 @@ size: {
         for (const name of ["radius", "zIndex"]) {
           const tokenSet = tamaguiConfig.tokensParsed[name],
             received = Object.keys(tokenSet);
-          if (!received.some((rk) => expected.includes(rk)))
+          if (!received.some(rk => expected.includes(rk)))
             throw new Error(`
 createTamagui() invalid tokens.${name}:
 
@@ -49693,7 +49676,7 @@ var Anchor = AnchorFrame.styleable(({ href, target, ...props }, ref) =>
           target,
         }
       : {
-          onPress: /* @__PURE__ */ __name((event) => {
+          onPress: /* @__PURE__ */ __name(event => {
             (props.onPress?.(event),
               href !== void 0 &&
                 import_react_native_web8.Linking.openURL(href));

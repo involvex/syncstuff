@@ -1,0 +1,5 @@
+Tamagui: Using global config fallback. This may indicate duplicate tamagui instances (e.g., from Vite SSR bundling). This is handled automatically, but may cause issues.
+Sourcemap for "D:/repos/ionic/syncstuff/node_modules/.pnpm/@tamagui+font-inter@1.144.1_5c09213422e66c901b8f4fabcafb60c7/node_modules/@tamagui/font-inter/dist/esm/index.mjs" points to missing source files
+Sourcemap for "D:/repos/ionic/syncstuff/node_modules/.pnpm/@tamagui+font-silkscreen@1._6a0285464de1c87d51b820a45885de76/node_modules/@tamagui/font-silkscreen/dist/esm/index.mjs" points to missing source files
+Database binding not found, using mock data
+Database binding not found, using mock data

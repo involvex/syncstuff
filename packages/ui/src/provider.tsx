@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { TamaguiProvider, type TamaguiProviderProps, Theme } from "tamagui";
+import { tamaguiConfig } from "./tamagui.config.js";
 
 type ThemeContextType = {
   theme: "light" | "dark";
@@ -17,11 +18,7 @@ export const useAppTheme = () => {
   return context;
 };
 
-export function Provider({
-  children,
-  config,
-  ...rest
-}: TamaguiProviderProps) {
+export function Provider({ children, config = tamaguiConfig, ...rest }: TamaguiProviderProps) {
   const [theme, setThemeState] = useState<"light" | "dark">("light");
 
   useEffect(() => {
