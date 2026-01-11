@@ -72,13 +72,17 @@ apps/mobileapp/google_drive_client_secret.json
 **/*.p12
 **/*.key
 
-# Environment files
+# Environment files (but NOT .env.example templates)
 packages/app/.env
 packages/web/.env
 packages/web/.dev.vars
 apps/web/.env
 apps/web/.dev.vars
 apps/mobileapp/.env
+packages/api/.env
+packages/api/.env.local
+packages/database/.env
+packages/database/.env.local
 
 # Wrangler local development
 .wrangler/
@@ -86,6 +90,8 @@ apps/mobileapp/.env
 **/.dev.vars
 # Note: wrangler.toml files are tracked (they contain non-sensitive config)
 # Only .wrangler/ directory (local dev cache) is ignored
+
+# IMPORTANT: .env.example files ARE tracked - they contain templates only
 
 # Legacy paths (for backwards compatibility)
 packages/app/build
