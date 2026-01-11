@@ -12,8 +12,7 @@
     },
     "./tamagui.config": {
       "types": "./dist/tamagui.config.d.ts",
-      "import": "./dist/tamagui.config.js",
-      "require": "./dist-cjs/tamagui.config.cjs"
+      "import": "./dist/tamagui.config.js"
     }
   },
   "scripts": {
