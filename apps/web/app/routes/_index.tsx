@@ -50,9 +50,9 @@ export default function Index() {
     <div className="bg-background text-on-background min-h-screen transition-colors duration-300">
       <Navigation
         isLoggedIn={isLoggedIn}
+        onDashboard={() => navigate("/dashboard")}
         onLogin={() => navigate("/auth/login")}
         onSignup={() => navigate("/auth/signup")}
-        onDashboard={() => navigate("/dashboard")}
       />
 
       <main className="pt-20">
@@ -69,8 +69,8 @@ export default function Index() {
               </p>
               {isLoggedIn ? (
                 <Link
-                  to="/dashboard"
                   className="bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-primary/50 mr-3 inline-flex items-center justify-center rounded-xl px-6 py-3.5 text-center text-base font-medium shadow-md transition-all duration-200 hover:shadow-lg focus:ring-4"
+                  to="/dashboard"
                 >
                   Go to Dashboard
                   <svg
@@ -80,16 +80,16 @@ export default function Index() {
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      fillRule="evenodd"
-                      d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
                       clipRule="evenodd"
-                    ></path>
+                      d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                      fillRule="evenodd"
+                    />
                   </svg>
                 </Link>
               ) : (
                 <a
-                  href="/auth/register"
                   className="bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-primary/50 mr-3 inline-flex items-center justify-center rounded-xl px-6 py-3.5 text-center text-base font-medium shadow-md transition-all duration-200 hover:shadow-lg focus:ring-4"
+                  href="/auth/register"
                 >
                   Get started
                   <svg
@@ -99,16 +99,16 @@ export default function Index() {
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      fillRule="evenodd"
-                      d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
                       clipRule="evenodd"
-                    ></path>
+                      d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                      fillRule="evenodd"
+                    />
                   </svg>
                 </a>
               )}
               <a
-                href="#features"
                 className="text-on-surface hover:bg-surface-variant/50 hover:text-primary inline-flex items-center justify-center rounded-xl px-6 py-3.5 text-center text-base font-medium transition-colors duration-200"
+                href="#features"
               >
                 Learn more
               </a>
@@ -118,16 +118,16 @@ export default function Index() {
               <div className="hero-hover bg-surfaceVariant ml-20 flex items-end justify-end rounded-lg p-4">
                 <span className="text-onSurfaceVariant">
                   <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="350"
                     height="250"
                     viewBox="0 0 24 24"
+                    width="350"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      fill="currentColor"
                       d="M12.125 13H16.2q.65 0 1.1-.45t.45-1.1t-.45-1.112t-1.1-.463h-.05q-.125-.8-.725-1.338T14 8q-.65 0-1.175.338t-.8.912q-.75.05-1.263.588t-.512 1.287t.538 1.313t1.337.562M1 21V6h2v13h17v2zm4-4V2h7l2 2h9v13zm2-2h14V6h-7.825l-2-2H7zm0 0V4z"
-                      strokeWidth="1"
+                      fill="currentColor"
                       stroke="currentColor"
+                      strokeWidth="1"
                     />
                   </svg>
                 </span>
@@ -137,7 +137,7 @@ export default function Index() {
         </section>
 
         {/* Features Section */}
-        <section id="features" className="bg-background py-16">
+        <section className="bg-background py-16" id="features">
           <div className="mx-auto max-w-screen-xl px-4 lg:px-6">
             <div className="mx-auto mb-12 max-w-screen-md text-center lg:mb-16">
               <h2 className="text-onBackground mb-4 text-4xl font-extrabold tracking-tight">
@@ -159,10 +159,10 @@ export default function Index() {
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      fillRule="evenodd"
-                      d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.22l.9-1.348a1 1 0 00-1.78-1.006l-1.359 2.038L7.84 17.652a1 1 0 00-1.78 1.006l.92 1.348H5a2 2 0 01-2-2V5zm11 1H6v8h8V6z"
                       clipRule="evenodd"
-                    ></path>
+                      d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.22l.9-1.348a1 1 0 00-1.78-1.006l-1.359 2.038L7.84 17.652a1 1 0 00-1.78 1.006l.92 1.348H5a2 2 0 01-2-2V5zm11 1H6v8h8V6z"
+                      fillRule="evenodd"
+                    />
                   </svg>
                 </div>
                 <h3 className="text-onBackground mb-3 text-2xl font-bold">
@@ -182,7 +182,7 @@ export default function Index() {
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"></path>
+                    <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
                   </svg>
                 </div>
                 <h3 className="text-onBackground mb-3 text-2xl font-bold">
@@ -197,17 +197,17 @@ export default function Index() {
               <div className="bg-surface-container hover:border-outline-variant rounded-2xl border border-transparent p-8 shadow-sm transition-all duration-200 hover:shadow-md">
                 <div className="bg-primary/10 mb-6 flex size-12 items-center justify-center rounded-xl">
                   <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
+                    className="text-primary size-6"
                     height="24"
                     viewBox="0 0 24 24"
-                    className="text-primary size-6"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      fill="currentColor"
                       d="M4 20q-.825 0-1.412-.587T2 18V6q0-.825.588-1.412T4 4h16q.825 0 1.413.588T22 6v12q0 .825-.587 1.413T20 20zm0-2h16V8H4zm3.5-1l-1.4-1.4L8.675 13l-2.6-2.6L7.5 9l4 4zm4.5 0v-2h6v2z"
-                      strokeWidth="0.5"
+                      fill="currentColor"
                       stroke="currentColor"
+                      strokeWidth="0.5"
                     />
                   </svg>
                 </div>
@@ -223,7 +223,7 @@ export default function Index() {
         </section>
 
         {/* Download Section */}
-        <section id="download" className="bg-surface">
+        <section className="bg-surface" id="download">
           <div className="mx-auto max-w-screen-xl px-4 py-8 sm:py-16 lg:px-6">
             <div className="mx-auto max-w-screen-md text-center">
               <h2 className="text-onBackground mb-4 text-4xl font-extrabold tracking-tight">
@@ -235,9 +235,9 @@ export default function Index() {
               <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
                 {/* Android Download */}
                 <a
-                  href="/downloads/syncstuff-v0.0.1.apk"
-                  download
                   className="inline-flex items-center justify-center gap-2 rounded-lg bg-green-600 px-6 py-3 text-base font-medium text-white transition-colors hover:bg-green-700 focus:ring-4 focus:ring-green-300 dark:focus:ring-green-800"
+                  download
+                  href="/downloads/syncstuff-v0.0.1.apk"
                 >
                   <svg
                     className="size-6"

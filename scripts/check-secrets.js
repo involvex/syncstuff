@@ -93,10 +93,10 @@ function checkFile(filePath) {
     sensitivePatterns.forEach(({ pattern, name, severity }) => {
       const matches = content.match(pattern);
       if (matches) {
-        matches.forEach((match) => {
+        matches.forEach(match => {
           // Extract line number
           const lines = content.split("\n");
-          const lineNum = lines.findIndex((line) => line.includes(match)) + 1;
+          const lineNum = lines.findIndex(line => line.includes(match)) + 1;
           issues.push({
             file: filePath,
             pattern: name,
@@ -119,8 +119,8 @@ function getAllTrackedFiles() {
     const output = execSync("git ls-files", { encoding: "utf8" });
     return output
       .split("\n")
-      .filter((line) => line.trim())
-      .filter((file) => {
+      .filter(line => line.trim())
+      .filter(file => {
         // Only check text files
         return (
           file.endsWith(".ts") ||
@@ -153,7 +153,7 @@ function main() {
 
   console.log(`Scanning ${trackedFiles.length} tracked files...\n`);
 
-  trackedFiles.forEach((file) => {
+  trackedFiles.forEach(file => {
     const filePath = path.join(process.cwd(), file);
     if (fs.existsSync(filePath)) {
       const issues = checkFile(filePath);
@@ -163,7 +163,7 @@ function main() {
 
   // Also check .env files even if they're in .gitignore (in case they're accidentally tracked)
   const envFiles = [".env", ".env.local", ".env.production"];
-  envFiles.forEach((envFile) => {
+  envFiles.forEach(envFile => {
     const envPath = path.join(process.cwd(), envFile);
     if (fs.existsSync(envPath)) {
       console.log(
@@ -173,9 +173,9 @@ function main() {
   });
 
   // Group issues by severity
-  const critical = allIssues.filter((i) => i.severity === "critical");
-  const high = allIssues.filter((i) => i.severity === "high");
-  const medium = allIssues.filter((i) => i.severity === "medium");
+  const critical = allIssues.filter(i => i.severity === "critical");
+  const high = allIssues.filter(i => i.severity === "high");
+  const medium = allIssues.filter(i => i.severity === "medium");
 
   console.log(`\n${colors.cyan}--- 📋 Results ---${colors.reset}\n`);
 
@@ -188,7 +188,7 @@ function main() {
       console.log(
         `${colors.red}${colors.bright}🚨 CRITICAL: ${critical.length} issue(s)${colors.reset}\n`,
       );
-      critical.forEach((issue) => {
+      critical.forEach(issue => {
         console.log(
           `  ${colors.red}• ${issue.file}:${issue.line} - ${issue.pattern}${colors.reset}`,
         );
@@ -201,7 +201,7 @@ function main() {
       console.log(
         `${colors.red}⚠️  HIGH: ${high.length} issue(s)${colors.reset}\n`,
       );
-      high.forEach((issue) => {
+      high.forEach(issue => {
         console.log(
           `  ${colors.red}• ${issue.file}:${issue.line} - ${issue.pattern}${colors.reset}`,
         );
@@ -214,7 +214,7 @@ function main() {
       console.log(
         `${colors.yellow}⚠️  MEDIUM: ${medium.length} issue(s)${colors.reset}\n`,
       );
-      medium.forEach((issue) => {
+      medium.forEach(issue => {
         console.log(
           `  ${colors.yellow}• ${issue.file}:${issue.line} - ${issue.pattern}${colors.reset}`,
         );
@@ -225,28 +225,16 @@ function main() {
     console.log(
       `${colors.red}${colors.bright}❌ Found ${allIssues.length} potential secret(s)${colors.reset}\n`,
     );
-    console.log(
-      `${colors.cyan}💡 Recommendations:${colors.reset}`,
-    );
-    console.log(
-      `  • Remove secrets from tracked files immediately`,
-    );
-    console.log(
-      `  • Use environment variables (.env files) for secrets`,
-    );
-    console.log(
-      `  • Ensure .env files are in .gitignore`,
-    );
-    console.log(
-      `  • Rotate any exposed secrets immediately`,
-    );
+    console.log(`${colors.cyan}💡 Recommendations:${colors.reset}`);
+    console.log("  • Remove secrets from tracked files immediately");
+    console.log("  • Use environment variables (.env files) for secrets");
+    console.log("  • Ensure .env files are in .gitignore");
+    console.log("  • Rotate any exposed secrets immediately");
     console.log();
     process.exit(1);
   }
 
-  console.log(
-    `${colors.green}✅ Security check passed!${colors.reset}\n`,
-  );
+  console.log(`${colors.green}✅ Security check passed!${colors.reset}\n`);
 }
 
 main();

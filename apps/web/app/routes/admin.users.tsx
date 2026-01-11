@@ -1,6 +1,6 @@
 import {
-  json,
   type ActionFunctionArgs,
+  json,
   type LoaderFunctionArgs,
 } from "@remix-run/cloudflare";
 import { Form, redirect, useLoaderData, useNavigation } from "@remix-run/react";
@@ -111,78 +111,78 @@ export default function AdminUsers() {
         </Text>
       </YStack>
 
-      <Card elevate bordered overflow="hidden">
+      <Card bordered elevate overflow="hidden">
         <YStack separator={<Separator />}>
           {/* Header */}
-          <XStack padding="$4" backgroundColor="$backgroundFocus" space="$4">
+          <XStack backgroundColor="$backgroundFocus" padding="$4" space="$4">
             <Text
               flex={2}
-              fontWeight="bold"
               fontSize="$2"
+              fontWeight="bold"
               textTransform="uppercase"
             >
               Username
             </Text>
             <Text
-              flex={3}
-              fontWeight="bold"
-              fontSize="$2"
-              textTransform="uppercase"
               $sm={{ display: "none" }}
+              flex={3}
+              fontSize="$2"
+              fontWeight="bold"
+              textTransform="uppercase"
             >
               Email
             </Text>
             <Text
               flex={1}
-              fontWeight="bold"
               fontSize="$2"
+              fontWeight="bold"
               textTransform="uppercase"
             >
               Role
             </Text>
             <Text
               flex={1}
-              fontWeight="bold"
               fontSize="$2"
+              fontWeight="bold"
               textTransform="uppercase"
             >
               Status
             </Text>
             <Text
               flex={1}
-              fontWeight="bold"
               fontSize="$2"
-              textTransform="uppercase"
+              fontWeight="bold"
               textAlign="right"
+              textTransform="uppercase"
             >
               Action
             </Text>
           </XStack>
 
           {users.length === 0 ? (
-            <YStack padding="$4" alignItems="center">
+            <YStack alignItems="center" padding="$4">
               <Text color="$colorSubtitle">No users found</Text>
             </YStack>
           ) : (
             users.map((user: any) => (
               <XStack
+                alignItems="center"
+                hoverStyle={{ backgroundColor: "$backgroundHover" }}
                 key={user.id}
                 padding="$4"
-                alignItems="center"
                 space="$4"
-                hoverStyle={{ backgroundColor: "$backgroundHover" }}
               >
                 <YStack flex={2}>
                   <Text fontWeight="bold">{user.username}</Text>
                   <Text
-                    fontSize="$1"
-                    color="$colorSubtitle"
                     $gtSm={{ display: "none" }}
+                    color="$colorSubtitle"
+                    fontSize="$1"
                   >
                     {user.email}
                   </Text>
                 </YStack>
-                <Text flex={3} fontSize="$3" $sm={{ display: "none" }}>
+                <Text $sm={{ display: "none" }} flex={3} fontSize="$3">
                   {user.email}
                 </Text>
                 <View flex={1}>
@@ -197,11 +197,10 @@ export default function AdminUsers() {
                 </View>
                 <XStack flex={1} justifyContent="flex-end">
                   <Form method="post">
-                    <input type="hidden" name="userId" value={user.id} />
+                    <input name="userId" type="hidden" value={user.id} />
                     <button
-                      type="submit"
+                      disabled={navigation.state === "submitting"}
                       name="intent"
-                      value="toggle_status"
                       style={{
                         backgroundColor:
                           user.status === "active"
@@ -216,7 +215,8 @@ export default function AdminUsers() {
                             ? "not-allowed"
                             : "pointer",
                       }}
-                      disabled={navigation.state === "submitting"}
+                      type="submit"
+                      value="toggle_status"
                     >
                       {user.status === "active" ? "Suspend" : "Activate"}
                     </button>

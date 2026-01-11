@@ -1,4 +1,4 @@
-import { redirect, type LoaderFunctionArgs } from "@remix-run/cloudflare";
+import { type LoaderFunctionArgs, redirect } from "@remix-run/cloudflare";
 
 export async function loader({ context, request }: LoaderFunctionArgs) {
   // Try to get from cloudflare context, fallback to hardcoded for local dev if context is failing

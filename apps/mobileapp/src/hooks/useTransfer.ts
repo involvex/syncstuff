@@ -1,6 +1,6 @@
 import { useCallback } from "react";
-import { useTransferStore } from "../store/transfer.store";
 import { transferService } from "../services/sync/transfer.service";
+import { useTransferStore } from "../store/transfer.store";
 
 export const useTransfer = () => {
   const { activeTransfers, transferHistory } = useTransferStore();

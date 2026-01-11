@@ -1,10 +1,8 @@
-import { cloudManagerService } from "../cloud-manager.service";
 import { useCloudStore } from "../../../store/cloud.store";
 import type { ClipboardContent } from "../../../types/clipboard.types";
+import { cloudManagerService } from "../cloud-manager.service";
 
 export class CloudClipboardBackupService {
-  private static readonly BACKUP_FOLDER_NAME = "Syncstuff Clipboard History";
-
   /**
    * Backup clipboard item to all connected cloud accounts
    */
@@ -45,7 +43,8 @@ export class CloudClipboardBackupService {
         const blob = new Blob([item.content], { type: "text/plain" });
         const filename = `clipboard-${new Date(item.timestamp).toISOString().replace(/[:.]/g, "-")}.txt`;
         return new File([blob], filename, { type: "text/plain" });
-      } else if (item.type === "image") {
+      }
+      if (item.type === "image") {
         // Content is base64
         const byteString = atob(item.content);
         const ab = new ArrayBuffer(byteString.length);

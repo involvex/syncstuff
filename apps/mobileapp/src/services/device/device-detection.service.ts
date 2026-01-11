@@ -1,6 +1,6 @@
+import { Capacitor } from "@capacitor/core";
 import { Device } from "@capacitor/device";
 import { Network } from "@capacitor/network";
-import { Capacitor } from "@capacitor/core";
 import type { Platform } from "../../types/device.types";
 import { cloudManagerService } from "../cloud/cloud-manager.service";
 

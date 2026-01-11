@@ -12,14 +12,14 @@ export default function Campaigns() {
         <svg
           className="size-6 text-white"
           fill="none"
-          viewBox="0 0 24 24"
           stroke="currentColor"
+          viewBox="0 0 24 24"
         >
           <path
+            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={2}
-            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
           />
         </svg>
       ),
@@ -35,14 +35,14 @@ export default function Campaigns() {
         <svg
           className="size-6 text-white"
           fill="none"
-          viewBox="0 0 24 24"
           stroke="currentColor"
+          viewBox="0 0 24 24"
         >
           <path
+            d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={2}
-            d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
           />
         </svg>
       ),
@@ -58,14 +58,14 @@ export default function Campaigns() {
         <svg
           className="size-6 text-white"
           fill="none"
-          viewBox="0 0 24 24"
           stroke="currentColor"
+          viewBox="0 0 24 24"
         >
           <path
+            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={2}
-            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
           />
         </svg>
       ),
@@ -96,8 +96,8 @@ export default function Campaigns() {
             <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-8">
               {campaigns.map(campaign => (
                 <div
-                  key={campaign.title}
                   className="flex flex-col justify-between rounded-3xl border border-gray-100 bg-white p-8 shadow-xl shadow-gray-200/50 transition-all hover:scale-105 hover:shadow-2xl dark:border-gray-800 dark:bg-gray-900 dark:shadow-none"
+                  key={campaign.title}
                 >
                   <div>
                     <div className="flex items-center justify-between">
@@ -119,8 +119,8 @@ export default function Campaigns() {
                   </div>
                   <div className="mt-8">
                     <Link
-                      to={campaign.link}
                       className="text-sm leading-6 font-bold text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
+                      to={campaign.link}
                     >
                       Learn more <span aria-hidden="true">→</span>
                     </Link>

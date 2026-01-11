@@ -1,34 +1,35 @@
-import React, { useState, useEffect, useCallback } from "react";
 import {
+  IonBadge,
+  IonButton,
   IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardSubtitle,
   IonCardContent,
-  IonList,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonCardTitle,
+  IonIcon,
   IonItem,
   IonLabel,
-  IonButton,
-  IonIcon,
-  IonText,
-  IonBadge,
+  IonList,
   IonSpinner,
+  IonText,
   useIonToast,
 } from "@ionic/react";
 import {
   cameraOutline,
+  checkmarkCircleOutline,
   clipboardOutline,
-  notificationsOutline,
+  closeCircleOutline,
   folderOutline,
   locationOutline,
-  checkmarkCircleOutline,
-  closeCircleOutline,
+  notificationsOutline,
   refreshOutline,
   shieldCheckmarkOutline,
 } from "ionicons/icons";
+import type React from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
-  permissionsService,
   type PermissionsState,
+  permissionsService,
 } from "../../services/permissions/permissions.service";
 
 export const PermissionsSettings: React.FC = () => {
@@ -217,10 +218,10 @@ export const PermissionsSettings: React.FC = () => {
             <IonCardSubtitle>Manage app permissions and access</IonCardSubtitle>
           </div>
           <IonButton
-            fill="clear"
-            size="small"
-            onClick={handleRefresh}
             disabled={Boolean(isRefreshing)}
+            fill="clear"
+            onClick={handleRefresh}
+            size="small"
             slot="end"
           >
             {isRefreshing ? (
@@ -284,8 +285,8 @@ export const PermissionsSettings: React.FC = () => {
                     {canRequest && (
                       <IonButton
                         fill="outline"
-                        size="small"
                         onClick={() => handleRequestPermission(permissionType)}
+                        size="small"
                       >
                         Request
                       </IonButton>

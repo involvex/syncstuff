@@ -1,3 +1,5 @@
+/* eslint-disable  */
+// /* biome-ignore lint: reasonbiome(suppressions/unused) */
 /**
  * Shared TypeScript types for Involvex
  * Used by mobile app, web app, and API

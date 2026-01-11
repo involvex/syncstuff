@@ -35,27 +35,28 @@ const _cn2 =
   "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color ";
 const _cn =
   "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color _fos- _fow-bold ";
+
 import React from "react";
-import { XStack, YStack, Text, Separator } from "tamagui";
+import { Separator, Text, XStack, YStack } from "tamagui";
 export function Footer() {
   return (
     <YStack
-      space="$4"
-      paddingVertical="$8"
-      paddingHorizontal="$4"
-      borderTopWidth={1}
-      borderColor="$borderColor"
       backgroundColor="$background"
+      borderColor="$borderColor"
+      borderTopWidth={1}
+      paddingHorizontal="$4"
+      paddingVertical="$8"
+      space="$4"
     >
-      <XStack justifyContent="space-between" flexWrap="wrap" space="$4">
-        <YStack space="$2" minWidth={200}>
+      <XStack flexWrap="wrap" justifyContent="space-between" space="$4">
+        <YStack minWidth={200} space="$2">
           <span className={_cn}>Syncstuff</span>
           <span className={_cn2}>
             Synchronize your files and clipboard across all your devices.
           </span>
         </YStack>
 
-        <XStack space="$8" flexWrap="wrap">
+        <XStack flexWrap="wrap" space="$8">
           <YStack space="$2">
             <span className={_cn3}>Product</span>
             <span className={_cn4}>Features</span>

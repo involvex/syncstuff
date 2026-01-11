@@ -1,10 +1,10 @@
 .device-card {
   margin: 16px 0;
-  border-radius: 20px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
-  border: 1px solid rgba(var(--ion-color-step-200-rgb), 0.5);
   overflow: hidden;
   background: white;
+  border: 1px solid rgba(var(--ion-color-step-200-rgb), 0.5);
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
 }
 
 .dark .device-card {
@@ -14,8 +14,8 @@
 
 .device-card-header {
   display: flex;
-  align-items: center;
   gap: 16px;
+  align-items: center;
   padding: 4px 0;
 }
 
@@ -25,9 +25,9 @@
   justify-content: center;
   width: 48px;
   height: 48px;
-  border-radius: 14px;
-  background: var(--ion-color-step-50);
   color: var(--ion-color-primary);
+  background: var(--ion-color-step-50);
+  border-radius: 14px;
 }
 
 .dark .device-icon-container {
@@ -46,10 +46,10 @@
 }
 
 .device-card-titles ion-card-subtitle {
-  font-size: 0.75rem;
-  font-family: monospace;
-  color: var(--ion-color-step-500);
   margin-top: 2px;
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: var(--ion-color-step-500);
 }
 
 .status-row {
@@ -64,27 +64,27 @@
   --padding-end: 10px;
   --padding-top: 5px;
   --padding-bottom: 5px;
-  border-radius: 8px;
-  font-size: 0.7rem;
   display: flex;
-  align-items: center;
   gap: 4px;
+  align-items: center;
+  font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  border-radius: 8px;
 }
 
 .action-buttons {
   display: flex;
-  align-items: center;
   gap: 12px;
+  align-items: center;
   margin-top: 16px;
 }
 
 .action-buttons ion-button {
   --border-radius: 12px;
-  font-weight: 700;
   margin: 0;
+  font-weight: 700;
 }
 
 .connect-button {

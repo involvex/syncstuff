@@ -14,7 +14,8 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { checkmarkCircle, close, copy, keypad } from "ionicons/icons";
-import React, { useEffect, useState } from "react";
+import type React from "react";
+import { useEffect, useState } from "react";
 import { authCodeService } from "../../services/network/auth-code.service";
 import "./AuthCodeModal.css";
 
@@ -108,12 +109,12 @@ export const AuthCodeModal: React.FC<AuthCodeModalProps> = ({
         <div className="auth-code-container">
           {mode === "display" && generatedCode && (
             <>
-              <IonText color="medium" className="auth-code-instructions">
+              <IonText className="auth-code-instructions" color="medium">
                 <p>Share this code with the device you want to pair with.</p>
               </IonText>
 
               <div className="auth-code-display">
-                <IonIcon icon={keypad} size="large" color="primary" />
+                <IonIcon color="primary" icon={keypad} size="large" />
                 <div className="code-digits">{generatedCode}</div>
               </div>
 
@@ -124,12 +125,12 @@ export const AuthCodeModal: React.FC<AuthCodeModalProps> = ({
               </div>
 
               <IonButton
-                expand="block"
-                onClick={handleCopyCode}
-                fill={copied ? "solid" : "outline"}
                 color={copied ? "success" : "primary"}
+                expand="block"
+                fill={copied ? "solid" : "outline"}
+                onClick={handleCopyCode}
               >
-                <IonIcon slot="start" icon={copied ? checkmarkCircle : copy} />
+                <IonIcon icon={copied ? checkmarkCircle : copy} slot="start" />
                 {copied ? "Copied!" : "Copy Code"}
               </IonButton>
             </>
@@ -137,35 +138,35 @@ export const AuthCodeModal: React.FC<AuthCodeModalProps> = ({
 
           {mode === "enter" && (
             <>
-              <IonText color="medium" className="auth-code-instructions">
+              <IonText className="auth-code-instructions" color="medium">
                 <p>Enter the 6-digit code displayed on the other device.</p>
               </IonText>
 
               <div className="auth-code-input-container">
-                <IonIcon icon={keypad} size="large" color="primary" />
+                <IonIcon color="primary" icon={keypad} size="large" />
 
                 <IonItem className="code-input-item">
                   <IonLabel position="stacked">Pairing Code</IonLabel>
                   <IonInput
-                    type="tel"
+                    className="code-input"
                     inputmode="numeric"
                     maxlength={6}
-                    value={enteredCode}
                     onIonInput={e =>
                       setEnteredCode(e.detail.value?.slice(0, 6) || "")
                     }
                     placeholder="000000"
-                    className="code-input"
+                    type="tel"
+                    value={enteredCode}
                   />
                 </IonItem>
               </div>
 
               <IonButton
+                disabled={enteredCode.length !== 6}
                 expand="block"
                 onClick={handleSubmitCode}
-                disabled={enteredCode.length !== 6}
               >
-                <IonIcon slot="start" icon={checkmarkCircle} />
+                <IonIcon icon={checkmarkCircle} slot="start" />
                 Pair Device
               </IonButton>
             </>

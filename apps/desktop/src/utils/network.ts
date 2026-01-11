@@ -175,7 +175,7 @@ class NetworkScanner {
     const advertise = () => {
       const message = JSON.stringify({
         service: "syncstuff",
-        deviceId: "cli-device-" + Math.floor(Math.random() * 10000), // Simple random ID for CLI
+        deviceId: `cli-device-${Math.floor(Math.random() * 10000)}`, // Simple random ID for CLI
         deviceName,
         platform,
         port,

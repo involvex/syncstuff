@@ -17,11 +17,7 @@ export async function loader({ context }: LoaderFunctionArgs) {
   let suspendedUserCount = 0;
   let pendingUserCount = 0;
 
-  if (
-    context.cloudflare &&
-    context.cloudflare.env &&
-    context.cloudflare.env.syncstuff_db
-  ) {
+  if (context.cloudflare?.env?.syncstuff_db) {
     const db = context.cloudflare.env.syncstuff_db;
     try {
       // Fetch basic stats
@@ -87,14 +83,14 @@ export default function AdminOverview() {
         <svg
           className="size-6"
           fill="none"
-          viewBox="0 0 24 24"
           stroke="currentColor"
+          viewBox="0 0 24 24"
         >
           <path
+            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={2}
-            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
           />
         </svg>
       ),
@@ -107,14 +103,14 @@ export default function AdminOverview() {
         <svg
           className="size-6"
           fill="none"
-          viewBox="0 0 24 24"
           stroke="currentColor"
+          viewBox="0 0 24 24"
         >
           <path
+            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={2}
-            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
           />
         </svg>
       ),
@@ -127,14 +123,14 @@ export default function AdminOverview() {
         <svg
           className="size-6"
           fill="none"
-          viewBox="0 0 24 24"
           stroke="currentColor"
+          viewBox="0 0 24 24"
         >
           <path
+            d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={2}
-            d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
           />
         </svg>
       ),
@@ -147,14 +143,14 @@ export default function AdminOverview() {
         <svg
           className="size-6"
           fill="none"
-          viewBox="0 0 24 24"
           stroke="currentColor"
+          viewBox="0 0 24 24"
         >
           <path
+            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={2}
-            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
           />
         </svg>
       ),
@@ -204,28 +200,28 @@ export default function AdminOverview() {
       </YStack>
 
       {/* System Health */}
-      <Card elevate bordered padded>
-        <XStack justifyContent="space-between" alignItems="center">
-          <XStack space="$4" alignItems="center">
+      <Card bordered elevate padded>
+        <XStack alignItems="center" justifyContent="space-between">
+          <XStack alignItems="center" space="$4">
             <View
-              padding="$2"
-              borderRadius="$full"
               backgroundColor={
                 stats.systemHealth === "healthy" ? "$green4" : "$red4"
               }
+              borderRadius="$full"
+              padding="$2"
             >
               <View
-                width={10}
-                height={10}
-                borderRadius="$full"
                 backgroundColor={
                   stats.systemHealth === "healthy" ? "$green10" : "$red10"
                 }
+                borderRadius="$full"
+                height={10}
+                width={10}
               />
             </View>
             <YStack>
               <Text fontWeight="bold">System Status</Text>
-              <Text fontSize="$2" color="$colorSubtitle">
+              <Text color="$colorSubtitle" fontSize="$2">
                 {stats.systemHealth === "healthy"
                   ? "All systems operational"
                   : "Issues detected"}
@@ -241,20 +237,20 @@ export default function AdminOverview() {
       </Card>
 
       {/* Stats Cards */}
-      <XStack space="$4" flexWrap="wrap">
+      <XStack flexWrap="wrap" space="$4">
         {statCards.map(card => (
           <StatCard
+            icon={card.icon}
             key={card.name}
             title={card.name}
             value={card.stat}
-            icon={card.icon}
           />
         ))}
       </XStack>
 
-      <XStack space="$6" flexWrap="wrap">
+      <XStack flexWrap="wrap" space="$6">
         {/* User Status Breakdown */}
-        <Card flex={2} minWidth={400} elevate bordered padded>
+        <Card bordered elevate flex={2} minWidth={400} padded>
           <YStack space="$4">
             <Text fontSize="$4" fontWeight="bold">
               User Status Breakdown
@@ -264,21 +260,21 @@ export default function AdminOverview() {
                 <YStack key={item.label} space="$1">
                   <XStack justifyContent="space-between">
                     <Text fontWeight="medium">{item.label}</Text>
-                    <Text fontSize="$2" color="$colorSubtitle">
+                    <Text color="$colorSubtitle" fontSize="$2">
                       {item.value} ({item.percentage}%)
                     </Text>
                   </XStack>
                   <View
-                    height={8}
-                    width="100%"
                     backgroundColor="$backgroundFocus"
                     borderRadius="$full"
+                    height={8}
                     overflow="hidden"
+                    width="100%"
                   >
                     <View
+                      backgroundColor={item.color as any}
                       height="100%"
                       width={`${item.percentage}%`}
-                      backgroundColor={item.color as any}
                     />
                   </View>
                 </YStack>
@@ -288,34 +284,34 @@ export default function AdminOverview() {
         </Card>
 
         {/* Quick Actions */}
-        <Card flex={1} minWidth={300} elevate bordered padded>
+        <Card bordered elevate flex={1} minWidth={300} padded>
           <YStack space="$4">
             <Text fontSize="$4" fontWeight="bold">
               Quick Actions
             </Text>
             <YStack space="$3">
-              <Link to="/admin/users" style={{ textDecoration: "none" }}>
+              <Link style={{ textDecoration: "none" }} to="/admin/users">
                 <Button
-                  width="100%"
-                  justifyContent="flex-start"
                   icon={<Text fontSize="$5">👥</Text>}
+                  justifyContent="flex-start"
+                  width="100%"
                 >
                   Manage Users
                 </Button>
               </Link>
               <Button
-                width="100%"
+                icon={<Text fontSize="$5">⚙️</Text>}
                 justifyContent="flex-start"
                 variant="outlined"
-                icon={<Text fontSize="$5">⚙️</Text>}
+                width="100%"
               >
                 System Settings
               </Button>
               <Button
-                width="100%"
+                icon={<Text fontSize="$5">📋</Text>}
                 justifyContent="flex-start"
                 variant="outlined"
-                icon={<Text fontSize="$5">📋</Text>}
+                width="100%"
               >
                 View Logs
               </Button>

@@ -1,8 +1,8 @@
-import { create } from "zustand";
-import type { ThemeMode } from "../types/storage.types";
 import { Device } from "@capacitor/device";
 import { v4 as uuidv4 } from "uuid";
+import { create } from "zustand";
 import { localStorageService } from "../services/storage/local-storage.service";
+import type { ThemeMode } from "../types/storage.types";
 import { STORAGE_KEYS } from "../types/storage.types";
 import { getPlatform } from "../utils/platform.utils";
 

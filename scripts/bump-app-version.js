@@ -61,7 +61,7 @@ const isDryRun = args.includes("--dry-run");
 const shouldPush = args.includes("--push");
 const versionType =
   args
-    .find((arg) => ["--major", "--minor", "--patch"].includes(arg))
+    .find(arg => ["--major", "--minor", "--patch"].includes(arg))
     ?.replace("--", "") || "patch";
 
 // Paths
@@ -237,7 +237,7 @@ function rollback() {
       ignoreError: true,
     });
     if (tags) {
-      tags.split("\n").forEach((tag) => {
+      tags.split("\n").forEach(tag => {
         if (tag.trim()) {
           exec(`git tag -d ${tag}`, { ignoreError: true });
         }
@@ -310,12 +310,12 @@ function main() {
     }
     if (fs.existsSync(androidManifestPath)) {
       log(`   ✓ Would update AndroidManifest.xml versionName to ${newVersion}`);
-      log(`   ✓ Would increment AndroidManifest.xml versionCode`);
+      log("   ✓ Would increment AndroidManifest.xml versionCode");
     }
-    log(`   ✓ Would create git commit`);
+    log("   ✓ Would create git commit");
     log(`   ✓ Would create annotated tag v${newVersion}`);
     if (shouldPush) {
-      log(`   ✓ Would push commit and tag to remote`);
+      log("   ✓ Would push commit and tag to remote");
     }
     log("\nRun without --dry-run to apply changes.\n", "cyan");
     return;
@@ -352,7 +352,7 @@ function main() {
       const versionCodeRegex = /versionCode\s+(\d+)/;
       if (versionCodeRegex.test(buildGradleContent)) {
         const match = buildGradleContent.match(versionCodeRegex);
-        const currentVersionCode = parseInt(match[1], 10);
+        const currentVersionCode = Number.parseInt(match[1], 10);
         const newVersionCode = currentVersionCode + 1;
         buildGradleContent = buildGradleContent.replace(
           versionCodeRegex,
@@ -410,7 +410,7 @@ function main() {
       const versionCodeRegex = /android:versionCode=["'](\d+)["']/;
       if (versionCodeRegex.test(manifestContent)) {
         const match = manifestContent.match(versionCodeRegex);
-        const currentVersionCode = parseInt(match[1], 10);
+        const currentVersionCode = Number.parseInt(match[1], 10);
         const newVersionCode = currentVersionCode + 1;
         manifestContent = manifestContent.replace(
           versionCodeRegex,
@@ -446,7 +446,7 @@ function main() {
 
     info("Creating commit...");
     exec(`git commit -m "chore: bump app version to ${newVersion}"`);
-    success(`Commit created`);
+    success("Commit created");
 
     // Step 6: Create annotated tag
     createAnnotatedTag(newVersion, false);
@@ -454,8 +454,8 @@ function main() {
     // Step 7: Optional push to remote
     if (shouldPush) {
       info("Pushing to remote...");
-      exec(`git push`);
-      exec(`git push --tags`);
+      exec("git push");
+      exec("git push --tags");
       success("Pushed commit and tags to remote");
     }
 
@@ -467,13 +467,13 @@ function main() {
     log("📋 Summary:", "bright");
     log(`   ✓ Updated app version: ${currentVersion} → ${newVersion}`);
     if (fs.existsSync(buildGradlePath)) {
-      log(`   ✓ Updated build.gradle versionName`);
+      log("   ✓ Updated build.gradle versionName");
     }
     if (fs.existsSync(electronPackagePath)) {
-      log(`   ✓ Updated Electron package.json`);
+      log("   ✓ Updated Electron package.json");
     }
     if (fs.existsSync(androidManifestPath)) {
-      log(`   ✓ Updated AndroidManifest.xml versionName and versionCode`);
+      log("   ✓ Updated AndroidManifest.xml versionName and versionCode");
     }
     log(`   ✓ Created commit: "chore: bump app version to ${newVersion}"`);
     log(`   ✓ Created tag: v${newVersion}`);
@@ -481,9 +481,9 @@ function main() {
     if (!shouldPush) {
       log("\n💡 Next steps:", "cyan");
       log("   Run the following to push to remote:", "cyan");
-      log(`   git push && git push --tags\n`, "bright");
+      log("   git push && git push --tags\n", "bright");
     } else {
-      log(`   ✓ Pushed to remote\n`);
+      log("   ✓ Pushed to remote\n");
     }
 
     // Step 9: Build APK
@@ -530,7 +530,7 @@ function main() {
 
         log("\n🌐 Deploy to web?", "cyan");
         log("   To deploy the new APK to the web app, run:", "cyan");
-        log(`   cd apps/web && bun run deploy\n`, "bright");
+        log("   cd apps/web && bun run deploy\n", "bright");
       } else {
         warning("APK not found at expected location");
       }

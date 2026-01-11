@@ -9,6 +9,7 @@ import {
 import { Provider } from "@syncstuff/ui";
 
 import "./tailwind.css";
+import "./tamagui.css";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },

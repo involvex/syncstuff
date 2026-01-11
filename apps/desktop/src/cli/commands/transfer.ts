@@ -3,7 +3,7 @@ import { existsSync, statSync } from "fs";
 import inquirer from "inquirer";
 import { basename, resolve } from "path";
 import { apiClient } from "../../utils/api-client.js";
-import { debugLog, type CommandContext } from "../../utils/context.js";
+import { type CommandContext, debugLog } from "../../utils/context.js";
 import {
   createSpinner,
   error,

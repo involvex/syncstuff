@@ -1,6 +1,6 @@
 import {
-  json,
   type ActionFunctionArgs,
+  json,
   type LoaderFunctionArgs,
 } from "@remix-run/cloudflare";
 import {
@@ -128,43 +128,43 @@ export default function ResetPassword() {
   if (actionData?.success) {
     return (
       <View
-        position="absolute"
-        top={0}
-        right={0}
-        bottom={0}
-        left={0}
-        backgroundColor="$background"
         alignItems="center"
+        backgroundColor="$background"
+        bottom={0}
         justifyContent="center"
+        left={0}
         padding="$4"
+        position="absolute"
+        right={0}
+        top={0}
       >
-        <Card elevate bordered padding="$4" maxWidth={400} width="100%">
-          <YStack space="$6" alignItems="center">
+        <Card bordered elevate maxWidth={400} padding="$4" width="100%">
+          <YStack alignItems="center" space="$6">
             <View
-              width={64}
-              height={64}
-              borderRadius="$full"
-              backgroundColor="$green4"
               alignItems="center"
+              backgroundColor="$green4"
+              borderRadius="$full"
+              height={64}
               justifyContent="center"
+              width={64}
             >
-              <Text fontSize="$8" color="$green10">
+              <Text color="$green10" fontSize="$8">
                 ✓
               </Text>
             </View>
-            <YStack space="$2" alignItems="center">
+            <YStack alignItems="center" space="$2">
               <Text fontSize="$6" fontWeight="bold">
                 Success!
               </Text>
-              <Text textAlign="center" color="$colorSubtitle">
+              <Text color="$colorSubtitle" textAlign="center">
                 {"message" in actionData
                   ? actionData.message
                   : actionData.error}
               </Text>
             </YStack>
             <Link
-              to="/auth/login"
               style={{ textDecoration: "none", width: "100%" }}
+              to="/auth/login"
             >
               <Button theme="blue" width="100%">
                 Go to Login
@@ -179,41 +179,41 @@ export default function ResetPassword() {
   if ("error" in loaderData) {
     return (
       <View
-        position="absolute"
-        top={0}
-        right={0}
-        bottom={0}
-        left={0}
-        backgroundColor="$background"
         alignItems="center"
+        backgroundColor="$background"
+        bottom={0}
         justifyContent="center"
+        left={0}
         padding="$4"
+        position="absolute"
+        right={0}
+        top={0}
       >
-        <Card elevate bordered padding="$4" maxWidth={400} width="100%">
-          <YStack space="$6" alignItems="center">
+        <Card bordered elevate maxWidth={400} padding="$4" width="100%">
+          <YStack alignItems="center" space="$6">
             <View
-              width={64}
-              height={64}
-              borderRadius="$full"
-              backgroundColor="$red4"
               alignItems="center"
+              backgroundColor="$red4"
+              borderRadius="$full"
+              height={64}
               justifyContent="center"
+              width={64}
             >
-              <Text fontSize="$8" color="$red10">
+              <Text color="$red10" fontSize="$8">
                 ✕
               </Text>
             </View>
-            <YStack space="$2" alignItems="center">
+            <YStack alignItems="center" space="$2">
               <Text fontSize="$6" fontWeight="bold">
                 Invalid Link
               </Text>
-              <Text textAlign="center" color="$colorSubtitle">
+              <Text color="$colorSubtitle" textAlign="center">
                 {loaderData.error}
               </Text>
             </YStack>
             <Link
-              to="/auth/login"
               style={{ textDecoration: "none", width: "100%" }}
+              to="/auth/login"
             >
               <Button variant="outlined" width="100%">
                 Back to Login
@@ -227,45 +227,45 @@ export default function ResetPassword() {
 
   return (
     <View
-      position="absolute"
-      top={0}
-      right={0}
-      bottom={0}
-      left={0}
-      backgroundColor="$background"
       alignItems="center"
+      backgroundColor="$background"
+      bottom={0}
       justifyContent="center"
+      left={0}
       padding="$4"
+      position="absolute"
+      right={0}
+      top={0}
     >
       <Card
-        elevate
         bordered
-        padding="$4"
+        elevate
         maxWidth={400}
-        width="100%"
+        padding="$4"
         space="$6"
+        width="100%"
       >
         <YStack alignItems="center" space="$2">
           <View
-            width={56}
-            height={56}
-            borderRadius="$3"
-            backgroundColor="$backgroundFocus"
             alignItems="center"
+            backgroundColor="$backgroundFocus"
+            borderRadius="$3"
+            height={56}
             justifyContent="center"
+            width={56}
           >
             <Text fontSize="$8">🔐</Text>
           </View>
           <Text fontSize="$6" fontWeight="bold">
             Reset Your Password
           </Text>
-          <Text textAlign="center" color="$colorSubtitle">
+          <Text color="$colorSubtitle" textAlign="center">
             Enter your new password below.
           </Text>
         </YStack>
 
         {actionData && "error" in actionData && actionData.error && (
-          <YStack padding="$4" backgroundColor="$red2" borderRadius="$3">
+          <YStack backgroundColor="$red2" borderRadius="$3" padding="$4">
             <Text color="$red10" fontSize="$2">
               {actionData.error}
             </Text>
@@ -274,13 +274,13 @@ export default function ResetPassword() {
 
         <Form method="post">
           <input
-            type="hidden"
             name="token"
+            type="hidden"
             value={"token" in loaderData ? loaderData.token || "" : ""}
           />
           <input
-            type="hidden"
             name="email"
+            type="hidden"
             value={"email" in loaderData ? loaderData.email || "" : ""}
           />
 
@@ -299,7 +299,7 @@ export default function ResetPassword() {
               <Input secureTextEntry />
             </YStack>
 
-            <Button theme="blue" size="$4" disabled={isSubmitting}>
+            <Button disabled={isSubmitting} size="$4" theme="blue">
               {isSubmitting ? "Resetting..." : "Reset Password"}
             </Button>
           </YStack>

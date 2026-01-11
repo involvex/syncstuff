@@ -1,20 +1,20 @@
 import {
+  IonButton,
+  IonIcon,
   IonItem,
   IonLabel,
   IonNote,
-  IonIcon,
-  IonButton,
   IonThumbnail,
 } from "@ionic/react";
 import {
   copyOutline,
-  trashOutline,
   documentTextOutline,
   imageOutline,
+  trashOutline,
 } from "ionicons/icons";
-import type { ClipboardContent } from "../../types/clipboard.types";
 import { clipboardService } from "../../services/sync/clipboard.service";
 import { useClipboardStore } from "../../store/clipboard.store";
+import type { ClipboardContent } from "../../types/clipboard.types";
 import "./ClipboardItem.css";
 
 interface ClipboardItemProps {
@@ -72,15 +72,16 @@ export const ClipboardItem: React.FC<ClipboardItemProps> = ({
           {content.content.length > 100 ? "..." : ""}
         </p>
       );
-    } else if (content.type === "image") {
+    }
+    if (content.type === "image") {
       // Show image thumbnail
       const dataUrl = content.content.startsWith("data:")
         ? content.content
         : `data:${content.mimeType || "image/png"};base64,${content.content}`;
 
       return (
-        <IonThumbnail slot="start" className="clipboard-item-thumbnail">
-          <img src={dataUrl} alt="Clipboard image" />
+        <IonThumbnail className="clipboard-item-thumbnail" slot="start">
+          <img alt="Clipboard image" src={dataUrl} />
         </IonThumbnail>
       );
     }
@@ -102,9 +103,9 @@ export const ClipboardItem: React.FC<ClipboardItemProps> = ({
       {content.type === "image" && getPreview()}
 
       <IonIcon
+        className="clipboard-item-icon"
         icon={getContentTypeIcon()}
         slot="start"
-        className="clipboard-item-icon"
       />
 
       <IonLabel>
@@ -121,11 +122,11 @@ export const ClipboardItem: React.FC<ClipboardItemProps> = ({
         </IonNote>
       </IonLabel>
 
-      <IonButton fill="clear" slot="end" onClick={handleCopyToClipboard}>
+      <IonButton fill="clear" onClick={handleCopyToClipboard} slot="end">
         <IonIcon icon={copyOutline} />
       </IonButton>
 
-      <IonButton fill="clear" slot="end" color="danger" onClick={handleDelete}>
+      <IonButton color="danger" fill="clear" onClick={handleDelete} slot="end">
         <IonIcon icon={trashOutline} />
       </IonButton>
     </IonItem>

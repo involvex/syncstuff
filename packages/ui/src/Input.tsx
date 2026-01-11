@@ -1,4 +1,4 @@
-import { Input as TInput, styled } from "tamagui";
+import { styled, Input as TInput } from "tamagui";
 
 export const Input = styled(TInput, {
   name: "Input",

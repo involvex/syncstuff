@@ -3,8 +3,8 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import "@testing-library/jest-dom/extend-expect";
-import { vi } from "vitest";
 import React from "react";
+import { vi } from "vitest";
 
 // Mock window.matchMedia for Vitest/JSDOM environment
 Object.defineProperty(window, "matchMedia", {

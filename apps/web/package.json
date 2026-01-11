@@ -3,14 +3,10 @@
   "version": "0.0.1",
   "description": "Syncstuff Website",
   "publisher": "Syncstuff",
-  "maintainers": [
-    "involvex@proton.me"
-  ],
+  "maintainers": ["involvex@proton.me"],
   "cloudflare": {
     "label": "Syncstuff Website",
-    "products": [
-      "Workers"
-    ],
+    "products": ["Workers"],
     "categories": [],
     "preview_icon_url": "https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/d34bec43-c621-4a33-0f4c-e72ae7927400/public",
     "preview_image_url": "https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/d30ce022-758a-431e-6de1-3ac63504e100/preview",
@@ -78,8 +74,8 @@
   "scripts": {
     "build": "remix vite:build",
     "cf-typegen": "wrangler types",
-    "check": "tsc && remix vite:build && wrangler deploy --dry-run",
-    "deploy": "bun run build && wrangler deploy -c wrangler.toml",
+    "check": "tsc && remix vite:build && wrangler deploy --dry-run -c wrangler.toml",
+    "deploy": "pnpm build && wrangler deploy -c wrangler.toml",
     "dev": "remix vite:dev",
     "wrangler:dev": "wrangler dev -c wrangler.toml",
     "wrangler:debug": "wrangler dev -c wrangler.toml --minify false -r --env-file .env --env development --log-level debug",

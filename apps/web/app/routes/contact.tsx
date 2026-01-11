@@ -53,8 +53,8 @@ export default function Contact() {
       <div className="min-h-screen bg-white transition-colors dark:bg-gray-950">
         <div className="relative overflow-hidden py-24 sm:py-32">
           {/* Background Gradients */}
-          <div className="absolute top-[-10%] left-[5%] -z-10 size-2/5 rounded-full bg-blue-500/10 blur-[120px] dark:bg-blue-600/5"></div>
-          <div className="absolute right-[5%] bottom-[-10%] -z-10 size-[30%] rounded-full bg-indigo-500/10 blur-[100px] dark:bg-indigo-600/5"></div>
+          <div className="absolute top-[-10%] left-[5%] -z-10 size-2/5 rounded-full bg-blue-500/10 blur-[120px] dark:bg-blue-600/5" />
+          <div className="absolute right-[5%] bottom-[-10%] -z-10 size-[30%] rounded-full bg-indigo-500/10 blur-[100px] dark:bg-indigo-600/5" />
 
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto max-w-2xl text-center">
@@ -193,7 +193,7 @@ export default function Contact() {
                         required
                         className="block w-full rounded-xl border-gray-200 bg-gray-50 px-4 py-3 text-sm transition-all focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
                         placeholder="How can we help you?"
-                      ></textarea>
+                      />
                     </div>
 
                     {emailStatus === "error" && (

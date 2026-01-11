@@ -11,27 +11,27 @@ export default function Footer() {
         <div className="mt-8 md:order-1 md:mt-0">
           <ul className="text-on-surface mb-6 flex flex-wrap items-center justify-center">
             <li>
-              <Link to="/about" className="mr-4 hover:underline md:mr-6">
+              <Link className="mr-4 hover:underline md:mr-6" to="/about">
                 About
               </Link>
             </li>
             <li>
-              <Link to="/premium" className="mr-4 hover:underline md:mr-6">
+              <Link className="mr-4 hover:underline md:mr-6" to="/premium">
                 Premium
               </Link>
             </li>
             <li>
-              <Link to="/campaigns" className="mr-4 hover:underline md:mr-6">
+              <Link className="mr-4 hover:underline md:mr-6" to="/campaigns">
                 Campaigns
               </Link>
             </li>
             <li>
-              <Link to="/faq" className="mr-4 hover:underline md:mr-6">
+              <Link className="mr-4 hover:underline md:mr-6" to="/faq">
                 FAQs
               </Link>
             </li>
             <li>
-              <Link to="/contact" className="mr-4 hover:underline md:mr-6">
+              <Link className="mr-4 hover:underline md:mr-6" to="/contact">
                 Contact
               </Link>
             </li>

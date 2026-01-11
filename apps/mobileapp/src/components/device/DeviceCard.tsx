@@ -1,16 +1,17 @@
-import React, { useRef } from "react";
-import type { Device } from "../../types/device.types";
 import {
-  Card,
-  YStack,
-  XStack,
-  Text,
   Button,
+  Card,
   DeviceIcon,
-  StatusBadge,
-  View,
   Separator,
+  StatusBadge,
+  Text,
+  View,
+  XStack,
+  YStack,
 } from "@syncstuff/ui";
+import type React from "react";
+import { useRef } from "react";
+import type { Device } from "../../types/device.types";
 import "./DeviceCard.css";
 
 interface DeviceCardProps {
@@ -71,57 +72,57 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
   return (
     <>
       <input
-        type="file"
-        ref={fileInputRef}
         onChange={handleFileSelect}
+        ref={fileInputRef}
         style={{ display: "none" }}
+        type="file"
       />
       <Card
-        elevate
-        bordered
-        padding="$4"
-        marginBottom="$3"
         animation="quick"
-        scale={0.98}
+        bordered
+        elevate
         hoverStyle={{ scale: 1 }}
+        marginBottom="$3"
+        padding="$4"
+        scale={0.98}
       >
         <YStack space="$4">
-          <XStack space="$4" alignItems="center">
+          <XStack alignItems="center" space="$4">
             <View
               backgroundColor="$backgroundFocus"
-              padding="$4"
               borderRadius="$3"
+              padding="$4"
             >
-              <DeviceIcon type={getDeviceType()} size={32} />
+              <DeviceIcon size={32} type={getDeviceType()} />
             </View>
             <YStack flex={1}>
               <Text fontSize="$5" fontWeight="bold">
                 {device.name}
               </Text>
-              <Text fontSize="$1" color="$colorSubtitle" fontFamily="$mono">
+              <Text color="$colorSubtitle" fontFamily="$mono" fontSize="$1">
                 {device.id}
               </Text>
             </YStack>
             {device.battery && (
               <XStack alignItems="center" space="$1">
-                <Text fontSize="$1" color="$colorSubtitle">
+                <Text color="$colorSubtitle" fontSize="$1">
                   {Math.round(device.battery.level * 100)}%
                 </Text>
                 <View
-                  width={10}
-                  height={16}
-                  borderWidth={1}
                   borderColor="$colorSubtitle"
                   borderRadius={2}
+                  borderWidth={1}
+                  height={16}
                   padding={1}
+                  width={10}
                 >
                   <View
-                    height={`${device.battery.level * 100}%`}
                     backgroundColor={
                       device.battery.level > 0.2 ? "$green10" : "$red10"
                     }
-                    width="100%"
+                    height={`${device.battery.level * 100}%`}
                     marginTop="auto"
+                    width="100%"
                   />
                 </View>
               </XStack>
@@ -141,61 +142,61 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
 
           <Separator />
 
-          <XStack space="$2" flexWrap="wrap">
+          <XStack flexWrap="wrap" space="$2">
             {!isPaired && onPair && (
               <Button
-                theme="blue"
-                size="$3"
                 flex={1}
                 onPress={() => onPair(device)}
+                size="$3"
+                theme="blue"
               >
                 Pair
               </Button>
             )}
             {isPaired && onConnect && (
               <Button
-                theme="blue"
-                size="$3"
                 flex={1}
                 onPress={() => onConnect(device.id)}
+                size="$3"
+                theme="blue"
               >
                 Connect
               </Button>
             )}
             {isPaired && onSendFile && (
               <Button
-                variant="outlined"
-                size="$3"
-                onPress={triggerFileSelect}
                 icon={<Text>📎</Text>}
+                onPress={triggerFileSelect}
+                size="$3"
+                variant="outlined"
               >
                 File
               </Button>
             )}
             {isPaired && onPing && (
               <Button
-                variant="outlined"
-                size="$3"
                 onPress={() => onPing(device.id)}
+                size="$3"
+                variant="outlined"
               >
                 Ping
               </Button>
             )}
             {isPaired && onRing && (
               <Button
-                variant="outlined"
-                size="$3"
                 onPress={() => onRing(device.id)}
+                size="$3"
+                variant="outlined"
               >
                 🔔
               </Button>
             )}
             {isPaired && onUnpair && (
               <Button
-                theme="red"
-                size="$3"
-                variant="outlined"
                 onPress={() => onUnpair(device.id)}
+                size="$3"
+                theme="red"
+                variant="outlined"
               >
                 ✕
               </Button>

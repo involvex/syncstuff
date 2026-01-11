@@ -14,9 +14,21 @@ importers:
 
   .:
     devDependencies:
+      '@biomejs/biome':
+        specifier: ^2.3.11
+        version: 2.3.11
+      '@eslint/js':
+        specifier: 9.39.2
+        version: 9.39.2
+      '@still-forest/biomejs-config':
+        specifier: 2.2.0
+        version: 2.2.0(@biomejs/biome@2.3.11)
       '@types/bun':
         specifier: 1.3.5
         version: 1.3.5
+      globals:
+        specifier: 17.0.0
+        version: 17.0.0
       prettier-plugin-organize-imports:
         specifier: 4.3.0
         version: 4.3.0(prettier@3.7.4)(typescript@5.9.3)
@@ -528,6 +540,9 @@ importers:
       '@tamagui/core':
         specifier: ^1.144.1
         version: 1.144.1(react-dom@18.2.0(react@18.2.0))(react-native@0.83.1(@babel/core@7.28.5)(@types/react@18.2.0)(react@18.2.0))(react@18.2.0)
+      '@tamagui/lucide-icons':
+        specifier: ^1.144.1
+        version: 1.144.1(react-dom@18.2.0(react@18.2.0))(react-native-svg@15.15.1(react-native@0.83.1(@babel/core@7.28.5)(@types/react@18.2.0)(react@18.2.0))(react@18.2.0))(react-native@0.83.1(@babel/core@7.28.5)(@types/react@18.2.0)(react@18.2.0))(react@18.2.0)
       '@tamagui/themes':
         specifier: ^1.144.1
         version: 1.144.1(react-dom@18.2.0(react@18.2.0))(react-native@0.83.1(@babel/core@7.28.5)(@types/react@18.2.0)(react@18.2.0))(react@18.2.0)
@@ -552,7 +567,7 @@ importers:
         version: 0.14.0
       '@tamagui/cli':
         specifier: ^1.144.1
-        version: 1.144.1(react-dom@18.2.0(react@18.2.0))(react-native@0.83.1(@babel/core@7.28.5)(@types/react@18.2.0)(react@18.2.0))(react@18.2.0)(vite@7.3.1(@types/node@25.0.5)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))
+        version: 1.144.1(react-dom@18.2.0(react@18.2.0))(react-native-svg@15.15.1(react-native@0.83.1(@babel/core@7.28.5)(@types/react@18.2.0)(react@18.2.0))(react@18.2.0))(react-native@0.83.1(@babel/core@7.28.5)(@types/react@18.2.0)(react@18.2.0))(react@18.2.0)(vite@7.3.1(@types/node@25.0.5)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))
       '@types/react':
         specifier: 18.2.0
         version: 18.2.0
@@ -1235,6 +1250,59 @@ packages:
   '@babel/types@7.28.5':
     resolution: {integrity: sha512-qQ5m48eI/MFLQ5PxQj4PFaprjyCTLI37ElWMmNs0K8Lk3dVeOdNpB3ks8jc7yM5CDmVC73eMVk/trk3fgmrUpA==}
     engines: {node: '>=6.9.0'}
+
+  '@biomejs/biome@2.3.11':
+    resolution: {integrity: sha512-/zt+6qazBWguPG6+eWmiELqO+9jRsMZ/DBU3lfuU2ngtIQYzymocHhKiZRyrbra4aCOoyTg/BmY+6WH5mv9xmQ==}
+    engines: {node: '>=14.21.3'}
+    hasBin: true
+
+  '@biomejs/cli-darwin-arm64@2.3.11':
+    resolution: {integrity: sha512-/uXXkBcPKVQY7rc9Ys2CrlirBJYbpESEDme7RKiBD6MmqR2w3j0+ZZXRIL2xiaNPsIMMNhP1YnA+jRRxoOAFrA==}
+    engines: {node: '>=14.21.3'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@biomejs/cli-darwin-x64@2.3.11':
+    resolution: {integrity: sha512-fh7nnvbweDPm2xEmFjfmq7zSUiox88plgdHF9OIW4i99WnXrAC3o2P3ag9judoUMv8FCSUnlwJCM1B64nO5Fbg==}
+    engines: {node: '>=14.21.3'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@biomejs/cli-linux-arm64-musl@2.3.11':
+    resolution: {integrity: sha512-XPSQ+XIPZMLaZ6zveQdwNjbX+QdROEd1zPgMwD47zvHV+tCGB88VH+aynyGxAHdzL+Tm/+DtKST5SECs4iwCLg==}
+    engines: {node: '>=14.21.3'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@biomejs/cli-linux-arm64@2.3.11':
+    resolution: {integrity: sha512-l4xkGa9E7Uc0/05qU2lMYfN1H+fzzkHgaJoy98wO+b/7Gl78srbCRRgwYSW+BTLixTBrM6Ede5NSBwt7rd/i6g==}
+    engines: {node: '>=14.21.3'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@biomejs/cli-linux-x64-musl@2.3.11':
+    resolution: {integrity: sha512-vU7a8wLs5C9yJ4CB8a44r12aXYb8yYgBn+WeyzbMjaCMklzCv1oXr8x+VEyWodgJt9bDmhiaW/I0RHbn7rsNmw==}
+    engines: {node: '>=14.21.3'}
+    cpu: [x64]
+    os: [linux]
+
+  '@biomejs/cli-linux-x64@2.3.11':
+    resolution: {integrity: sha512-/1s9V/H3cSe0r0Mv/Z8JryF5x9ywRxywomqZVLHAoa/uN0eY7F8gEngWKNS5vbbN/BsfpCG5yeBT5ENh50Frxg==}
+    engines: {node: '>=14.21.3'}
+    cpu: [x64]
+    os: [linux]
+
+  '@biomejs/cli-win32-arm64@2.3.11':
+    resolution: {integrity: sha512-PZQ6ElCOnkYapSsysiTy0+fYX+agXPlWugh6+eQ6uPKI3vKAqNp6TnMhoM3oY2NltSB89hz59o8xIfOdyhi9Iw==}
+    engines: {node: '>=14.21.3'}
+    cpu: [arm64]
+    os: [win32]
+
+  '@biomejs/cli-win32-x64@2.3.11':
+    resolution: {integrity: sha512-43VrG813EW+b5+YbDbz31uUsheX+qFKCpXeY9kfdAx+ww3naKxeVkTD9zLIWxUPfJquANMHrmW3wbe/037G0Qg==}
+    engines: {node: '>=14.21.3'}
+    cpu: [x64]
+    os: [win32]
 
   '@byteowls/capacitor-filesharer@7.0.0':
     resolution: {integrity: sha512-cD3irIt2PfaSGwddb9X6HIQ2vAMYaNtafYqWMGemMW8LfqDz7+pzX02kMrOXhIIV88AlBg1lg5JiD7VDNzCHEA==}
@@ -3392,6 +3460,11 @@ packages:
     engines: {node: '>=16.0.0', npm: '>=7.10.0'}
     hasBin: true
 
+  '@still-forest/biomejs-config@2.2.0':
+    resolution: {integrity: sha512-+KomUBvMv9ld/djnhGEATM/c19/3Ihfr+GcI1g6OsAbVVXDHnczj0Ig1CHhG3FHTN/qkcep3va2nke/g78+1Rw==}
+    peerDependencies:
+      '@biomejs/biome': ^2.3.2
+
   '@tailwindcss/node@4.1.18':
     resolution: {integrity: sha512-DoR7U1P7iYhw16qJ49fgXUlry1t4CpXeErJHnQ44JgTSKMaZUdf17cfn5mHchfJ4KRBZRFA/Coo+MUF5+gOaCQ==}
 
@@ -3684,6 +3757,12 @@ packages:
       react: 18.2.0
       react-native: '*'
 
+  '@tamagui/helpers-icon@1.144.1':
+    resolution: {integrity: sha512-hY+YpCi6kbSdstKvotgt+Jjw1n33rn5IYEu9rhVv4r1+8z6MyeVXu7An7f65RVMCVMad7qGlvp4JF8ik/Ehp/Q==}
+    peerDependencies:
+      react: 18.2.0
+      react-native-svg: '>=12'
+
   '@tamagui/helpers-node@1.144.1':
     resolution: {integrity: sha512-AJerB2nQvY7IZtJaoHneBTb8c3vxVr5gMe8XZ6NgceWizDTg1sR0JQU9KTvGOYfGNtZlGKhoNN7IAdtAGf4KJA==}
 
@@ -3725,6 +3804,12 @@ packages:
     resolution: {integrity: sha512-LPBVFI9aSHZIIXpurr7JucFwkyELG49spxkLLCpGMjeCKEaIwujCaPzvSbCXp8ogh0LZ886v0VqMy28t2pCgCg==}
     peerDependencies:
       react: 18.2.0
+
+  '@tamagui/lucide-icons@1.144.1':
+    resolution: {integrity: sha512-ELa2Not6q+VgTDtH4BiwvNGA9+wVgB6ktN+Tk/74yPbnwSSrP20R0N9T71Eql/DTgJUvl2gAa6jafEhafRE2KQ==}
+    peerDependencies:
+      react: 18.2.0
+      react-native-svg: '>=12'
 
   '@tamagui/normalize-css-color@1.144.1':
     resolution: {integrity: sha512-XwmAEbbjsbRENz0Hp3UmkQD9YVO1u9SdH4y6ht7Z4mmBIio0dtxntazZPgVBWiopeq4d3NYF9aJF5ZX/QX9rzQ==}
@@ -11591,6 +11676,41 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.28.5
 
+  '@biomejs/biome@2.3.11':
+    optionalDependencies:
+      '@biomejs/cli-darwin-arm64': 2.3.11
+      '@biomejs/cli-darwin-x64': 2.3.11
+      '@biomejs/cli-linux-arm64': 2.3.11
+      '@biomejs/cli-linux-arm64-musl': 2.3.11
+      '@biomejs/cli-linux-x64': 2.3.11
+      '@biomejs/cli-linux-x64-musl': 2.3.11
+      '@biomejs/cli-win32-arm64': 2.3.11
+      '@biomejs/cli-win32-x64': 2.3.11
+
+  '@biomejs/cli-darwin-arm64@2.3.11':
+    optional: true
+
+  '@biomejs/cli-darwin-x64@2.3.11':
+    optional: true
+
+  '@biomejs/cli-linux-arm64-musl@2.3.11':
+    optional: true
+
+  '@biomejs/cli-linux-arm64@2.3.11':
+    optional: true
+
+  '@biomejs/cli-linux-x64-musl@2.3.11':
+    optional: true
+
+  '@biomejs/cli-linux-x64@2.3.11':
+    optional: true
+
+  '@biomejs/cli-win32-arm64@2.3.11':
+    optional: true
+
+  '@biomejs/cli-win32-x64@2.3.11':
+    optional: true
+
   '@byteowls/capacitor-filesharer@7.0.0(@capacitor/core@8.0.0)':
     dependencies:
       '@capacitor/core': 8.0.0
@@ -12686,7 +12806,7 @@ snapshots:
     dependencies:
       '@ionic/utils-object': 2.1.6
       '@ionic/utils-terminal': 2.3.4
-      debug: 4.3.4
+      debug: 4.4.3(supports-color@8.1.1)
       signal-exit: 3.0.7
       tree-kill: 1.2.2
       tslib: 2.6.2
@@ -12706,7 +12826,7 @@ snapshots:
 
   '@ionic/utils-stream@3.1.6':
     dependencies:
-      debug: 4.3.4
+      debug: 4.4.3(supports-color@8.1.1)
       tslib: 2.6.2
     transitivePeerDependencies:
       - supports-color
@@ -12726,7 +12846,7 @@ snapshots:
       '@ionic/utils-stream': 3.1.6
       '@ionic/utils-terminal': 2.3.4
       cross-spawn: 7.0.6
-      debug: 4.3.4
+      debug: 4.4.3(supports-color@8.1.1)
       tslib: 2.6.2
     transitivePeerDependencies:
       - supports-color
@@ -12747,7 +12867,7 @@ snapshots:
   '@ionic/utils-terminal@2.3.4':
     dependencies:
       '@types/slice-ansi': 4.0.0
-      debug: 4.3.4
+      debug: 4.4.3(supports-color@8.1.1)
       signal-exit: 3.0.7
       slice-ansi: 4.0.0
       string-width: 4.2.3
@@ -13577,6 +13697,10 @@ snapshots:
       '@rollup/rollup-win32-arm64-msvc': 4.34.9
       '@rollup/rollup-win32-x64-msvc': 4.34.9
 
+  '@still-forest/biomejs-config@2.2.0(@biomejs/biome@2.3.11)':
+    dependencies:
+      '@biomejs/biome': 2.3.11
+
   '@tailwindcss/node@4.1.18':
     dependencies:
       '@jridgewell/remapping': 2.3.5
@@ -13832,7 +13956,7 @@ snapshots:
 
   '@tamagui/cli-color@1.144.1': {}
 
-  '@tamagui/cli@1.144.1(react-dom@18.2.0(react@18.2.0))(react-native@0.83.1(@babel/core@7.28.5)(@types/react@18.2.0)(react@18.2.0))(react@18.2.0)(vite@7.3.1(@types/node@25.0.5)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))':
+  '@tamagui/cli@1.144.1(react-dom@18.2.0(react@18.2.0))(react-native-svg@15.15.1(react-native@0.83.1(@babel/core@7.28.5)(@types/react@18.2.0)(react@18.2.0))(react@18.2.0))(react-native@0.83.1(@babel/core@7.28.5)(@types/react@18.2.0)(react@18.2.0))(react@18.2.0)(vite@7.3.1(@types/node@25.0.5)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))':
     dependencies:
       '@tamagui/create-theme': 1.144.1(react-dom@18.2.0(react@18.2.0))(react-native@0.83.1(@babel/core@7.28.5)(@types/react@18.2.0)(react@18.2.0))(react@18.2.0)
       '@tamagui/generate-themes': 1.144.1(esbuild@0.25.12)(react-dom@18.2.0(react@18.2.0))(react-native@0.83.1(@babel/core@7.28.5)(@types/react@18.2.0)(react@18.2.0))(react@18.2.0)
@@ -14132,6 +14256,15 @@ snapshots:
     transitivePeerDependencies:
       - react-dom
 
+  '@tamagui/helpers-icon@1.144.1(react-dom@18.2.0(react@18.2.0))(react-native-svg@15.15.1(react-native@0.83.1(@babel/core@7.28.5)(@types/react@18.2.0)(react@18.2.0))(react@18.2.0))(react-native@0.83.1(@babel/core@7.28.5)(@types/react@18.2.0)(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@tamagui/core': 1.144.1(react-dom@18.2.0(react@18.2.0))(react-native@0.83.1(@babel/core@7.28.5)(@types/react@18.2.0)(react@18.2.0))(react@18.2.0)
+      react: 18.2.0
+      react-native-svg: 15.15.1(react-native@0.83.1(@babel/core@7.28.5)(@types/react@18.2.0)(react@18.2.0))(react@18.2.0)
+    transitivePeerDependencies:
+      - react-dom
+      - react-native
+
   '@tamagui/helpers-node@1.144.1':
     dependencies:
       '@tamagui/types': 1.144.1
@@ -14201,6 +14334,16 @@ snapshots:
       '@tamagui/text': 1.144.1(react-dom@18.2.0(react@18.2.0))(react-native@0.83.1(@babel/core@7.28.5)(@types/react@18.2.0)(react@18.2.0))(react@18.2.0)
       '@tamagui/web': 1.144.1(react-dom@18.2.0(react@18.2.0))(react-native@0.83.1(@babel/core@7.28.5)(@types/react@18.2.0)(react@18.2.0))(react@18.2.0)
       react: 18.2.0
+    transitivePeerDependencies:
+      - react-dom
+      - react-native
+
+  '@tamagui/lucide-icons@1.144.1(react-dom@18.2.0(react@18.2.0))(react-native-svg@15.15.1(react-native@0.83.1(@babel/core@7.28.5)(@types/react@18.2.0)(react@18.2.0))(react@18.2.0))(react-native@0.83.1(@babel/core@7.28.5)(@types/react@18.2.0)(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@tamagui/core': 1.144.1(react-dom@18.2.0(react@18.2.0))(react-native@0.83.1(@babel/core@7.28.5)(@types/react@18.2.0)(react@18.2.0))(react@18.2.0)
+      '@tamagui/helpers-icon': 1.144.1(react-dom@18.2.0(react@18.2.0))(react-native-svg@15.15.1(react-native@0.83.1(@babel/core@7.28.5)(@types/react@18.2.0)(react@18.2.0))(react@18.2.0))(react-native@0.83.1(@babel/core@7.28.5)(@types/react@18.2.0)(react@18.2.0))(react@18.2.0)
+      react: 18.2.0
+      react-native-svg: 15.15.1(react-native@0.83.1(@babel/core@7.28.5)(@types/react@18.2.0)(react@18.2.0))(react@18.2.0)
     transitivePeerDependencies:
       - react-dom
       - react-native

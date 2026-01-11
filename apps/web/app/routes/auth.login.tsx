@@ -60,7 +60,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
       if (!contentType || !contentType.includes("application/json")) {
         console.error("Non-JSON response from login API:", responseText);
         return {
-          error: `Server returned invalid response. Please try again.`,
+          error: "Server returned invalid response. Please try again.",
         };
       }
 
@@ -116,26 +116,26 @@ export default function Login() {
 
   return (
     <View
-      position="absolute"
-      top={0}
-      right={0}
-      bottom={0}
-      left={0}
-      backgroundColor="$background"
       alignItems="center"
+      backgroundColor="$background"
+      bottom={0}
       justifyContent="center"
+      left={0}
       padding="$4"
+      position="absolute"
+      right={0}
+      top={0}
     >
       <Card
-        elevate
         bordered
-        padding="$4"
+        elevate
         maxWidth={400}
-        width="100%"
+        padding="$4"
         space="$6"
+        width="100%"
       >
         <YStack alignItems="center" space="$2">
-          <Text fontSize="$8" fontWeight="bold" color="$primary">
+          <Text color="$primary" fontSize="$8" fontWeight="bold">
             Syncstuff
           </Text>
           <Text fontSize="$4" fontWeight="bold">
@@ -158,10 +158,10 @@ export default function Login() {
                   Password
                 </Text>
                 <Link
-                  to="/auth/forgot-password"
                   style={{ textDecoration: "none" }}
+                  to="/auth/forgot-password"
                 >
-                  <Text fontSize="$2" color="$primary" fontWeight="bold">
+                  <Text color="$primary" fontSize="$2" fontWeight="bold">
                     Forgot password?
                   </Text>
                 </Link>
@@ -170,12 +170,12 @@ export default function Login() {
             </YStack>
 
             {actionData?.error && (
-              <Text color="$red10" textAlign="center" fontSize="$2">
+              <Text color="$red10" fontSize="$2" textAlign="center">
                 {actionData.error}
               </Text>
             )}
 
-            <Button theme="blue" size="$4" disabled={isSubmitting}>
+            <Button disabled={isSubmitting} size="$4" theme="blue">
               {isSubmitting ? "Signing in..." : "Sign in"}
             </Button>
           </YStack>
@@ -185,8 +185,8 @@ export default function Login() {
           <XStack alignItems="center" space="$2">
             <Separator flex={1} />
             <Text
-              fontSize="$1"
               color="$colorSubtitle"
+              fontSize="$1"
               textTransform="uppercase"
             >
               Or continue with
@@ -197,18 +197,18 @@ export default function Login() {
           <XStack space="$3">
             <Button
               flex={1}
-              variant="outlined"
-              onPress={() => (window.location.href = "/auth/github")}
               icon={<Text fontSize="$5">🐙</Text>}
+              onPress={() => (window.location.href = "/auth/github")}
+              variant="outlined"
             >
               GitHub
             </Button>
             <Button
-              flex={1}
               backgroundColor="#5865F2"
               color="white"
-              onPress={() => (window.location.href = "/auth/discord")}
+              flex={1}
               icon={<Text fontSize="$5">💬</Text>}
+              onPress={() => (window.location.href = "/auth/discord")}
             >
               Discord
             </Button>
@@ -217,8 +217,8 @@ export default function Login() {
 
         <XStack justifyContent="center" space="$2">
           <Text fontSize="$2">Not a member?</Text>
-          <Link to="/auth/signup" style={{ textDecoration: "none" }}>
-            <Text fontSize="$2" color="$primary" fontWeight="bold">
+          <Link style={{ textDecoration: "none" }} to="/auth/signup">
+            <Text color="$primary" fontSize="$2" fontWeight="bold">
               Start a 14 day free trial
             </Text>
           </Link>

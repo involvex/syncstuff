@@ -111,13 +111,43 @@
       "Bash(./node_modules/.bin/turbo:*)",
       "Bash(grep:*)",
       "Bash(timeout 90 bun install:*)",
-      "Bash(npx remix vite:build:*)"
+      "Bash(npx remix vite:build:*)",
+      "Bash(bun --version:*)",
+      "Bash(npx wrangler:*)",
+      "Bash(npm --version)",
+      "Bash(timeout 30 bun install:*)",
+      "Bash(pnpm --version:*)",
+      "Bash(du:*)",
+      "Bash(if [ -f bun.lock ])",
+      "Bash(then cp bun.lock bun.lock.backup)",
+      "Bash(else echo \"No bun.lock file found, skipping backup\")",
+      "Bash(fi)",
+      "Bash(pnpm install:*)",
+      "Bash(pnpm run build)",
+      "Bash(pnpm add:*)",
+      "Bash(pnpm run format:*)",
+      "Bash(pnpm run lint:fix:*)",
+      "Bash(pnpm run typecheck:*)",
+      "Bash(timeout 30 pnpm dev:*)",
+      "Bash(npx @tamagui/cli check:*)",
+      "Bash(pnpm build:*)",
+      "Bash(pnpm biome:check:*)",
+      "Bash(pnpm biome:fix:*)",
+      "Bash(pnpm biome format:*)",
+      "Bash(pnpm biome check:*)",
+      "Bash(pnpm dlx:*)",
+      "Bash(pnpm --package=@tamagui/cli dlx:*)",
+      "Bash(timeout 15 pnpm dev:*)",
+      "Bash(pnpm --filter @syncstuff/ui build:*)",
+      "Bash(netstat:*)",
+      "Bash(taskkill:*)",
+      "Bash(timeout 20 pnpm dev:*)",
+      "Bash(pnpm typecheck:*)",
+      "Bash(timeout 120 pnpm build:*)"
     ]
   },
   "enableAllProjectMcpServers": true,
-  "enabledMcpjsonServers": [
-    "cloudflare-builds"
-  ],
+  "enabledMcpjsonServers": ["cloudflare-builds", "chrome-devtools"],
   "hooks": {
     "UserPromptSubmit": [
       {
@@ -180,8 +210,5 @@
         ]
       }
     ]
-  },
-  "enabledPlugins": {
-    "claude-agents-offload@involvex-claude-marketplace": false
   }
 }

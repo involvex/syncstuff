@@ -1,6 +1,6 @@
 import type { SignalData, Instance as SimplePeerInstance } from "simple-peer";
 import SimplePeer from "simple-peer";
-import { io, Socket } from "socket.io-client";
+import { io, type Socket } from "socket.io-client";
 import { useSettingsStore } from "../../store/settings.store";
 import type { ConnectionState, SignalMessage } from "../../types/network.types";
 import { getPlatform } from "../../utils/platform.utils";

@@ -2,6 +2,7 @@ import { BarcodeScanner } from "@capacitor-mlkit/barcode-scanning";
 import {
   IonContent,
   IonHeader,
+  IonIcon,
   IonLabel,
   IonPage,
   IonRefresher,
@@ -10,32 +11,32 @@ import {
   IonSegmentButton,
   IonTitle,
   IonToolbar,
-  IonIcon,
-  RefresherEventDetail,
+  type RefresherEventDetail,
 } from "@ionic/react";
+import {
+  Button,
+  Card,
+  DeviceIcon,
+  StatusBadge,
+  Text,
+  View,
+  XStack,
+  YStack,
+} from "@syncstuff/ui";
 import { checkmarkCircle } from "ionicons/icons";
-import React, { useEffect, useState } from "react";
+import type React from "react";
+import { useEffect, useState } from "react";
 import { AuthCodeModal } from "../components/device/AuthCodeModal";
 import { DeviceList } from "../components/device/DeviceList";
 import { PairingModal } from "../components/device/PairingModal";
 import { QrCodeModal } from "../components/device/QrCodeModal";
 import { useDeviceDiscovery } from "../hooks/useDeviceDiscovery";
-import { useDeviceStore } from "../store/device.store";
 import { useTransfer } from "../hooks/useTransfer";
 import { authCodeService } from "../services/network/auth-code.service";
 import { remoteActionService } from "../services/remote/remote-action.service";
+import { useDeviceStore } from "../store/device.store";
 import type { Device } from "../types/device.types";
 import { isDesktop, isNative } from "../utils/platform.utils";
-import {
-  Card,
-  YStack,
-  XStack,
-  Text,
-  Button,
-  DeviceIcon,
-  StatusBadge,
-  View,
-} from "@syncstuff/ui";
 import "./DevicesPage.css";
 
 const DevicesPage: React.FC = () => {
@@ -299,30 +300,30 @@ const DevicesPage: React.FC = () => {
           </IonToolbar>
         </IonHeader>
 
-        <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
+        <IonRefresher onIonRefresh={handleRefresh} slot="fixed">
           <IonRefresherContent />
         </IonRefresher>
 
         <div className="devices-page-container">
           {/* Current Device Info */}
           {currentDevice && (
-            <Card elevate bordered padding="$4" marginBottom="$4">
+            <Card bordered elevate marginBottom="$4" padding="$4">
               <YStack space="$4">
-                <XStack space="$4" alignItems="center">
+                <XStack alignItems="center" space="$4">
                   <View
                     backgroundColor="$primary"
-                    padding="$4"
                     borderRadius="$3"
+                    padding="$4"
                   >
-                    <DeviceIcon type="mobile" size={32} color="white" />
+                    <DeviceIcon color="white" size={32} type="mobile" />
                   </View>
                   <YStack flex={1}>
-                    <XStack space="$2" alignItems="center">
+                    <XStack alignItems="center" space="$2">
                       <Text
-                        fontSize="$2"
                         color="$colorSubtitle"
-                        textTransform="uppercase"
+                        fontSize="$2"
                         fontWeight="bold"
+                        textTransform="uppercase"
                       >
                         This Device
                       </Text>
@@ -338,17 +339,17 @@ const DevicesPage: React.FC = () => {
                   <XStack space="$2">
                     <Button
                       flex={1}
-                      variant="outlined"
-                      onPress={() => setShowQrModal(true)}
                       icon={<Text>QR</Text>}
+                      onPress={() => setShowQrModal(true)}
+                      variant="outlined"
                     >
                       Show QR
                     </Button>
                     <Button
                       flex={1}
-                      variant="outlined"
-                      onPress={startScan}
                       icon={<Text>🔍</Text>}
+                      onPress={startScan}
+                      variant="outlined"
                     >
                       Scan QR
                     </Button>
@@ -356,23 +357,23 @@ const DevicesPage: React.FC = () => {
                   <XStack space="$2">
                     <Button
                       flex={1}
-                      variant="outlined"
+                      icon={<Text>⬆️</Text>}
                       onPress={() => {
                         setAuthCodeMode("display");
                         setShowAuthCodeModal(true);
                       }}
-                      icon={<Text>⬆️</Text>}
+                      variant="outlined"
                     >
                       Share Code
                     </Button>
                     <Button
                       flex={1}
-                      variant="outlined"
+                      icon={<Text>⬇️</Text>}
                       onPress={() => {
                         setAuthCodeMode("enter");
                         setShowAuthCodeModal(true);
                       }}
-                      icon={<Text>⬇️</Text>}
+                      variant="outlined"
                     >
                       Enter Code
                     </Button>
@@ -386,8 +387,8 @@ const DevicesPage: React.FC = () => {
           {!isSupported && (
             <Card
               backgroundColor={isDesktop() ? "$blue4" : "$yellow4"}
-              padding="$4"
               marginBottom="$4"
+              padding="$4"
             >
               <Text
                 color={isDesktop() ? "$blue10" : "$yellow10"}
@@ -404,12 +405,12 @@ const DevicesPage: React.FC = () => {
           {isSupported && (
             <YStack marginBottom="$4">
               <Button
-                theme={isDiscovering ? "red" : "blue"}
-                size="$4"
+                icon={<Text fontSize="$5">{isDiscovering ? "⏹️" : "▶️"}</Text>}
                 onPress={
                   isDiscovering ? handleStopDiscovery : handleStartDiscovery
                 }
-                icon={<Text fontSize="$5">{isDiscovering ? "⏹️" : "▶️"}</Text>}
+                size="$4"
+                theme={isDiscovering ? "red" : "blue"}
               >
                 {isDiscovering ? "Stop Discovery" : "Start Discovery"}
               </Button>
@@ -418,10 +419,10 @@ const DevicesPage: React.FC = () => {
 
           {/* Segment Tabs */}
           <IonSegment
-            value={selectedTab}
             onIonChange={e =>
               setSelectedTab(e.detail.value as "discovered" | "paired")
             }
+            value={selectedTab}
           >
             <IonSegmentButton value="discovered">
               <IonLabel>Discovered ({discoveredDevices.length})</IonLabel>
@@ -438,37 +439,37 @@ const DevicesPage: React.FC = () => {
           {selectedTab === "discovered" && (
             <DeviceList
               devices={discoveredDevices}
-              pairedDeviceIds={pairedDeviceIds}
-              onPair={handlePairDevice}
               emptyMessage={
                 isDiscovering
                   ? "Searching for devices on your network..."
                   : "No devices found. Start discovery to find nearby devices."
               }
+              onPair={handlePairDevice}
+              pairedDeviceIds={pairedDeviceIds}
             />
           )}
 
           {selectedTab === "paired" && (
             <DeviceList
               devices={pairedDevices}
-              pairedDeviceIds={pairedDeviceIds}
-              onUnpair={unpairDevice}
+              emptyMessage="No paired devices. Pair with a discovered device to get started."
               onConnect={connectToDevice}
-              onSendFile={sendFile}
               onPing={id => remoteActionService.sendPing(id)}
               onRing={id => remoteActionService.ringDevice(id)}
-              emptyMessage="No paired devices. Pair with a discovered device to get started."
+              onSendFile={sendFile}
+              onUnpair={unpairDevice}
+              pairedDeviceIds={pairedDeviceIds}
             />
           )}
         </div>
 
         {/* Pairing Modal */}
         <PairingModal
-          isOpen={pairingDevice !== null}
           device={pairingDevice}
+          isOpen={pairingDevice !== null}
           onAccept={handleAcceptPairing}
-          onReject={handleRejectPairing}
           onDismiss={handleRejectPairing}
+          onReject={handleRejectPairing}
         />
 
         {/* QR Code Modal */}
@@ -481,8 +482,8 @@ const DevicesPage: React.FC = () => {
 
         {/* Auth Code Modal */}
         <AuthCodeModal
-          isOpen={showAuthCodeModal}
           deviceId={currentDevice?.id || ""}
+          isOpen={showAuthCodeModal}
           mode={authCodeMode}
           onCodeEntered={handleAuthCodeEntered}
           onDismiss={() => setShowAuthCodeModal(false)}

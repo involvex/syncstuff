@@ -1,11 +1,11 @@
 import type {
+  CloudAccount,
   CloudProvider,
   CloudProviderType,
-  CloudAccount,
 } from "../../types/cloud.types";
 import { GoogleDriveService } from "./providers/google-drive.service";
-import { MockCloudService } from "./providers/mock-cloud.service";
 import { MegaService } from "./providers/mega.service";
+import { MockCloudService } from "./providers/mock-cloud.service";
 import { SyncstuffService } from "./providers/syncstuff.service";
 
 interface ProviderState {

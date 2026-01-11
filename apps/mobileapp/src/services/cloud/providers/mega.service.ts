@@ -1,9 +1,9 @@
+import { Storage } from "megajs";
 import type {
-  CloudProvider,
   CloudAccount,
   CloudFile,
+  CloudProvider,
 } from "../../../types/cloud.types";
-import { Storage } from "megajs";
 
 interface MegaFile {
   nodeId: string;
@@ -65,7 +65,7 @@ export class MegaService implements CloudProvider {
           })
           .catch(err => {
             console.error("Mega login error:", err);
-            reject(new Error("Mega login failed: " + err.message));
+            reject(new Error(`Mega login failed: ${err.message}`));
           });
       } catch (err: unknown) {
         const errorMsg = err instanceof Error ? err.message : String(err);

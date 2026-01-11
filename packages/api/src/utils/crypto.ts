@@ -6,7 +6,7 @@ function toHex(arr: Uint8Array): string {
   let hex = "";
   for (let i = 0; i < arr.length; i++) {
     const h = arr[i].toString(16);
-    hex += h.length === 1 ? "0" + h : h;
+    hex += h.length === 1 ? `0${h}` : h;
   }
   return hex;
 }
@@ -15,7 +15,7 @@ function fromHex(hex: string): Uint8Array {
   const len = hex.length / 2;
   const arr = new Uint8Array(len);
   for (let i = 0; i < len; i++) {
-    arr[i] = parseInt(hex.substring(i * 2, i * 2 + 2), 16);
+    arr[i] = Number.parseInt(hex.substring(i * 2, i * 2 + 2), 16);
   }
   return arr;
 }
@@ -81,7 +81,7 @@ export async function verifyPassword(
     if (!storedHash) return false;
     const parts = storedHash.split(":");
     if (parts.length !== 4) return false;
-    const iterations = parseInt(parts[1], 10);
+    const iterations = Number.parseInt(parts[1], 10);
     const salt = fromHex(parts[2]);
     const hashHex = parts[3];
     const encoder = new TextEncoder();

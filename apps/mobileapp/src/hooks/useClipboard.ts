@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { useClipboardStore } from "../store/clipboard.store";
-import { clipboardSyncService } from "../services/sync/clipboard-sync.service";
 import { clipboardService } from "../services/sync/clipboard.service";
+import { clipboardSyncService } from "../services/sync/clipboard-sync.service";
+import { useClipboardStore } from "../store/clipboard.store";
 
 /**
  * Custom hook for clipboard functionality

@@ -1,16 +1,16 @@
 import {
-  IonModal,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
   IonButton,
   IonButtons,
+  IonCheckbox,
+  IonContent,
+  IonHeader,
   IonIcon,
-  IonText,
   IonItem,
   IonLabel,
-  IonCheckbox,
+  IonModal,
+  IonText,
+  IonTitle,
+  IonToolbar,
 } from "@ionic/react";
 import {
   closeOutline,
@@ -18,9 +18,9 @@ import {
   imageOutline,
 } from "ionicons/icons";
 import { useState } from "react";
-import type { ClipboardSync } from "../../types/clipboard.types";
 import { clipboardSyncService } from "../../services/sync/clipboard-sync.service";
 import { useSettingsStore } from "../../store/settings.store";
+import type { ClipboardSync } from "../../types/clipboard.types";
 import "./ClipboardSyncModal.css";
 
 interface ClipboardSyncModalProps {
@@ -71,18 +71,19 @@ export const ClipboardSyncModal: React.FC<ClipboardSyncModalProps> = ({
       const preview = content.content || "[Loading...]";
       return (
         <div className="clipboard-sync-preview-text">
-          <IonIcon icon={documentTextOutline} className="preview-icon" />
+          <IonIcon className="preview-icon" icon={documentTextOutline} />
           <p>
             {preview.substring(0, 200)}
             {preview.length > 200 ? "..." : ""}
           </p>
         </div>
       );
-    } else if (content.type === "image") {
+    }
+    if (content.type === "image") {
       // Show image icon (actual image will be received after acceptance)
       return (
         <div className="clipboard-sync-preview-image">
-          <IonIcon icon={imageOutline} className="preview-icon-large" />
+          <IonIcon className="preview-icon-large" icon={imageOutline} />
           <IonText>
             <p>Image ({content.mimeType || "image/png"})</p>
           </IonText>
@@ -134,7 +135,7 @@ export const ClipboardSyncModal: React.FC<ClipboardSyncModalProps> = ({
             {getContentPreview()}
           </div>
 
-          <IonItem lines="none" className="auto-sync-checkbox">
+          <IonItem className="auto-sync-checkbox" lines="none">
             <IonCheckbox
               checked={enableAutoSync}
               onIonChange={e => setEnableAutoSync(e.detail.checked)}
@@ -149,10 +150,10 @@ export const ClipboardSyncModal: React.FC<ClipboardSyncModalProps> = ({
         </div>
 
         <div className="clipboard-sync-actions">
-          <IonButton expand="block" color="danger" onClick={handleReject}>
+          <IonButton color="danger" expand="block" onClick={handleReject}>
             Reject
           </IonButton>
-          <IonButton expand="block" color="primary" onClick={handleAccept}>
+          <IonButton color="primary" expand="block" onClick={handleAccept}>
             Accept & Sync
           </IonButton>
         </div>

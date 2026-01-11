@@ -22,8 +22,12 @@ function main() {
   const args = process.argv.slice(2);
   const verbose = args.includes("--verbose") || args.includes("-v");
 
-  console.log(`${colors.cyan}${colors.bright}🌐 Syncstuff Web Debug Mode${colors.reset}`);
-  console.log(`${colors.dim}Starting web dev server with enhanced logging...${colors.reset}\n`);
+  console.log(
+    `${colors.cyan}${colors.bright}🌐 Syncstuff Web Debug Mode${colors.reset}`,
+  );
+  console.log(
+    `${colors.dim}Starting web dev server with enhanced logging...${colors.reset}\n`,
+  );
 
   // Set environment variables for enhanced debugging
   const env = {
@@ -42,8 +46,10 @@ function main() {
     shell: true,
   });
 
-  devProcess.on("close", (code) => {
-    console.log(`\n${colors.yellow}Web dev server exited with code ${code}${colors.reset}`);
+  devProcess.on("close", code => {
+    console.log(
+      `\n${colors.yellow}Web dev server exited with code ${code}${colors.reset}`,
+    );
     process.exit(code || 0);
   });
 

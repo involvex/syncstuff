@@ -1,5 +1,5 @@
 import React from "react";
-import { XStack, Text, styled, Stack } from "tamagui";
+import { Stack, styled, Text, XStack } from "tamagui";
 export interface PairingCodeProps {
   code: string;
 }

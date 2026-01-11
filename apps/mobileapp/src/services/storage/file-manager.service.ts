@@ -1,4 +1,4 @@
-import { Filesystem, Directory, Encoding } from "@capacitor/filesystem";
+import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
 
 export interface FileChunk {
   offset: number;
@@ -41,7 +41,7 @@ class FileManagerService {
   async writeFileChunk(
     fileName: string,
     data: string,
-    append: boolean = true,
+    append = true,
   ): Promise<void> {
     try {
       if (append) {

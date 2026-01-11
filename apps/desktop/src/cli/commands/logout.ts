@@ -1,5 +1,5 @@
 import { apiClient } from "../../utils/api-client.js";
-import { debugLog, type CommandContext } from "../../utils/context.js";
+import { type CommandContext, debugLog } from "../../utils/context.js";
 import { error, printHeader, printSeparator, success } from "../../utils/ui.js";
 
 export async function logout(ctx: CommandContext): Promise<void> {

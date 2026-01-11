@@ -1,5 +1,5 @@
-import React from "react";
-import { YStack, XStack, Text, ScrollView } from "tamagui";
+import type React from "react";
+import { ScrollView, Text, XStack, YStack } from "tamagui";
 import { ThemeToggle } from "./ThemeToggle";
 export interface MainLayoutProps {
   children: React.ReactNode;
@@ -15,23 +15,23 @@ export function MainLayout({
 }: MainLayoutProps) {
   return (
     <XStack
-      position="absolute"
-      top={0}
-      right={0}
+      backgroundColor="$background"
       bottom={0}
       left={0}
-      backgroundColor="$background"
+      position="absolute"
+      right={0}
+      top={0}
     >
       {/* Sidebar */}
       {sidebar && (
         <YStack
-          width={280}
-          borderRightWidth={1}
-          borderColor="$borderColor"
-          backgroundColor="$surface"
           $sm={{
             display: "none",
           }}
+          backgroundColor="$surface"
+          borderColor="$borderColor"
+          borderRightWidth={1}
+          width={280}
         >
           {sidebar}
         </YStack>
@@ -41,13 +41,13 @@ export function MainLayout({
       <YStack flex={1}>
         {/* Header */}
         <XStack
-          height={64}
           alignItems="center"
-          justifyContent="space-between"
-          paddingHorizontal="$4"
+          backgroundColor="$surface"
           borderBottomWidth={1}
           borderColor="$borderColor"
-          backgroundColor="$surface"
+          height={64}
+          justifyContent="space-between"
+          paddingHorizontal="$4"
         >
           <XStack alignItems="center" space="$4">
             {title && (
@@ -63,10 +63,10 @@ export function MainLayout({
         {/* Content */}
         <ScrollView flex={1}>
           <YStack
+            marginHorizontal="auto"
+            maxWidth={1200}
             padding="$4"
             space="$4"
-            maxWidth={1200}
-            marginHorizontal="auto"
             width="100%"
           >
             {children}

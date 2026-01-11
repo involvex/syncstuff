@@ -175,5 +175,3 @@ export async function notifyTransferFailed(
     await window.electron.sync.transferFailed({ fileName, error });
   }
 }
-
-export {};

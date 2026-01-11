@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from "react";
 import {
-  IonModal,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
   IonButton,
-  IonTextarea,
+  IonButtons,
+  IonContent,
+  IonHeader,
   IonItem,
   IonLabel,
-  IonButtons,
+  IonModal,
+  IonTextarea,
+  IonTitle,
+  IonToolbar,
 } from "@ionic/react";
+import type React from "react";
+import { useEffect, useState } from "react";
 import type { SignalMessage } from "../../types/network.types";
 
 interface SignalModalProps {
@@ -60,12 +61,7 @@ export const SignalModal: React.FC<SignalModalProps> = ({
 
         <IonItem>
           <IonLabel position="stacked">1. Copy this signal</IonLabel>
-          <IonTextarea
-            value={signalString}
-            readonly
-            rows={6}
-            autoGrow={true}
-          ></IonTextarea>
+          <IonTextarea autoGrow={true} readonly rows={6} value={signalString} />
         </IonItem>
 
         <IonItem>
@@ -73,19 +69,19 @@ export const SignalModal: React.FC<SignalModalProps> = ({
             2. Paste the signal from the other device here
           </IonLabel>
           <IonTextarea
-            placeholder="Paste signal here"
-            value={pastedSignal}
-            onIonChange={e => setPastedSignal(e.detail.value!)}
-            rows={6}
             autoGrow={true}
-          ></IonTextarea>
+            onIonChange={e => setPastedSignal(e.detail.value!)}
+            placeholder="Paste signal here"
+            rows={6}
+            value={pastedSignal}
+          />
         </IonItem>
 
         <IonButton
+          className="ion-margin-top"
+          disabled={!pastedSignal.trim()}
           expand="block"
           onClick={handleSubmit}
-          disabled={!pastedSignal.trim()}
-          className="ion-margin-top"
         >
           Submit Signal
         </IonButton>

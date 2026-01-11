@@ -1,32 +1,32 @@
 import {
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
+  IonBadge,
   IonContent,
+  IonHeader,
+  IonLabel,
+  IonPage,
   IonSegment,
   IonSegmentButton,
-  IonLabel,
-  IonBadge,
+  IonTitle,
+  IonToolbar,
 } from "@ionic/react";
-import { useState, useEffect } from "react";
+import {
+  Button,
+  Card,
+  Separator,
+  StatusBadge,
+  Switch,
+  Text,
+  View,
+  XStack,
+  YStack,
+} from "@syncstuff/ui";
+import { useEffect, useState } from "react";
 import { ClipboardList } from "../components/clipboard/ClipboardList";
 import { ClipboardSyncModal } from "../components/clipboard/ClipboardSyncModal";
 import { useClipboard } from "../hooks/useClipboard";
-import { useSettingsStore } from "../store/settings.store";
 import { localStorageService } from "../services/storage/local-storage.service";
+import { useSettingsStore } from "../store/settings.store";
 import { STORAGE_KEYS } from "../types/storage.types";
-import {
-  Card,
-  YStack,
-  XStack,
-  Text,
-  Button,
-  Switch,
-  View,
-  Separator,
-  StatusBadge,
-} from "@syncstuff/ui";
 import "./ClipboardPage.css";
 
 const ClipboardPage: React.FC = () => {
@@ -99,17 +99,17 @@ const ClipboardPage: React.FC = () => {
         <IonToolbar>
           <IonTitle>Clipboard</IonTitle>
           {pendingApproval.length > 0 && (
-            <IonBadge slot="end" color="danger">
+            <IonBadge color="danger" slot="end">
               {pendingApproval.length}
             </IonBadge>
           )}
         </IonToolbar>
         <IonToolbar>
           <IonSegment
-            value={selectedSegment}
             onIonChange={e =>
               setSelectedSegment(e.detail.value as "history" | "settings")
             }
+            value={selectedSegment}
           >
             <IonSegmentButton value="history">
               <IonLabel>History</IonLabel>
@@ -124,15 +124,15 @@ const ClipboardPage: React.FC = () => {
       <IonContent>
         {selectedSegment === "history" && (
           <YStack padding="$4" space="$4">
-            <Card elevate bordered padding="$4">
-              <XStack justifyContent="space-between" alignItems="center">
-                <XStack space="$3" alignItems="center">
+            <Card bordered elevate padding="$4">
+              <XStack alignItems="center" justifyContent="space-between">
+                <XStack alignItems="center" space="$3">
                   <View
                     backgroundColor={
                       isMonitoring ? "$green4" : "$backgroundFocus"
                     }
-                    padding="$4"
                     borderRadius="$3"
+                    padding="$4"
                   >
                     <Text fontSize="$5">{isMonitoring ? "▶️" : "⏹️"}</Text>
                   </View>
@@ -140,15 +140,15 @@ const ClipboardPage: React.FC = () => {
                     <Text fontWeight="bold">
                       {isMonitoring ? "Monitoring Active" : "Monitoring Paused"}
                     </Text>
-                    <Text fontSize="        " color="$colorSubtitle">
+                    <Text color="$colorSubtitle" fontSize="        ">
                       Detects clipboard changes
                     </Text>
                   </YStack>
                 </XStack>
                 <Button
-                  theme={isMonitoring ? "red" : "blue"}
-                  size="$3"
                   onPress={handleToggleMonitoring}
+                  size="$3"
+                  theme={isMonitoring ? "red" : "blue"}
                 >
                   {isMonitoring ? "Pause" : "Resume"}
                 </Button>
@@ -161,16 +161,16 @@ const ClipboardPage: React.FC = () => {
 
         {selectedSegment === "settings" && (
           <YStack padding="$4" space="$4">
-            <Card elevate bordered padding="$4">
+            <Card bordered elevate padding="$4">
               <YStack separator={<Separator />}>
                 <XStack
-                  padding="$4"
-                  justifyContent="space-between"
                   alignItems="center"
+                  justifyContent="space-between"
+                  padding="$4"
                 >
                   <YStack flex={1} space="        ">
                     <Text fontWeight="bold">Auto-sync clipboard</Text>
-                    <Text fontSize="        " color="$colorSubtitle">
+                    <Text color="$colorSubtitle" fontSize="        ">
                       Automatically sync to paired devices
                     </Text>
                   </YStack>
@@ -184,12 +184,12 @@ const ClipboardPage: React.FC = () => {
 
                 {!clipboardAutoSync && (
                   <YStack
-                    padding="$4"
                     backgroundColor="$yellow2"
                     borderRadius="$3"
                     marginVertical="$2"
+                    padding="$4"
                   >
-                    <Text fontSize="        " color="$yellow10">
+                    <Text color="$yellow10" fontSize="        ">
                       Auto-sync is disabled for privacy. Each sync will require
                       manual approval.
                     </Text>
@@ -197,34 +197,34 @@ const ClipboardPage: React.FC = () => {
                 )}
 
                 <XStack
-                  padding="$4"
-                  justifyContent="space-between"
                   alignItems="center"
+                  justifyContent="space-between"
                   opacity={!clipboardAutoSync ? 0.5 : 1}
+                  padding="$4"
                 >
                   <YStack flex={1} space="        ">
                     <Text fontWeight="bold">Sync images</Text>
-                    <Text fontSize="        " color="$colorSubtitle">
+                    <Text color="$colorSubtitle" fontSize="        ">
                       Include images in sync
                     </Text>
                   </YStack>
                   <Switch
                     checked={clipboardSyncImages}
-                    onCheckedChange={handleSyncImagesToggle}
                     disabled={!clipboardAutoSync}
+                    onCheckedChange={handleSyncImagesToggle}
                   >
                     <Switch.Thumb animation="quick" />
                   </Switch>
                 </XStack>
 
                 <XStack
-                  padding="$4"
-                  justifyContent="space-between"
                   alignItems="center"
+                  justifyContent="space-between"
+                  padding="$4"
                 >
                   <YStack flex={1} space="        ">
                     <Text fontWeight="bold">Show content preview</Text>
-                    <Text fontSize="        " color="$colorSubtitle">
+                    <Text color="$colorSubtitle" fontSize="        ">
                       Display preview in history
                     </Text>
                   </YStack>
@@ -237,13 +237,13 @@ const ClipboardPage: React.FC = () => {
                 </XStack>
 
                 <XStack
-                  padding="$4"
-                  justifyContent="space-between"
                   alignItems="center"
+                  justifyContent="space-between"
+                  padding="$4"
                 >
                   <YStack flex={1} space="        ">
                     <Text fontWeight="bold">Backup to Cloud</Text>
-                    <Text fontSize="        " color="$colorSubtitle">
+                    <Text color="$colorSubtitle" fontSize="        ">
                       Save history to connected accounts
                     </Text>
                   </YStack>
@@ -257,17 +257,17 @@ const ClipboardPage: React.FC = () => {
               </YStack>
             </Card>
 
-            <Card bordered padding="$4" backgroundColor="$backgroundFocus">
+            <Card backgroundColor="$backgroundFocus" bordered padding="$4">
               <YStack space="$2">
                 <Text fontWeight="bold">Security & Privacy</Text>
-                <Text fontSize="$2" color="$colorSubtitle">
+                <Text color="$colorSubtitle" fontSize="$2">
                   Clipboard sync uses military-grade encryption to share text
                   and images directly between your paired devices in real-time.
                 </Text>
                 <Separator marginVertical="$2" />
-                <XStack space="$2" alignItems="center">
+                <XStack alignItems="center" space="$2">
                   <StatusBadge status="info">P2P ARCHITECTURE</StatusBadge>
-                  <Text fontSize="        " color="$colorSubtitle" flex={1}>
+                  <Text color="$colorSubtitle" flex={1} fontSize="        ">
                     Your data never touches our servers. Every sync is a direct,
                     encrypted handshake.
                   </Text>
@@ -279,9 +279,9 @@ const ClipboardPage: React.FC = () => {
 
         {/* Approval modal for incoming clipboard syncs */}
         <ClipboardSyncModal
-          sync={currentPendingSync}
           isOpen={showApprovalModal}
           onClose={() => setShowApprovalModal(false)}
+          sync={currentPendingSync}
         />
       </IonContent>
     </IonPage>

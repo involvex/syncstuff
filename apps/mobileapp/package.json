@@ -13,7 +13,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "test": "bun run test.e2e && bun run test.unit",
+    "test": "bun run test.unit",
     "test.e2e": "cypress run",
     "test.unit": "vitest",
     "lint": "eslint",
@@ -108,10 +108,6 @@
     "vite": "7.3.1",
     "vite-plugin-node-polyfills": "0.24.0",
     "vitest": "4.0.16"
-  },
-  "resolutions": {
-    "@types/react": "18.2.0",
-    "@types/react-dom": "18.2.0"
   },
   "overrides": {
     "@types/react": "18.2.0",

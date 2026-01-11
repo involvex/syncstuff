@@ -22,8 +22,9 @@ export default defineConfig({
     reactNativeSvgAlias(),
     tailwindcss(),
     tamaguiPlugin({
-      config: "./tamagui.config.ts",
+      config: path.resolve(process.cwd(), "../../packages/ui/.tamagui/tamagui.config.cjs"),
       components: ["tamagui"],
+      outputCSS: "./app/tamagui.css",
     }),
     cloudflareDevProxyVitePlugin({
       getLoadContext,
@@ -76,7 +77,6 @@ export default defineConfig({
     alias: {
       "react-native": "react-native-web",
       "react-native-svg": "./react-native-svg-stub.js",
-      "@syncstuff/ui": path.resolve(__dirname, "../../packages/ui/dist"),
     },
   },
   server: {

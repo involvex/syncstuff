@@ -1,5 +1,5 @@
-import type { Device, Platform } from "./device.types";
 import type { ZeroConfService } from "capacitor-zeroconf";
+import type { Device, Platform } from "./device.types";
 
 export interface DiscoveredDevice extends Device {
   service?: ZeroConfService;

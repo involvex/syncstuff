@@ -1,14 +1,14 @@
 import { Device } from "@capacitor/device";
 import { Haptics } from "@capacitor/haptics";
 import { useDeviceStore } from "../../store/device.store";
-import { logger } from "../logging/logger.service";
-import { webrtcService } from "../network/webrtc.service";
-import { notificationService } from "../notifications/notification.service";
 import type {
   BatteryStatus,
   PingMessage,
   SyncMessage,
 } from "../../types/network.types";
+import { logger } from "../logging/logger.service";
+import { webrtcService } from "../network/webrtc.service";
+import { notificationService } from "../notifications/notification.service";
 
 class RemoteActionService {
   private batteryInterval: ReturnType<typeof setInterval> | null = null;

@@ -67,26 +67,26 @@ export default function Signup() {
 
   return (
     <View
-      position="absolute"
-      top={0}
-      right={0}
-      bottom={0}
-      left={0}
-      backgroundColor="$background"
       alignItems="center"
+      backgroundColor="$background"
+      bottom={0}
       justifyContent="center"
+      left={0}
       padding="$4"
+      position="absolute"
+      right={0}
+      top={0}
     >
       <Card
-        elevate
         bordered
-        padding="$4"
+        elevate
         maxWidth={400}
-        width="100%"
+        padding="$4"
         space="$6"
+        width="100%"
       >
         <YStack alignItems="center" space="$2">
-          <Text fontSize="$8" fontWeight="bold" color="$primary">
+          <Text color="$primary" fontSize="$8" fontWeight="bold">
             Syncstuff
           </Text>
 
@@ -122,12 +122,12 @@ export default function Signup() {
             </YStack>
 
             {actionData?.error && (
-              <Text color="$red10" textAlign="center" fontSize="$2">
+              <Text color="$red10" fontSize="$2" textAlign="center">
                 {actionData.error}
               </Text>
             )}
 
-            <Button theme="blue" size="$4" disabled={isSubmitting}>
+            <Button disabled={isSubmitting} size="$4" theme="blue">
               {isSubmitting ? "Creating account..." : "Sign up"}
             </Button>
           </YStack>
@@ -135,8 +135,8 @@ export default function Signup() {
 
         <XStack justifyContent="center" space="$2">
           <Text fontSize="$2">Already a member?</Text>
-          <Link to="/auth/login" style={{ textDecoration: "none" }}>
-            <Text fontSize="$2" color="$primary" fontWeight="bold">
+          <Link style={{ textDecoration: "none" }} to="/auth/login">
+            <Text color="$primary" fontSize="$2" fontWeight="bold">
               Sign in
             </Text>
           </Link>

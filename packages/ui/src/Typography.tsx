@@ -1,1 +1,1 @@
-export { Text, H1, H2, H3, H4, H5, H6, Paragraph } from "tamagui";
+export { H1, H2, H3, H4, H5, H6, Paragraph, Text } from "tamagui";

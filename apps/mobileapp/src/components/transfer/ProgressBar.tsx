@@ -1,5 +1,5 @@
-import React from "react";
 import { IonProgressBar, IonText } from "@ionic/react";
+import type React from "react";
 
 interface ProgressBarProps {
   value: number; // 0 to 1
@@ -19,7 +19,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
           <p style={{ fontSize: "0.8rem", marginBottom: "4px" }}>{label}</p>
         </IonText>
       )}
-      <IonProgressBar value={value} buffer={buffer} color="primary" />
+      <IonProgressBar buffer={buffer} color="primary" value={value} />
       <div
         style={{ textAlign: "right", fontSize: "0.75rem", marginTop: "2px" }}
       >

@@ -13,8 +13,9 @@ const _cn2 =
   "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color _fos- _tt-uppercase _fow-bold ";
 const _cn =
   "_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-1 _fd-column _fg-1 ";
-import React from "react";
-import { Card, XStack, YStack, Text, Stack, styled } from "tamagui";
+
+import type React from "react";
+import { Card, Stack, styled, Text, XStack, YStack } from "tamagui";
 export interface StatCardProps {
   title: string;
   value: string | number;
@@ -34,16 +35,16 @@ const IconFrame = styled(Stack, {
 export function StatCard({ title, value, icon, trend }: StatCardProps) {
   return (
     <Card
-      elevate
-      padding="$4"
-      bordered
       animation="quick"
-      scale={0.98}
+      bordered
+      elevate
       hoverStyle={{
         scale: 1,
       }}
+      padding="$4"
+      scale={0.98}
     >
-      <XStack space="$4" alignItems="center">
+      <XStack alignItems="center" space="$4">
         {icon && (
           <IconFrame backgroundColor="$backgroundFocus">{icon}</IconFrame>
         )}
@@ -51,7 +52,7 @@ export function StatCard({ title, value, icon, trend }: StatCardProps) {
           <span className={_cn2}>{title}</span>
           <span className={_cn3}>{value}</span>
           {trend && (
-            <XStack space="$1" alignItems="center">
+            <XStack alignItems="center" space="$1">
               <span
                 className={
                   !trend.positive ? _cn4 : trend.positive ? _cn5 : _cn6

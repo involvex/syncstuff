@@ -1,11 +1,11 @@
 import { create } from "zustand";
+import { localStorageService } from "../services/storage/local-storage.service";
 import type { Device } from "../types/device.types";
 import type {
-  PairingRequest,
   DiscoveredDevice,
+  PairingRequest,
   SignalMessage,
 } from "../types/network.types";
-import { localStorageService } from "../services/storage/local-storage.service";
 import { STORAGE_KEYS } from "../types/storage.types";
 
 interface DeviceStore {

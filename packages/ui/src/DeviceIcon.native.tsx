@@ -26,18 +26,18 @@ export interface DeviceIconProps {
 export function DeviceIcon({ type, size = 24, color }: DeviceIconProps) {
   switch (type) {
     case "mobile":
-      return <Smartphone size={size} color={color} />;
+      return <Smartphone color={color} size={size} />;
     case "tablet":
-      return <Tablet size={size} color={color} />;
+      return <Tablet color={color} size={size} />;
     case "desktop":
-      return <Monitor size={size} color={color} />;
+      return <Monitor color={color} size={size} />;
     case "laptop":
-      return <Laptop size={size} color={color} />;
+      return <Laptop color={color} size={size} />;
     case "tv":
-      return <Tv size={size} color={color} />;
+      return <Tv color={color} size={size} />;
     case "cli":
-      return <Terminal size={size} color={color} />;
+      return <Terminal color={color} size={size} />;
     default:
-      return <Smartphone size={size} color={color} />;
+      return <Smartphone color={color} size={size} />;
   }
 }

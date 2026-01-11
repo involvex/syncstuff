@@ -5,8 +5,8 @@
  */
 
 import { Clipboard } from "@capacitor/clipboard";
-import { isWeb } from "../../utils/platform.utils";
 import type { ClipboardContentType } from "../../types/clipboard.types";
+import { isWeb } from "../../utils/platform.utils";
 
 interface ClipboardReadResult {
   type: ClipboardContentType;
@@ -32,11 +32,10 @@ class ClipboardService {
         }
         const text = await navigator.clipboard.readText();
         return text;
-      } else {
-        // Native: Use Capacitor Clipboard
-        const result = await Clipboard.read();
-        return result.value || "";
       }
+      // Native: Use Capacitor Clipboard
+      const result = await Clipboard.read();
+      return result.value || "";
     } catch (error) {
       console.error("Failed to read clipboard text:", error);
       throw error;
@@ -89,16 +88,15 @@ class ClipboardService {
           }
         }
         return null;
-      } else {
-        // Native: Use Capacitor Clipboard (image support varies by platform)
-        // Note: Capacitor Clipboard v6 has limited image support
-        // This may need platform-specific implementations
-        const result = await Clipboard.read();
-        if (result.type === "image" && result.value) {
-          return result.value; // Assume it's base64
-        }
-        return null;
       }
+      // Native: Use Capacitor Clipboard (image support varies by platform)
+      // Note: Capacitor Clipboard v6 has limited image support
+      // This may need platform-specific implementations
+      const result = await Clipboard.read();
+      if (result.type === "image" && result.value) {
+        return result.value; // Assume it's base64
+      }
+      return null;
     } catch (error) {
       console.error("Failed to read clipboard image:", error);
       return null;
@@ -108,10 +106,7 @@ class ClipboardService {
   /**
    * Write image to clipboard (base64 data)
    */
-  async writeImage(
-    base64Data: string,
-    mimeType: string = "image/png",
-  ): Promise<void> {
+  async writeImage(base64Data: string, mimeType = "image/png"): Promise<void> {
     try {
       if (isWeb()) {
         // Web: Convert base64 to blob and use ClipboardItem
@@ -141,7 +136,7 @@ class ClipboardService {
   async detectContentType(): Promise<ClipboardContentType> {
     try {
       if (isWeb()) {
-        if (navigator.clipboard && navigator.clipboard.read) {
+        if (navigator.clipboard?.read) {
           const items = await navigator.clipboard.read();
           if (items.length > 0) {
             const types = items[0].types;
@@ -151,14 +146,13 @@ class ClipboardService {
           }
         }
         return "text"; // Default to text on web
-      } else {
-        // Native: Check Capacitor Clipboard
-        const result = await Clipboard.read();
-        if (result.type === "image") {
-          return "image";
-        }
-        return "text";
       }
+      // Native: Check Capacitor Clipboard
+      const result = await Clipboard.read();
+      if (result.type === "image") {
+        return "image";
+      }
+      return "text";
     } catch (error) {
       console.error("Failed to detect clipboard content type:", error);
       return "text"; // Default fallback
@@ -201,7 +195,7 @@ class ClipboardService {
    */
   startMonitoring(
     callback: (result: ClipboardReadResult) => void,
-    intervalMs: number = 1000,
+    intervalMs = 1000,
   ): void {
     if (this.isMonitoringActive) {
       console.warn("Clipboard monitoring already active");

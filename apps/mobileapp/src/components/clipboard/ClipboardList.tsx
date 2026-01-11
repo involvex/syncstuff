@@ -1,8 +1,8 @@
-import { IonList, IonButton, IonIcon, IonText } from "@ionic/react";
-import { trashOutline, clipboardOutline } from "ionicons/icons";
-import { ClipboardItem } from "./ClipboardItem";
+import { IonButton, IonIcon, IonList, IonText } from "@ionic/react";
+import { clipboardOutline, trashOutline } from "ionicons/icons";
 import { useClipboardStore } from "../../store/clipboard.store";
 import { useSettingsStore } from "../../store/settings.store";
+import { ClipboardItem } from "./ClipboardItem";
 import "./ClipboardList.css";
 
 export const ClipboardList: React.FC = () => {
@@ -15,7 +15,7 @@ export const ClipboardList: React.FC = () => {
   if (clipboardHistory.length === 0) {
     return (
       <div className="clipboard-list-empty">
-        <IonIcon icon={clipboardOutline} className="empty-icon" />
+        <IonIcon className="empty-icon" icon={clipboardOutline} />
         <IonText>
           <h2>No clipboard history</h2>
           <p>Copy something to get started</p>
@@ -34,12 +34,12 @@ export const ClipboardList: React.FC = () => {
           </h3>
         </IonText>
         <IonButton
-          fill="clear"
-          size="small"
           color="danger"
+          fill="clear"
           onClick={clearHistory}
+          size="small"
         >
-          <IonIcon slot="start" icon={trashOutline} />
+          <IonIcon icon={trashOutline} slot="start" />
           Clear All
         </IonButton>
       </div>
@@ -47,8 +47,8 @@ export const ClipboardList: React.FC = () => {
       <IonList>
         {clipboardHistory.map(content => (
           <ClipboardItem
-            key={content.id}
             content={content}
+            key={content.id}
             showPreview={clipboardShowPreview}
           />
         ))}

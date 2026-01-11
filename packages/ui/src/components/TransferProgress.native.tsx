@@ -1,5 +1,5 @@
 import React from "react";
-import { XStack, YStack, Text, Progress } from "tamagui";
+import { Progress, Text, XStack, YStack } from "tamagui";
 export interface TransferProgressProps {
   fileName: string;
   progress: number; // 0 to 100
@@ -14,12 +14,12 @@ export function TransferProgress({
 }: TransferProgressProps) {
   return (
     <YStack
-      space="$2"
-      padding="$3"
       backgroundColor="$background"
+      borderColor="$borderColor"
       borderRadius="$3"
       borderWidth={1}
-      borderColor="$borderColor"
+      padding="$3"
+      space="$2"
     >
       <XStack justifyContent="space-between">
         <Text fontWeight="bold" numberOfLines={1}>
@@ -28,18 +28,18 @@ export function TransferProgress({
         <Text fontSize="$2">{progress}%</Text>
       </XStack>
 
-      <Progress value={progress} size="$2">
+      <Progress size="$2" value={progress}>
         <Progress.Indicator animation="quick" backgroundColor="$blue10" />
       </Progress>
 
       <XStack justifyContent="space-between">
         {speed && (
-          <Text fontSize="$1" color="$colorSubtitle">
+          <Text color="$colorSubtitle" fontSize="$1">
             {speed}
           </Text>
         )}
         {remainingTime && (
-          <Text fontSize="$1" color="$colorSubtitle">
+          <Text color="$colorSubtitle" fontSize="$1">
             {remainingTime}
           </Text>
         )}

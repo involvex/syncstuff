@@ -1,8 +1,8 @@
-import { BarcodeScanner } from "@capacitor-mlkit/barcode-scanning";
 import { Capacitor } from "@capacitor/core";
 import { Filesystem } from "@capacitor/filesystem";
 import { Network } from "@capacitor/network";
 import { PushNotifications } from "@capacitor/push-notifications";
+import { BarcodeScanner } from "@capacitor-mlkit/barcode-scanning";
 import { isNative } from "../../utils/platform.utils";
 
 export interface PermissionStatus {
@@ -263,8 +263,9 @@ class PermissionsService {
   async openSettings(): Promise<void> {
     try {
       if (isNative()) {
-        const { NativeSettings, AndroidSettings, IOSSettings } =
-          await import("capacitor-native-settings");
+        const { NativeSettings, AndroidSettings, IOSSettings } = await import(
+          "capacitor-native-settings"
+        );
 
         await NativeSettings.open({
           optionAndroid: AndroidSettings.ApplicationDetails,

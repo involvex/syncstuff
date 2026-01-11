@@ -1,4 +1,4 @@
-import { json, type ActionFunctionArgs } from "@remix-run/cloudflare";
+import { type ActionFunctionArgs, json } from "@remix-run/cloudflare";
 import { Form, Link, useActionData, useNavigation } from "@remix-run/react";
 import { Button, Card, Input, Text, View, XStack, YStack } from "@syncstuff/ui";
 
@@ -83,43 +83,43 @@ export default function ForgotPassword() {
   if (actionData?.success) {
     return (
       <View
-        position="absolute"
-        top={0}
-        right={0}
-        bottom={0}
-        left={0}
-        backgroundColor="$background"
         alignItems="center"
+        backgroundColor="$background"
+        bottom={0}
         justifyContent="center"
+        left={0}
         padding="$4"
+        position="absolute"
+        right={0}
+        top={0}
       >
-        <Card elevate bordered padding="$4" maxWidth={400} width="100%">
-          <YStack space="$6" alignItems="center">
+        <Card bordered elevate maxWidth={400} padding="$4" width="100%">
+          <YStack alignItems="center" space="$6">
             <View
-              width={64}
-              height={64}
-              borderRadius="$full"
-              backgroundColor="$green4"
               alignItems="center"
+              backgroundColor="$green4"
+              borderRadius="$full"
+              height={64}
               justifyContent="center"
+              width={64}
             >
-              <Text fontSize="$8" color="$green10">
+              <Text color="$green10" fontSize="$8">
                 ✓
               </Text>
             </View>
-            <YStack space="$2" alignItems="center">
+            <YStack alignItems="center" space="$2">
               <Text fontSize="$6" fontWeight="bold">
                 Check Your Email
               </Text>
-              <Text textAlign="center" color="$colorSubtitle">
+              <Text color="$colorSubtitle" textAlign="center">
                 {"message" in actionData
                   ? actionData.message
                   : actionData.error}
               </Text>
             </YStack>
             <Link
-              to="/auth/login"
               style={{ textDecoration: "none", width: "100%" }}
+              to="/auth/login"
             >
               <Button theme="blue" width="100%">
                 Back to Login
@@ -133,26 +133,26 @@ export default function ForgotPassword() {
 
   return (
     <View
-      position="absolute"
-      top={0}
-      right={0}
-      bottom={0}
-      left={0}
-      backgroundColor="$background"
       alignItems="center"
+      backgroundColor="$background"
+      bottom={0}
       justifyContent="center"
+      left={0}
       padding="$4"
+      position="absolute"
+      right={0}
+      top={0}
     >
       <Card
-        elevate
         bordered
-        padding="$4"
+        elevate
         maxWidth={400}
-        width="100%"
+        padding="$4"
         space="$6"
+        width="100%"
       >
         <YStack space="$2">
-          <Link to="/auth/login" style={{ textDecoration: "none" }}>
+          <Link style={{ textDecoration: "none" }} to="/auth/login">
             <XStack alignItems="center" space="$2">
               <Text color="$colorSubtitle">←</Text>
               <Text color="$colorSubtitle" fontWeight="bold">
@@ -164,26 +164,26 @@ export default function ForgotPassword() {
 
         <YStack alignItems="center" space="$2">
           <View
-            width={56}
-            height={56}
-            borderRadius="$3"
-            backgroundColor="$backgroundFocus"
             alignItems="center"
+            backgroundColor="$backgroundFocus"
+            borderRadius="$3"
+            height={56}
             justifyContent="center"
+            width={56}
           >
             <Text fontSize="$8">✉️</Text>
           </View>
           <Text fontSize="$6" fontWeight="bold">
             Forgot Password?
           </Text>
-          <Text textAlign="center" color="$colorSubtitle">
+          <Text color="$colorSubtitle" textAlign="center">
             Enter your email address and we'll send you a link to reset your
             password.
           </Text>
         </YStack>
 
         {actionData && "error" in actionData && actionData.error && (
-          <YStack padding="$4" backgroundColor="$red2" borderRadius="$3">
+          <YStack backgroundColor="$red2" borderRadius="$3" padding="$4">
             <Text color="$red10" fontSize="$2">
               {actionData.error}
             </Text>
@@ -199,7 +199,7 @@ export default function ForgotPassword() {
               <Input id="email" placeholder="john@example.com" />
             </YStack>
 
-            <Button theme="blue" size="$4" disabled={isSubmitting}>
+            <Button disabled={isSubmitting} size="$4" theme="blue">
               {isSubmitting ? "Sending Link..." : "Send Reset Link"}
             </Button>
           </YStack>
@@ -207,8 +207,8 @@ export default function ForgotPassword() {
 
         <XStack justifyContent="center" space="$2">
           <Text fontSize="$2">Remember your password?</Text>
-          <Link to="/auth/login" style={{ textDecoration: "none" }}>
-            <Text fontSize="$2" color="$primary" fontWeight="bold">
+          <Link style={{ textDecoration: "none" }} to="/auth/login">
+            <Text color="$primary" fontSize="$2" fontWeight="bold">
               Sign in
             </Text>
           </Link>

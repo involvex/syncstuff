@@ -12,6 +12,7 @@ export default [
       "android/**",
       "ios/**",
       "**/.gradle/**",
+      "packages/shared/dist/**",
     ],
   },
   {

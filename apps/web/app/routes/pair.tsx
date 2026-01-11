@@ -25,19 +25,19 @@ export default function PairPage() {
 
   return (
     <View
-      position="absolute"
-      top={0}
-      right={0}
-      bottom={0}
-      left={0}
-      backgroundColor="$background"
       alignItems="center"
+      backgroundColor="$background"
+      bottom={0}
       justifyContent="center"
+      left={0}
       padding="$4"
+      position="absolute"
+      right={0}
+      top={0}
     >
-      <Card elevate bordered padding="$4" maxWidth={400} width="100%">
-        <YStack space="$6" alignItems="center">
-          <Text fontSize="$8" fontWeight="bold" color="$primary">
+      <Card bordered elevate maxWidth={400} padding="$4" width="100%">
+        <YStack alignItems="center" space="$6">
+          <Text color="$primary" fontSize="$8" fontWeight="bold">
             Pairing Request
           </Text>
 
@@ -48,34 +48,34 @@ export default function PairPage() {
                 <Text fontSize="$6" fontWeight="bold">
                   {name || "Unknown Device"}
                 </Text>
-                <Text fontSize="$1" color="$colorSubtitle" fontFamily="$mono">
+                <Text color="$colorSubtitle" fontFamily="$mono" fontSize="$1">
                   {id}
                 </Text>
               </YStack>
 
               <YStack space="$4" width="100%">
-                <Text fontSize="$3" textAlign="center" color="$colorSubtitle">
+                <Text color="$colorSubtitle" fontSize="$3" textAlign="center">
                   If the app didn't open automatically, use the button below or
                   enter the code manually.
                 </Text>
 
                 <Button
-                  theme="blue"
-                  size="$4"
-                  width="100%"
                   onPress={() => {
                     window.location.href = `syncstuff://pair?id=${id}&name=${encodeURIComponent(name || "")}`;
                   }}
+                  size="$4"
+                  theme="blue"
+                  width="100%"
                 >
                   Open Syncstuff App
                 </Button>
 
                 <YStack space="$2">
                   <Text
+                    color="$colorSubtitle"
                     fontSize="$2"
                     fontWeight="bold"
                     textAlign="center"
-                    color="$colorSubtitle"
                   >
                     MANUAL PAIRING CODE
                   </Text>
@@ -92,8 +92,8 @@ export default function PairPage() {
           <Separator width="100%" />
 
           <Button
-            variant="outlined"
             onPress={() => (window.location.href = "/")}
+            variant="outlined"
           >
             Back to Home
           </Button>

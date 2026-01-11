@@ -1,40 +1,41 @@
-import React, { useState, useEffect } from "react";
 import {
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardSubtitle,
-  IonCardContent,
-  IonList,
-  IonItem,
-  IonLabel,
-  IonButton,
-  IonIcon,
-  IonText,
-  IonSpinner,
   IonAvatar,
   IonBadge,
+  IonButton,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonCardTitle,
   IonChip,
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonProgressBar,
+  IonSpinner,
+  IonText,
   useIonAlert,
   useIonToast,
-  IonProgressBar,
 } from "@ionic/react";
 import {
-  cloudOutline,
-  trashOutline,
-  logoGoogle,
-  cloudUploadOutline,
-  personCircleOutline,
   checkmarkCircleOutline,
   closeCircleOutline,
-  refreshOutline,
-  linkOutline,
-  shieldCheckmarkOutline,
-  warningOutline,
+  cloudOutline,
+  cloudUploadOutline,
   informationCircleOutline,
+  linkOutline,
+  logoGoogle,
+  personCircleOutline,
+  refreshOutline,
+  shieldCheckmarkOutline,
+  trashOutline,
+  warningOutline,
 } from "ionicons/icons";
-import { useCloudStore } from "../../store/cloud.store";
+import type React from "react";
+import { useEffect, useState } from "react";
 import { cloudManagerService } from "../../services/cloud/cloud-manager.service";
+import { useCloudStore } from "../../store/cloud.store";
 import type { CloudProviderType } from "../../types/cloud.types";
 
 export const CloudAccounts: React.FC = () => {
@@ -93,8 +94,9 @@ export const CloudAccounts: React.FC = () => {
 
       // Trigger device auto-registration when account is added
       try {
-        const { deviceDetectionService } =
-          await import("../../services/device/device-detection.service");
+        const { deviceDetectionService } = await import(
+          "../../services/device/device-detection.service"
+        );
         await deviceDetectionService.autoRegisterDevice();
       } catch (error) {
         console.warn("Failed to auto-register device:", error);
@@ -102,8 +104,9 @@ export const CloudAccounts: React.FC = () => {
 
       // Link account for Electron sync
       try {
-        const { electronSyncService } =
-          await import("../../services/electron/sync.service");
+        const { electronSyncService } = await import(
+          "../../services/electron/sync.service"
+        );
         await electronSyncService.linkAccount(account);
       } catch (error) {
         console.warn("Failed to link account for Electron sync:", error);
@@ -286,8 +289,9 @@ export const CloudAccounts: React.FC = () => {
 
       // Trigger device auto-registration when account is added
       try {
-        const { deviceDetectionService } =
-          await import("../../services/device/device-detection.service");
+        const { deviceDetectionService } = await import(
+          "../../services/device/device-detection.service"
+        );
         await deviceDetectionService.autoRegisterDevice();
       } catch (error) {
         console.warn("Failed to auto-register device:", error);
@@ -295,8 +299,9 @@ export const CloudAccounts: React.FC = () => {
 
       // Link account for Electron sync
       try {
-        const { electronSyncService } =
-          await import("../../services/electron/sync.service");
+        const { electronSyncService } = await import(
+          "../../services/electron/sync.service"
+        );
         await electronSyncService.linkAccount(account);
       } catch (error) {
         console.warn("Failed to link account for Electron sync:", error);
@@ -365,8 +370,9 @@ export const CloudAccounts: React.FC = () => {
 
               // Unlink account from Electron sync
               try {
-                const { electronSyncService } =
-                  await import("../../services/electron/sync.service");
+                const { electronSyncService } = await import(
+                  "../../services/electron/sync.service"
+                );
                 await electronSyncService.unlinkAccount(type);
               } catch (error) {
                 console.warn(
@@ -445,7 +451,7 @@ export const CloudAccounts: React.FC = () => {
     const k = 1024;
     const sizes = ["B", "KB", "MB", "GB", "TB"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return `${Math.round((bytes / Math.pow(k, i)) * 100) / 100} ${sizes[i]}`;
+    return `${Math.round((bytes / k ** i) * 100) / 100} ${sizes[i]}`;
   };
 
   const getQuotaPercentage = (used?: number, total?: number): number => {
@@ -471,7 +477,7 @@ export const CloudAccounts: React.FC = () => {
       </IonCardHeader>
       <IonCardContent>
         {accounts.length > 0 ? (
-          <IonList lines="full" className="accounts-list">
+          <IonList className="accounts-list" lines="full">
             {accounts.map(account => {
               const quotaPercent = getQuotaPercentage(
                 account.quotaUsed,
@@ -481,13 +487,13 @@ export const CloudAccounts: React.FC = () => {
 
               return (
                 <IonItem
-                  key={account.id}
-                  className="account-item"
                   button={false}
+                  className="account-item"
+                  key={account.id}
                 >
-                  <IonAvatar slot="start" className="account-avatar">
+                  <IonAvatar className="account-avatar" slot="start">
                     {account.avatarUrl ? (
-                      <img src={account.avatarUrl} alt={account.name} />
+                      <img alt={account.name} src={account.avatarUrl} />
                     ) : (
                       <IonIcon
                         icon={getIcon(account.provider)}
@@ -554,7 +560,6 @@ export const CloudAccounts: React.FC = () => {
                             </IonChip>
                           </div>
                           <IonProgressBar
-                            value={quotaPercent / 100}
                             color={
                               quotaPercent > 90
                                 ? "danger"
@@ -563,6 +568,7 @@ export const CloudAccounts: React.FC = () => {
                                   : "primary"
                             }
                             style={{ height: "6px", borderRadius: "3px" }}
+                            value={quotaPercent / 100}
                           />
                         </div>
                       )}
@@ -582,12 +588,12 @@ export const CloudAccounts: React.FC = () => {
                   </IonLabel>
                   <div slot="end" style={{ display: "flex", gap: "4px" }}>
                     <IonButton
+                      disabled={Boolean(accountIsRefreshing)}
                       fill="clear"
-                      size="small"
                       onClick={() =>
                         handleRefreshAccount(account.id, account.provider)
                       }
-                      disabled={Boolean(accountIsRefreshing)}
+                      size="small"
                     >
                       {accountIsRefreshing ? (
                         <IonSpinner name="crescent" />
@@ -596,12 +602,12 @@ export const CloudAccounts: React.FC = () => {
                       )}
                     </IonButton>
                     <IonButton
-                      fill="clear"
                       color="danger"
-                      size="small"
+                      fill="clear"
                       onClick={() =>
                         handleRemoveAccount(account.id, account.provider)
                       }
+                      size="small"
                     >
                       <IonIcon icon={trashOutline} />
                     </IonButton>
@@ -632,11 +638,11 @@ export const CloudAccounts: React.FC = () => {
 
         <div className="connect-buttons" style={{ marginTop: "24px" }}>
           <IonButton
+            className="provider-button syncstuff-button"
+            disabled={Boolean(isAnyAuthenticating)}
             expand="block"
             fill="solid"
             onClick={() => handleAddAccount("syncstuff")}
-            disabled={Boolean(isAnyAuthenticating)}
-            className="provider-button syncstuff-button"
             style={{
               marginBottom: "12px",
               "--background":
@@ -655,11 +661,11 @@ export const CloudAccounts: React.FC = () => {
           </IonButton>
 
           <IonButton
+            className="provider-button google-button"
+            disabled={Boolean(isAnyAuthenticating)}
             expand="block"
             fill="solid"
             onClick={() => handleAddAccount("google")}
-            disabled={Boolean(isAnyAuthenticating)}
-            className="provider-button google-button"
             style={{
               marginBottom: "12px",
               "--background":
@@ -678,11 +684,11 @@ export const CloudAccounts: React.FC = () => {
           </IonButton>
 
           <IonButton
+            className="provider-button mega-button"
+            disabled={Boolean(isAnyAuthenticating)}
             expand="block"
             fill="outline"
             onClick={() => handleAddAccount("mega")}
-            disabled={Boolean(isAnyAuthenticating)}
-            className="provider-button mega-button"
             style={{
               marginBottom: "12px",
               "--border-color": "var(--ion-color-danger)",
@@ -699,13 +705,13 @@ export const CloudAccounts: React.FC = () => {
 
           {/* Mock Provider for Testing */}
           <IonButton
+            className="provider-button mock-button"
+            color="medium"
+            disabled={Boolean(isAnyAuthenticating)}
             expand="block"
             fill="clear"
-            size="small"
             onClick={() => handleAddAccount("mock")}
-            disabled={Boolean(isAnyAuthenticating)}
-            color="medium"
-            className="provider-button mock-button"
+            size="small"
           >
             <IonIcon icon={cloudUploadOutline} slot="start" />
             Connect Mock Cloud (Test)

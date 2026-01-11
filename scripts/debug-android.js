@@ -99,9 +99,11 @@ function main() {
   const args = process.argv.slice(2);
   const verbose = args.includes("--verbose") || args.includes("-v");
   const clear = args.includes("--clear") || args.includes("-c");
-  const level = args.find((arg) => LOG_LEVELS.includes(arg)) || "I"; // Default to Info level
+  const level = args.find(arg => LOG_LEVELS.includes(arg)) || "I"; // Default to Info level
 
-  console.log(`${colors.cyan}${colors.bright}🔍 Syncstuff Android Debug Logger${colors.reset}`);
+  console.log(
+    `${colors.cyan}${colors.bright}🔍 Syncstuff Android Debug Logger${colors.reset}`,
+  );
   console.log(`${colors.dim}Filtering logs for: ${APP_TAG}${colors.reset}\n`);
 
   // Clear logcat buffer if requested
@@ -126,8 +128,8 @@ function startLogging(verbose, level) {
     `chromium:${level}`,
     `WebView:${level}`,
     `Capacitor:${level}`,
-    `*:E`, // Always show errors
-    `*:F`, // Always show fatal
+    "*:E", // Always show errors
+    "*:F", // Always show fatal
   ];
 
   const logcatArgs = ["logcat", ...filterTags];
@@ -136,16 +138,18 @@ function startLogging(verbose, level) {
     logcatArgs.push("-v", "time"); // Show timestamps
   }
 
-  console.log(`${colors.dim}Starting logcat with filter: ${filterTags.join(" ")}${colors.reset}`);
+  console.log(
+    `${colors.dim}Starting logcat with filter: ${filterTags.join(" ")}${colors.reset}`,
+  );
   console.log(`${colors.dim}Press Ctrl+C to stop${colors.reset}\n`);
 
   const logcat = spawn("adb", logcatArgs, {
     stdio: ["ignore", "pipe", "pipe"],
   });
 
-  logcat.stdout.on("data", (data) => {
+  logcat.stdout.on("data", data => {
     const lines = data.toString().split("\n");
-    lines.forEach((line) => {
+    lines.forEach(line => {
       if (!line.trim()) return;
 
       const log = parseLogLine(line);
@@ -160,12 +164,14 @@ function startLogging(verbose, level) {
     });
   });
 
-  logcat.stderr.on("data", (data) => {
+  logcat.stderr.on("data", data => {
     process.stderr.write(`${colors.red}${data}${colors.reset}`);
   });
 
-  logcat.on("close", (code) => {
-    console.log(`\n${colors.yellow}Logcat process exited with code ${code}${colors.reset}`);
+  logcat.on("close", code => {
+    console.log(
+      `\n${colors.yellow}Logcat process exited with code ${code}${colors.reset}`,
+    );
   });
 
   // Handle Ctrl+C gracefully

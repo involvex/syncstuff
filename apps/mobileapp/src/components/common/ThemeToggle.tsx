@@ -1,6 +1,6 @@
-import React from "react";
 import { IonButton, IonIcon } from "@ionic/react";
-import { moon, sunny, contrastOutline } from "ionicons/icons";
+import { contrastOutline, moon, sunny } from "ionicons/icons";
+import type React from "react";
 import { useTheme } from "../../hooks/useTheme";
 
 export const ThemeToggle: React.FC = () => {
@@ -33,8 +33,8 @@ export const ThemeToggle: React.FC = () => {
   };
 
   return (
-    <IonButton onClick={toggleTheme} fill="clear">
-      <IonIcon slot="start" icon={getIcon()} />
+    <IonButton fill="clear" onClick={toggleTheme}>
+      <IonIcon icon={getIcon()} slot="start" />
       {getLabel()}
     </IonButton>
   );

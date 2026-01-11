@@ -1,9 +1,9 @@
-import { vi, describe, it, expect, beforeEach } from "vitest";
-import { CloudClipboardBackupService } from "./clipboard-backup.service";
-import { cloudManagerService } from "../cloud-manager.service";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { useCloudStore } from "../../../store/cloud.store";
-import type { CloudAccount, CloudProvider } from "../../../types/cloud.types";
 import type { ClipboardContent } from "../../../types/clipboard.types";
+import type { CloudAccount, CloudProvider } from "../../../types/cloud.types";
+import { cloudManagerService } from "../cloud-manager.service";
+import { CloudClipboardBackupService } from "./clipboard-backup.service";
 
 // Mock dependencies
 vi.mock("../cloud-manager.service", () => ({

@@ -38,11 +38,11 @@ html.dark {
 html,
 body,
 :host {
-  background-color: var(--background-color);
-  color: var(--on-background-color);
   font-family:
     Inter, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  color: var(--on-background-color);
+  background-color: var(--background-color);
 }
 
 @media (prefers-color-scheme: dark) {

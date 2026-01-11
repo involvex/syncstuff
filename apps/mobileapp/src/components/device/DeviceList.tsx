@@ -1,8 +1,8 @@
-import React from "react";
 import { IonText } from "@ionic/react";
-import { DeviceCard } from "./DeviceCard";
+import type React from "react";
 import type { Device } from "../../types/device.types";
 import type { DiscoveredDevice } from "../../types/network.types";
+import { DeviceCard } from "./DeviceCard";
 import "./DeviceList.css";
 
 interface DeviceListProps {
@@ -45,15 +45,15 @@ export const DeviceList: React.FC<DeviceListProps> = ({
 
         return (
           <DeviceCard
-            key={device.id}
             device={device}
             isPaired={isPaired}
-            onPair={onPair ? () => onPair(device) : undefined}
-            onUnpair={onUnpair ? () => onUnpair(device.id) : undefined}
+            key={device.id}
             onConnect={onConnect ? () => onConnect(device.id) : undefined}
-            onSendFile={onSendFile}
+            onPair={onPair ? () => onPair(device) : undefined}
             onPing={onPing}
             onRing={onRing}
+            onSendFile={onSendFile}
+            onUnpair={onUnpair ? () => onUnpair(device.id) : undefined}
           />
         );
       })}

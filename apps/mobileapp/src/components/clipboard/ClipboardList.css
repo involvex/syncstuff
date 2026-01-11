@@ -4,8 +4,8 @@
 
 .clipboard-list-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   padding: 16px;
   border-bottom: 1px solid var(--ion-color-step-150);
 }
@@ -28,20 +28,20 @@
 }
 
 .clipboard-list-empty .empty-icon {
+  margin-bottom: 16px;
   font-size: 64px;
   color: var(--ion-color-step-400);
-  margin-bottom: 16px;
 }
 
 .clipboard-list-empty h2 {
+  margin: 0 0 8px 0;
   font-size: 20px;
   font-weight: 600;
-  margin: 0 0 8px 0;
   color: var(--ion-color-step-850);
 }
 
 .clipboard-list-empty p {
+  margin: 0;
   font-size: 14px;
   color: var(--ion-color-medium);
-  margin: 0;
 }

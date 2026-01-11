@@ -1,25 +1,26 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
-  IonList,
-  IonItem,
-  IonLabel,
-  IonIcon,
-  IonSpinner,
   IonButton,
-  IonText,
-  IonProgressBar,
   IonFab,
   IonFabButton,
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonProgressBar,
+  IonSpinner,
+  IonText,
   IonToast,
 } from "@ionic/react";
 import {
-  documentOutline,
-  imageOutline,
-  folderOutline,
-  downloadOutline,
-  cloudDownloadOutline,
   addOutline,
+  cloudDownloadOutline,
+  documentOutline,
+  downloadOutline,
+  folderOutline,
+  imageOutline,
 } from "ionicons/icons";
+import type React from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { cloudManagerService } from "../../services/cloud/cloud-manager.service";
 import type { CloudAccount, CloudFile } from "../../types/cloud.types";
 
@@ -42,7 +43,7 @@ export const CloudFileBrowser: React.FC<CloudFileBrowserProps> = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const loadFiles = useCallback(
-    async (folderId: string = "root") => {
+    async (folderId = "root") => {
       setIsLoading(true);
       setError(null);
       try {
@@ -127,7 +128,7 @@ export const CloudFileBrowser: React.FC<CloudFileBrowserProps> = ({
     const k = 1024;
     const sizes = ["Bytes", "KB", "MB", "GB"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+    return `${Number.parseFloat((bytes / k ** i).toFixed(2))} ${sizes[i]}`;
   };
 
   if (isLoading) {
@@ -155,10 +156,10 @@ export const CloudFileBrowser: React.FC<CloudFileBrowserProps> = ({
   return (
     <div style={{ position: "relative", minHeight: "200px" }}>
       <input
-        type="file"
+        onChange={handleUpload}
         ref={fileInputRef}
         style={{ display: "none" }}
-        onChange={handleUpload}
+        type="file"
       />
 
       {isUploading && <IonProgressBar type="indeterminate" />}
@@ -181,7 +182,7 @@ export const CloudFileBrowser: React.FC<CloudFileBrowserProps> = ({
         ) : (
           files.map(file => (
             <IonItem key={file.id}>
-              <IonIcon slot="start" icon={getFileIcon(file.mimeType)} />
+              <IonIcon icon={getFileIcon(file.mimeType)} slot="start" />
               <IonLabel>
                 <h2>{file.name}</h2>
                 <p>
@@ -193,10 +194,10 @@ export const CloudFileBrowser: React.FC<CloudFileBrowserProps> = ({
                 )}
               </IonLabel>
               <IonButton
-                fill="clear"
-                slot="end"
-                onClick={() => handleDownload(file)}
                 disabled={!!downloadingFileId || isUploading}
+                fill="clear"
+                onClick={() => handleDownload(file)}
+                slot="end"
               >
                 <IonIcon icon={downloadOutline} />
               </IonButton>
@@ -205,20 +206,20 @@ export const CloudFileBrowser: React.FC<CloudFileBrowserProps> = ({
         )}
       </IonList>
 
-      <IonFab vertical="bottom" horizontal="end" slot="fixed">
+      <IonFab horizontal="end" slot="fixed" vertical="bottom">
         <IonFabButton
-          size="small"
-          onClick={() => fileInputRef.current?.click()}
           disabled={isUploading}
+          onClick={() => fileInputRef.current?.click()}
+          size="small"
         >
           <IonIcon icon={addOutline} />
         </IonFabButton>
       </IonFab>
 
       <IonToast
+        duration={2000}
         isOpen={!!toastMessage}
         message={toastMessage || ""}
-        duration={2000}
         onDidDismiss={() => setToastMessage(null)}
       />
     </div>

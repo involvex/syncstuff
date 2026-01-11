@@ -7,8 +7,9 @@ const _cn2 =
   "_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-1 _fd-column _fg-1 ";
 const _cn =
   "_dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-row _pos-absolute _t-0px _r-0px _b-0px _l-0px _bg-background ";
-import React from "react";
-import { YStack, XStack, Text, ScrollView } from "tamagui";
+
+import type React from "react";
+import { ScrollView, Text, XStack, YStack } from "tamagui";
 import { ThemeToggle } from "./ThemeToggle";
 export interface MainLayoutProps {
   children: React.ReactNode;
@@ -27,13 +28,13 @@ export function MainLayout({
       {/* Sidebar */}
       {sidebar && (
         <YStack
-          width={280}
-          borderRightWidth={1}
-          borderColor="$borderColor"
-          backgroundColor="$surface"
           $sm={{
             display: "none",
           }}
+          backgroundColor="$surface"
+          borderColor="$borderColor"
+          borderRightWidth={1}
+          width={280}
         >
           {sidebar}
         </YStack>
@@ -53,10 +54,10 @@ export function MainLayout({
         {/* Content */}
         <ScrollView flex={1}>
           <YStack
+            marginHorizontal="auto"
+            maxWidth={1200}
             padding="$4"
             space="$4"
-            maxWidth={1200}
-            marginHorizontal="auto"
             width="100%"
           >
             {children}

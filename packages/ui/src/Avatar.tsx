@@ -1,4 +1,4 @@
-import { Avatar as TAvatar, styled } from "tamagui";
+import { styled, Avatar as TAvatar } from "tamagui";
 
 export const Avatar = styled(TAvatar, {
   name: "Avatar",

@@ -1,6 +1,6 @@
 import chalk from "chalk";
-import { debugLog, type CommandContext } from "../../utils/context.js";
-import { networkScanner, type LocalDevice } from "../../utils/network.js";
+import { type CommandContext, debugLog } from "../../utils/context.js";
+import { type LocalDevice, networkScanner } from "../../utils/network.js";
 import {
   createSpinner,
   createTable,
@@ -21,7 +21,7 @@ export async function scanLocal(
   ctx: CommandContext,
 ): Promise<void> {
   const timeout = args.includes("--timeout")
-    ? parseInt(args[args.indexOf("--timeout") + 1] || "10", 10)
+    ? Number.parseInt(args[args.indexOf("--timeout") + 1] || "10", 10)
     : 10;
   const continuous = args.includes("--watch") || args.includes("-w");
 
@@ -135,7 +135,7 @@ async function continuousScan(
 
 function displayDevices(devices: LocalDevice[]): void {
   const tableData = devices.map(device => [
-    device.id.substring(0, 8) + "...",
+    `${device.id.substring(0, 8)}...`,
     device.name,
     device.platform,
     `${device.ip}:${device.port}`,

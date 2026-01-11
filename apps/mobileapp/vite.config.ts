@@ -47,6 +47,12 @@ export default defineConfig({
   ssr: {
     noExternal: ["@syncstuff/ui", "tamagui", "@tamagui/core"],
   },
+  server: {
+    host: "0.0.0.0",
+    port: 8100,
+    strictPort: true,
+    allowedHosts: ["localhost", "127.0.0.1", "0.0.0.0", "1.1.1.1"],
+  },
   build: {
     target: "es2020",
     // Ensure assets use relative paths

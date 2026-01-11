@@ -4,22 +4,22 @@
  * Mirrors the pattern from transfer.service.ts but for clipboard content
  */
 
-import { useClipboardStore } from "../../store/clipboard.store";
-import { useSettingsStore } from "../../store/settings.store";
-import { useDeviceStore } from "../../store/device.store";
-import { webrtcService } from "../network/webrtc.service";
-import { clipboardService } from "./clipboard.service";
 import { v4 as uuidv4 } from "uuid";
+import { useClipboardStore } from "../../store/clipboard.store";
+import { useDeviceStore } from "../../store/device.store";
+import { useSettingsStore } from "../../store/settings.store";
 import type {
+  ClipboardAcceptPayload,
+  ClipboardChunkPayload,
+  ClipboardCompletePayload,
   ClipboardContent,
-  ClipboardSync,
+  ClipboardContentType,
   ClipboardMessage,
   ClipboardOfferPayload,
-  ClipboardChunkPayload,
-  ClipboardAcceptPayload,
-  ClipboardCompletePayload,
-  ClipboardContentType,
+  ClipboardSync,
 } from "../../types/clipboard.types";
+import { webrtcService } from "../network/webrtc.service";
+import { clipboardService } from "./clipboard.service";
 
 // Max chunk size for clipboard content (16KB is safe for WebRTC)
 const CHUNK_SIZE = 16 * 1024;

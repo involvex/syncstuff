@@ -7,13 +7,13 @@
  */
 export function formatNumber(num: number): string {
   if (num >= 1_000_000_000) {
-    return (num / 1_000_000_000).toFixed(1) + "B";
+    return `${(num / 1_000_000_000).toFixed(1)}B`;
   }
   if (num >= 1_000_000) {
-    return (num / 1_000_000).toFixed(1) + "M";
+    return `${(num / 1_000_000).toFixed(1)}M`;
   }
   if (num >= 1_000) {
-    return (num / 1_000).toFixed(1) + "K";
+    return `${(num / 1_000).toFixed(1)}K`;
   }
   return num.toString();
 }
@@ -47,14 +47,14 @@ export function formatRelativeTime(date: Date | string | number): string {
  */
 export function truncate(text: string, maxLength: number): string {
   if (text.length <= maxLength) return text;
-  return text.slice(0, maxLength - 3) + "...";
+  return `${text.slice(0, maxLength - 3)}...`;
 }
 
 /**
  * Sleep for a given number of milliseconds
  */
 export function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 /**
@@ -78,7 +78,7 @@ export function throttle<T extends (...args: any[]) => any>(
   func: T,
   limit: number,
 ): (...args: Parameters<T>) => void {
-  let inThrottle: boolean = false;
+  let inThrottle = false;
   return (...args: Parameters<T>) => {
     if (!inThrottle) {
       func(...args);

@@ -18,8 +18,8 @@ export function showversion() {
 
     if (DebugMode.enabled === true) {
       console.log(chalk.yellow("Debug mode enabled"));
-      console.log("Package path: " + packagePath);
-      console.log("Version: " + version);
+      console.log(`Package path: ${packagePath}`);
+      console.log(`Version: ${version}`);
     }
 
     const versionBox = createBox(
@@ -27,7 +27,7 @@ export function showversion() {
         chalk.bold("Version:") +
         ` ${chalk.green(version)}\n` +
         chalk.bold("Package:") +
-        ` @involvex/syncstuff-cli`,
+        " @involvex/syncstuff-cli",
       {
         title: "Version Information",
         titleAlignment: "center",
@@ -40,7 +40,7 @@ export function showversion() {
     if (DebugMode.enabled === true) {
       const packagePath = join(__dirname, "../../../package.json");
       console.log(chalk.yellow("Debug mode enabled"));
-      console.log("Packagepath: " + packagePath);
+      console.log(`Packagepath: ${packagePath}`);
       console.log(chalk.yellow("Version: 0.0.1 (unable to read package.json)"));
     }
   }

@@ -4,11 +4,11 @@
 }
 
 .auth-code-container {
-  padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 24px;
   max-width: 400px;
+  padding: 20px;
   margin: 0 auto;
 }
 
@@ -25,56 +25,56 @@
 .auth-code-display {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 20px;
+  align-items: center;
   padding: 30px 20px;
+  margin: 10px 0;
   background: var(--ion-color-light);
   border-radius: 16px;
-  margin: 10px 0;
 }
 
 .code-digits {
+  font-family: "Courier New", monospace;
   font-size: 48px;
   font-weight: 700;
-  letter-spacing: 8px;
-  font-family: "Courier New", monospace;
   color: var(--ion-color-primary);
+  letter-spacing: 8px;
   animation: pulse-in 0.3s ease-out;
 }
 
 .auth-code-timer {
-  text-align: center;
   padding: 8px;
+  text-align: center;
   background: var(--ion-color-light);
   border-radius: 8px;
 }
 
 .auth-code-timer strong {
-  font-size: 18px;
   font-family: "Courier New", monospace;
+  font-size: 18px;
 }
 
 .auth-code-input-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 20px;
+  align-items: center;
   padding: 20px;
   background: var(--ion-color-light);
   border-radius: 16px;
 }
 
 .code-input-item {
-  width: 100%;
   --background: transparent;
+  width: 100%;
 }
 
 .code-input {
+  font-family: "Courier New", monospace;
   font-size: 32px;
   font-weight: 600;
-  letter-spacing: 6px;
   text-align: center;
-  font-family: "Courier New", monospace;
+  letter-spacing: 6px;
 }
 
 @keyframes pulse-in {

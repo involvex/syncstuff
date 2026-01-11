@@ -1,5 +1,5 @@
-import React from "react";
-import { Card, XStack, YStack, Text, Stack, styled } from "tamagui";
+import type React from "react";
+import { Card, Stack, styled, Text, XStack, YStack } from "tamagui";
 export interface StatCardProps {
   title: string;
   value: string | number;
@@ -19,25 +19,25 @@ const IconFrame = styled(Stack, {
 export function StatCard({ title, value, icon, trend }: StatCardProps) {
   return (
     <Card
-      elevate
-      padding="$4"
-      bordered
       animation="quick"
-      scale={0.98}
+      bordered
+      elevate
       hoverStyle={{
         scale: 1,
       }}
+      padding="$4"
+      scale={0.98}
     >
-      <XStack space="$4" alignItems="center">
+      <XStack alignItems="center" space="$4">
         {icon && (
           <IconFrame backgroundColor="$backgroundFocus">{icon}</IconFrame>
         )}
         <YStack flex={1}>
           <Text
-            fontSize="$2"
             color="$colorSubtitle"
-            textTransform="uppercase"
+            fontSize="$2"
             fontWeight="bold"
+            textTransform="uppercase"
           >
             {title}
           </Text>
@@ -45,14 +45,14 @@ export function StatCard({ title, value, icon, trend }: StatCardProps) {
             {value}
           </Text>
           {trend && (
-            <XStack space="$1" alignItems="center">
+            <XStack alignItems="center" space="$1">
               <Text
-                fontSize="$1"
                 color={trend.positive ? "$green10" : "$red10"}
+                fontSize="$1"
               >
                 {trend.value}
               </Text>
-              <Text fontSize="$1" color="$colorSubtitle">
+              <Text color="$colorSubtitle" fontSize="$1">
                 from last week
               </Text>
             </XStack>

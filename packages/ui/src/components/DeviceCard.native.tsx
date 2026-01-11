@@ -1,6 +1,6 @@
 import React from "react";
-import { Card, XStack, YStack, Text, Button } from "tamagui";
-import { DeviceIcon, DeviceType } from "../DeviceIcon";
+import { Button, Card, Text, XStack, YStack } from "tamagui";
+import { DeviceIcon, type DeviceType } from "../DeviceIcon";
 import { StatusBadge } from "./StatusBadge";
 export interface DeviceCardProps {
   name: string;
@@ -20,17 +20,17 @@ export function DeviceCard({
 }: DeviceCardProps) {
   return (
     <Card
-      elevate
-      padding="$4"
-      bordered
       animation="quick"
-      scale={0.98}
+      bordered
+      elevate
       hoverStyle={{
         scale: 1,
       }}
+      padding="$4"
+      scale={0.98}
     >
-      <XStack space="$4" alignItems="center">
-        <DeviceIcon type={type} size={32} />
+      <XStack alignItems="center" space="$4">
+        <DeviceIcon size={32} type={type} />
 
         <YStack flex={1} space="$1">
           <Text fontSize="$5" fontWeight="bold">
@@ -41,7 +41,7 @@ export function DeviceCard({
               {status.toUpperCase()}
             </StatusBadge>
             {lastSeen && (
-              <Text fontSize="$2" color="$colorSubtitle">
+              <Text color="$colorSubtitle" fontSize="$2">
                 Last seen: {lastSeen}
               </Text>
             )}
@@ -49,11 +49,11 @@ export function DeviceCard({
         </YStack>
 
         {status === "online" ? (
-          <Button size="$3" theme="red" onPress={onDisconnect}>
+          <Button onPress={onDisconnect} size="$3" theme="red">
             Disconnect
           </Button>
         ) : (
-          <Button size="$3" theme="blue" onPress={onConnect}>
+          <Button onPress={onConnect} size="$3" theme="blue">
             Connect
           </Button>
         )}

@@ -1,5 +1,5 @@
-import React from "react";
-import { XStack, Text, styled, View } from "tamagui";
+import type React from "react";
+import { styled, Text, View, XStack } from "tamagui";
 export interface SidebarItemProps {
   icon?: React.ReactNode;
   label: string;
@@ -37,7 +37,7 @@ export function SidebarItem({
   return (
     <SidebarItemFrame active={active} onPress={onPress}>
       {icon && <View>{icon}</View>}
-      <Text fontWeight={active ? "bold" : "normal"} color={color}>
+      <Text color={color} fontWeight={active ? "bold" : "normal"}>
         {label}
       </Text>
     </SidebarItemFrame>

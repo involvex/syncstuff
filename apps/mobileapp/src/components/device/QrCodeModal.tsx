@@ -16,7 +16,8 @@ import {
 } from "@ionic/react";
 import { copyOutline, link, qrCode, shareOutline } from "ionicons/icons";
 import { QRCodeCanvas } from "qrcode.react";
-import React, { useState } from "react";
+import type React from "react";
+import { useState } from "react";
 import { deepLinkService } from "../../services/network/deeplink.service";
 import { clipboardService } from "../../services/sync/clipboard.service";
 
@@ -102,9 +103,9 @@ export const QrCodeModal: React.FC<QrCodeModalProps> = ({
 
         {/* Mode selector */}
         <IonSegment
-          value={qrMode}
           onIonChange={e => setQrMode(e.detail.value as "id" | "url")}
           style={{ marginBottom: "16px" }}
+          value={qrMode}
         >
           <IonSegmentButton value="id">
             <IonIcon icon={qrCode} />
@@ -134,30 +135,30 @@ export const QrCodeModal: React.FC<QrCodeModalProps> = ({
               marginTop: "8px",
             }}
           >
-            <QRCodeCanvas value={qrValue} size={256} />
+            <QRCodeCanvas size={256} value={qrValue} />
           </div>
         )}
 
         <div style={{ marginTop: "24px" }}>
           {qrMode === "id" ? (
-            <IonButton expand="block" onClick={handleCopyId} fill="outline">
-              <IonIcon slot="start" icon={copyOutline} />
+            <IonButton expand="block" fill="outline" onClick={handleCopyId}>
+              <IonIcon icon={copyOutline} slot="start" />
               Copy Device ID
             </IonButton>
           ) : (
-            <IonButton expand="block" onClick={handleCopyUrl} fill="outline">
-              <IonIcon slot="start" icon={copyOutline} />
+            <IonButton expand="block" fill="outline" onClick={handleCopyUrl}>
+              <IonIcon icon={copyOutline} slot="start" />
               Copy Pairing URL
             </IonButton>
           )}
 
           <IonButton
+            color="medium"
             expand="block"
             fill="clear"
-            color="medium"
             onClick={handleShare}
           >
-            <IonIcon slot="start" icon={shareOutline} />
+            <IonIcon icon={shareOutline} slot="start" />
             Share Link
           </IonButton>
         </div>

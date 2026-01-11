@@ -1,9 +1,9 @@
+import { v4 as uuidv4 } from "uuid";
 import type {
-  CloudProvider,
   CloudAccount,
   CloudFile,
+  CloudProvider,
 } from "../../../types/cloud.types";
-import { v4 as uuidv4 } from "uuid";
 
 export class MockCloudService implements CloudProvider {
   readonly type = "mock";
@@ -58,13 +58,13 @@ export class MockCloudService implements CloudProvider {
     this.isAuthenticated = false;
   }
 
-  async listFiles(folderId: string = "root"): Promise<CloudFile[]> {
+  async listFiles(folderId = "root"): Promise<CloudFile[]> {
     if (!this.isAuthenticated) throw new Error("Not authenticated");
     await new Promise(resolve => setTimeout(resolve, 800));
     return this.mockFiles.filter(f => f.parents.includes(folderId));
   }
 
-  async uploadFile(file: File, parentId: string = "root"): Promise<CloudFile> {
+  async uploadFile(file: File, parentId = "root"): Promise<CloudFile> {
     if (!this.isAuthenticated) throw new Error("Not authenticated");
     await new Promise(resolve => setTimeout(resolve, 1500));
 

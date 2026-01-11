@@ -6,9 +6,9 @@ export default function About() {
   return (
     <>
       <Navigation
+        onDashboard={() => navigate("/dashboard")}
         onLogin={() => navigate("/auth/login")}
         onSignup={() => navigate("/auth/signup")}
-        onDashboard={() => navigate("/dashboard")}
       />
       <div className="bg-background text-onBackground min-h-screen transition-colors">
         <div className="relative isolate overflow-hidden py-24 sm:py-32">
@@ -40,12 +40,12 @@ export default function About() {
               <div className="flex flex-col">
                 <dt className="text-onBackground text-lg leading-7 font-extrabold">
                   <span className="mb-4 block size-10 rounded-lg bg-blue-600 p-2 text-white">
-                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
+                        d="M13 10V3L4 14h7v7l9-11h-7z"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth={2}
-                        d="M13 10V3L4 14h7v7l9-11h-7z"
                       />
                     </svg>
                   </span>
@@ -61,12 +61,12 @@ export default function About() {
               <div className="flex flex-col">
                 <dt className="text-onBackground text-lg leading-7 font-extrabold">
                   <span className="mb-4 block size-10 rounded-lg bg-indigo-600 p-2 text-white">
-                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
+                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth={2}
-                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                       />
                     </svg>
                   </span>
@@ -83,12 +83,12 @@ export default function About() {
               <div className="flex flex-col">
                 <dt className="text-onBackground text-lg leading-7 font-extrabold">
                   <span className="mb-4 block size-10 rounded-lg bg-purple-600 p-2 text-white">
-                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
+                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth={2}
-                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
                       />
                     </svg>
                   </span>
@@ -115,12 +115,16 @@ export default function About() {
           </p>
           <div className="bg-surfaceVariant/30 mx-auto mt-20 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 rounded-2xl p-8 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-1">
             <div className="text-center">
-              <a href="https://github.com/involvex" target="_blank">
+              <a
+                href="https://github.com/involvex"
+                rel="noopener"
+                target="_blank"
+              >
                 <div className="bg-surface mx-auto mt-6 size-32 overflow-hidden rounded-full">
                   <img
-                    src="https://github.com/involvex.png"
                     alt="Involvex"
                     className="size-full object-cover"
+                    src="https://github.com/involvex.png"
                   />
                 </div>
                 <h3 className="text-on-background mt-6 text-base leading-7 font-bold tracking-tight">

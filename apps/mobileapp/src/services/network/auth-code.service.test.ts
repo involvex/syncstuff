@@ -191,7 +191,7 @@ describe("AuthCodeService", () => {
     it("should generate codes within valid range", () => {
       for (let i = 0; i < 50; i++) {
         const { code } = authCodeService.generateCode(`device-${i}`);
-        const codeNum = parseInt(code, 10);
+        const codeNum = Number.parseInt(code, 10);
 
         expect(codeNum).toBeGreaterThanOrEqual(100000);
         expect(codeNum).toBeLessThanOrEqual(999999);

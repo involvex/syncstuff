@@ -1,21 +1,21 @@
-import React from "react";
 import {
-  IonModal,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
   IonButton,
-  IonText,
-  IonIcon,
   IonButtons,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonModal,
+  IonText,
+  IonTitle,
+  IonToolbar,
 } from "@ionic/react";
 import {
-  close,
-  phonePortrait,
   checkmarkCircle,
+  close,
   closeCircle,
+  phonePortrait,
 } from "ionicons/icons";
+import type React from "react";
 import type { Device } from "../../types/device.types";
 import "./PairingModal.css";
 
@@ -53,9 +53,9 @@ export const PairingModal: React.FC<PairingModalProps> = ({
         <div className="pairing-container">
           <div className="pairing-device-info">
             <IonIcon
+              className="pairing-device-icon"
               icon={phonePortrait}
               size="large"
-              className="pairing-device-icon"
             />
 
             <IonText>
@@ -67,7 +67,7 @@ export const PairingModal: React.FC<PairingModalProps> = ({
             </IonText>
           </div>
 
-          <IonText color="medium" className="pairing-message">
+          <IonText className="pairing-message" color="medium">
             <p>
               Do you want to pair with this device? Once paired, you'll be able
               to transfer files and sync clipboard content.
@@ -85,18 +85,18 @@ export const PairingModal: React.FC<PairingModalProps> = ({
           )}
 
           <div className="pairing-actions">
-            <IonButton expand="block" onClick={onAccept} color="success">
-              <IonIcon slot="start" icon={checkmarkCircle} />
+            <IonButton color="success" expand="block" onClick={onAccept}>
+              <IonIcon icon={checkmarkCircle} slot="start" />
               Accept & Pair
             </IonButton>
 
             <IonButton
-              expand="block"
-              onClick={onReject}
               color="danger"
+              expand="block"
               fill="outline"
+              onClick={onReject}
             >
-              <IonIcon slot="start" icon={closeCircle} />
+              <IonIcon icon={closeCircle} slot="start" />
               Reject
             </IonButton>
           </div>

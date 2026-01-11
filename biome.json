@@ -242,6 +242,7 @@
             "noUselessEscapeInRegex": "error"
           },
           "correctness": {
+            "noMissingVarFunction": "off",
             "noConstAssign": "error",
             "useImportExtensions": "off",
             "noNodejsModules": "off",

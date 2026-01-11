@@ -26,9 +26,9 @@ export default async function handleRequest(
 
   const body = await renderToReadableStream(
     <RemixServer
+      abortDelay={ABORT_DELAY}
       context={remixContext}
       url={request.url}
-      abortDelay={ABORT_DELAY}
     />,
     {
       signal: controller.signal,

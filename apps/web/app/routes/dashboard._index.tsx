@@ -32,11 +32,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   };
 
   // Check if DB is available (it might not be in some local dev modes without wrangler)
-  if (
-    context.cloudflare &&
-    context.cloudflare.env &&
-    context.cloudflare.env.syncstuff_db
-  ) {
+  if (context.cloudflare?.env?.syncstuff_db) {
     const db = context.cloudflare.env.syncstuff_db;
     try {
       // Fetch user details
@@ -101,14 +97,14 @@ export default function DashboardIndex() {
         <svg
           className="size-6"
           fill="none"
-          viewBox="0 0 24 24"
           stroke="currentColor"
+          viewBox="0 0 24 24"
         >
           <path
+            d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={2}
-            d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"
           />
         </svg>
       ),
@@ -123,14 +119,14 @@ export default function DashboardIndex() {
         <svg
           className="size-6"
           fill="none"
-          viewBox="0 0 24 24"
           stroke="currentColor"
+          viewBox="0 0 24 24"
         >
           <path
+            d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={2}
-            d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
           />
         </svg>
       ),
@@ -145,14 +141,14 @@ export default function DashboardIndex() {
         <svg
           className="size-6"
           fill="none"
-          viewBox="0 0 24 24"
           stroke="currentColor"
+          viewBox="0 0 24 24"
         >
           <path
+            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={2}
-            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
           />
         </svg>
       ),
@@ -171,14 +167,14 @@ export default function DashboardIndex() {
         <svg
           className="size-6"
           fill="none"
-          viewBox="0 0 24 24"
           stroke="currentColor"
+          viewBox="0 0 24 24"
         >
           <path
+            d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={2}
-            d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
           />
         </svg>
       ),
@@ -193,14 +189,14 @@ export default function DashboardIndex() {
         <svg
           className="size-6"
           fill="none"
-          viewBox="0 0 24 24"
           stroke="currentColor"
+          viewBox="0 0 24 24"
         >
           <path
+            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={2}
-            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
           />
         </svg>
       ),
@@ -214,14 +210,14 @@ export default function DashboardIndex() {
         <svg
           className="size-6"
           fill="none"
-          viewBox="0 0 24 24"
           stroke="currentColor"
+          viewBox="0 0 24 24"
         >
           <path
+            d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={2}
-            d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
           />
         </svg>
       ),
@@ -233,26 +229,26 @@ export default function DashboardIndex() {
   return (
     <YStack space="$8">
       {/* Stats Cards */}
-      <XStack space="$6" flexWrap="wrap">
+      <XStack flexWrap="wrap" space="$6">
         {statCards.map(card => (
           <StatCard
+            icon={card.icon}
             key={card.name}
             title={card.name}
             value={card.value}
-            icon={card.icon}
           />
         ))}
       </XStack>
 
-      <XStack space="$8" flexWrap="wrap">
+      <XStack flexWrap="wrap" space="$8">
         {/* User Profile Card */}
-        <Card flex={1} minWidth={300} elevate bordered>
+        <Card bordered elevate flex={1} minWidth={300}>
           <View padding="$4">
-            <XStack justifyContent="space-between" alignItems="center">
+            <XStack alignItems="center" justifyContent="space-between">
               <Text fontSize="$4" fontWeight="bold">
                 Account Overview
               </Text>
-              <Link to="/dashboard/settings" style={{ textDecoration: "none" }}>
+              <Link style={{ textDecoration: "none" }} to="/dashboard/settings">
                 <Button size="$2" variant="outlined">
                   Edit
                 </Button>
@@ -261,16 +257,16 @@ export default function DashboardIndex() {
           </View>
 
           <YStack padding="$4" space="$5">
-            <XStack space="$4" alignItems="center">
+            <XStack alignItems="center" space="$4">
               <View
-                width={48}
-                height={48}
-                borderRadius="$4"
-                backgroundColor="$primary"
                 alignItems="center"
+                backgroundColor="$primary"
+                borderRadius="$4"
+                height={48}
                 justifyContent="center"
+                width={48}
               >
-                <Text color="white" fontWeight="bold" fontSize="$6">
+                <Text color="white" fontSize="$6" fontWeight="bold">
                   {user?.username?.charAt(0).toUpperCase() || "U"}
                 </Text>
               </View>
@@ -286,38 +282,38 @@ export default function DashboardIndex() {
 
             <XStack space="$4">
               <YStack
-                flex={1}
-                padding="$4"
                 backgroundColor="$backgroundFocus"
                 borderRadius="$3"
+                flex={1}
+                padding="$4"
               >
                 <Text
-                  fontSize="$1"
                   color="$colorSubtitle"
+                  fontSize="$1"
                   textTransform="uppercase"
                 >
                   Status
                 </Text>
-                <Text fontWeight="bold" color="$primary">
+                <Text color="$primary" fontWeight="bold">
                   {user?.status || "active"}
                 </Text>
               </YStack>
               <YStack
-                flex={1}
-                padding="$4"
                 backgroundColor="$backgroundFocus"
                 borderRadius="$3"
+                flex={1}
+                padding="$4"
               >
                 <Text
-                  fontSize="$1"
                   color="$colorSubtitle"
+                  fontSize="$1"
                   textTransform="uppercase"
                 >
                   Role
                 </Text>
                 <Text
-                  fontWeight="bold"
                   color="$primary"
+                  fontWeight="bold"
                   textTransform="capitalize"
                 >
                   {user?.role || "user"}
@@ -328,9 +324,9 @@ export default function DashboardIndex() {
         </Card>
 
         {/* Recent Activity Card */}
-        <Card flex={2} minWidth={400} elevate bordered>
+        <Card bordered elevate flex={2} minWidth={400}>
           <View padding="$4">
-            <XStack justifyContent="space-between" alignItems="center">
+            <XStack alignItems="center" justifyContent="space-between">
               <Text fontSize="$4" fontWeight="bold">
                 Recent Activity
               </Text>
@@ -342,17 +338,17 @@ export default function DashboardIndex() {
 
           <YStack separator={<Separator />}>
             {activity.length === 0 ? (
-              <YStack padding="$4" alignItems="center">
+              <YStack alignItems="center" padding="$4">
                 <Text color="$colorSubtitle">No activity logged yet</Text>
               </YStack>
             ) : (
               (activity as ActivityItem[]).map(item => (
                 <XStack
+                  alignItems="center"
+                  hoverStyle={{ backgroundColor: "$backgroundHover" }}
                   key={item.id}
                   padding="$4"
                   space="$4"
-                  alignItems="center"
-                  hoverStyle={{ backgroundColor: "$backgroundHover" }}
                 >
                   <Text fontSize="$6">{item.icon || "📋"}</Text>
                   <YStack flex={1}>
@@ -376,34 +372,34 @@ export default function DashboardIndex() {
         <Text fontSize="$4" fontWeight="bold" paddingHorizontal="$1">
           Instant Operations
         </Text>
-        <XStack space="$4" flexWrap="wrap">
+        <XStack flexWrap="wrap" space="$4">
           {quickActions.map(action => (
             <Link
               key={action.name}
-              to={action.href}
               style={{ textDecoration: "none", flex: 1, minWidth: 200 }}
+              to={action.href}
             >
               <Card
-                elevate
                 bordered
-                padding="$4"
-                hoverStyle={{ borderColor: "$primary" }}
                 cursor={action.href === "#" ? "not-allowed" : "pointer"}
+                elevate
+                hoverStyle={{ borderColor: "$primary" }}
+                padding="$4"
               >
                 <YStack space="$3">
                   <View
-                    width={48}
-                    height={48}
-                    borderRadius="$3"
-                    backgroundColor="$primary"
                     alignItems="center"
+                    backgroundColor="$primary"
+                    borderRadius="$3"
+                    height={48}
                     justifyContent="center"
+                    width={48}
                   >
                     {action.icon}
                   </View>
                   <YStack>
                     <Text fontWeight="bold">{action.name}</Text>
-                    <Text fontSize="$2" color="$colorSubtitle">
+                    <Text color="$colorSubtitle" fontSize="$2">
                       {action.description}
                     </Text>
                   </YStack>

@@ -1,7 +1,7 @@
 import {
   type ActionFunctionArgs,
-  type LoaderFunctionArgs,
   json,
+  type LoaderFunctionArgs,
   redirect,
 } from "@remix-run/cloudflare";
 import {
@@ -267,7 +267,7 @@ export default function Settings() {
   return (
     <YStack space="$8">
       {/* Profile Section */}
-      <Card elevate bordered padding="$4">
+      <Card bordered elevate padding="$4">
         <YStack space="$6">
           <YStack>
             <Text fontSize="$6" fontWeight="bold">
@@ -278,17 +278,17 @@ export default function Settings() {
             </Text>
           </YStack>
 
-          <XStack space="$6" alignItems="center">
+          <XStack alignItems="center" space="$6">
             <Avatar circular size="$10">
               <View
-                backgroundColor="$primary"
                 alignItems="center"
-                justifyContent="center"
-                position="absolute"
-                top={0}
-                right={0}
+                backgroundColor="$primary"
                 bottom={0}
+                justifyContent="center"
                 left={0}
+                position="absolute"
+                right={0}
+                top={0}
               >
                 <Text color="white" fontSize="$8" fontWeight="bold">
                   {user?.username?.charAt(0).toUpperCase() || "U"}
@@ -296,10 +296,10 @@ export default function Settings() {
               </View>
             </Avatar>
             <YStack space="$2">
-              <Button size="$3" variant="outlined" disabled>
+              <Button disabled size="$3" variant="outlined">
                 Change Photo
               </Button>
-              <Text fontSize="$1" color="$colorSubtitle">
+              <Text color="$colorSubtitle" fontSize="$1">
                 Custom profile pictures coming soon.
               </Text>
             </YStack>
@@ -307,15 +307,15 @@ export default function Settings() {
 
           <Form method="post">
             <YStack space="$4">
-              <XStack space="$4" flexWrap="wrap">
+              <XStack flexWrap="wrap" space="$4">
                 <YStack flex={1} minWidth={200} space="$2">
                   <Text fontSize="$2" fontWeight="bold">
                     Username
                   </Text>
                   <Input
+                    backgroundColor="$backgroundFocus"
                     defaultValue={user?.username}
                     readOnly
-                    backgroundColor="$backgroundFocus"
                   />
                 </YStack>
                 <YStack flex={1} minWidth={200} space="$2">
@@ -323,9 +323,9 @@ export default function Settings() {
                     Email Address
                   </Text>
                   <Input
+                    backgroundColor="$backgroundFocus"
                     defaultValue={user?.email}
                     readOnly
-                    backgroundColor="$backgroundFocus"
                   />
                 </YStack>
               </XStack>
@@ -335,14 +335,14 @@ export default function Settings() {
                   Display Name
                 </Text>
                 <Input
-                  id="full_name"
                   defaultValue={user?.full_name || ""}
+                  id="full_name"
                   placeholder="Sync User"
                 />
               </YStack>
 
               <XStack justifyContent="flex-end">
-                <Button theme="blue" disabled={isSubmitting}>
+                <Button disabled={isSubmitting} theme="blue">
                   Update Profile
                 </Button>
               </XStack>
@@ -352,7 +352,7 @@ export default function Settings() {
       </Card>
 
       {/* Password Section */}
-      <Card elevate bordered padding="$4">
+      <Card bordered elevate padding="$4">
         <YStack space="$6">
           <YStack>
             <Text fontSize="$6" fontWeight="bold">
@@ -366,7 +366,7 @@ export default function Settings() {
           </YStack>
 
           <Form method="post">
-            <input type="hidden" name="intent" value="change_password" />
+            <input name="intent" type="hidden" value="change_password" />
             <YStack space="$4">
               {hasPassword && (
                 <YStack space="$2">
@@ -377,7 +377,7 @@ export default function Settings() {
                 </YStack>
               )}
 
-              <XStack space="$4" flexWrap="wrap">
+              <XStack flexWrap="wrap" space="$4">
                 <YStack flex={1} minWidth={200} space="$2">
                   <Text fontSize="$2" fontWeight="bold">
                     {hasPassword ? "New Password" : "Password"}
@@ -404,7 +404,7 @@ export default function Settings() {
               )}
 
               <XStack justifyContent="flex-end">
-                <Button theme="blue" disabled={isSubmitting}>
+                <Button disabled={isSubmitting} theme="blue">
                   {isSubmitting
                     ? "Processing..."
                     : hasPassword
@@ -418,10 +418,10 @@ export default function Settings() {
       </Card>
 
       {/* Danger Zone */}
-      <Card elevate bordered padding="$4" borderColor="$red8">
+      <Card borderColor="$red8" bordered elevate padding="$4">
         <YStack space="$4">
           <YStack>
-            <Text fontSize="$6" fontWeight="bold" color="$red10">
+            <Text color="$red10" fontSize="$6" fontWeight="bold">
               Danger Zone
             </Text>
             <Text color="$colorSubtitle">
@@ -429,14 +429,14 @@ export default function Settings() {
             </Text>
           </YStack>
 
-          <View padding="$4" backgroundColor="$red2" borderRadius="$3">
+          <View backgroundColor="$red2" borderRadius="$3" padding="$4">
             <XStack
-              justifyContent="space-between"
               alignItems="center"
               flexWrap="wrap"
+              justifyContent="space-between"
               space="$4"
             >
-              <Text flex={1} minWidth={300} color="$red10">
+              <Text color="$red10" flex={1} minWidth={300}>
                 Once you delete your account, there is no going back. Please be
                 certain.
               </Text>

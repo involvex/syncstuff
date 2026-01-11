@@ -7,15 +7,17 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
     },
     "./tamagui.config": {
       "types": "./dist/tamagui.config.d.ts",
-      "default": "./dist/tamagui.config.js"
+      "import": "./dist/tamagui.config.js",
+      "require": "./dist-cjs/tamagui.config.cjs"
     }
   },
   "scripts": {
-    "build": "tsc && node copy-css.mjs",
+    "build": "tsc && tsc --project tsconfig.cjs.json && node copy-css.mjs && node copy-config-cjs.mjs",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
@@ -24,6 +26,7 @@
   "dependencies": {
     "@tamagui/config": "^1.144.1",
     "@tamagui/core": "^1.144.1",
+    "@tamagui/lucide-icons": "^1.144.1",
     "@tamagui/themes": "^1.144.1",
     "lucide-react": "^0.479.0",
     "tamagui": "^1.144.1"

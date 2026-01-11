@@ -1,16 +1,16 @@
 .devices-page-container {
+  min-height: 100%;
   padding: 20px;
   background: var(--ion-background-color);
-  min-height: 100%;
 }
 
 .current-device-card {
   margin: 0 0 24px 0;
-  border-radius: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(var(--ion-color-primary-rgb), 0.1);
   overflow: hidden;
   background: white;
+  border: 1px solid rgba(var(--ion-color-primary-rgb), 0.1);
+  border-radius: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 .dark .current-device-card {
@@ -25,15 +25,15 @@
 }
 
 .current-device-icon-container {
-  background: var(--ion-color-primary-contrast);
-  padding: 12px;
-  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 12px rgba(var(--ion-color-primary-rgb), 0.1);
-  color: var(--ion-color-primary);
+  padding: 12px;
   margin-right: 16px;
+  color: var(--ion-color-primary);
+  background: var(--ion-color-primary-contrast);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(var(--ion-color-primary-rgb), 0.1);
 }
 
 .dark .current-device-icon-container {
@@ -50,9 +50,9 @@
   margin: 0;
   font-size: 0.75rem;
   font-weight: 700;
+  color: var(--ion-color-step-500);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--ion-color-step-500);
 }
 
 .current-device-name {
@@ -66,11 +66,11 @@
   --border-radius: 14px;
   --padding-start: 12px;
   --padding-end: 12px;
-  font-weight: 700;
-  font-size: 0.85rem;
-  margin: 4px;
   --color: var(--ion-color-step-700);
   --border-color: var(--ion-color-step-200);
+  margin: 4px;
+  font-size: 0.85rem;
+  font-weight: 700;
 }
 
 .discovery-controls {
@@ -87,10 +87,10 @@
 }
 
 ion-segment {
-  background: var(--ion-color-step-50);
-  border-radius: 14px;
   padding: 4px;
   margin: 16px 0 24px 0;
+  background: var(--ion-color-step-50);
+  border-radius: 14px;
 }
 
 ion-segment-button {
@@ -98,8 +98,8 @@ ion-segment-button {
   --color: var(--ion-color-step-600);
   --color-checked: var(--ion-color-primary);
   --border-radius: 10px;
-  font-weight: 700;
   min-height: 40px;
+  font-weight: 700;
 }
 
 .dark ion-segment-button {
@@ -118,6 +118,6 @@ body.scanner-active ion-content {
 }
 
 body.scanner-active .devices-page-container {
-  opacity: 0;
   visibility: hidden;
+  opacity: 0;
 }

@@ -1,24 +1,25 @@
+import { Capacitor } from "@capacitor/core";
+import { Device } from "@capacitor/device";
 import {
   IonButton,
   IonCard,
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
+  IonIcon,
   IonItem,
   IonLabel,
   IonList,
-  IonToggle,
   IonTextarea,
-  IonIcon,
+  IonToggle,
   useIonToast,
 } from "@ionic/react";
 import { bugOutline, copyOutline, trashOutline } from "ionicons/icons";
-import React, { useEffect, useState, useRef } from "react";
-import { useSettingsStore } from "../../store/settings.store";
-import { logger, type LogEntry } from "../../services/logging/logger.service";
-import { Capacitor } from "@capacitor/core";
-import { Device } from "@capacitor/device";
+import type React from "react";
+import { useEffect, useRef, useState } from "react";
 import pkg from "../../../package.json";
+import { type LogEntry, logger } from "../../services/logging/logger.service";
+import { useSettingsStore } from "../../store/settings.store";
 
 export const DebugSettings: React.FC = () => {
   const {
@@ -214,27 +215,26 @@ export const DebugSettings: React.FC = () => {
             </h3>
             <div>
               <IonButton
-                size="small"
                 fill="clear"
                 onClick={copyLogs}
+                size="small"
                 style={{ marginRight: "8px" }}
               >
                 <IonIcon icon={copyOutline} slot="icon-only" />
               </IonButton>
               <IonButton
-                size="small"
-                fill="clear"
                 color="danger"
+                fill="clear"
                 onClick={clearLogs}
+                size="small"
               >
                 <IonIcon icon={trashOutline} slot="icon-only" />
               </IonButton>
             </div>
           </div>
           <IonTextarea
-            ref={logTextareaRef}
-            value={logText}
             readonly
+            ref={logTextareaRef}
             rows={10}
             style={{
               fontFamily: "monospace",
@@ -244,6 +244,7 @@ export const DebugSettings: React.FC = () => {
               padding: "8px",
               borderRadius: "4px",
             }}
+            value={logText}
           />
           <IonItem>
             <IonLabel>

@@ -1,8 +1,8 @@
-import React from "react";
-import { IonItem, IonLabel, IonIcon, IonBadge } from "@ionic/react";
+import { IonBadge, IonIcon, IonItem, IonLabel } from "@ionic/react";
 import { document } from "ionicons/icons";
-import { ProgressBar } from "./ProgressBar";
+import type React from "react";
 import type { FileTransfer } from "../../types/transfer.types";
+import { ProgressBar } from "./ProgressBar";
 
 interface TransferItemProps {
   transfer: FileTransfer;
@@ -24,7 +24,7 @@ export const TransferItem: React.FC<TransferItemProps> = ({ transfer }) => {
 
   return (
     <IonItem>
-      <IonIcon slot="start" icon={document} size="large" />
+      <IonIcon icon={document} size="large" slot="start" />
       <IonLabel>
         <h2>{transfer.file.name}</h2>
         <p>
@@ -36,7 +36,7 @@ export const TransferItem: React.FC<TransferItemProps> = ({ transfer }) => {
           <ProgressBar value={transfer.progress.percentage / 100} />
         )}
       </IonLabel>
-      <IonBadge slot="end" color={getStatusColor()}>
+      <IonBadge color={getStatusColor()} slot="end">
         {transfer.status}
       </IonBadge>
     </IonItem>

@@ -22,8 +22,12 @@ function main() {
   const args = process.argv.slice(2);
   const verbose = args.includes("--verbose") || args.includes("-v");
 
-  console.log(`${colors.cyan}${colors.bright}⚡ Syncstuff Electron Debug Mode${colors.reset}`);
-  console.log(`${colors.dim}Starting Electron with enhanced logging...${colors.reset}\n`);
+  console.log(
+    `${colors.cyan}${colors.bright}⚡ Syncstuff Electron Debug Mode${colors.reset}`,
+  );
+  console.log(
+    `${colors.dim}Starting Electron with enhanced logging...${colors.reset}\n`,
+  );
 
   // Set environment variables for enhanced debugging
   const env = {
@@ -42,8 +46,10 @@ function main() {
     shell: true,
   });
 
-  electronProcess.on("close", (code) => {
-    console.log(`\n${colors.yellow}Electron process exited with code ${code}${colors.reset}`);
+  electronProcess.on("close", code => {
+    console.log(
+      `\n${colors.yellow}Electron process exited with code ${code}${colors.reset}`,
+    );
     process.exit(code || 0);
   });
 

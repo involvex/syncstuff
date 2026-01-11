@@ -1,7 +1,7 @@
 import type {
-  CloudProvider,
   CloudAccount,
   CloudFile,
+  CloudProvider,
 } from "../../../types/cloud.types";
 
 const CLIENT_ID =
@@ -184,7 +184,7 @@ export class GoogleDriveService implements CloudProvider {
     return this.accessToken !== null && this.accountId !== null;
   }
 
-  async listFiles(folderId: string = "root"): Promise<CloudFile[]> {
+  async listFiles(folderId = "root"): Promise<CloudFile[]> {
     if (!this.accessToken) {
       throw new Error("Not authenticated");
     }
@@ -204,7 +204,7 @@ export class GoogleDriveService implements CloudProvider {
       id: f.id,
       name: f.name,
       mimeType: f.mimeType,
-      size: f.size ? parseInt(f.size) : 0,
+      size: f.size ? Number.parseInt(f.size, 10) : 0,
       modifiedTime: new Date(f.modifiedTime),
       thumbnailUrl: f.thumbnailLink,
       parents: f.parents || [],
@@ -213,7 +213,7 @@ export class GoogleDriveService implements CloudProvider {
     }));
   }
 
-  async uploadFile(file: File, parentId: string = "root"): Promise<CloudFile> {
+  async uploadFile(file: File, parentId = "root"): Promise<CloudFile> {
     if (!this.accessToken) {
       throw new Error("Not authenticated");
     }
@@ -235,7 +235,7 @@ export class GoogleDriveService implements CloudProvider {
       "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
       {
         method: "POST",
-        headers: new Headers({ Authorization: "Bearer " + this.accessToken }),
+        headers: new Headers({ Authorization: `Bearer ${this.accessToken}` }),
         body: form,
       },
     );
@@ -264,7 +264,7 @@ export class GoogleDriveService implements CloudProvider {
       `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`,
       {
         method: "GET",
-        headers: new Headers({ Authorization: "Bearer " + this.accessToken }),
+        headers: new Headers({ Authorization: `Bearer ${this.accessToken}` }),
       },
     );
 
@@ -284,8 +284,8 @@ export class GoogleDriveService implements CloudProvider {
 
     const quota = response.result.storageQuota;
     return {
-      used: parseInt(quota.usage),
-      total: parseInt(quota.limit),
+      used: Number.parseInt(quota.usage, 10),
+      total: Number.parseInt(quota.limit, 10),
     };
   }
 }

@@ -12,10 +12,12 @@ const colors = {
   cyan: "\x1b[36m",
 };
 
-let issues = [];
-let fixes = [];
+const issues = [];
+const fixes = [];
 
-console.log(`${colors.cyan}${colors.bright}🩺 SyncStuff Doctor - Diagnosing environment...${colors.reset}\n`);
+console.log(
+  `${colors.cyan}${colors.bright}🩺 SyncStuff Doctor - Diagnosing environment...${colors.reset}\n`,
+);
 
 const checkCommand = (cmd, silent = true) => {
   try {
@@ -26,7 +28,7 @@ const checkCommand = (cmd, silent = true) => {
   }
 };
 
-const getCommandVersion = (cmd) => {
+const getCommandVersion = cmd => {
   try {
     const output = execSync(cmd, { encoding: "utf8" }).trim();
     return output.split("\n")[0];
@@ -35,9 +37,11 @@ const getCommandVersion = (cmd) => {
   }
 };
 
-const checkPort = (port) => {
+const checkPort = port => {
   try {
-    const result = execSync(`netstat -ano | findstr :${port}`, { encoding: "utf8" });
+    const result = execSync(`netstat -ano | findstr :${port}`, {
+      encoding: "utf8",
+    });
     return result.trim().length > 0;
   } catch (e) {
     return false;
@@ -60,14 +64,20 @@ if (bunVersion) {
 
 const adbVersion = getCommandVersion("adb version");
 if (adbVersion) {
-  console.log(`ADB: ${colors.green}✅ ${adbVersion.split("\n")[0]}${colors.reset}`);
-  
+  console.log(
+    `ADB: ${colors.green}✅ ${adbVersion.split("\n")[0]}${colors.reset}`,
+  );
+
   // Check if device is connected
   try {
     const devices = execSync("adb devices", { encoding: "utf8" });
-    const deviceCount = devices.split("\n").filter(line => line.includes("device") && !line.includes("List")).length;
+    const deviceCount = devices
+      .split("\n")
+      .filter(line => line.includes("device") && !line.includes("List")).length;
     if (deviceCount > 0) {
-      console.log(`  ${colors.green}  → ${deviceCount} device(s) connected${colors.reset}`);
+      console.log(
+        `  ${colors.green}  → ${deviceCount} device(s) connected${colors.reset}`,
+      );
     } else {
       console.log(`  ${colors.yellow}  → No devices connected${colors.reset}`);
       issues.push("No Android devices/emulators connected");
@@ -79,7 +89,9 @@ if (adbVersion) {
 } else {
   console.log(`ADB: ${colors.red}❌ Not Found${colors.reset}`);
   issues.push("ADB is not installed. Install Android SDK Platform Tools");
-  fixes.push("Install Android SDK Platform Tools from https://developer.android.com/studio/releases/platform-tools");
+  fixes.push(
+    "Install Android SDK Platform Tools from https://developer.android.com/studio/releases/platform-tools",
+  );
 }
 
 const gitVersion = getCommandVersion("git --version");
@@ -94,19 +106,29 @@ if (gitVersion) {
 // 2. Check workspaces
 console.log(`\n${colors.blue}--- 📦 Workspaces ---${colors.reset}`);
 const packages = ["app", "web", "api", "cli", "database", "shared"];
-packages.forEach((pkg) => {
+packages.forEach(pkg => {
   const pkgPath = path.join(__dirname, "..", "packages", pkg, "package.json");
   if (fs.existsSync(pkgPath)) {
     try {
       const pkgJson = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
-      console.log(`${colors.green}✅ ${pkg}:${colors.reset} Found (v${pkgJson.version || "?"})`);
-      
+      console.log(
+        `${colors.green}✅ ${pkg}:${colors.reset} Found (v${pkgJson.version || "?"})`,
+      );
+
       // Check if node_modules exists
-      const nodeModulesPath = path.join(__dirname, "..", "packages", pkg, "node_modules");
+      const nodeModulesPath = path.join(
+        __dirname,
+        "..",
+        "packages",
+        pkg,
+        "node_modules",
+      );
       if (!fs.existsSync(nodeModulesPath)) {
-        console.log(`  ${colors.yellow}  → node_modules missing${colors.reset}`);
+        console.log(
+          `  ${colors.yellow}  → node_modules missing${colors.reset}`,
+        );
         issues.push(`${pkg}: node_modules not found`);
-        fixes.push(`Run: bun install`);
+        fixes.push("Run: bun install");
       }
     } catch (e) {
       console.log(`${colors.green}✅ ${pkg}:${colors.reset} Found`);
@@ -122,27 +144,36 @@ console.log(`\n${colors.blue}--- 🤖 Android ---${colors.reset}`);
 const androidPath = path.join(__dirname, "..", "packages", "app", "android");
 if (fs.existsSync(androidPath)) {
   console.log(`${colors.green}✅ Android folder: Found${colors.reset}`);
-  
+
   // Check local.properties
   const localPropsPath = path.join(androidPath, "local.properties");
   try {
     const localProps = fs.readFileSync(localPropsPath, "utf8");
     console.log(`${colors.green}✅ local.properties: Found${colors.reset}`);
-    
+
     // Check if ANDROID_HOME or sdk.dir is set
     if (!localProps.includes("sdk.dir") && !process.env.ANDROID_HOME) {
-      console.log(`  ${colors.yellow}  → Android SDK path not configured${colors.reset}`);
+      console.log(
+        `  ${colors.yellow}  → Android SDK path not configured${colors.reset}`,
+      );
       issues.push("Android SDK path not configured in local.properties");
-      fixes.push("Set ANDROID_HOME environment variable or configure local.properties");
+      fixes.push(
+        "Set ANDROID_HOME environment variable or configure local.properties",
+      );
     }
   } catch (e) {
     console.log(`${colors.yellow}⚠️ local.properties: Missing${colors.reset}`);
     issues.push("local.properties missing (needed for Android builds)");
-    fixes.push("Create local.properties in android/ folder with: sdk.dir=/path/to/android/sdk");
+    fixes.push(
+      "Create local.properties in android/ folder with: sdk.dir=/path/to/android/sdk",
+    );
   }
-  
+
   // Check gradle wrapper
-  const gradlewPath = path.join(androidPath, process.platform === "win32" ? "gradlew.bat" : "gradlew");
+  const gradlewPath = path.join(
+    androidPath,
+    process.platform === "win32" ? "gradlew.bat" : "gradlew",
+  );
   if (fs.existsSync(gradlewPath)) {
     console.log(`${colors.green}✅ Gradle wrapper: Found${colors.reset}`);
   } else {
@@ -166,9 +197,13 @@ const signalingPath = path.join(
   "signaling-server.cjs",
 );
 if (fs.existsSync(signalingPath)) {
-  console.log(`${colors.green}✅ Signaling Server script: Found${colors.reset}`);
+  console.log(
+    `${colors.green}✅ Signaling Server script: Found${colors.reset}`,
+  );
 } else {
-  console.log(`${colors.red}❌ Signaling Server script: Missing${colors.reset}`);
+  console.log(
+    `${colors.red}❌ Signaling Server script: Missing${colors.reset}`,
+  );
   issues.push("Signaling server script missing");
 }
 
@@ -183,13 +218,19 @@ const ports = [
 ports.forEach(({ name, port, default: isDefault }) => {
   const inUse = checkPort(port);
   if (inUse) {
-    console.log(`${colors.yellow}⚠️  ${name} (${port}):${colors.reset} Port in use`);
+    console.log(
+      `${colors.yellow}⚠️  ${name} (${port}):${colors.reset} Port in use`,
+    );
     if (isDefault) {
       issues.push(`${name} port ${port} is already in use`);
-      fixes.push(`Stop the process using port ${port} or change the port in config`);
+      fixes.push(
+        `Stop the process using port ${port} or change the port in config`,
+      );
     }
   } else {
-    console.log(`${colors.green}✅ ${name} (${port}):${colors.reset} Available`);
+    console.log(
+      `${colors.green}✅ ${name} (${port}):${colors.reset} Available`,
+    );
   }
 });
 
@@ -206,14 +247,16 @@ const sensitivePatterns = [
 
 let secretsFound = false;
 const envFiles = [".env", ".env.local", ".env.production"];
-envFiles.forEach((envFile) => {
+envFiles.forEach(envFile => {
   const envPath = path.join(__dirname, "..", envFile);
   if (fs.existsSync(envPath)) {
     try {
       const content = fs.readFileSync(envPath, "utf8");
       sensitivePatterns.forEach(({ pattern, file }) => {
         if (pattern.test(content)) {
-          console.log(`${colors.red}⚠️  Potential secret found in ${envFile}${colors.reset}`);
+          console.log(
+            `${colors.red}⚠️  Potential secret found in ${envFile}${colors.reset}`,
+          );
           secretsFound = true;
         }
       });
@@ -224,7 +267,9 @@ envFiles.forEach((envFile) => {
 });
 
 if (!secretsFound) {
-  console.log(`${colors.green}✅ No obvious secrets in tracked files${colors.reset}`);
+  console.log(
+    `${colors.green}✅ No obvious secrets in tracked files${colors.reset}`,
+  );
 } else {
   issues.push("Potential secrets found in environment files");
   fixes.push("Ensure .env files are in .gitignore and never commit secrets");
@@ -233,13 +278,17 @@ if (!secretsFound) {
 // Summary
 console.log(`\n${colors.blue}--- 📋 Summary ---${colors.reset}`);
 if (issues.length === 0) {
-  console.log(`${colors.green}✅ All checks passed! Environment looks good.${colors.reset}\n`);
+  console.log(
+    `${colors.green}✅ All checks passed! Environment looks good.${colors.reset}\n`,
+  );
 } else {
-  console.log(`${colors.red}❌ Found ${issues.length} issue(s):${colors.reset}\n`);
+  console.log(
+    `${colors.red}❌ Found ${issues.length} issue(s):${colors.reset}\n`,
+  );
   issues.forEach((issue, i) => {
     console.log(`  ${i + 1}. ${colors.yellow}${issue}${colors.reset}`);
   });
-  
+
   console.log(`\n${colors.cyan}💡 Suggested fixes:${colors.reset}\n`);
   fixes.forEach((fix, i) => {
     console.log(`  ${i + 1}. ${colors.bright}${fix}${colors.reset}`);
@@ -248,7 +297,11 @@ if (issues.length === 0) {
 }
 
 console.log(`${colors.cyan}📚 Useful commands:${colors.reset}`);
-console.log(`  • Debug Android: ${colors.bright}bun run debug:android${colors.reset}`);
+console.log(
+  `  • Debug Android: ${colors.bright}bun run debug:android${colors.reset}`,
+);
 console.log(`  • Debug Web: ${colors.bright}bun run debug:web${colors.reset}`);
-console.log(`  • Debug Electron: ${colors.bright}bun run debug:electron${colors.reset}`);
+console.log(
+  `  • Debug Electron: ${colors.bright}bun run debug:electron${colors.reset}`,
+);
 console.log(`  • Run Doctor: ${colors.bright}bun run doctor${colors.reset}\n`);

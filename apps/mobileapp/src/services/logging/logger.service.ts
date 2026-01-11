@@ -1,5 +1,5 @@
-import { useSettingsStore } from "../../store/settings.store";
 import { Capacitor } from "@capacitor/core";
+import { useSettingsStore } from "../../store/settings.store";
 
 type LogLevel = "DEBUG" | "INFO" | "WARN" | "ERROR";
 

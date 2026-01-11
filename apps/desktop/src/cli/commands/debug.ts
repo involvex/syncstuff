@@ -3,7 +3,6 @@ import { DebugMode } from "../../core";
 export const showDebug = () => {
   if (!DebugMode.enabled) {
     return;
-  } else {
-    console.log("Debug mode enabled");
   }
+  console.log("Debug mode enabled");
 };

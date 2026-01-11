@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
 import { Capacitor } from "@capacitor/core";
+import type React from "react";
+import { useEffect, useState } from "react";
 
 interface ResponsiveLayoutProps {
   children: React.ReactNode;

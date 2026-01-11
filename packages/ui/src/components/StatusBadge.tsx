@@ -1,5 +1,5 @@
-import React from "react";
-import { Stack, Text, styled } from "tamagui";
+import type React from "react";
+import { Stack, styled, Text } from "tamagui";
 
 export type StatusType = "success" | "warning" | "error" | "info" | "neutral";
 

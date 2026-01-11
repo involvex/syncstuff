@@ -1,4 +1,4 @@
-import { PermissionState } from "@capacitor/core";
+import type { PermissionState } from "@capacitor/core";
 
 export type AppPermission =
   | "camera"

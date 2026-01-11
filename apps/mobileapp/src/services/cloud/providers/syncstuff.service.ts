@@ -1,10 +1,10 @@
+import { personCircleOutline } from "ionicons/icons";
 import type {
   CloudAccount,
   CloudFile,
   CloudProvider,
   CloudProviderType,
 } from "../../../types/cloud.types";
-import { personCircleOutline } from "ionicons/icons";
 
 interface AuthResponse {
   success: boolean;
@@ -82,7 +82,7 @@ export class SyncstuffService implements CloudProvider {
         if (!response.ok) {
           let errorMessage = "Login failed";
           // Try to parse as JSON first
-          if (contentType && contentType.includes("application/json")) {
+          if (contentType?.includes("application/json")) {
             try {
               const errorData = JSON.parse(responseText);
               errorMessage =

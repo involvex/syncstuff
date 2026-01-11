@@ -13,7 +13,8 @@ import {
   useIonToast,
 } from "@ionic/react";
 import { globeOutline, refreshOutline, serverOutline } from "ionicons/icons";
-import React, { useState } from "react";
+import type React from "react";
+import { useState } from "react";
 import { useSettingsStore } from "../../store/settings.store";
 
 export const ConnectionSettings: React.FC = () => {
@@ -92,16 +93,16 @@ export const ConnectionSettings: React.FC = () => {
             <IonIcon icon={globeOutline} slot="start" />
             <IonLabel position="stacked">Signaling Server URL</IonLabel>
             <IonInput
-              value={url}
-              placeholder="http://localhost:3001"
               onIonChange={e => setUrl(e.detail.value || "")}
+              placeholder="http://localhost:3001"
               type="url"
+              value={url}
             />
           </IonItem>
         </IonList>
 
         <div style={{ marginTop: "16px", display: "flex", gap: "8px" }}>
-          <IonButton expand="block" style={{ flex: 1 }} onClick={handleSave}>
+          <IonButton expand="block" onClick={handleSave} style={{ flex: 1 }}>
             Save URL
           </IonButton>
           <IonButton expand="block" fill="outline" onClick={handleReset}>

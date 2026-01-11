@@ -1,31 +1,32 @@
-import React, { useState } from "react";
 import {
   IonContent,
   IonHeader,
-  IonPage,
-  IonTitle,
-  IonToolbar,
+  IonIcon,
   IonLabel,
+  IonPage,
   IonSegment,
   IonSegmentButton,
-  IonIcon,
+  IonTitle,
+  IonToolbar,
 } from "@ionic/react";
-import { cloudOutline, playForwardOutline } from "ionicons/icons";
-import { useTransfer } from "../hooks/useTransfer";
-import { TransferItem } from "../components/transfer/TransferItem";
-import { FileSelector } from "../components/transfer/FileSelector";
-import { useDeviceDiscovery } from "../hooks/useDeviceDiscovery"; // To get paired devices
-import { CloudFileBrowser } from "../components/cloud/CloudFileBrowser";
-import { useCloudStore } from "../store/cloud.store";
 import {
-  Card,
-  YStack,
-  XStack,
-  Text,
   Button,
-  View,
+  Card,
   StatusBadge,
+  Text,
+  View,
+  XStack,
+  YStack,
 } from "@syncstuff/ui";
+import { cloudOutline, playForwardOutline } from "ionicons/icons";
+import type React from "react";
+import { useState } from "react";
+import { CloudFileBrowser } from "../components/cloud/CloudFileBrowser";
+import { FileSelector } from "../components/transfer/FileSelector";
+import { TransferItem } from "../components/transfer/TransferItem";
+import { useDeviceDiscovery } from "../hooks/useDeviceDiscovery"; // To get paired devices
+import { useTransfer } from "../hooks/useTransfer";
+import { useCloudStore } from "../store/cloud.store";
 import "./TransfersPage.css";
 
 const TransfersPage: React.FC = () => {
@@ -53,8 +54,8 @@ const TransfersPage: React.FC = () => {
         </IonToolbar>
         <IonToolbar>
           <IonSegment
-            value={segment}
             onIonChange={e => setSegment(e.detail.value as "local" | "cloud")}
+            value={segment}
           >
             <IonSegmentButton value="local">
               <IonIcon icon={playForwardOutline} />
@@ -70,11 +71,11 @@ const TransfersPage: React.FC = () => {
       <IonContent fullscreen>
         <div className="transfers-container">
           {segment === "local" ? (
-            <YStack space="$4" padding="$4">
+            <YStack padding="$4" space="$4">
               {pairedDevices.length > 0 ? (
-                <Card elevate bordered padding="$4">
+                <Card bordered elevate padding="$4">
                   <YStack space="$3">
-                    <XStack justifyContent="space-between" alignItems="center">
+                    <XStack alignItems="center" justifyContent="space-between">
                       <Text fontWeight="bold">Send File</Text>
                       <StatusBadge status="info">
                         TARGET: {pairedDevices[0].name}
@@ -84,12 +85,12 @@ const TransfersPage: React.FC = () => {
                   </YStack>
                 </Card>
               ) : (
-                <Card bordered padding="$4" backgroundColor="$backgroundFocus">
-                  <YStack space="$2" alignItems="center">
+                <Card backgroundColor="$backgroundFocus" bordered padding="$4">
+                  <YStack alignItems="center" space="$2">
                     <Text textAlign="center">No paired devices found.</Text>
                     <Text
-                      fontSize="$2"
                       color="$colorSubtitle"
+                      fontSize="$2"
                       textAlign="center"
                     >
                       Go to Devices tab to pair with another device.
@@ -121,11 +122,11 @@ const TransfersPage: React.FC = () => {
               )}
             </YStack>
           ) : (
-            <YStack space="$4" padding="$4">
+            <YStack padding="$4" space="$4">
               {accounts.length > 0 ? (
                 accounts.map(account => (
                   <YStack key={account.id} space="$2">
-                    <XStack padding="$4" space="$2" alignItems="center">
+                    <XStack alignItems="center" padding="$4" space="$2">
                       <Text fontSize="$5">☁️</Text>
                       <Text fontWeight="bold">{account.name}</Text>
                       <StatusBadge status="info">
@@ -136,19 +137,19 @@ const TransfersPage: React.FC = () => {
                   </YStack>
                 ))
               ) : (
-                <Card elevate bordered padding="$4">
-                  <YStack space="$4" alignItems="center">
+                <Card bordered elevate padding="$4">
+                  <YStack alignItems="center" space="$4">
                     <View
-                      width={80}
-                      height={80}
-                      borderRadius="$full"
-                      backgroundColor="$backgroundFocus"
                       alignItems="center"
+                      backgroundColor="$backgroundFocus"
+                      borderRadius="$full"
+                      height={80}
                       justifyContent="center"
+                      width={80}
                     >
                       <Text fontSize="$9">☁️</Text>
                     </View>
-                    <YStack space="$1" alignItems="center">
+                    <YStack alignItems="center" space="$1">
                       <Text fontSize="$5" fontWeight="bold">
                         No cloud accounts linked
                       </Text>
@@ -158,8 +159,8 @@ const TransfersPage: React.FC = () => {
                       </Text>
                     </YStack>
                     <Button
-                      theme="blue"
                       onPress={() => (window.location.href = "/settings")}
+                      theme="blue"
                     >
                       Go to Settings
                     </Button>

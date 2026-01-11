@@ -6,11 +6,11 @@ import {
 } from "capacitor-zeroconf";
 import type { Device } from "../../types/device.types";
 import {
+  type DiscoveredDevice,
+  type ServiceTxtRecord,
   SYNCSTUFF_SERVICE_DOMAIN,
   SYNCSTUFF_SERVICE_PORT,
   SYNCSTUFF_SERVICE_TYPE,
-  type DiscoveredDevice,
-  type ServiceTxtRecord,
 } from "../../types/network.types";
 import { isNative } from "../../utils/platform.utils";
 import { logger } from "../logging/logger.service";

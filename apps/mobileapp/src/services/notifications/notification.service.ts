@@ -200,7 +200,7 @@ class NotificationService {
     await this.showNotification({
       title: `Sync ${type === "success" ? "Complete" : type === "error" ? "Failed" : "Update"}`,
       body: message,
-      icon: `/icons/icon-192x192.png`,
+      icon: "/icons/icon-192x192.png",
       tag: `sync-${type}`,
       requireInteraction: type === "error",
     });
@@ -219,7 +219,7 @@ class NotificationService {
     await this.showNotification({
       title: "Cloud Account",
       body: messages[action],
-      icon: `/icons/icon-192x192.png`,
+      icon: "/icons/icon-192x192.png",
       tag: `cloud-${provider}-${action}`,
     });
   }
@@ -237,7 +237,7 @@ class NotificationService {
     await this.showNotification({
       title: "Device Update",
       body: messages[action],
-      icon: `/icons/icon-192x192.png`,
+      icon: "/icons/icon-192x192.png",
       tag: `device-${action}`,
       requireInteraction: action === "file-received",
     });
@@ -267,7 +267,7 @@ class NotificationService {
     await this.showNotification({
       title: titles[status],
       body,
-      icon: `/icons/icon-192x192.png`,
+      icon: "/icons/icon-192x192.png",
       tag: `transfer-${status}`,
       data: { fileName, progress },
       requireInteraction: status === "completed" || status === "failed",

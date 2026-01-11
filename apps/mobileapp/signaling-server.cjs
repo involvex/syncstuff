@@ -8,6 +8,9 @@ const io = new Server(3001, {
     origin: "*",
   },
 });
+// oxlint-disable-next-line no-unused-expressions
+// oxlint-disable-next-line no-unused-expressions
+("use strict");
 
 console.log("Signaling server running on port 3001");
 

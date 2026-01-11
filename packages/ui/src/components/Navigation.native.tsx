@@ -1,5 +1,5 @@
 import React from "react";
-import { XStack, Text, Button } from "tamagui";
+import { Button, Text, XStack } from "tamagui";
 import { ThemeToggle } from "../ThemeToggle";
 export interface NavigationProps {
   isLoggedIn?: boolean;
@@ -15,21 +15,21 @@ export function Navigation({
 }: NavigationProps) {
   return (
     <XStack
-      height={64}
       alignItems="center"
-      justifyContent="space-between"
-      paddingHorizontal="$4"
       backgroundColor="$background"
       borderBottomWidth={1}
       borderColor="$borderColor"
-      position="absolute"
-      top={0}
+      height={64}
+      justifyContent="space-between"
       left={0}
+      paddingHorizontal="$4"
+      position="absolute"
       right={0}
+      top={0}
       zIndex={100}
     >
       <XStack alignItems="center" space="$2">
-        <Text fontSize="$6" fontWeight="bold" color="$primary">
+        <Text color="$primary" fontSize="$6" fontWeight="bold">
           Syncstuff
         </Text>
       </XStack>
@@ -42,29 +42,29 @@ export function Navigation({
           space="$4"
         >
           <Text
+            cursor="pointer"
             fontWeight="medium"
             hoverStyle={{
               color: "$primary",
             }}
-            cursor="pointer"
           >
             Features
           </Text>
           <Text
+            cursor="pointer"
             fontWeight="medium"
             hoverStyle={{
               color: "$primary",
             }}
-            cursor="pointer"
           >
             Pricing
           </Text>
           <Text
+            cursor="pointer"
             fontWeight="medium"
             hoverStyle={{
               color: "$primary",
             }}
-            cursor="pointer"
           >
             Docs
           </Text>
@@ -73,16 +73,16 @@ export function Navigation({
         <ThemeToggle />
 
         {isLoggedIn ? (
-          <Button theme="blue" size="$3" onPress={onDashboard}>
+          <Button onPress={onDashboard} size="$3" theme="blue">
             Dashboard
           </Button>
         ) : (
           <XStack space="$2">
-            <Button variant="outlined" size="$3" onPress={onLogin}>
+            <Button onPress={onLogin} size="$3" variant="outlined">
               Login
             </Button>
 
-            <Button theme="blue" size="$3" onPress={onSignup}>
+            <Button onPress={onSignup} size="$3" theme="blue">
               Sign Up
             </Button>
           </XStack>

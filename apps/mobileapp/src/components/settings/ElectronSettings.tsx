@@ -19,7 +19,8 @@ import {
   expandOutline,
   removeOutline,
 } from "ionicons/icons";
-import React, { useEffect, useState } from "react";
+import type React from "react";
+import { useEffect, useState } from "react";
 import { isElectron } from "../../utils/electron.utils";
 
 export const ElectronSettings: React.FC = () => {
@@ -128,8 +129,8 @@ export const ElectronSettings: React.FC = () => {
             </IonLabel>
             <IonButton
               fill="outline"
-              size="small"
               onClick={handleMinimize}
+              size="small"
               slot="end"
             >
               Minimize
@@ -144,8 +145,8 @@ export const ElectronSettings: React.FC = () => {
             </IonLabel>
             <IonButton
               fill="outline"
-              size="small"
               onClick={handleMaximize}
+              size="small"
               slot="end"
             >
               Maximize
@@ -176,10 +177,10 @@ export const ElectronSettings: React.FC = () => {
               </p>
             </IonLabel>
             <IonButton
-              fill="outline"
               color="danger"
-              size="small"
+              fill="outline"
               onClick={handleClose}
+              size="small"
               slot="end"
             >
               Close

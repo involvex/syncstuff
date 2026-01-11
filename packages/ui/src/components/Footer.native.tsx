@@ -1,17 +1,17 @@
 import React from "react";
-import { XStack, YStack, Text, Separator } from "tamagui";
+import { Separator, Text, XStack, YStack } from "tamagui";
 export function Footer() {
   return (
     <YStack
-      space="$4"
-      paddingVertical="$8"
-      paddingHorizontal="$4"
-      borderTopWidth={1}
-      borderColor="$borderColor"
       backgroundColor="$background"
+      borderColor="$borderColor"
+      borderTopWidth={1}
+      paddingHorizontal="$4"
+      paddingVertical="$8"
+      space="$4"
     >
-      <XStack justifyContent="space-between" flexWrap="wrap" space="$4">
-        <YStack space="$2" minWidth={200}>
+      <XStack flexWrap="wrap" justifyContent="space-between" space="$4">
+        <YStack minWidth={200} space="$2">
           <Text fontSize="$6" fontWeight="bold">
             Syncstuff
           </Text>
@@ -20,7 +20,7 @@ export function Footer() {
           </Text>
         </YStack>
 
-        <XStack space="$8" flexWrap="wrap">
+        <XStack flexWrap="wrap" space="$8">
           <YStack space="$2">
             <Text fontWeight="bold">Product</Text>
             <Text
@@ -117,8 +117,8 @@ export function Footer() {
 
       <Separator />
 
-      <XStack justifyContent="space-between" alignItems="center">
-        <Text fontSize="$2" color="$colorSubtitle">
+      <XStack alignItems="center" justifyContent="space-between">
+        <Text color="$colorSubtitle" fontSize="$2">
           © {new Date().getFullYear()} Involvex. All rights reserved.
         </Text>
         <XStack space="$4">{/* Social icons could go here */}</XStack>

@@ -49,8 +49,8 @@ export default function Blog() {
         <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
           {posts.map(post => (
             <article
-              key={post.id}
               className="flex flex-col items-start justify-between"
+              key={post.id}
             >
               <div className="relative w-full">
                 <div className="aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2] dark:bg-gray-800" />
@@ -59,8 +59,8 @@ export default function Blog() {
               <div className="max-w-xl">
                 <div className="mt-8 flex items-center gap-x-4 text-xs">
                   <time
-                    dateTime={post.date}
                     className="text-gray-500 dark:text-gray-400"
+                    dateTime={post.date}
                   >
                     {post.date}
                   </time>

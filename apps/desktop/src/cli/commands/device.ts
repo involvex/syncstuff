@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import inquirer from "inquirer";
 import { apiClient, type Device } from "../../utils/api-client.js";
-import { debugLog, type CommandContext } from "../../utils/context.js";
+import { type CommandContext, debugLog } from "../../utils/context.js";
 import {
   createSpinner,
   createTable,
@@ -77,7 +77,7 @@ async function listAvailableDevices(ctx: CommandContext): Promise<Device[]> {
       }
 
       const tableData = response.data.map(device => [
-        device.id.substring(0, 8) + "...",
+        `${device.id.substring(0, 8)}...`,
         device.name,
         device.type,
         device.platform,
@@ -100,19 +100,18 @@ async function listAvailableDevices(ctx: CommandContext): Promise<Device[]> {
       printSeparator();
 
       return response.data;
-    } else {
-      spinner.fail("Failed to fetch devices");
-      if (
-        response.error?.includes("404") ||
-        response.error?.includes("Not found")
-      ) {
-        info("Devices endpoint not yet implemented in API");
-        info("This feature will be available soon!");
-      } else {
-        error(response.error || "Unknown error");
-      }
-      return [];
     }
+    spinner.fail("Failed to fetch devices");
+    if (
+      response.error?.includes("404") ||
+      response.error?.includes("Not found")
+    ) {
+      info("Devices endpoint not yet implemented in API");
+      info("This feature will be available soon!");
+    } else {
+      error(response.error || "Unknown error");
+    }
+    return [];
   } catch (err) {
     spinner.fail("Error fetching devices");
     error(`Error: ${err instanceof Error ? err.message : String(err)}`);

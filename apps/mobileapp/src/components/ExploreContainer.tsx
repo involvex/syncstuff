@@ -11,9 +11,9 @@ const ExploreContainer: React.FC<ContainerProps> = ({ name }) => {
       <p>
         Explore{" "}
         <a
-          target="_blank"
-          rel="noopener noreferrer"
           href="https://ionicframework.com/docs/components"
+          rel="noopener noreferrer"
+          target="_blank"
         >
           UI Components
         </a>

@@ -1,4 +1,4 @@
-import { Card as TCard, styled } from "tamagui";
+import { styled, Card as TCard } from "tamagui";
 
 export const Card = styled(TCard, {
   name: "Card",

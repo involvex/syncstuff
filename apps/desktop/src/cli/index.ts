@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { debugLog, parseArgs, type CommandContext } from "../utils/context.js";
+import { type CommandContext, debugLog, parseArgs } from "../utils/context.js";
 import { printHeader } from "../utils/ui.js";
 import { checkForUpdates } from "../utils/update-checker.js";
 

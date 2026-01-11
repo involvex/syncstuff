@@ -55,7 +55,7 @@ export function createTable(data: string[][], headers?: string[]): string {
   });
 }
 
-export function animateText(text: string, delay: number = 50): Promise<void> {
+export function animateText(text: string, delay = 50): Promise<void> {
   return new Promise(resolve => {
     let index = 0;
     const interval = setInterval(() => {

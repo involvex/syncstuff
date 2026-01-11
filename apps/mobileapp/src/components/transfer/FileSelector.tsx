@@ -1,6 +1,6 @@
-import React from "react";
 import { IonButton, IonIcon } from "@ionic/react";
 import { documentAttach } from "ionicons/icons";
+import React from "react";
 
 interface FileSelectorProps {
   onFileSelect: (file: File) => void;
@@ -31,14 +31,14 @@ export const FileSelector: React.FC<FileSelectorProps> = ({
   return (
     <>
       <input
-        type="file"
-        ref={hiddenInputRef}
-        onChange={handleChange}
-        style={{ display: "none" }}
         disabled={disabled}
+        onChange={handleChange}
+        ref={hiddenInputRef}
+        style={{ display: "none" }}
+        type="file"
       />
-      <IonButton expand="block" onClick={handleClick} disabled={disabled}>
-        <IonIcon slot="start" icon={documentAttach} />
+      <IonButton disabled={disabled} expand="block" onClick={handleClick}>
+        <IonIcon icon={documentAttach} slot="start" />
         Select File
       </IonButton>
     </>

@@ -43,9 +43,9 @@ export default function FAQ() {
   return (
     <>
       <Navigation
+        onDashboard={() => navigate("/dashboard")}
         onLogin={() => navigate("/auth/login")}
         onSignup={() => navigate("/auth/signup")}
-        onDashboard={() => navigate("/dashboard")}
       />
       <div className="bg-background min-h-screen py-24 sm:py-32 dark:bg-gray-950">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -59,8 +59,8 @@ export default function FAQ() {
             <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-400">
               Can't find the answer you're looking for? Reach out to our{" "}
               <a
-                href="/contact"
                 className="font-bold text-blue-600 hover:underline dark:text-blue-400"
+                href="/contact"
               >
                 customer support
               </a>{" "}
@@ -71,15 +71,15 @@ export default function FAQ() {
             <dl className="space-y-4">
               {faqs.map((faq, index) => (
                 <div
-                  key={index}
                   className="rounded-2xl border border-gray-100 bg-gray-50/50 p-6 transition-all dark:border-gray-800 dark:bg-gray-900/50"
+                  key={index}
                 >
                   <dt>
                     <button
+                      className="flex w-full items-start justify-between text-left text-gray-900 dark:text-white"
                       onClick={() =>
                         setOpenIndex(openIndex === index ? null : index)
                       }
-                      className="flex w-full items-start justify-between text-left text-gray-900 dark:text-white"
                     >
                       <span className="text-base leading-7 font-bold">
                         {faq.question}
@@ -88,14 +88,14 @@ export default function FAQ() {
                         <svg
                           className={`size-6 transition-transform ${openIndex === index ? "rotate-180" : ""}`}
                           fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth="1.5"
                           stroke="currentColor"
+                          strokeWidth="1.5"
+                          viewBox="0 0 24 24"
                         >
                           <path
+                            d="M19.5 8.25l-7.5 7.5-7.5-7.5"
                             strokeLinecap="round"
                             strokeLinejoin="round"
-                            d="M19.5 8.25l-7.5 7.5-7.5-7.5"
                           />
                         </svg>
                       </span>
