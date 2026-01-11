@@ -43,6 +43,7 @@
     "tamagui": "^1.144.1",
     "@tamagui/config": "^1.144.1",
     "@tamagui/core": "^1.144.1",
+    "@tamagui/lucide-icons": "^1.144.1",
     "typescript-eslint": "8.52.0"
   },
   "devDependencies": {
