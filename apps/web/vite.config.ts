@@ -54,6 +54,7 @@ export default defineConfig({
       "@tamagui/themes",
       "@tamagui/config",
       "@tamagui/font-silkscreen",
+      "@tamagui/font-inter",
     ],
     external: ["react-native-svg", "react-native"],
     resolve: {
