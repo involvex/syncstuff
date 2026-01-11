@@ -25,7 +25,7 @@ for (const { from } of files) {
   const relPath = relative(srcDir, from);
   const to = join(distDir, relPath);
   const destDir = dirname(to);
-  
+
   if (!existsSync(destDir)) {
     mkdirSync(destDir, { recursive: true });
   }

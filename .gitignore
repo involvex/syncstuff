@@ -28,6 +28,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Package manager lock files (using pnpm now)
+bun.lock
+bun.lock.backup
+
 # Optional eslint cache
 .eslintcache
 

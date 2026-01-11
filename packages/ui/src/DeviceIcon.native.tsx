@@ -7,6 +7,7 @@ import {
   Tv,
 } from "@tamagui/lucide-icons";
 import React from "react";
+
 export type DeviceType =
   | "mobile"
   | "tablet"
@@ -15,11 +16,13 @@ export type DeviceType =
   | "tv"
   | "cli"
   | "unknown";
+
 export interface DeviceIconProps {
   type: DeviceType;
   size?: number | string;
   color?: string;
 }
+
 export function DeviceIcon({ type, size = 24, color }: DeviceIconProps) {
   switch (type) {
     case "mobile":

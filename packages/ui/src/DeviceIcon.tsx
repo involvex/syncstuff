@@ -5,7 +5,7 @@ import {
   Tablet,
   Terminal,
   Tv,
-} from "@tamagui/lucide-icons";
+} from "lucide-react";
 import React from "react";
 
 export type DeviceType =
@@ -24,20 +24,22 @@ export interface DeviceIconProps {
 }
 
 export function DeviceIcon({ type, size = 24, color }: DeviceIconProps) {
+  const iconProps = { size: Number(size), color };
+
   switch (type) {
     case "mobile":
-      return <Smartphone size={size} color={color} />;
+      return <Smartphone {...iconProps} />;
     case "tablet":
-      return <Tablet size={size} color={color} />;
+      return <Tablet {...iconProps} />;
     case "desktop":
-      return <Monitor size={size} color={color} />;
+      return <Monitor {...iconProps} />;
     case "laptop":
-      return <Laptop size={size} color={color} />;
+      return <Laptop {...iconProps} />;
     case "tv":
-      return <Tv size={size} color={color} />;
+      return <Tv {...iconProps} />;
     case "cli":
-      return <Terminal size={size} color={color} />;
+      return <Terminal {...iconProps} />;
     default:
-      return <Smartphone size={size} color={color} />;
+      return <Smartphone {...iconProps} />;
   }
 }
