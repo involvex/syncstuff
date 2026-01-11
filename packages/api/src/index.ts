@@ -1,4 +1,4 @@
-import {
+import type {
   ChangePasswordRequest,
   LoginRequest,
   RegisterRequest,
@@ -972,7 +972,15 @@ export default {
             appVersion?: string;
           } = await request.json();
 
-          const { deviceId, name, platform, model, manufacturer, osVersion, appVersion } = body;
+          const {
+            deviceId,
+            name,
+            platform,
+            model,
+            manufacturer,
+            osVersion,
+            appVersion,
+          } = body;
 
           // Validate required fields
           if (!deviceId || !name || !platform) {
@@ -997,7 +1005,8 @@ export default {
           // Determine device type based on platform
           let type = "mobile";
           if (platform === "web") type = "web";
-          else if (["windows", "macos", "linux"].includes(platform)) type = "desktop";
+          else if (["windows", "macos", "linux"].includes(platform))
+            type = "desktop";
 
           const now = Date.now(); // Unix timestamp in milliseconds
 
@@ -1029,28 +1038,38 @@ export default {
               }),
               { status: 200, headers },
             );
-          } else {
-            // Insert new device - generate UUID for id
-            const newId = crypto.randomUUID();
+          }
+          // Insert new device - generate UUID for id
+          const newId = crypto.randomUUID();
 
-            await env.syncstuff_db
-              .prepare(
-                `INSERT INTO devices
+          await env.syncstuff_db
+            .prepare(
+              `INSERT INTO devices
                  (id, user_id, device_id, name, type, platform, metadata, is_online, last_seen, created_at, updated_at)
                  VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?)`,
-              )
-              .bind(newId, userId, deviceId, name, type, platform, metadata, now, now, now)
-              .run();
+            )
+            .bind(
+              newId,
+              userId,
+              deviceId,
+              name,
+              type,
+              platform,
+              metadata,
+              now,
+              now,
+              now,
+            )
+            .run();
 
-            return new Response(
-              JSON.stringify({
-                success: true,
-                message: "Device registered",
-                deviceId: newId,
-              }),
-              { status: 201, headers },
-            );
-          }
+          return new Response(
+            JSON.stringify({
+              success: true,
+              message: "Device registered",
+              deviceId: newId,
+            }),
+            { status: 201, headers },
+          );
         } catch (error) {
           console.error("Device registration error:", error);
           return new Response(

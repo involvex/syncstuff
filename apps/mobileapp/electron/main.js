@@ -3,8 +3,8 @@ import {
   BrowserWindow,
   ipcMain,
   Menu,
-  nativeImage,
   Notification,
+  nativeImage,
   Tray,
 } from "electron";
 import debug from "electron-debug";
@@ -21,9 +21,13 @@ let mainWindow = null;
 let tray = null;
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-try {
-  reloader(module);
-} catch (_) {}
+// electron-reloader is not compatible with ES modules
+// Commented out for now - use manual reload during development
+// try {
+//   reloader(module);
+// } catch (error) {
+//   console.log("Error setting up reloader:", error);
+// }
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -52,7 +56,7 @@ function createWindow() {
 
   // Load the app
   if (isDev) {
-    mainWindow.loadURL("http://localhost:5173");
+    mainWindow.loadURL("http://localhost:8100");
     mainWindow.webContents.openDevTools();
   } else {
     // In production, the app is packaged and the dist folder is in resources

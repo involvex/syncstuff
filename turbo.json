@@ -3,9 +3,8 @@
   "globalDependencies": ["**/.env*"],
   "tasks": {
     "build": {
-      "dependsOn": ["^build", "build:ui","lint:fix", "format", "typecheck"],
-      "cache": true, 
-      "persistent": true,
+      "dependsOn": ["^build", "build:ui"],
+      "cache": true,
       "inputs": [
         "$TURBO_DEFAULT$",
         ".env.production.local",

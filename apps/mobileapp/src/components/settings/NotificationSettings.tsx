@@ -1,26 +1,27 @@
-import React, { useState, useEffect } from "react";
 import {
+  IonBadge,
+  IonButton,
   IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardSubtitle,
   IonCardContent,
-  IonList,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonCardTitle,
+  IonIcon,
   IonItem,
   IonLabel,
+  IonList,
   IonToggle,
-  IonButton,
-  IonIcon,
-  IonBadge,
   useIonToast,
 } from "@ionic/react";
 import {
-  notificationsOutline,
   checkmarkCircleOutline,
   cloudOutline,
-  swapHorizontalOutline,
+  notificationsOutline,
   phonePortraitOutline,
+  swapHorizontalOutline,
 } from "ionicons/icons";
+import type React from "react";
+import { useCallback, useEffect, useState } from "react";
 import { notificationService } from "../../services/notifications/notification.service";
 import { localStorageService } from "../../services/storage/local-storage.service";
 
@@ -45,12 +46,7 @@ export const NotificationSettings: React.FC = () => {
   >("default");
   const [presentToast] = useIonToast();
 
-  useEffect(() => {
-    loadPreferences();
-    checkPermission();
-  }, []);
-
-  const loadPreferences = async () => {
+  const loadPreferences = useCallback(async () => {
     try {
       const enabled =
         (await localStorageService.get<boolean>("notifications_enabled")) ??
@@ -76,12 +72,17 @@ export const NotificationSettings: React.FC = () => {
     } catch (error) {
       console.error("Failed to load notification preferences:", error);
     }
-  };
+  }, []);
 
-  const checkPermission = async () => {
+  const checkPermission = useCallback(async () => {
     const status = await notificationService.checkPermission();
     setPermissionStatus(status);
-  };
+  }, []);
+
+  useEffect(() => {
+    loadPreferences();
+    checkPermission();
+  }, [checkPermission, loadPreferences]);
 
   const handleRequestPermission = async () => {
     const granted = await notificationService.requestPermission();
@@ -196,8 +197,8 @@ export const NotificationSettings: React.FC = () => {
               </IonBadge>
               <IonToggle
                 checked={preferences.enabled}
-                onIonChange={e => handleToggle("enabled", e.detail.checked)}
                 disabled={Boolean(permissionStatus === "denied")}
+                onIonChange={e => handleToggle("enabled", e.detail.checked)}
               />
             </div>
           </IonItem>
@@ -205,10 +206,10 @@ export const NotificationSettings: React.FC = () => {
           {permissionStatus !== "granted" && (
             <IonItem>
               <IonButton
+                disabled={Boolean(permissionStatus === "denied")}
                 expand="block"
                 fill="outline"
                 onClick={handleRequestPermission}
-                disabled={Boolean(permissionStatus === "denied")}
               >
                 <IonIcon icon={notificationsOutline} slot="start" />
                 Request Permission

@@ -3,11 +3,13 @@ import {
   vitePlugin as remix,
 } from "@remix-run/dev";
 import tailwindcss from "@tailwindcss/vite";
+import { tamaguiPlugin } from "@tamagui/vite-plugin";
 import path from "path";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { getLoadContext } from "./load-context";
 import { reactNativeSvgAlias } from "./react-native-svg-alias.mjs";
+
 declare module "@remix-run/cloudflare" {
   interface Future {
     v3_singleFetch: true;
@@ -19,6 +21,10 @@ export default defineConfig({
   plugins: [
     reactNativeSvgAlias(),
     tailwindcss(),
+    tamaguiPlugin({
+      config: "./tamagui.config.ts",
+      components: ["tamagui"],
+    }),
     cloudflareDevProxyVitePlugin({
       getLoadContext,
     }),
@@ -38,19 +44,17 @@ export default defineConfig({
     "process.env.TAMAGUI_TARGET": JSON.stringify("web"),
   },
   ssr: {
-    noExternal: [],
-    external: [
+    noExternal: [
       "@syncstuff/ui",
-      "react-native-svg",
-      "react-native",
-      "react-native-web",
       "tamagui",
       "@tamagui/core",
+      "@tamagui/web",
       "@tamagui/lucide-icons",
       "@tamagui/themes",
       "@tamagui/config",
       "@tamagui/font-silkscreen",
     ],
+    external: ["react-native-svg", "react-native"],
     resolve: {
       conditions: ["workerd", "worker", "browser"],
     },

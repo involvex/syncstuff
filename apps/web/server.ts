@@ -1,6 +1,4 @@
 import { createRequestHandler, type ServerBuild } from "@remix-run/cloudflare";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore This file won’t exist if it hasn’t yet been built
 import * as build from "./build/server/index.js";
 import { getLoadContext } from "./load-context";
 

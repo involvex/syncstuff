@@ -20,10 +20,11 @@ import {
   notificationsOutline,
   shieldCheckmarkOutline,
 } from "ionicons/icons";
-import React, { useEffect, useState } from "react";
+import type React from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
+  type PermissionsState,
   permissionsService,
-  PermissionsState,
 } from "../../services/permissions/permissions.service";
 import "./PermissionRequestModal.css";
 
@@ -40,16 +41,16 @@ export const PermissionRequestModal: React.FC<PermissionRequestModalProps> = ({
 }) => {
   const [permissions, setPermissions] = useState<PermissionsState | null>(null);
 
+  const loadPermissions = useCallback(async () => {
+    const state = await permissionsService.getPermissionsState();
+    setPermissions(state);
+  }, []);
+
   useEffect(() => {
     if (isOpen) {
       loadPermissions();
     }
-  }, [isOpen]);
-
-  const loadPermissions = async () => {
-    const state = await permissionsService.getPermissionsState();
-    setPermissions(state);
-  };
+  }, [isOpen, loadPermissions]);
 
   const handleRequest = async (type: keyof PermissionsState) => {
     let success = false;
@@ -112,9 +113,9 @@ export const PermissionRequestModal: React.FC<PermissionRequestModalProps> = ({
 
   return (
     <IonModal
+      className="permission-modal"
       isOpen={isOpen}
       onDidDismiss={onDismiss}
-      className="permission-modal"
     >
       <IonHeader>
         <IonToolbar>
@@ -140,7 +141,7 @@ export const PermissionRequestModal: React.FC<PermissionRequestModalProps> = ({
             const isGranted = status?.granted;
 
             return (
-              <IonItem key={type} className="permission-item">
+              <IonItem className="permission-item" key={type}>
                 <div className="permission-item-content">
                   <div className="permission-item-left">
                     <div
@@ -157,23 +158,23 @@ export const PermissionRequestModal: React.FC<PermissionRequestModalProps> = ({
                   </div>
                   <div slot="end">
                     {isGranted ? (
-                      <IonText color="success" className="granted-text">
+                      <IonText className="granted-text" color="success">
                         Granted
                       </IonText>
                     ) : status?.denied ? (
                       <IonButton
-                        size="small"
-                        fill="outline"
                         color="warning"
+                        fill="outline"
                         onClick={() => permissionsService.openSettings()}
+                        size="small"
                       >
                         Settings
                       </IonButton>
                     ) : (
                       <IonButton
-                        size="small"
                         fill="solid"
                         onClick={() => handleRequest(type)}
+                        size="small"
                       >
                         Allow
                       </IonButton>
@@ -195,10 +196,10 @@ export const PermissionRequestModal: React.FC<PermissionRequestModalProps> = ({
       <IonFooter>
         <IonToolbar>
           <IonButton
-            expand="block"
-            onClick={onDismiss}
-            fill={allGranted ? "solid" : "outline"}
             color={allGranted ? "success" : "primary"}
+            expand="block"
+            fill={allGranted ? "solid" : "outline"}
+            onClick={onDismiss}
           >
             {allGranted ? "Continue to App" : "Later"}
           </IonButton>
