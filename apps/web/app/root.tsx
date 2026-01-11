@@ -7,6 +7,7 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 import { Provider } from "@syncstuff/ui";
+import config from "../../packages/ui/.tamagui/tamagui.config.cjs";
 
 import "./tailwind.css";
 import "./tamagui.css";
@@ -44,7 +45,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <Provider>
+    <Provider config={config.tamaguiConfig}>
       <Outlet />
     </Provider>
   );
