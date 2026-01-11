@@ -8,6 +8,7 @@ import {
 } from "@remix-run/react";
 import { Provider } from "@syncstuff/ui";
 import { tamaguiConfig } from "@syncstuff/ui/tamagui.config";
+import { ClientOnly } from "./components/ClientOnly";
 
 import "./tailwind.css";
 import "./tamagui.css";
@@ -45,8 +46,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <Provider config={tamaguiConfig}>
-      <Outlet />
-    </Provider>
+    <ClientOnly>
+      <Provider config={tamaguiConfig}>
+        <Outlet />
+      </Provider>
+    </ClientOnly>
   );
 }
