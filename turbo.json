@@ -3,7 +3,9 @@
   "globalDependencies": ["**/.env*"],
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "build:ui","lint:fix", "format", "typecheck"],
+      "cache": true, 
+      "persistent": true,
       "inputs": [
         "$TURBO_DEFAULT$",
         ".env.production.local",
@@ -40,7 +42,11 @@
       "cache": false
     },
     "format": {
-      "inputs": ["src/**", "*.config.*"],
+      "inputs": ["src/**", "*.config.*", "*.json", "*.md"],
+      "cache": false
+    },
+    "format:check": {
+      "inputs": ["src/**", "*.config.*", "*.json", "*.md"],
       "cache": false
     },
     "typecheck": {
@@ -49,6 +55,10 @@
     },
     "clean": {
       "cache": false
+    },
+    "check": {
+      "cache": false,
+      "dependsOn": ["lint:fix", "format", "typecheck"]
     }
   }
 }

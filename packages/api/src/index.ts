@@ -661,17 +661,20 @@ export default {
             .all<D1User>();
 
           const users = (result.results || []).map(mapUser);
-          return new Response(
-            JSON.stringify({ success: true, data: users }),
-            { headers },
-          );
+          return new Response(JSON.stringify({ success: true, data: users }), {
+            headers,
+          });
         } catch (__dbError) {
           return handleDatabaseError(__dbError, path, request.method);
         }
       }
 
       // ADMIN - POST toggle user status
-      if (path.startsWith("/api/admin/user/") && path.endsWith("/status") && request.method === "POST") {
+      if (
+        path.startsWith("/api/admin/user/") &&
+        path.endsWith("/status") &&
+        request.method === "POST"
+      ) {
         const auth = request.headers.get("Authorization");
         if (!auth?.startsWith("Bearer "))
           return new Response(
@@ -916,7 +919,7 @@ export default {
                 is_online: number;
               }>();
 
-            devices = (result.results || []).map((device) => ({
+            devices = (result.results || []).map(device => ({
               id: device.id,
               name: device.name,
               type: device.type,
@@ -936,6 +939,128 @@ export default {
           );
         } catch (error) {
           return handleDatabaseError(error, path, request.method);
+        }
+      }
+
+      // DEVICES - POST register or update device
+      if (path === "/api/devices/register" && request.method === "POST") {
+        const auth = request.headers.get("Authorization");
+        if (!auth?.startsWith("Bearer "))
+          return new Response(
+            JSON.stringify({ success: false, error: "Missing token" }),
+            { status: 401, headers },
+          );
+
+        const token = auth.split(" ")[1];
+        const payload = await verifyJWT(token, secret);
+        if (!payload || !payload.sub)
+          return new Response(
+            JSON.stringify({ success: false, error: "Invalid token" }),
+            { status: 401, headers },
+          );
+
+        const userId = payload.sub as string;
+
+        try {
+          const body: {
+            deviceId?: string;
+            name?: string;
+            platform?: string;
+            model?: string;
+            manufacturer?: string;
+            osVersion?: string;
+            appVersion?: string;
+          } = await request.json();
+
+          const { deviceId, name, platform, model, manufacturer, osVersion, appVersion } = body;
+
+          // Validate required fields
+          if (!deviceId || !name || !platform) {
+            return new Response(
+              JSON.stringify({
+                success: false,
+                error: "Missing required fields",
+                required: ["deviceId", "name", "platform"],
+              }),
+              { status: 400, headers },
+            );
+          }
+
+          // Build metadata JSON
+          const metadata = JSON.stringify({
+            model: model || null,
+            manufacturer: manufacturer || null,
+            osVersion: osVersion || null,
+            appVersion: appVersion || null,
+          });
+
+          // Determine device type based on platform
+          let type = "mobile";
+          if (platform === "web") type = "web";
+          else if (["windows", "macos", "linux"].includes(platform)) type = "desktop";
+
+          const now = Date.now(); // Unix timestamp in milliseconds
+
+          // Check if device already exists
+          const existingDevice = await env.syncstuff_db
+            .prepare(
+              "SELECT id FROM devices WHERE user_id = ? AND device_id = ?",
+            )
+            .bind(userId, deviceId)
+            .first<{ id: string }>();
+
+          if (existingDevice) {
+            // Update existing device
+            await env.syncstuff_db
+              .prepare(
+                `UPDATE devices
+                 SET name = ?, platform = ?, metadata = ?, is_online = 1,
+                     last_seen = ?, updated_at = ?
+                 WHERE id = ?`,
+              )
+              .bind(name, platform, metadata, now, now, existingDevice.id)
+              .run();
+
+            return new Response(
+              JSON.stringify({
+                success: true,
+                message: "Device updated",
+                deviceId: existingDevice.id,
+              }),
+              { status: 200, headers },
+            );
+          } else {
+            // Insert new device - generate UUID for id
+            const newId = crypto.randomUUID();
+
+            await env.syncstuff_db
+              .prepare(
+                `INSERT INTO devices
+                 (id, user_id, device_id, name, type, platform, metadata, is_online, last_seen, created_at, updated_at)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?)`,
+              )
+              .bind(newId, userId, deviceId, name, type, platform, metadata, now, now, now)
+              .run();
+
+            return new Response(
+              JSON.stringify({
+                success: true,
+                message: "Device registered",
+                deviceId: newId,
+              }),
+              { status: 201, headers },
+            );
+          }
+        } catch (error) {
+          console.error("Device registration error:", error);
+          return new Response(
+            JSON.stringify({
+              success: false,
+              error: "Internal server error",
+              message: error instanceof Error ? error.message : "Unknown error",
+            }),
+            { status: 500, headers },
+          );
         }
       }
 
@@ -1036,7 +1161,8 @@ export default {
             "/api/auth/register",
             "/api/user/profile",
             "/api/user/settings",
-            "/api/devices",
+            "GET /api/devices",
+            "POST /api/devices/register",
             "/api/transfer",
           ],
         }),
