@@ -11,7 +11,7 @@ const _cn =
   "_dsp-flex _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-row _h-64px _ai-center _jc-space-betwe3241 _pr-t-space-4 _pl-t-space-4 _bg-background _bbw-1px _btc-borderColor _brc-borderColor _bbc-borderColor _blc-borderColor _pos-absolute _t-0px _l-0px _r-0px _zi-100 _bbs-solid ";
 
 import React from "react";
-import { Avatar, Button, XStack } from "tamagui";
+import { Button, XStack } from "tamagui";
 import { ThemeToggle } from "../ThemeToggle";
 export interface NavigationProps {
   isLoggedIn?: boolean;

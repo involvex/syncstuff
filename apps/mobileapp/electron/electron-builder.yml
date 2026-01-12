@@ -10,6 +10,7 @@ files:
   - "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}"
   - "!**/node_modules/.cache"
   - "!**/node_modules/.pnpm"
+  - "!**/node_modules/**/node_modules"
   - "!**/*.map"
   - "!**/*.md"
   - "!**/*.ts"

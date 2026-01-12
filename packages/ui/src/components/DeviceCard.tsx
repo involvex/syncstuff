@@ -5,7 +5,7 @@ const _cn =
   "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color _fos- _fow-bold ";
 
 import React from "react";
-import { Card, XStack, YStack } from "tamagui";
+import { Button, Card, XStack, YStack } from "tamagui";
 import { DeviceIcon, type DeviceType } from "../DeviceIcon";
 import { StatusBadge } from "./StatusBadge";
 export interface DeviceCardProps {

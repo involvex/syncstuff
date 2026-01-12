@@ -17,6 +17,13 @@
     },
     "./dist-cjs/tamagui.config.cjs": "./dist-cjs/tamagui.config.cjs"
   },
+  "files": [
+    "dist",
+    "dist-cjs",
+    "src",
+    "package.json",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsc && tsc --project tsconfig.cjs.json && node copy-css.mjs && node copy-config-cjs.mjs",
     "lint": "eslint .",

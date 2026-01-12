@@ -37,7 +37,7 @@ const _cn =
   "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color _fos- _fow-bold ";
 
 import React from "react";
-import { Paragraph, XStack, YStack } from "tamagui";
+import { XStack, YStack } from "tamagui";
 export function Footer() {
   return (
     <YStack

@@ -68,11 +68,7 @@ export default defineConfig({
         // Externalize the node process shim injected by node polyfills to avoid resolution errors
         if (id === "vite-plugin-node-polyfills/shims/process") return true;
         // Externalize the UI package and its built provider to avoid bundling server-only shims
-        if (
-          id === "@syncstuff/ui" ||
-          id.endsWith("/packages/ui/dist/provider.js")
-        )
-          return true;
+        if (id.endsWith("/packages/ui/dist/provider.js")) return true;
         return false;
       },
       output: {
