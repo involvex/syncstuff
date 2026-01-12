@@ -1,4 +1,12 @@
-import { app, BrowserWindow, ipcMain, Menu, Notification, nativeImage, Tray } from "electron";
+import {
+  app,
+  BrowserWindow,
+  ipcMain,
+  Menu,
+  Notification,
+  nativeImage,
+  Tray,
+} from "electron";
 import debug from "electron-debug";
 import isDev from "electron-is-dev";
 import reloader from "electron-reloader";
@@ -28,12 +36,17 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
-      preload: path.resolve(__dirname, "preload.js")
+      preload: path.resolve(__dirname, "preload.js"),
     },
-    icon: path.resolve(__dirname, process.platform === "win32" ? "../public/icon.ico" : "../public/favicon.png"),
+    icon: path.resolve(
+      __dirname,
+      process.platform === "win32"
+        ? "../public/icon.ico"
+        : "../public/favicon.png",
+    ),
     show: false,
     // Don't show until ready
-    autoHideMenuBar: false // Ensure menu bar is visible
+    autoHideMenuBar: false, // Ensure menu bar is visible
   });
   if (debug) {
     mainWindow.webContents.openDevTools();
@@ -116,7 +129,9 @@ function createWindow() {
       const notification = new Notification({
         title: options.title,
         body: options.body,
-        icon: options.icon || path.join(path.dirname(__dirname), "../public/favicon.png")
+        icon:
+          options.icon ||
+          path.join(path.dirname(__dirname), "../public/favicon.png"),
       });
       notification.show();
       if (options.onClick) {
@@ -129,7 +144,7 @@ function createWindow() {
       }
     }
     return {
-      success: true
+      success: true,
     };
   });
 
@@ -139,12 +154,12 @@ function createWindow() {
       const content = fs.readFileSync(filePath, "utf-8");
       return {
         success: true,
-        data: content
+        data: content,
       };
     } catch (error) {
       return {
         success: false,
-        error: error.message
+        error: error.message,
       };
     }
   });
@@ -152,12 +167,12 @@ function createWindow() {
     try {
       fs.writeFileSync(filePath, content, "utf-8");
       return {
-        success: true
+        success: true,
       };
     } catch (error) {
       return {
         success: false,
-        error: error.message
+        error: error.message,
       };
     }
   });
@@ -165,12 +180,12 @@ function createWindow() {
     try {
       return {
         success: true,
-        exists: fs.existsSync(filePath)
+        exists: fs.existsSync(filePath),
       };
     } catch (error) {
       return {
         success: false,
-        error: error.message
+        error: error.message,
       };
     }
   });
@@ -186,11 +201,11 @@ function createWindow() {
     if (Notification.isSupported()) {
       new Notification({
         title: "Device Connected",
-        body: `${deviceInfo.name} is now connected`
+        body: `${deviceInfo.name} is now connected`,
       }).show();
     }
     return {
-      success: true
+      success: true,
     };
   });
   ipcMain.handle("sync-device-disconnected", (event, deviceInfo) => {
@@ -200,29 +215,29 @@ function createWindow() {
     if (Notification.isSupported()) {
       new Notification({
         title: "Device Disconnected",
-        body: `${deviceInfo.name} disconnected`
+        body: `${deviceInfo.name} disconnected`,
       }).show();
     }
     return {
-      success: true
+      success: true,
     };
   });
   ipcMain.handle("sync-transfer-started", (event, transferInfo) => {
     if (Notification.isSupported()) {
       new Notification({
         title: "Transfer Started",
-        body: `Sending ${transferInfo.fileName}`
+        body: `Sending ${transferInfo.fileName}`,
       }).show();
     }
     return {
-      success: true
+      success: true,
     };
   });
   ipcMain.handle("sync-transfer-complete", (event, transferInfo) => {
     if (Notification.isSupported()) {
       const notification = new Notification({
         title: "Transfer Complete",
-        body: `${transferInfo.fileName} sent successfully`
+        body: `${transferInfo.fileName} sent successfully`,
       });
       notification.show();
       notification.on("click", () => {
@@ -233,18 +248,18 @@ function createWindow() {
       });
     }
     return {
-      success: true
+      success: true,
     };
   });
   ipcMain.handle("sync-transfer-failed", (event, transferInfo) => {
     if (Notification.isSupported()) {
       new Notification({
         title: "Transfer Failed",
-        body: `Failed to send ${transferInfo.fileName}`
+        body: `Failed to send ${transferInfo.fileName}`,
       }).show();
     }
     return {
-      success: true
+      success: true,
     };
   });
 
@@ -253,7 +268,7 @@ function createWindow() {
     // This will be implemented with electron-updater
     return {
       success: true,
-      updateAvailable: false
+      updateAvailable: false,
     };
   });
 
@@ -266,174 +281,256 @@ function createWindow() {
 function createMenu() {
   const isMac = process.platform === "darwin";
   const template = [
-  // { role: 'appMenu' }
-  ...(isMac ? [{
-    label: app.name,
-    submenu: [{
-      role: "about"
-    }, {
-      type: "separator"
-    }, {
-      role: "services"
-    }, {
-      type: "separator"
-    }, {
-      role: "hide"
-    }, {
-      role: "hideOthers"
-    }, {
-      role: "unhide"
-    }, {
-      type: "separator"
-    }, {
-      role: "quit"
-    }]
-  }] : []),
-  // { role: 'fileMenu' }
-  {
-    label: "File",
-    submenu: [{
-      label: "Sync Now",
-      click: () => {
-        if (mainWindow) mainWindow.webContents.send("trigger-sync");
-      }
-    }, {
-      type: "separator"
-    }, isMac ? {
-      role: "close"
-    } : {
-      role: "quit"
-    }]
-  },
-  // { role: 'editMenu' }
-  {
-    label: "Edit",
-    submenu: [{
-      role: "undo"
-    }, {
-      role: "redo"
-    }, {
-      type: "separator"
-    }, {
-      role: "cut"
-    }, {
-      role: "copy"
-    }, {
-      role: "paste"
-    }, ...(isMac ? [{
-      role: "pasteAndMatchStyle"
-    }, {
-      role: "delete"
-    }, {
-      role: "selectAll"
-    }, {
-      type: "separator"
-    }, {
-      label: "Speech",
-      submenu: [{
-        role: "startSpeaking"
-      }, {
-        role: "stopSpeaking"
-      }]
-    }] : [{
-      role: "delete"
-    }, {
-      type: "separator"
-    }, {
-      role: "selectAll"
-    }])]
-  },
-  // { role: 'viewMenu' }
-  {
-    label: "View",
-    submenu: [{
-      role: "reload"
-    }, {
-      role: "forceReload"
-    }, {
-      role: "toggleDevTools"
-    }, {
-      type: "separator"
-    }, {
-      role: "resetZoom"
-    }, {
-      role: "zoomIn"
-    }, {
-      role: "zoomOut"
-    }, {
-      type: "separator"
-    }, {
-      role: "togglefullscreen"
-    }]
-  },
-  // { role: 'windowMenu' }
-  {
-    label: "Window",
-    submenu: [{
-      role: "minimize"
-    }, {
-      role: "zoom"
-    }, ...(isMac ? [{
-      type: "separator"
-    }, {
-      role: "front"
-    }, {
-      type: "separator"
-    }, {
-      role: "window"
-    }] : [{
-      role: "close"
-    }])]
-  }, {
-    role: "help",
-    submenu: [{
-      label: "Learn More",
-      click: async () => {
-        const {
-          shell
-        } = await import("electron");
-        await shell.openExternal("https://syncstuff-web.involvex.workers.dev");
-      }
-    }]
-  }];
+    // { role: 'appMenu' }
+    ...(isMac
+      ? [
+          {
+            label: app.name,
+            submenu: [
+              {
+                role: "about",
+              },
+              {
+                type: "separator",
+              },
+              {
+                role: "services",
+              },
+              {
+                type: "separator",
+              },
+              {
+                role: "hide",
+              },
+              {
+                role: "hideOthers",
+              },
+              {
+                role: "unhide",
+              },
+              {
+                type: "separator",
+              },
+              {
+                role: "quit",
+              },
+            ],
+          },
+        ]
+      : []),
+    // { role: 'fileMenu' }
+    {
+      label: "File",
+      submenu: [
+        {
+          label: "Sync Now",
+          click: () => {
+            if (mainWindow) mainWindow.webContents.send("trigger-sync");
+          },
+        },
+        {
+          type: "separator",
+        },
+        isMac
+          ? {
+              role: "close",
+            }
+          : {
+              role: "quit",
+            },
+      ],
+    },
+    // { role: 'editMenu' }
+    {
+      label: "Edit",
+      submenu: [
+        {
+          role: "undo",
+        },
+        {
+          role: "redo",
+        },
+        {
+          type: "separator",
+        },
+        {
+          role: "cut",
+        },
+        {
+          role: "copy",
+        },
+        {
+          role: "paste",
+        },
+        ...(isMac
+          ? [
+              {
+                role: "pasteAndMatchStyle",
+              },
+              {
+                role: "delete",
+              },
+              {
+                role: "selectAll",
+              },
+              {
+                type: "separator",
+              },
+              {
+                label: "Speech",
+                submenu: [
+                  {
+                    role: "startSpeaking",
+                  },
+                  {
+                    role: "stopSpeaking",
+                  },
+                ],
+              },
+            ]
+          : [
+              {
+                role: "delete",
+              },
+              {
+                type: "separator",
+              },
+              {
+                role: "selectAll",
+              },
+            ]),
+      ],
+    },
+    // { role: 'viewMenu' }
+    {
+      label: "View",
+      submenu: [
+        {
+          role: "reload",
+        },
+        {
+          role: "forceReload",
+        },
+        {
+          role: "toggleDevTools",
+        },
+        {
+          type: "separator",
+        },
+        {
+          role: "resetZoom",
+        },
+        {
+          role: "zoomIn",
+        },
+        {
+          role: "zoomOut",
+        },
+        {
+          type: "separator",
+        },
+        {
+          role: "togglefullscreen",
+        },
+      ],
+    },
+    // { role: 'windowMenu' }
+    {
+      label: "Window",
+      submenu: [
+        {
+          role: "minimize",
+        },
+        {
+          role: "zoom",
+        },
+        ...(isMac
+          ? [
+              {
+                type: "separator",
+              },
+              {
+                role: "front",
+              },
+              {
+                type: "separator",
+              },
+              {
+                role: "window",
+              },
+            ]
+          : [
+              {
+                role: "close",
+              },
+            ]),
+      ],
+    },
+    {
+      role: "help",
+      submenu: [
+        {
+          label: "Learn More",
+          click: async () => {
+            const { shell } = await import("electron");
+            await shell.openExternal(
+              "https://syncstuff-web.involvex.workers.dev",
+            );
+          },
+        },
+      ],
+    },
+  ];
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
 }
 function createTray() {
   // Try icon.ico first (Windows), fallback to favicon.png
-  const iconPath = process.platform === "win32" ? path.join(__dirname, "../public/icon.ico") : path.join(__dirname, "../public/favicon.png");
+  const iconPath =
+    process.platform === "win32"
+      ? path.join(__dirname, "../public/icon.ico")
+      : path.join(__dirname, "../public/favicon.png");
   const icon = nativeImage.createFromPath(iconPath);
-  tray = new Tray(icon.resize({
-    width: 16,
-    height: 16
-  }));
-  const contextMenu = Menu.buildFromTemplate([{
-    label: "Open Dashboard",
-    click: () => {
-      if (mainWindow) {
-        mainWindow.show();
-        mainWindow.focus();
-      }
-    }
-  }, {
-    label: "Sync Now",
-    click: () => {
-      if (mainWindow) mainWindow.webContents.send("trigger-sync");
-    }
-  }, {
-    type: "separator"
-  }, {
-    label: "Connected Devices",
-    enabled: false
-  }, {
-    type: "separator"
-  }, {
-    label: "Quit Syncstuff",
-    click: () => {
-      app.isQuitting = true;
-      app.quit();
-    }
-  }]);
+  tray = new Tray(
+    icon.resize({
+      width: 16,
+      height: 16,
+    }),
+  );
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: "Open Dashboard",
+      click: () => {
+        if (mainWindow) {
+          mainWindow.show();
+          mainWindow.focus();
+        }
+      },
+    },
+    {
+      label: "Sync Now",
+      click: () => {
+        if (mainWindow) mainWindow.webContents.send("trigger-sync");
+      },
+    },
+    {
+      type: "separator",
+    },
+    {
+      label: "Connected Devices",
+      enabled: false,
+    },
+    {
+      type: "separator",
+    },
+    {
+      label: "Quit Syncstuff",
+      click: () => {
+        app.isQuitting = true;
+        app.quit();
+      },
+    },
+  ]);
   tray.setToolTip("Syncstuff");
   tray.setContextMenu(contextMenu);
 

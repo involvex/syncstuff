@@ -3,8 +3,7 @@ const _cn =
   "_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 ";
 
 import React from "react";
-import { styled, Text, XStack } from "tamagui";
-import { Link } from "react-router-dom";
+import { XStack } from "tamagui";
 
 export interface SidebarItemProps {
   icon?: React.ReactNode;

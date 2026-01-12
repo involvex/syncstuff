@@ -1,4 +1,4 @@
-/* eslint-disable  */
+ 
 // /* biome-ignore lint: reasonbiome(suppressions/unused) */
 /**
  * Shared TypeScript types for Involvex

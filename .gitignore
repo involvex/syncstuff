@@ -119,3 +119,5 @@ apps/desktop/.npmrc
 .gemini
 .kilocode
 apps/web/dev.err
+apps/web/dev.err
+apps/web/*.err

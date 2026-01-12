@@ -31,12 +31,14 @@ export default defineConfig(async () => {
     } catch (resolveErr) {
       // If we can't resolve the built file, fall back to the local generated CJS
       // config path for local package dev.
+      console.warn("Could not resolve built Tamagui config CJS file, falling back to local path:", resolveErr);
       tamaguiConfigOrPath = path.resolve(
         process.cwd(),
         "../../packages/ui/.tamagui/tamagui.config.cjs",
       );
     }
   } catch (err) {
+    console.warn("Error resolving Tamagui config CJS file, falling back to local path:", err);
     tamaguiConfigOrPath = path.resolve(
       process.cwd(),
       "../../packages/ui/.tamagui/tamagui.config.cjs",
@@ -69,7 +71,50 @@ export default defineConfig(async () => {
           server.middlewares.use(async (req: any, res: any, next: any) => {
             try {
               if (!req.url) return next();
-              const rawUrl = decodeURIComponent(req.url.split("?")[0]);
+              const rawUrl = req.url;
+              const pathname = rawUrl.split("?")[0];
+
+              // Handle /@fs/ requests that might be falling through to Remix
+              if (pathname.startsWith("/@fs/")) {
+                const fsPath = pathname.slice(4); // Remove /@fs
+                // If it's a sourcemap request that failed standard Vite handling
+                if (pathname.endsWith(".map")) {
+                   res.setHeader("Content-Type", "application/json");
+                   res.end(JSON.stringify({ version: 3, file: path.basename(fsPath), sources: [], names: [], mappings: "" }));
+                   return;
+                }
+                
+                // For other /@fs/ requests, if Vite didn't handle it, it might be a missing file.
+                // We return 404 here to stop Remix from trying to render a route
+                // But first check if it exists
+                try {
+                    let realPath = fsPath;
+                    // On Windows, /@fs/D:/... might come in as /@fs/D:/...
+                    if (process.platform === 'win32' && /^\/[a-zA-Z]:/.test(fsPath)) {
+                        realPath = fsPath.slice(1);
+                    }
+                    
+                    try {
+                        await fsPromises.access(realPath);
+                        // If it exists, let Vite handle it (call next)
+                        // But wait, if we are here, maybe Vite *already* missed it?
+                        // Let's try to serve it manually if it's a source file
+                        if (/\.(ts|tsx|js|mjs|cjs|jsx)$/.test(realPath)) {
+                             const content = await fsPromises.readFile(realPath, 'utf-8');
+                             res.setHeader("Content-Type", "application/javascript"); // Or correct mime
+                             res.end(content);
+                             return;
+                        }
+                    } catch (e) {
+                        // File doesn't exist
+                        res.statusCode = 404;
+                        res.end("Not found");
+                        return;
+                    }
+                } catch(e) {
+                    // ignore
+                }
+              }
 
               // Intercept .map requests for Tamagui packages and patch missing sources
               if (rawUrl.endsWith('.map') && rawUrl.includes('@tamagui')) {
@@ -98,11 +143,13 @@ export default defineConfig(async () => {
                         try {
                           mapJson.sourcesContent[i] = await fsPromises.readFile(candidate, 'utf8');
                         } catch (_e) {
+                          console.error('Error reading source file for sourcemap:', candidate, _e);
                           mapJson.sourcesContent[i] = '/* source not available */';
                         }
                       }
                     } catch (_e) {
                       // Missing source, provide stub
+                      console.error('Missing source file for sourcemap:', candidate, _e);
                       mapJson.sourcesContent[i] = mapJson.sourcesContent[i] ?? '/* source not available */';
                     }
                   }
@@ -113,6 +160,7 @@ export default defineConfig(async () => {
                   return;
                 } catch (err) {
                   // If patching fails, continue to next middleware
+                  console.error("Error patching sourcemap:", err);
                 }
               }
 
@@ -125,6 +173,7 @@ export default defineConfig(async () => {
                 }
               }
             } catch (err) {
+              console.error("dev-fs-and-well-known error:", err);
               // ignore and continue
             }
             next();

@@ -9,7 +9,7 @@
   "type": "module",
   "scripts": {
     "start": "electron .",
-    "build": "cross-env NODE_OPTIONS=--max-old-space-size=16384 npm exec electron-builder -- --config.asar=false",
+    "build": "cross-env NODE_OPTIONS=--max-old-space-size=16384 electron-builder --config.asar=true",
     "dev": "electron . --dev",
     "postinstall": "electron-builder install-app-deps"
   },

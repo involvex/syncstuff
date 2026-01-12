@@ -1,6 +1,6 @@
+import type { LoaderArgs } from "@remix-run/cloudflare";
 import { promises as fs } from "fs";
 import path from "path";
-import type { LoaderArgs } from "@remix-run/cloudflare";
 
 const MIME_BY_EXT: Record<string, string> = {
   ".ts": "application/typescript; charset=utf-8",
@@ -49,6 +49,7 @@ export async function loader({ params }: LoaderArgs) {
       },
     });
   } catch (err) {
+    console.error("Error reading file in dev fs loader:", err);
     return new Response("Not Found", { status: 404 });
   }
 }

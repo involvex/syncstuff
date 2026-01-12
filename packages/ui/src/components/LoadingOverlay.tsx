@@ -5,7 +5,7 @@ const _cn =
   "_dsp-flex _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _pos-absolute _t-0px _r-0px _b-0px _l-0px _bg-rgba0000--538295333 _zi-1000 _ai-center _jc-center ";
 
 import React from "react";
-import { Spinner, Stack, Text, YStack } from "tamagui";
+import { Spinner, YStack } from "tamagui";
 export interface LoadingOverlayProps {
   message?: string;
 }

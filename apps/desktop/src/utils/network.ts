@@ -165,7 +165,7 @@ class NetworkScanner {
     deviceName: string,
     port: number,
     platform = "cli",
-  ): NodeJS.Timer {
+  ): ReturnType<typeof setInterval> {
     const socket = createSocket({ type: "udp4", reuseAddr: true });
 
     socket.bind(() => {

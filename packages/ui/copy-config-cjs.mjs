@@ -21,13 +21,26 @@ if (!shouldGenerate && existsSync(source)) {
       shouldGenerate = true;
     }
   } catch (_e) {
+    console.log('error reading', source, _e);
     shouldGenerate = true;
   }
 }
 
 if (existsSync(source) && !shouldGenerate) {
-  copyFileSync(source, dest);
-  console.log(`✓ Copied ${source} to ${dest}`);
+  try {
+    copyFileSync(source, dest);
+    console.log(`✓ Copied ${source} to ${dest}`);
+  } catch (err) {
+    // Retry once after a short delay if copy fails (e.g. file locked)
+    if (err.code === 'EBUSY' || err.code === 'UNKNOWN' || err.errno === -4094) {
+      console.warn(`⚠ Copy failed, retrying in 500ms...`);
+      await new Promise(r => setTimeout(r, 500));
+      copyFileSync(source, dest);
+      console.log(`✓ Copied ${source} to ${dest} (retry success)`);
+    } else {
+      throw err;
+    }
+  }
 } else {
   // If the CJS file is missing or empty, but a JSON representation exists or we're
   // generating in dev, generate a CJS wrapper so Tamagui's static worker can load it during dev/build.
@@ -60,9 +73,22 @@ if (existsSync(source) && !shouldGenerate) {
 
     const compactStr = JSON.stringify(compact);
     const wrapper = `const { createTamagui } = require('tamagui');\nconst cfg = ${compactStr};\nconst tamaguiConfig = createTamagui(cfg);\nmodule.exports = tamaguiConfig;\nmodule.exports.tamaguiConfig = tamaguiConfig;\nmodule.exports.default = tamaguiConfig;\n`;
-    writeFileSync(source, wrapper);
-    copyFileSync(source, dest);
-    console.log(`✓ Generated compact CJS ${source} and copied to ${dest}`);
+    
+    try {
+        writeFileSync(source, wrapper);
+        copyFileSync(source, dest);
+        console.log(`✓ Generated compact CJS ${source} and copied to ${dest}`);
+    } catch (err) {
+        if (err.code === 'EBUSY' || err.code === 'UNKNOWN' || err.errno === -4094) {
+             console.warn(`⚠ Write/Copy failed, retrying in 500ms...`);
+             await new Promise(r => setTimeout(r, 500));
+             writeFileSync(source, wrapper);
+             copyFileSync(source, dest);
+             console.log(`✓ Generated compact CJS ${source} and copied to ${dest} (retry success)`);
+        } else {
+            throw err;
+        }
+    }
   } else {
     console.warn(`⚠ Source file not found: ${source}`);
     console.warn("  Run the build first to generate .tamagui/tamagui.config.cjs");

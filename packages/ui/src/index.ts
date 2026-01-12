@@ -4,7 +4,6 @@ export {
   createTamagui,
   Dialog,
   Form,
-  type GetProps,
   Group,
   H1,
   H2,
@@ -21,7 +20,6 @@ export {
   Spacer,
   Stack,
   styled,
-  type TamaguiInternalConfig,
   TamaguiProvider,
   Text,
   Theme,
@@ -33,6 +31,7 @@ export {
   YStack,
   ZStack,
 } from "tamagui";
+export type { GetProps, TamaguiInternalConfig } from "tamagui";
 export * from "./Avatar.js";
 export * from "./Button.js";
 export * from "./Card.js";

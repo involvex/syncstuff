@@ -1,0 +1,13 @@
+import tseslint from "typescript-eslint";
+import rootConfig from "../../eslint.config.js";
+
+export default tseslint.config(...rootConfig, {
+  files: ["src/**/*.ts"],
+  languageOptions: {
+    parser: tseslint.parser,
+    parserOptions: {
+      project: "./tsconfig.json",
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+});
