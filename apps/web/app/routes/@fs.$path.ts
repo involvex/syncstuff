@@ -1,4 +1,4 @@
-import type { LoaderArgs } from "@remix-run/cloudflare";
+import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
 import { promises as fs } from "fs";
 import path from "path";
 
@@ -19,7 +19,7 @@ const MIME_BY_EXT: Record<string, string> = {
   ".html": "text/html; charset=utf-8",
 };
 
-export async function loader({ params }: LoaderArgs) {
+export async function loader({ params }: LoaderFunctionArgs) {
   // Only serve in development.
   if (process.env.NODE_ENV !== "development") {
     return new Response("Not Found", { status: 404 });

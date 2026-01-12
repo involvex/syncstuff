@@ -262,7 +262,7 @@ export default defineConfig(async () => {
     },
     build: {
       minify: false,
-      sourcemap: true,
+      sourcemap: false,
       copyPublicDir: true,
       outDir: "build",
       assetsDir: "assets",

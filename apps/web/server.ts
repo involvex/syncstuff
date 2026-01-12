@@ -1,5 +1,5 @@
 import { createRequestHandler, type ServerBuild } from "@remix-run/cloudflare";
-import * as build from "./build/server/index.js";
+import * as  build from "./build/server/index.js";
 import { getLoadContext } from "./load-context";
 
 const handleRemixRequest = createRequestHandler(build as any as ServerBuild);
