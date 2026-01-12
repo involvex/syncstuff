@@ -7,7 +7,6 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 import { Provider } from "@syncstuff/ui";
-import { ClientOnly } from "./components/ClientOnly";
 
 import React from "react";
 import "./tailwind.css";
@@ -49,11 +48,27 @@ import { isRouteErrorResponse, useRouteError } from "@remix-run/react";
 export function ErrorBoundary() {
   const error = useRouteError();
   console.error("Root ErrorBoundary:", error);
-  
+
   return (
-    <div style={{ padding: 20, background: 'darkred', color: 'white', fontFamily: 'system-ui', minHeight: '100vh' }}>
+    <div
+      style={{
+        padding: 20,
+        background: "darkred",
+        color: "white",
+        fontFamily: "system-ui",
+        minHeight: "100vh",
+      }}
+    >
       <h1>Application Error</h1>
-      <pre style={{ whiteSpace: 'pre-wrap', marginTop: 10, background: 'rgba(0,0,0,0.2)', padding: 10, borderRadius: 4 }}>
+      <pre
+        style={{
+          whiteSpace: "pre-wrap",
+          marginTop: 10,
+          background: "rgba(0,0,0,0.2)",
+          padding: 10,
+          borderRadius: 4,
+        }}
+      >
         {error instanceof Error
           ? error.message + "\n" + error.stack
           : "Unknown error"}
