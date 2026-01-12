@@ -27,7 +27,7 @@
     "allowJs": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
+    // "baseUrl": ".",
     "paths": {
       "~/*": ["./app/*"],
       "@syncstuff/ui": ["../../packages/ui/src/index.ts"],

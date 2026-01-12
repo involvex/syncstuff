@@ -1,8 +1,5 @@
 "use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.Footer = Footer;
 const jsx_runtime_1 = require("react/jsx-runtime");
 require("./_Footer.css");
@@ -26,91 +23,6 @@ const _cn2 = "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-
 const _cn = "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color _fos- _fow-bold ";
 const tamagui_1 = require("tamagui");
 function Footer() {
-  return (0, jsx_runtime_1.jsxs)(tamagui_1.YStack, {
-    backgroundColor: "$background",
-    borderColor: "$borderColor",
-    borderTopWidth: 1,
-    paddingHorizontal: "$4",
-    paddingVertical: "$8",
-    space: "$4",
-    children: [(0, jsx_runtime_1.jsxs)(tamagui_1.XStack, {
-      flexWrap: "wrap",
-      justifyContent: "space-between",
-      space: "$4",
-      children: [(0, jsx_runtime_1.jsxs)(tamagui_1.YStack, {
-        minWidth: 200,
-        space: "$2",
-        children: [(0, jsx_runtime_1.jsx)("span", {
-          className: _cn,
-          children: "Syncstuff"
-        }), (0, jsx_runtime_1.jsx)("span", {
-          className: _cn2,
-          children: "Synchronize your files and clipboard across all your devices."
-        })]
-      }), (0, jsx_runtime_1.jsxs)(tamagui_1.XStack, {
-        flexWrap: "wrap",
-        space: "$8",
-        children: [(0, jsx_runtime_1.jsxs)(tamagui_1.YStack, {
-          space: "$2",
-          children: [(0, jsx_runtime_1.jsx)("span", {
-            className: _cn3,
-            children: "Product"
-          }), (0, jsx_runtime_1.jsx)("span", {
-            className: _cn4,
-            children: "Features"
-          }), (0, jsx_runtime_1.jsx)("span", {
-            className: _cn5,
-            children: "Downloads"
-          }), (0, jsx_runtime_1.jsx)("span", {
-            className: _cn6,
-            children: "Premium"
-          }), (0, jsx_runtime_1.jsx)("span", {
-            className: _cn7,
-            children: "Campaigns"
-          })]
-        }), (0, jsx_runtime_1.jsxs)(tamagui_1.YStack, {
-          space: "$2",
-          children: [(0, jsx_runtime_1.jsx)("span", {
-            className: _cn8,
-            children: "Company"
-          }), (0, jsx_runtime_1.jsx)("span", {
-            className: _cn9,
-            children: "About"
-          }), (0, jsx_runtime_1.jsx)("span", {
-            className: _cn0,
-            children: "Blog"
-          }), (0, jsx_runtime_1.jsx)("span", {
-            className: _cn1,
-            children: "FAQ"
-          }), (0, jsx_runtime_1.jsx)("span", {
-            className: _cn10,
-            children: "Contact"
-          })]
-        }), (0, jsx_runtime_1.jsxs)(tamagui_1.YStack, {
-          space: "$2",
-          children: [(0, jsx_runtime_1.jsx)("span", {
-            className: _cn11,
-            children: "Legal"
-          }), (0, jsx_runtime_1.jsx)("span", {
-            className: _cn12,
-            children: "Privacy"
-          }), (0, jsx_runtime_1.jsx)("span", {
-            className: _cn13,
-            children: "Terms"
-          })]
-        })]
-      })]
-    }), (0, jsx_runtime_1.jsx)("div", {
-      className: _cn14
-    }), (0, jsx_runtime_1.jsxs)("div", {
-      className: _cn15,
-      children: [(0, jsx_runtime_1.jsxs)("span", {
-        className: _cn16,
-        children: ["\u00A9 ", new Date().getFullYear(), " Involvex. All rights reserved."]
-      }), (0, jsx_runtime_1.jsx)(tamagui_1.XStack, {
-        space: "$4"
-      })]
-    })]
-  });
+    return ((0, jsx_runtime_1.jsxs)(tamagui_1.YStack, { backgroundColor: "$background", borderColor: "$borderColor", borderTopWidth: 1, paddingHorizontal: "$4", paddingVertical: "$8", space: "$4", children: [(0, jsx_runtime_1.jsxs)(tamagui_1.XStack, { flexWrap: "wrap", justifyContent: "space-between", space: "$4", children: [(0, jsx_runtime_1.jsxs)(tamagui_1.YStack, { minWidth: 200, space: "$2", children: [(0, jsx_runtime_1.jsx)("span", { className: _cn, children: "Syncstuff" }), (0, jsx_runtime_1.jsx)("span", { className: _cn2, children: "Synchronize your files and clipboard across all your devices." })] }), (0, jsx_runtime_1.jsxs)(tamagui_1.XStack, { flexWrap: "wrap", space: "$8", children: [(0, jsx_runtime_1.jsxs)(tamagui_1.YStack, { space: "$2", children: [(0, jsx_runtime_1.jsx)("span", { className: _cn3, children: "Product" }), (0, jsx_runtime_1.jsx)("span", { className: _cn4, children: "Features" }), (0, jsx_runtime_1.jsx)("span", { className: _cn5, children: "Downloads" }), (0, jsx_runtime_1.jsx)("span", { className: _cn6, children: "Premium" }), (0, jsx_runtime_1.jsx)("span", { className: _cn7, children: "Campaigns" })] }), (0, jsx_runtime_1.jsxs)(tamagui_1.YStack, { space: "$2", children: [(0, jsx_runtime_1.jsx)("span", { className: _cn8, children: "Company" }), (0, jsx_runtime_1.jsx)("span", { className: _cn9, children: "About" }), (0, jsx_runtime_1.jsx)("span", { className: _cn0, children: "Blog" }), (0, jsx_runtime_1.jsx)("span", { className: _cn1, children: "FAQ" }), (0, jsx_runtime_1.jsx)("span", { className: _cn10, children: "Contact" })] }), (0, jsx_runtime_1.jsxs)(tamagui_1.YStack, { space: "$2", children: [(0, jsx_runtime_1.jsx)("span", { className: _cn11, children: "Legal" }), (0, jsx_runtime_1.jsx)("span", { className: _cn12, children: "Privacy" }), (0, jsx_runtime_1.jsx)("span", { className: _cn13, children: "Terms" })] })] })] }), (0, jsx_runtime_1.jsx)("div", { className: _cn14 }), (0, jsx_runtime_1.jsxs)("div", { className: _cn15, children: [(0, jsx_runtime_1.jsxs)("span", { className: _cn16, children: ["\u00A9 ", new Date().getFullYear(), " Involvex. All rights reserved."] }), (0, jsx_runtime_1.jsx)(tamagui_1.XStack, { space: "$4" })] })] }));
 }
 //# sourceMappingURL=Footer.js.map

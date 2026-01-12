@@ -162,13 +162,7 @@ export default defineConfig(async () => {
       noExternal: [
         "@syncstuff/ui",
         "tamagui",
-        "@tamagui/core",
-        "@tamagui/web",
-        "@tamagui/lucide-icons",
-        "@tamagui/themes",
-        "@tamagui/config",
-        "@tamagui/font-silkscreen",
-        "@tamagui/font-inter",
+        /^@tamagui\/.*/,
       ],
       external: ["react-native-svg", "react-native"],
       resolve: {
@@ -176,7 +170,10 @@ export default defineConfig(async () => {
       },
     },
     optimizeDeps: {
-      include: [
+      include: [],
+      exclude: [
+        "react-native-svg",
+        "react-native",
         "tamagui",
         "@tamagui/core",
         "@tamagui/web",
@@ -184,7 +181,6 @@ export default defineConfig(async () => {
         "@tamagui/lucide-icons",
         "@tamagui/themes",
       ],
-      exclude: ["react-native-svg", "react-native"],
     },
     resolve: {
       mainFields: ["browser", "module", "main"],
@@ -204,10 +200,6 @@ export default defineConfig(async () => {
       alias: {
         "react-native": "react-native-web",
         "react-native-svg": "./react-native-svg-stub.js",
-        "tamagui": path.resolve(__dirname, "node_modules/tamagui"),
-        "@tamagui/core": path.resolve(__dirname, "node_modules/@tamagui/core"),
-        "@tamagui/web": path.resolve(__dirname, "node_modules/@tamagui/web"),
-        "@tamagui/config": path.resolve(__dirname, "node_modules/@tamagui/config"),
       },
     },
     server: {

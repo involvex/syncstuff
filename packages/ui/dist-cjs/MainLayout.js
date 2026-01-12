@@ -1,8 +1,5 @@
 "use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.MainLayout = MainLayout;
 const jsx_runtime_1 = require("react/jsx-runtime");
 require("./_MainLayout.css");
@@ -12,47 +9,9 @@ const _cn2 = "_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-
 const _cn = "_dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-row _pos-absolute _t-0px _r-0px _b-0px _l-0px _bg-background ";
 const tamagui_1 = require("tamagui");
 const ThemeToggle_1 = require("./ThemeToggle");
-function MainLayout({
-  children,
-  sidebar,
-  header,
-  title
-}) {
-  return (0, jsx_runtime_1.jsxs)("div", {
-    className: _cn,
-    children: [sidebar && (0, jsx_runtime_1.jsx)(tamagui_1.YStack, {
-      "$sm": {
-        display: "none"
-      },
-      backgroundColor: "$surface",
-      borderColor: "$borderColor",
-      borderRightWidth: 1,
-      width: 280,
-      children: sidebar
-    }), (0, jsx_runtime_1.jsxs)("div", {
-      className: _cn2,
-      children: [(0, jsx_runtime_1.jsxs)("div", {
-        className: _cn3,
-        children: [(0, jsx_runtime_1.jsxs)(tamagui_1.XStack, {
-          alignItems: "center",
-          space: "$4",
-          children: [title && (0, jsx_runtime_1.jsx)("span", {
-            className: _cn4,
-            children: title
-          }), header]
-        }), (0, jsx_runtime_1.jsx)(ThemeToggle_1.ThemeToggle, {})]
-      }), (0, jsx_runtime_1.jsx)(tamagui_1.ScrollView, {
-        flex: 1,
-        children: (0, jsx_runtime_1.jsx)(tamagui_1.YStack, {
-          marginHorizontal: "auto",
-          maxWidth: 1200,
-          padding: "$4",
-          space: "$4",
-          width: "100%",
-          children: children
-        })
-      })]
-    })]
-  });
+function MainLayout({ children, sidebar, header, title, }) {
+    return ((0, jsx_runtime_1.jsxs)("div", { className: _cn, children: [sidebar && ((0, jsx_runtime_1.jsx)(tamagui_1.YStack, { "$sm": {
+                    display: "none",
+                }, backgroundColor: "$surface", borderColor: "$borderColor", borderRightWidth: 1, width: 280, children: sidebar })), (0, jsx_runtime_1.jsxs)("div", { className: _cn2, children: [(0, jsx_runtime_1.jsxs)("div", { className: _cn3, children: [(0, jsx_runtime_1.jsxs)(tamagui_1.XStack, { alignItems: "center", space: "$4", children: [title && (0, jsx_runtime_1.jsx)("span", { className: _cn4, children: title }), header] }), (0, jsx_runtime_1.jsx)(ThemeToggle_1.ThemeToggle, {})] }), (0, jsx_runtime_1.jsx)(tamagui_1.ScrollView, { flex: 1, children: (0, jsx_runtime_1.jsx)(tamagui_1.YStack, { marginHorizontal: "auto", maxWidth: 1200, padding: "$4", space: "$4", width: "100%", children: children }) })] })] }));
 }
 //# sourceMappingURL=MainLayout.js.map

@@ -14,8 +14,8 @@ const _cn2 =
 const _cn =
   "_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-1 _fd-column _fg-1 ";
 
-import type React from "react";
-import { Card, Stack, styled, Text, XStack, YStack } from "tamagui";
+import React from "react";
+import { Card, Stack, styled, XStack } from "tamagui";
 export interface StatCardProps {
   title: string;
   value: string | number;

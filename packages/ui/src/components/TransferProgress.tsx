@@ -13,7 +13,7 @@ const _cn =
   "_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-row _jc-space-betwe3241 ";
 
 import React from "react";
-import { Progress, Text, XStack, YStack } from "tamagui";
+import { Progress, YStack } from "tamagui";
 export interface TransferProgressProps {
   fileName: string;
   progress: number; // 0 to 100

@@ -9,11 +9,12 @@
   "type": "module",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder",
+    "build": "cross-env NODE_OPTIONS=--max-old-space-size=16384 npm exec electron-builder -- --config.asar=false",
     "dev": "electron . --dev",
     "postinstall": "electron-builder install-app-deps"
   },
   "devDependencies": {
+    "cross-env": "7.0.3",
     "electron": "^39.2.7",
     "electron-builder": "^26.4.0",
     "electron-is-dev": "^3.0.1"

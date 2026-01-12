@@ -8,11 +8,12 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "require": "./dist/index.js"
+      "require": "./dist-cjs/index.js"
     },
     "./tamagui.config": {
       "types": "./dist/tamagui.config.d.ts",
-      "import": "./dist/tamagui.config.js"
+      "import": "./dist/tamagui.config.js",
+      "require": "./dist-cjs/tamagui.config.js"
     },
     "./dist-cjs/tamagui.config.cjs": "./dist-cjs/tamagui.config.cjs"
   },
@@ -30,6 +31,7 @@
     "@tamagui/themes": "^1.144.1",
     "@tamagui/web": "^1.144.1",
     "lucide-react": "^0.479.0",
+    "react-router-dom": "^5.3.4",
     "tamagui": "^1.144.1"
   },
   "peerDependencies": {
@@ -43,6 +45,7 @@
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "@types/react-native": "^0.73.0",
+    "@types/react-router-dom": "5.3.3",
     "eslint": "9.39.2",
     "glob": "13.0.0",
     "globals": "17.0.0",

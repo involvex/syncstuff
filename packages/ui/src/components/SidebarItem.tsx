@@ -2,8 +2,10 @@ import "./_SidebarItem.css";
 const _cn =
   "_dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 ";
 
-import type React from "react";
-import { styled, Text, View, XStack } from "tamagui";
+import React from "react";
+import { styled, Text, XStack } from "tamagui";
+import { Link } from "react-router-dom";
+
 export interface SidebarItemProps {
   icon?: React.ReactNode;
   label: string;

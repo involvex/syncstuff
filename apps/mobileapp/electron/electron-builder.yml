@@ -7,9 +7,13 @@ executableName: "Syncstuff"
 files:
   - "main.js"
   - "preload.js"
-  - "node_modules/**/*"
-  - "!node_modules/@syncstuff/**"
-  - "!node_modules/@involvex/**"
+  - "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}"
+  - "!**/node_modules/.cache"
+  - "!**/node_modules/.pnpm"
+  - "!**/*.map"
+  - "!**/*.md"
+  - "!**/*.ts"
+  - "!**/*.tsx"
 
 extraResources:
   - from: "../dist"

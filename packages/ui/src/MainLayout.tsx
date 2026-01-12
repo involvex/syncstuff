@@ -9,7 +9,7 @@ const _cn =
   "_dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-row _pos-absolute _t-0px _r-0px _b-0px _l-0px _bg-background ";
 
 import type React from "react";
-import { ScrollView, XStack, YStack } from "tamagui";
+import { ScrollView, Text, XStack, YStack } from "tamagui";
 import { ThemeToggle } from "./ThemeToggle";
 export interface MainLayoutProps {
   children: React.ReactNode;

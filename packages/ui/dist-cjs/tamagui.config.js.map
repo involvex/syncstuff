@@ -1,1 +1,1 @@
-{"version":3,"file":"tamagui.config.js","sourceRoot":"","sources":["../src/tamagui.config.ts"],"names":[],"mappings":";;;AAAA,2CAA4C;AAC5C,qCAAwC;AAE3B,QAAA,aAAa,GAAG,IAAA,uBAAa,EAAC,WAAM,CAAC,CAAC;AASnD,kBAAe,qBAAa,CAAC"}
+{"version":3,"file":"tamagui.config.js","sourceRoot":"","sources":["../src/tamagui.config.ts"],"names":[],"mappings":";;;AAAA,2CAA4C;AAC5C,qCAAwC;AAExC,OAAO,CAAC,GAAG,CAAC,4BAA4B,CAAC,CAAC;AAC7B,QAAA,aAAa,GAAG,IAAA,uBAAa,EAAC,WAAM,CAAC,CAAC;AACnD,OAAO,CAAC,GAAG,CAAC,qCAAqC,CAAC,CAAC;AASnD,kBAAe,qBAAa,CAAC"}

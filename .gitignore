@@ -117,3 +117,5 @@ apps/desktop/.npmrc
 .turbo
 
 .gemini
+.kilocode
+apps/web/dev.err
