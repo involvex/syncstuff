@@ -1,0 +1,6 @@
+
+> @syncstuff/web@0.0.1 dev /app/apps/web
+> cross-env NODE_OPTIONS=--max-old-space-size=8192 remix vite:dev
+
+  ➜  Local:   http://localhost:3030/
+  ➜  Network: http://192.168.0.2:3030/

@@ -151,8 +151,8 @@ const SettingsPage: React.FC = () => {
                   </Text>
                   <Button
                     onPress={() => window.open(pkg.repository.url, "_blank")}
-                    size="$2"
-                    variant="outlined"
+                    size="sm"
+                    variant="outline"
                   >
                     View Repository
                   </Button>
