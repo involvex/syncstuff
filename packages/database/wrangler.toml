@@ -1,8 +1,0 @@
-name = "syncstuff-db"
-compatibility_date = "2024-01-01"
-
-[[d1_databases]]
-binding = "syncstuff_db"
-database_name = "syncstuff-db"
-database_id = "94e9ef8c-2032-4ee5-9a97-b6280eab0957"
-migrations_dir = "migrations"
