@@ -29,6 +29,8 @@
     "@syncstuff/ui": "workspace:*",
     "@tailwindcss/vite": "4.1.18",
     "@types/eslint-plugin-tailwindcss": "3.17.0",
+    "@types/react-google-recaptcha": "^2.1.9",
+    "@types/uuid": "11.0.0",
     "class-variance-authority": "0.7.0",
     "clsx": "2.1.1",
     "eslint-plugin-tailwind": "0.2.1",
@@ -40,9 +42,11 @@
     "prettier": "3.7.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-google-recaptcha": "^3.1.0",
     "react-native-web": "0.21.2",
     "tailwind-merge": "2.5.2",
     "typescript-eslint": "8.52.0",
+    "uuid": "13.0.0",
     "vite-plugin-external": "6.2.2"
   },
   "devDependencies": {

@@ -15,7 +15,7 @@ export default function Navigation({ isLoggedIn = false }: NavigationProps) {
     <nav className="bg-surface/80 border-outlineVariant sticky start-0 top-0 z-50 w-full border-b backdrop-blur-md">
       <div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
         <Link
-          className="flex items-center space-x-3 rtl:space-x-reverse"
+          className="flex shrink-0 items-center space-x-3 rtl:space-x-reverse"
           to="/"
         >
           <img
@@ -28,9 +28,6 @@ export default function Navigation({ isLoggedIn = false }: NavigationProps) {
             className="hidden h-8 dark:block"
             src="/logo-dark.png"
           />
-          {/* <span className="self-center whitespace-nowrap text-2xl font-bold tracking-tight dark:text-white">
-            Syncstuff
-          </span> */}
         </Link>
 
         <div className="flex items-center space-x-2 md:order-2 md:space-x-4 rtl:space-x-reverse">
@@ -80,7 +77,7 @@ export default function Navigation({ isLoggedIn = false }: NavigationProps) {
 
         <div
           className={`w-full items-center justify-between md:order-1 md:flex md:w-auto ${
-            isMenuOpen ? "block" : "hidden"
+            isMenuOpen ? "absolute left-0 top-full block bg-white/95 px-4 pb-4 shadow-lg backdrop-blur-md dark:bg-gray-900/95 md:relative md:top-auto md:bg-transparent md:p-0 md:shadow-none md:backdrop-blur-none" : "hidden"
           }`}
           id="navbar-sticky"
         >
@@ -88,6 +85,7 @@ export default function Navigation({ isLoggedIn = false }: NavigationProps) {
             <li>
               <Link
                 className="text-onSurface hover:bg-surfaceVariant/50 md:hover:text-primary block rounded-lg px-3 py-2 transition-colors md:p-0 md:hover:bg-transparent"
+                onClick={() => setIsMenuOpen(false)}
                 to="/"
               >
                 Home
@@ -96,6 +94,7 @@ export default function Navigation({ isLoggedIn = false }: NavigationProps) {
             <li>
               <Link
                 className="text-onSurface hover:bg-surfaceVariant/50 md:hover:text-primary block rounded-lg px-3 py-2 transition-colors md:p-0 md:hover:bg-transparent"
+                onClick={() => setIsMenuOpen(false)}
                 to="/about"
               >
                 About
@@ -104,6 +103,7 @@ export default function Navigation({ isLoggedIn = false }: NavigationProps) {
             <li>
               <Link
                 className="text-onSurface hover:bg-surfaceVariant/50 md:hover:text-primary block rounded-lg px-3 py-2 transition-colors md:p-0 md:hover:bg-transparent"
+                onClick={() => setIsMenuOpen(false)}
                 to="/premium"
               >
                 Premium
@@ -112,6 +112,7 @@ export default function Navigation({ isLoggedIn = false }: NavigationProps) {
             <li>
               <Link
                 className="text-onSurface hover:bg-surfaceVariant/50 md:hover:text-primary block rounded-lg px-3 py-2 transition-colors md:p-0 md:hover:bg-transparent"
+                onClick={() => setIsMenuOpen(false)}
                 to="/campaigns"
               >
                 Campaigns
@@ -120,6 +121,7 @@ export default function Navigation({ isLoggedIn = false }: NavigationProps) {
             <li>
               <Link
                 className="text-onSurface hover:bg-surfaceVariant/50 md:hover:text-primary block rounded-lg px-3 py-2 transition-colors md:p-0 md:hover:bg-transparent"
+                onClick={() => setIsMenuOpen(false)}
                 to="/faq"
               >
                 FAQs
@@ -129,6 +131,7 @@ export default function Navigation({ isLoggedIn = false }: NavigationProps) {
               <li>
                 <Link
                   className="text-onSurface hover:bg-surfaceVariant/50 md:hover:text-primary block rounded-lg px-3 py-2 transition-colors md:p-0 md:hover:bg-transparent"
+                  onClick={() => setIsMenuOpen(false)}
                   to="/dashboard/settings"
                 >
                   Settings
@@ -138,6 +141,7 @@ export default function Navigation({ isLoggedIn = false }: NavigationProps) {
             <li>
               <Link
                 className="text-onSurface hover:bg-surfaceVariant/50 md:hover:text-primary block rounded-lg px-3 py-2 transition-colors md:p-0 md:hover:bg-transparent"
+                onClick={() => setIsMenuOpen(false)}
                 to="/contact"
               >
                 Contact

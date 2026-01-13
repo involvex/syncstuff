@@ -147,7 +147,7 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
               <Button
                 flex={1}
                 onPress={() => onPair(device)}
-                size="$3"
+                size="sm"
                 theme="blue"
               >
                 Pair
@@ -157,7 +157,7 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
               <Button
                 flex={1}
                 onPress={() => onConnect(device.id)}
-                size="$3"
+                size="sm"
                 theme="blue"
               >
                 Connect
@@ -167,8 +167,8 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
               <Button
                 icon={<Text>📎</Text>}
                 onPress={triggerFileSelect}
-                size="$3"
-                variant="outlined"
+                size="sm"
+                variant="outline"
               >
                 File
               </Button>
@@ -176,8 +176,8 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
             {isPaired && onPing && (
               <Button
                 onPress={() => onPing(device.id)}
-                size="$3"
-                variant="outlined"
+                size="sm"
+                variant="outline"
               >
                 Ping
               </Button>
@@ -185,8 +185,8 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
             {isPaired && onRing && (
               <Button
                 onPress={() => onRing(device.id)}
-                size="$3"
-                variant="outlined"
+                size="sm"
+                variant="outline"
               >
                 🔔
               </Button>
@@ -194,9 +194,9 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
             {isPaired && onUnpair && (
               <Button
                 onPress={() => onUnpair(device.id)}
-                size="$3"
+                size="sm"
                 theme="red"
-                variant="outlined"
+                variant="outline"
               >
                 ✕
               </Button>

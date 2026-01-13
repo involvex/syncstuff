@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { generateUUID } from "../utils/uuid";
 
 export default function DiscordAuthRoute() {
   useEffect(() => {
@@ -9,7 +10,7 @@ export default function DiscordAuthRoute() {
         ? `${currentUrl.protocol}//${currentUrl.host}/auth/callback?provider=discord`
         : "https://syncstuff-web.involvex.workers.dev/auth/callback?provider=discord";
 
-    const state = crypto.randomUUID();
+    const state = generateUUID();
 
     const params = new URLSearchParams({
       client_id: clientId,

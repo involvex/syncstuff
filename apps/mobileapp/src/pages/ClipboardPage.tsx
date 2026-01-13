@@ -147,7 +147,7 @@ const ClipboardPage: React.FC = () => {
                 </XStack>
                 <Button
                   onPress={handleToggleMonitoring}
-                  size="$3"
+                  size="sm"
                   theme={isMonitoring ? "red" : "blue"}
                 >
                   {isMonitoring ? "Pause" : "Resume"}
@@ -168,9 +168,9 @@ const ClipboardPage: React.FC = () => {
                   justifyContent="space-between"
                   padding="$4"
                 >
-                  <YStack flex={1} space="        ">
+                  <YStack flex={1} space="$1">
                     <Text fontWeight="bold">Auto-sync clipboard</Text>
-                    <Text color="$colorSubtitle" fontSize="        ">
+                    <Text color="$colorSubtitle" fontSize="$1">
                       Automatically sync to paired devices
                     </Text>
                   </YStack>
@@ -189,7 +189,7 @@ const ClipboardPage: React.FC = () => {
                     marginVertical="$2"
                     padding="$4"
                   >
-                    <Text color="$yellow10" fontSize="        ">
+                    <Text color="$yellow10" fontSize="$1">
                       Auto-sync is disabled for privacy. Each sync will require
                       manual approval.
                     </Text>
@@ -202,9 +202,9 @@ const ClipboardPage: React.FC = () => {
                   opacity={!clipboardAutoSync ? 0.5 : 1}
                   padding="$4"
                 >
-                  <YStack flex={1} space="        ">
+                  <YStack flex={1} space="$1">
                     <Text fontWeight="bold">Sync images</Text>
-                    <Text color="$colorSubtitle" fontSize="        ">
+                    <Text color="$colorSubtitle" fontSize="$1">
                       Include images in sync
                     </Text>
                   </YStack>
@@ -222,9 +222,9 @@ const ClipboardPage: React.FC = () => {
                   justifyContent="space-between"
                   padding="$4"
                 >
-                  <YStack flex={1} space="        ">
+                  <YStack flex={1} space="$1">
                     <Text fontWeight="bold">Show content preview</Text>
-                    <Text color="$colorSubtitle" fontSize="        ">
+                    <Text color="$colorSubtitle" fontSize="$1">
                       Display preview in history
                     </Text>
                   </YStack>
@@ -241,9 +241,9 @@ const ClipboardPage: React.FC = () => {
                   justifyContent="space-between"
                   padding="$4"
                 >
-                  <YStack flex={1} space="        ">
+                  <YStack flex={1} space="$1">
                     <Text fontWeight="bold">Backup to Cloud</Text>
-                    <Text color="$colorSubtitle" fontSize="        ">
+                    <Text color="$colorSubtitle" fontSize="$1">
                       Save history to connected accounts
                     </Text>
                   </YStack>
@@ -267,7 +267,7 @@ const ClipboardPage: React.FC = () => {
                 <Separator marginVertical="$2" />
                 <XStack alignItems="center" space="$2">
                   <StatusBadge status="info">P2P ARCHITECTURE</StatusBadge>
-                  <Text color="$colorSubtitle" flex={1} fontSize="        ">
+                  <Text color="$colorSubtitle" flex={1} fontSize="$1">
                     Your data never touches our servers. Every sync is a direct,
                     encrypted handshake.
                   </Text>

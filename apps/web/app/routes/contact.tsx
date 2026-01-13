@@ -1,5 +1,6 @@
 import emailjs from "@emailjs/browser";
 import { useRef, useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 import { maintainers } from "../../package.json";
 import Navigation from "../components/Navigation";
 
@@ -15,13 +16,20 @@ export default function Contact() {
     "idle",
   );
   const [errorMessage, setErrorMessage] = useState("");
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
 
   const sendEmail = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSending(true);
     setErrorMessage("");
 
     if (!form.current) return;
+
+    if (!recaptchaToken) {
+      setErrorMessage("Please complete the reCAPTCHA verification.");
+      return;
+    }
+
+    setIsSending(true);
 
     emailjs
       .sendForm(
@@ -37,6 +45,7 @@ export default function Contact() {
           setEmailStatus("success");
           setIsSending(false);
           form.current?.reset();
+          setRecaptchaToken(null);
         },
         error => {
           console.error("FAILED...", error.text);
@@ -61,7 +70,7 @@ export default function Contact() {
               <h2 className="text-sm font-bold tracking-widest text-blue-600 uppercase dark:text-blue-400">
                 Contact Us
               </h2>
-              /* eslint-disable tailwindcss/no-custom-classname */
+              {/* eslint-disable tailwindcss/no-custom-classname */}
               <p className="mt-2 text-4xl font-extrabold tracking-tight text-gray-900 sm:text-6xl dark:text-white">
                 Get in touch
               </p>
@@ -123,6 +132,11 @@ export default function Contact() {
                   </div>
                 ) : (
                   <form ref={form} onSubmit={sendEmail} className="space-y-6">
+                    <input
+                      type="hidden"
+                      name="g-recaptcha-response"
+                      value={recaptchaToken || ""}
+                    />
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                       <div className="space-y-2">
                         <label
@@ -196,6 +210,14 @@ export default function Contact() {
                       />
                     </div>
 
+                    <div className="flex justify-center">
+                      <ReCAPTCHA
+                        sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+                        onChange={setRecaptchaToken}
+                        theme="light"
+                      />
+                    </div>
+
                     {emailStatus === "error" && (
                       <p className="text-sm font-medium text-red-600 dark:text-red-400">
                         {errorMessage}
@@ -204,7 +226,7 @@ export default function Contact() {
 
                     <button
                       type="submit"
-                      disabled={isSending}
+                      disabled={isSending || !recaptchaToken}
                       className="flex w-full justify-center rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-blue-500/20 transition-all hover:scale-[1.02] hover:bg-blue-700 disabled:opacity-50"
                     >
                       {isSending ? "Sending..." : "Send Message"}

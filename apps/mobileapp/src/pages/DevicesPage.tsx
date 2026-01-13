@@ -341,7 +341,7 @@ const DevicesPage: React.FC = () => {
                       flex={1}
                       icon={<Text>QR</Text>}
                       onPress={() => setShowQrModal(true)}
-                      variant="outlined"
+                      variant="outline"
                     >
                       Show QR
                     </Button>
@@ -349,7 +349,7 @@ const DevicesPage: React.FC = () => {
                       flex={1}
                       icon={<Text>🔍</Text>}
                       onPress={startScan}
-                      variant="outlined"
+                      variant="outline"
                     >
                       Scan QR
                     </Button>
@@ -362,7 +362,7 @@ const DevicesPage: React.FC = () => {
                         setAuthCodeMode("display");
                         setShowAuthCodeModal(true);
                       }}
-                      variant="outlined"
+                      variant="outline"
                     >
                       Share Code
                     </Button>
@@ -373,7 +373,7 @@ const DevicesPage: React.FC = () => {
                         setAuthCodeMode("enter");
                         setShowAuthCodeModal(true);
                       }}
-                      variant="outlined"
+                      variant="outline"
                     >
                       Enter Code
                     </Button>
@@ -409,7 +409,7 @@ const DevicesPage: React.FC = () => {
                 onPress={
                   isDiscovering ? handleStopDiscovery : handleStartDiscovery
                 }
-                size="$4"
+                size="default"
                 theme={isDiscovering ? "red" : "blue"}
               >
                 {isDiscovering ? "Stop Discovery" : "Start Discovery"}
