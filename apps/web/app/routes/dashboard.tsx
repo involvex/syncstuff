@@ -12,10 +12,7 @@ import {
   Button,
   MainLayout,
   SidebarItem,
-  Text,
-  XStack,
-  YStack,
-} from "@syncstuff/ui";
+} from "~/components/ui";
 import { getSession } from "~/services/session.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -110,19 +107,14 @@ export default function DashboardLayout() {
   const isLoading = navigation.state === "loading";
 
   const sidebar = (
-    <YStack flex={1} padding="$4" space="$4">
+    <div className="flex flex-1 flex-col gap-4 p-4">
       <Link style={{ textDecoration: "none" }} to="/">
-        <Text
-          color="$primary"
-          fontSize="$7"
-          fontWeight="bold"
-          paddingVertical="$4"
-        >
+        <h1 className="text-color-primary py-4 text-3xl font-bold">
           Syncstuff
-        </Text>
+        </h1>
       </Link>
 
-      <YStack space="$1">
+      <div className="flex flex-col gap-1">
         {navItems.map(item => (
           <Link
             key={item.name}
@@ -136,28 +128,15 @@ export default function DashboardLayout() {
             />
           </Link>
         ))}
-      </YStack>
+      </div>
 
-      <YStack flex={1} />
+      <div className="flex-1" />
 
       {role === "admin" && (
-        <YStack
-          borderColor="$borderColor"
-          borderTopWidth={1}
-          marginBottom="$4"
-          paddingTop="$4"
-          space="$1"
-        >
-          <Text
-            color="$colorSubtitle"
-            fontSize="$2"
-            fontWeight="bold"
-            marginBottom="$2"
-            paddingHorizontal="$4"
-            textTransform="uppercase"
-          >
+        <div className="border-border mb-4 flex flex-col gap-1 border-t pt-4">
+          <h4 className="text-color-subtitle mb-2 px-4 text-xs font-bold uppercase">
             Admin
-          </Text>
+          </h4>
           <Link style={{ textDecoration: "none" }} to="/admin">
             <SidebarItem
               icon={
@@ -178,49 +157,38 @@ export default function DashboardLayout() {
               label="Admin Panel"
             />
           </Link>
-        </YStack>
+        </div>
       )}
 
-      <YStack
-        borderColor="$borderColor"
-        borderTopWidth={1}
-        paddingTop="$4"
-        space="$4"
-      >
-        <XStack alignItems="center" space="$3">
-          <div className="bg-surfaceVariant text-primary flex size-8 items-center justify-center rounded-full font-bold">
+      <div className="border-border flex flex-col gap-4 border-t pt-4">
+        <div className="flex items-center gap-3">
+          <div className="bg-surface-variant text-color-primary flex size-8 items-center justify-center rounded-full font-bold">
             {userId.charAt(0).toUpperCase()}
           </div>
-          <YStack flex={1}>
-            <Text fontSize="$3" fontWeight="bold" numberOfLines={1}>
-              User
-            </Text>
-            <Text
-              color="$colorSubtitle"
-              fontSize="          "
-              numberOfLines={1}
-            >
+          <div className="flex flex-1 flex-col">
+            <h3 className="text-on-surface text-base font-bold truncate">User</h3>
+            <p className="text-color-subtitle truncate">
               {userId.substring(0, 8)}
-            </Text>
-          </YStack>
-        </XStack>
+            </p>
+          </div>
+        </div>
 
         <Form action="/auth/logout" method="post">
-          <Button theme="red" width="100%">
+          <Button variant="destructive" className="w-full">
             Sign out
           </Button>
         </Form>
-      </YStack>
-    </YStack>
+      </div>
+    </div>
   );
 
   return (
     <MainLayout sidebar={sidebar} title="Dashboard">
       {isLoading && (
         <div className="fixed inset-x-0 top-0 z-50">
-          <div className="bg-surfaceVariant h-1">
+          <div className="bg-surface-variant h-1">
             <div
-              className="bg-primary h-full animate-[progress_2s_ease-in-out_infinite]"
+              className="bg-primary h-full animate-progress"
               style={{ width: "30%" }}
             />
           </div>
@@ -233,11 +201,11 @@ export default function DashboardLayout() {
 
 export function ErrorBoundary({ error }: { error: Error }) {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 dark:bg-gray-900">
-      <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg dark:bg-gray-800">
-        <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-red-100 dark:bg-red-900">
+    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+      <div className="w-full max-w-md rounded-lg bg-surface p-6 shadow-lg border border-border">
+        <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-error/10">
           <svg
-            className="size-6 text-red-600 dark:text-red-400"
+            className="size-6 text-error"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -250,17 +218,17 @@ export function ErrorBoundary({ error }: { error: Error }) {
             />
           </svg>
         </div>
-        <h2 className="mt-4 text-center text-lg font-semibold text-gray-900 dark:text-white">
+        <h2 className="mt-4 text-center text-lg font-semibold text-on-surface">
           Something went wrong
         </h2>
-        <p className="mt-2 text-center text-sm text-gray-500 dark:text-gray-400">
+        <p className="mt-2 text-center text-sm text-color-subtitle">
           {error instanceof Error
             ? error.message
             : "An unexpected error occurred"}
         </p>
         <div className="mt-6 flex justify-center">
           <Link
-            className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none"
+            className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm hover:bg-primary/90 focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-none"
             to="/dashboard"
           >
             Go back to Dashboard

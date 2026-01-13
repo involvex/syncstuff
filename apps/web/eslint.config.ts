@@ -7,6 +7,14 @@ import tseslint from "typescript-eslint";
 
 export default defineConfig([
   {
+    ignores: [
+      "**/build/**",
+      "**/.wrangler/**",
+      "**/public/build/**",
+      "**/.tamagui/**",
+    ],
+  },
+  {
     files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
     plugins: { js },
     extends: ["js/recommended"],

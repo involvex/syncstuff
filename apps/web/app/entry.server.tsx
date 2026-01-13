@@ -6,14 +6,8 @@
 
 import type { AppLoadContext, EntryContext } from "@remix-run/cloudflare";
 import { RemixServer } from "@remix-run/react";
-import { tamaguiConfig } from "@syncstuff/ui/tamagui.config";
 import { isbot } from "isbot";
 import { renderToReadableStream } from "react-dom/server";
-
-// Ensure Tamagui is initialized on the server
-if (import.meta.env.DEV) {
-  console.log("Tamagui config initialized:", !!tamaguiConfig);
-}
 
 const ABORT_DELAY = 5000;
 
@@ -22,9 +16,6 @@ export default async function handleRequest(
   responseStatusCode: number,
   responseHeaders: Headers,
   remixContext: EntryContext,
-  // This is ignored so we can keep it in the template for visibility.  Feel
-  // free to delete this parameter in your app if you're not using it!
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   loadContext: AppLoadContext,
 ) {
   const controller = new AbortController();
@@ -40,7 +31,6 @@ export default async function handleRequest(
       signal: controller.signal,
       onError(error: unknown) {
         if (!controller.signal.aborted) {
-          // Log streaming rendering errors from inside the shell
           console.error(error);
         }
         responseStatusCode = 500;
@@ -48,6 +38,7 @@ export default async function handleRequest(
     },
   );
 
+  await body.allReady;
   body.allReady.then(() => clearTimeout(timeoutId));
 
   if (isbot(request.headers.get("user-agent") || "")) {

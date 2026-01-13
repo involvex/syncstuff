@@ -71,9 +71,9 @@ const TransfersPage: React.FC = () => {
       <IonContent fullscreen>
         <div className="transfers-container">
           {segment === "local" ? (
-            <YStack padding="$4" space="$4">
+            <div style={{ padding: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
               {pairedDevices.length > 0 ? (
-                <Card bordered elevate padding="$4">
+                <Card elevation={2} padding="$4">
                   <YStack space="$3">
                     <XStack alignItems="center" justifyContent="space-between">
                       <Text fontWeight="bold">Send File</Text>
@@ -120,9 +120,9 @@ const TransfersPage: React.FC = () => {
                   ))}
                 </YStack>
               )}
-            </YStack>
+            </div>
           ) : (
-            <YStack padding="$4" space="$4">
+            <div style={{ padding: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
               {accounts.length > 0 ? (
                 accounts.map(account => (
                   <YStack key={account.id} space="$2">
@@ -167,7 +167,7 @@ const TransfersPage: React.FC = () => {
                   </YStack>
                 </Card>
               )}
-            </YStack>
+            </div>
           )}
         </div>
       </IonContent>

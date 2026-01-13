@@ -10,9 +10,10 @@ import {
   useLoaderData,
   useNavigation,
 } from "@remix-run/react";
-import { Button, Card, Input, Text, View, YStack } from "@syncstuff/ui";
+import { Button, Card, Input, Text } from "@syncstuff/ui";
 
 export async function loader({ request }: LoaderFunctionArgs) {
+  // ... existing loader logic ...
   const url = new URL(request.url);
   const token = url.searchParams.get("token");
   const email = url.searchParams.get("email");
@@ -25,6 +26,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export async function action({ request, context }: ActionFunctionArgs) {
+  // ... existing action logic ...
   const formData = await request.formData();
   const token = (formData as any).get("token");
   const email = (formData as any).get("email");
@@ -127,149 +129,81 @@ export default function ResetPassword() {
 
   if (actionData?.success) {
     return (
-      <View
-        alignItems="center"
-        backgroundColor="$background"
-        bottom={0}
-        justifyContent="center"
-        left={0}
-        padding="$4"
-        position="absolute"
-        right={0}
-        top={0}
-      >
-        <Card bordered elevate maxWidth={400} padding="$4" width="100%">
-          <YStack alignItems="center" space="$6">
-            <View
-              alignItems="center"
-              backgroundColor="$green4"
-              borderRadius="$full"
-              height={64}
-              justifyContent="center"
-              width={64}
-            >
-              <Text color="$green10" fontSize="$8">
-                ✓
-              </Text>
-            </View>
-            <YStack alignItems="center" space="$2">
-              <Text fontSize="$6" fontWeight="bold">
-                Success!
-              </Text>
-              <Text color="$colorSubtitle" textAlign="center">
+      <div className="bg-background absolute inset-0 flex items-center justify-center p-4">
+        <Card className="w-full max-w-[400px] p-4">
+          <div className="flex flex-col items-center gap-6">
+            <div className="bg-green-100 text-green-600 flex h-16 w-16 items-center justify-center rounded-full text-3xl">
+              ✓
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <Text className="text-xl font-bold">Success!</Text>
+              <Text className="text-color-subtitle text-center">
                 {"message" in actionData
                   ? actionData.message
                   : actionData.error}
               </Text>
-            </YStack>
+            </div>
             <Link
               style={{ textDecoration: "none", width: "100%" }}
               to="/auth/login"
             >
-              <Button theme="blue" width="100%">
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white w-full">
                 Go to Login
               </Button>
             </Link>
-          </YStack>
+          </div>
         </Card>
-      </View>
+      </div>
     );
   }
 
   if ("error" in loaderData) {
     return (
-      <View
-        alignItems="center"
-        backgroundColor="$background"
-        bottom={0}
-        justifyContent="center"
-        left={0}
-        padding="$4"
-        position="absolute"
-        right={0}
-        top={0}
-      >
-        <Card bordered elevate maxWidth={400} padding="$4" width="100%">
-          <YStack alignItems="center" space="$6">
-            <View
-              alignItems="center"
-              backgroundColor="$red4"
-              borderRadius="$full"
-              height={64}
-              justifyContent="center"
-              width={64}
-            >
-              <Text color="$red10" fontSize="$8">
-                ✕
-              </Text>
-            </View>
-            <YStack alignItems="center" space="$2">
-              <Text fontSize="$6" fontWeight="bold">
-                Invalid Link
-              </Text>
-              <Text color="$colorSubtitle" textAlign="center">
+      <div className="bg-background absolute inset-0 flex items-center justify-center p-4">
+        <Card className="w-full max-w-[400px] p-4">
+          <div className="flex flex-col items-center gap-6">
+            <div className="bg-red-100 text-red-600 flex h-16 w-16 items-center justify-center rounded-full text-3xl">
+              ✕
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <Text className="text-xl font-bold">Invalid Link</Text>
+              <Text className="text-color-subtitle text-center">
                 {loaderData.error}
               </Text>
-            </YStack>
+            </div>
             <Link
               style={{ textDecoration: "none", width: "100%" }}
               to="/auth/login"
             >
-              <Button variant="outlined" width="100%">
+              <Button variant="outline" className="w-full">
                 Back to Login
               </Button>
             </Link>
-          </YStack>
+          </div>
         </Card>
-      </View>
+      </div>
     );
   }
 
   return (
-    <View
-      alignItems="center"
-      backgroundColor="$background"
-      bottom={0}
-      justifyContent="center"
-      left={0}
-      padding="$4"
-      position="absolute"
-      right={0}
-      top={0}
-    >
-      <Card
-        bordered
-        elevate
-        maxWidth={400}
-        padding="$4"
-        space="$6"
-        width="100%"
-      >
-        <YStack alignItems="center" space="$2">
-          <View
-            alignItems="center"
-            backgroundColor="$backgroundFocus"
-            borderRadius="$3"
-            height={56}
-            justifyContent="center"
-            width={56}
-          >
-            <Text fontSize="$8">🔐</Text>
-          </View>
-          <Text fontSize="$6" fontWeight="bold">
-            Reset Your Password
-          </Text>
-          <Text color="$colorSubtitle" textAlign="center">
+    <div className="bg-background absolute inset-0 flex items-center justify-center p-4">
+      <Card className="w-full max-w-[400px] p-4 space-y-6">
+        <div className="flex flex-col items-center gap-2">
+          <div className="bg-gray-100 dark:bg-gray-800 flex h-14 w-14 items-center justify-center rounded-lg text-3xl">
+            🔐
+          </div>
+          <Text className="text-xl font-bold">Reset Your Password</Text>
+          <Text className="text-color-subtitle text-center">
             Enter your new password below.
           </Text>
-        </YStack>
+        </div>
 
         {actionData && "error" in actionData && actionData.error && (
-          <YStack backgroundColor="$red2" borderRadius="$3" padding="$4">
-            <Text color="$red10" fontSize="$2">
+          <div className="bg-red-100 p-4 rounded-lg">
+            <Text className="text-red-600 text-sm">
               {actionData.error}
             </Text>
-          </YStack>
+          </div>
         )}
 
         <Form method="post">
@@ -284,27 +218,23 @@ export default function ResetPassword() {
             value={"email" in loaderData ? loaderData.email || "" : ""}
           />
 
-          <YStack space="$4">
-            <YStack space="$2">
-              <Text fontSize="$2" fontWeight="bold">
-                New Password
-              </Text>
-              <Input secureTextEntry />
-            </YStack>
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              <Text className="text-sm font-bold">New Password</Text>
+              <Input name="password" type="password" secureTextEntry />
+            </div>
 
-            <YStack space="$2">
-              <Text fontSize="$2" fontWeight="bold">
-                Confirm Password
-              </Text>
-              <Input secureTextEntry />
-            </YStack>
+            <div className="flex flex-col gap-2">
+              <Text className="text-sm font-bold">Confirm Password</Text>
+              <Input name="confirm_password" type="password" secureTextEntry />
+            </div>
 
-            <Button disabled={isSubmitting} size="$4" theme="blue">
+            <Button disabled={isSubmitting} className="bg-blue-600 hover:bg-blue-700 text-white w-full">
               {isSubmitting ? "Resetting..." : "Reset Password"}
             </Button>
-          </YStack>
+          </div>
         </Form>
       </Card>
-    </View>
+    </div>
   );
 }

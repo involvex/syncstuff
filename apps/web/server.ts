@@ -1,5 +1,5 @@
 import { createRequestHandler, type ServerBuild } from "@remix-run/cloudflare";
-import * as  build from "./build/server/index.js";
+import * as build from "./build/server/index.js";
 import { getLoadContext } from "./load-context";
 
 const handleRemixRequest = createRequestHandler(build as any as ServerBuild);
@@ -26,7 +26,17 @@ export default {
           },
         },
       });
-      return await handleRemixRequest(request, loadContext);
+      const response = await handleRemixRequest(request, loadContext);
+      response.headers.set("X-Content-Type-Options", "nosniff");
+      response.headers.set("Content-Security-Policy", "frame-ancestors 'self'");
+      response.headers.set(
+        "Cache-Control",
+        "public, max-age=31536000, immutable",
+      );
+      response.headers.delete("X-Frame-Options");
+      response.headers.delete("X-XSS-Protection");
+      response.headers.delete("Expires");
+      return response;
     } catch (error) {
       console.log(error);
       return new Response("An unexpected error occurred", { status: 500 });

@@ -1,15 +1,7 @@
 import type { ActionFunctionArgs, MetaFunction } from "@remix-run/cloudflare";
 import { Form, Link, useActionData, useNavigation } from "@remix-run/react";
-import {
-  Button,
-  Card,
-  Input,
-  Separator,
-  Text,
-  View,
-  XStack,
-  YStack,
-} from "@syncstuff/ui";
+import { Separator, Text } from "@syncstuff/ui";
+import { Button, Card, Input } from "~/components/ui";
 import { commitSession, getSession } from "~/services/session.server";
 
 export const meta: MetaFunction = () => {
@@ -20,6 +12,7 @@ export const meta: MetaFunction = () => {
 };
 
 export async function action({ request, context }: ActionFunctionArgs) {
+  // ... existing action logic remains unchanged ...
   const formData = await request.formData();
   const email = (formData as any).get("email");
   const password = (formData as any).get("password");
@@ -115,115 +108,99 @@ export default function Login() {
   const isSubmitting = navigation.state === "submitting";
 
   return (
-    <View
-      alignItems="center"
-      backgroundColor="$background"
-      bottom={0}
-      justifyContent="center"
-      left={0}
-      padding="$4"
-      position="absolute"
-      right={0}
-      top={0}
-    >
-      <Card
-        bordered
-        elevate
-        maxWidth={400}
-        padding="$4"
-        space="$6"
-        width="100%"
-      >
-        <YStack alignItems="center" space="$2">
-          <Text color="$primary" fontSize="$8" fontWeight="bold">
-            Syncstuff
-          </Text>
-          <Text fontSize="$4" fontWeight="bold">
-            Sign in to your account
-          </Text>
-        </YStack>
+    <div className="bg-background absolute inset-0 flex items-center justify-center p-4">
+      <Card className="w-full max-w-[400px] p-4 space-y-6">
+        <div className="flex flex-col items-center gap-2">
+          <h1 className="text-color-primary text-4xl font-bold">Syncstuff</h1>
+          <h2 className="text-on-surface text-xl font-bold">Sign in to your account</h2>
+        </div>
 
         <Form method="post">
-          <YStack space="$4">
-            <YStack space="$2">
-              <Text fontSize="$2" fontWeight="bold">
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              <label htmlFor="email" className="text-sm font-bold text-on-surface">
                 Email Address
-              </Text>
-              <Input id="email" placeholder="john@example.com" />
-            </YStack>
+              </label>
+              <Input
+                id="email"
+                name="email"
+                placeholder="john@example.com"
+                className="bg-surface border-border text-on-surface"
+              />
+            </div>
 
-            <YStack space="$2">
-              <XStack justifyContent="space-between">
-                <Text fontSize="$2" fontWeight="bold">
+            <div className="flex flex-col gap-2">
+              <div className="flex justify-between">
+                <label htmlFor="password" className="text-sm font-bold text-on-surface">
                   Password
-                </Text>
+                </label>
                 <Link
                   style={{ textDecoration: "none" }}
                   to="/auth/forgot-password"
+                  className="text-color-primary text-sm font-bold hover:underline"
                 >
-                  <Text color="$primary" fontSize="$2" fontWeight="bold">
-                    Forgot password?
-                  </Text>
+                  Forgot password?
                 </Link>
-              </XStack>
-              <Input id="password" secureTextEntry />
-            </YStack>
+              </div>
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                className="bg-surface border-border text-on-surface"
+              />
+            </div>
 
             {actionData?.error && (
-              <Text color="$red10" fontSize="$2" textAlign="center">
+              <p className="text-error text-sm text-center">
                 {actionData.error}
-              </Text>
+              </p>
             )}
 
-            <Button disabled={isSubmitting} size="$4" theme="blue">
+            <Button
+              disabled={isSubmitting}
+              isLoading={isSubmitting}
+              className="bg-primary hover:bg-primary/90 text-primary-foreground w-full"
+            >
               {isSubmitting ? "Signing in..." : "Sign in"}
             </Button>
-          </YStack>
+          </div>
         </Form>
 
-        <YStack space="$4">
-          <XStack alignItems="center" space="$2">
-            <Separator flex={1} />
-            <Text
-              color="$colorSubtitle"
-              fontSize="$1"
-              textTransform="uppercase"
-            >
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center gap-2">
+            <Separator className="flex-1" />
+            <Text className="text-color-subtitle text-xs uppercase">
               Or continue with
             </Text>
-            <Separator flex={1} />
-          </XStack>
+            <Separator className="flex-1" />
+          </div>
 
-          <XStack space="$3">
+          <div className="flex gap-3">
             <Button
-              flex={1}
-              icon={<Text fontSize="$5">🐙</Text>}
-              onPress={() => (window.location.href = "/auth/github")}
-              variant="outlined"
+              className="flex-1 border border-gray-300"
+              variant="outline"
+              onClick={() => (window.location.href = "/auth/github")}
             >
-              GitHub
+              <span className="mr-2 text-xl">🐙</span> GitHub
             </Button>
             <Button
-              backgroundColor="#5865F2"
-              color="white"
-              flex={1}
-              icon={<Text fontSize="$5">💬</Text>}
-              onPress={() => (window.location.href = "/auth/discord")}
+              className="flex-1 bg-[#5865F2] hover:bg-[#4752c4] text-white"
+              onClick={() => (window.location.href = "/auth/discord")}
             >
-              Discord
+              <span className="mr-2 text-xl">💬</span> Discord
             </Button>
-          </XStack>
-        </YStack>
+          </div>
+        </div>
 
-        <XStack justifyContent="center" space="$2">
-          <Text fontSize="$2">Not a member?</Text>
+        <div className="flex justify-center gap-2">
+          <Text className="text-sm">Not a member?</Text>
           <Link style={{ textDecoration: "none" }} to="/auth/signup">
-            <Text color="$primary" fontSize="$2" fontWeight="bold">
+            <Text className="text-primary text-sm font-bold">
               Start a 14 day free trial
             </Text>
           </Link>
-        </XStack>
+        </div>
       </Card>
-    </View>
+    </div>
   );
 }

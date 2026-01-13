@@ -40,5 +40,5 @@ export default {
   Mask,
   Use,
   Symbol,
-  Image
+  Image,
 };

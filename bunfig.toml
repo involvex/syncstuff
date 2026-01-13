@@ -21,3 +21,6 @@ preload = ["./setup-tests.ts"]
 [run]
 # Scripts run with bun
 shell = "system"
+
+[install.security]
+scanner = "@acme/bun-security-scanner"

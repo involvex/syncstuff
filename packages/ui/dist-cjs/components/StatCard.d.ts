@@ -1,5 +1,5 @@
-import "./_StatCard.css";
 import type React from "react";
+import "./_StatCard.css";
 export interface StatCardProps {
   title: string;
   value: string | number;

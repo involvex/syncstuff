@@ -1,11 +1,11 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { TamaguiProvider, type TamaguiProviderProps, Theme } from "tamagui";
-import { tamaguiConfig } from "./tamagui.config.js";
+import { createContext, useContext, useEffect, useState } from "react";
+
+type Theme = "light" | "dark";
 
 type ThemeContextType = {
-  theme: "light" | "dark";
+  theme: Theme;
   toggleTheme: () => void;
-  setTheme: (theme: "light" | "dark") => void;
+  setTheme: (theme: Theme) => void;
 };
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -13,35 +13,42 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export const useAppTheme = () => {
   const context = useContext(ThemeContext);
   if (!context) {
-    throw new Error("useAppTheme must be used within a ThemeProvider");
+    throw new Error("useAppTheme must be used within a Provider");
   }
   return context;
 };
 
-export function Provider({ children, config = tamaguiConfig, ...rest }: TamaguiProviderProps) {
-  const [theme, setThemeState] = useState<"light" | "dark">("light");
+export interface ProviderProps {
+  children: React.ReactNode;
+  disableInjectCSS?: boolean; // Kept for compatibility, no-op
+  disableRootThemeClass?: boolean; // Kept for compatibility, no-op
+}
+
+export function Provider({ children }: ProviderProps) {
+  const [theme, setThemeState] = useState<Theme>("light");
 
   useEffect(() => {
-    // Check system preference on mount (client-side only)
-    if (
-      typeof window !== "undefined" &&
-      window.matchMedia?.("(prefers-color-scheme: dark)").matches
-    ) {
+    // Check system preference
+    if (window.matchMedia?.("(prefers-color-scheme: dark)").matches) {
       setThemeState("dark");
     }
   }, []);
 
+  useEffect(() => {
+    const root = window.document.documentElement;
+    root.classList.remove("light", "dark");
+    root.classList.add(theme);
+  }, [theme]);
+
   const toggleTheme = () => {
-    setThemeState(prev => (prev === "light" ? "dark" : "light"));
+    setThemeState((prev) => (prev === "light" ? "dark" : "light"));
   };
 
-  const setTheme = (val: "light" | "dark") => setThemeState(val);
+  const setTheme = (val: Theme) => setThemeState(val);
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
-      <TamaguiProvider config={config} defaultTheme={theme} {...rest}>
-        <Theme name={theme}>{children}</Theme>
-      </TamaguiProvider>
+      {children}
     </ThemeContext.Provider>
   );
 }

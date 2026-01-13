@@ -1,13 +1,10 @@
-import "./_DeviceCard.css";
-const _cn2 =
-  "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color _fos- ";
-const _cn =
-  "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color _fos- _fow-bold ";
-
-import React from "react";
-import { Button, Card, XStack, YStack } from "tamagui";
+import { Button } from "../Button";
+import { Card } from "../Card";
 import { DeviceIcon, type DeviceType } from "../DeviceIcon";
+import { XStack, YStack } from "../Layouts";
+import { Text } from "../Typography";
 import { StatusBadge } from "./StatusBadge";
+
 export interface DeviceCardProps {
   name: string;
   type: DeviceType;
@@ -16,6 +13,7 @@ export interface DeviceCardProps {
   onConnect?: () => void;
   onDisconnect?: () => void;
 }
+
 export function DeviceCard({
   name,
   type,
@@ -25,35 +23,26 @@ export function DeviceCard({
   onDisconnect,
 }: DeviceCardProps) {
   return (
-    <Card
-      animation="quick"
-      bordered
-      elevate
-      hoverStyle={{
-        scale: 1,
-      }}
-      padding="$4"
-      scale={0.98}
-    >
-      <XStack alignItems="center" space="$4">
+    <Card className="p-4 transition-transform hover:scale-[1.02]">
+      <XStack className="items-center gap-4">
         <DeviceIcon size={32} type={type} />
 
-        <YStack flex={1} space="$1">
-          <span className={_cn}>{name}</span>
-          <XStack alignItems="center" space="$2">
+        <YStack className="flex-1 gap-1">
+          <Text className="font-bold text-base">{name}</Text>
+          <XStack className="items-center gap-2">
             <StatusBadge status={status === "online" ? "success" : "neutral"}>
               {status.toUpperCase()}
             </StatusBadge>
-            {lastSeen && <span className={_cn2}>Last seen: {lastSeen}</span>}
+            {lastSeen && <Text className="text-xs text-slate-500 dark:text-slate-400">Last seen: {lastSeen}</Text>}
           </XStack>
         </YStack>
 
         {status === "online" ? (
-          <Button onPress={onDisconnect} size="$3" theme="red">
+          <Button onClick={onDisconnect} className="bg-red-600 hover:bg-red-700 text-white">
             Disconnect
           </Button>
         ) : (
-          <Button onPress={onConnect} size="$3" theme="blue">
+          <Button onClick={onConnect} className="bg-blue-600 hover:bg-blue-700 text-white">
             Connect
           </Button>
         )}

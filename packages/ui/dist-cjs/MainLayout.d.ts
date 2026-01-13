@@ -1,5 +1,5 @@
-import "./_MainLayout.css";
 import type React from "react";
+import "./_MainLayout.css";
 export interface MainLayoutProps {
   children: React.ReactNode;
   sidebar?: React.ReactNode;

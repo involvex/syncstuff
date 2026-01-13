@@ -1,69 +1,44 @@
-import "./_StatCard.css";
-const _cn7 =
-  "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color _fos- ";
-const _cn6 =
-  "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color _fos- ";
-const _cn5 =
-  "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _fos- _col-green10 ";
-const _cn4 =
-  "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _fos- _col-red10 ";
-const _cn3 =
-  "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color _fos- _fow-bold ";
-const _cn2 =
-  "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color _fos- _tt-uppercase _fow-bold ";
-const _cn =
-  "_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-1 _fd-column _fg-1 ";
-
 import React from "react";
-import { Card, Stack, styled, XStack } from "tamagui";
+import { Card } from "../Card";
+import { XStack, YStack } from "../Layouts";
+import { Text } from "../Typography";
+
 export interface StatCardProps {
   title: string;
   value: string | number;
   icon?: React.ReactNode;
-  color?: string;
+  color?: string; // Kept for API compatibility
   trend?: {
     value: string;
     positive: boolean;
   };
 }
-const IconFrame = styled(Stack, {
-  padding: "$3",
-  borderRadius: "$3",
-  alignItems: "center",
-  justifyContent: "center",
-});
+
 export function StatCard({ title, value, icon, trend }: StatCardProps) {
   return (
-    <Card
-      animation="quick"
-      bordered
-      elevate
-      hoverStyle={{
-        scale: 1,
-      }}
-      padding="$4"
-      scale={0.98}
-    >
-      <XStack alignItems="center" space="$4">
+    <Card className="p-4 transition-transform hover:scale-[1.02]">
+      <XStack className="items-center gap-4">
         {icon && (
-          <IconFrame backgroundColor="$backgroundFocus">{icon}</IconFrame>
+          <div className="p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 items-center justify-center flex">
+            {icon}
+          </div>
         )}
-        <div className={_cn}>
-          <span className={_cn2}>{title}</span>
-          <span className={_cn3}>{value}</span>
+        <YStack className="flex-1">
+          <Text className="text-xs uppercase font-bold text-slate-500 dark:text-slate-400">{title}</Text>
+          <Text className="text-2xl font-bold">{value}</Text>
           {trend && (
-            <XStack alignItems="center" space="$1">
-              <span
+            <XStack className="items-center gap-1">
+              <Text
                 className={
-                  !trend.positive ? _cn4 : trend.positive ? _cn5 : _cn6
+                  trend.positive ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"
                 }
               >
                 {trend.value}
-              </span>
-              <span className={_cn7}>from last week</span>
+              </Text>
+              <Text className="text-xs text-slate-500 dark:text-slate-400">from last week</Text>
             </XStack>
           )}
-        </div>
+        </YStack>
       </XStack>
     </Card>
   );

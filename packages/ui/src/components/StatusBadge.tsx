@@ -1,5 +1,5 @@
 import type React from "react";
-import { Stack, styled, Text } from "tamagui";
+import { cn } from "../utils";
 
 export type StatusType = "success" | "warning" | "error" | "info" | "neutral";
 
@@ -8,44 +8,21 @@ export interface StatusBadgeProps {
   children: React.ReactNode;
 }
 
-const BadgeFrame = styled(Stack, {
-  name: "StatusBadge",
-  paddingHorizontal: "$2",
-  paddingVertical: "$1",
-  borderRadius: "$2",
-  alignItems: "center",
-  justifyContent: "center",
-
-  variants: {
-    status: {
-      success: { backgroundColor: "$green4" },
-      warning: { backgroundColor: "$yellow4" },
-      error: { backgroundColor: "$red4" },
-      info: { backgroundColor: "$blue4" },
-      neutral: { backgroundColor: "$gray4" },
-    },
-  } as const,
-});
-
-const BadgeText = styled(Text, {
-  fontSize: "$2",
-  fontWeight: "bold",
-
-  variants: {
-    status: {
-      success: { color: "$green10" },
-      warning: { color: "$yellow10" },
-      error: { color: "$red10" },
-      info: { color: "$blue10" },
-      neutral: { color: "$gray10" },
-    },
-  } as const,
-});
+const styles = {
+  success: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
+  warning: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400",
+  error: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
+  info: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
+  neutral: "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400",
+};
 
 export function StatusBadge({ status, children }: StatusBadgeProps) {
   return (
-    <BadgeFrame status={status}>
-      <BadgeText status={status}>{children}</BadgeText>
-    </BadgeFrame>
+    <div className={cn(
+      "px-2 py-1 rounded-md flex items-center justify-center font-bold text-xs",
+      styles[status]
+    )}>
+      {children}
+    </div>
   );
 }

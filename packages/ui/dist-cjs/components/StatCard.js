@@ -2,24 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StatCard = StatCard;
 const jsx_runtime_1 = require("react/jsx-runtime");
-require("./_StatCard.css");
-const _cn7 = "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color _fos- ";
-const _cn6 = "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color _fos- ";
-const _cn5 = "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _fos- _col-green10 ";
-const _cn4 = "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _fos- _col-red10 ";
-const _cn3 = "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color _fos- _fow-bold ";
-const _cn2 = "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color _fos- _tt-uppercase _fow-bold ";
-const _cn = "_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-1 _fd-column _fg-1 ";
-const tamagui_1 = require("tamagui");
-const IconFrame = (0, tamagui_1.styled)(tamagui_1.Stack, {
-    padding: "$3",
-    borderRadius: "$3",
-    alignItems: "center",
-    justifyContent: "center",
-});
+const Card_1 = require("../Card");
+const Layouts_1 = require("../Layouts");
+const Typography_1 = require("../Typography");
 function StatCard({ title, value, icon, trend }) {
-    return ((0, jsx_runtime_1.jsx)(tamagui_1.Card, { animation: "quick", bordered: true, elevate: true, hoverStyle: {
-            scale: 1,
-        }, padding: "$4", scale: 0.98, children: (0, jsx_runtime_1.jsxs)(tamagui_1.XStack, { alignItems: "center", space: "$4", children: [icon && ((0, jsx_runtime_1.jsx)(IconFrame, { backgroundColor: "$backgroundFocus", children: icon })), (0, jsx_runtime_1.jsxs)("div", { className: _cn, children: [(0, jsx_runtime_1.jsx)("span", { className: _cn2, children: title }), (0, jsx_runtime_1.jsx)("span", { className: _cn3, children: value }), trend && ((0, jsx_runtime_1.jsxs)(tamagui_1.XStack, { alignItems: "center", space: "$1", children: [(0, jsx_runtime_1.jsx)("span", { className: !trend.positive ? _cn4 : trend.positive ? _cn5 : _cn6, children: trend.value }), (0, jsx_runtime_1.jsx)("span", { className: _cn7, children: "from last week" })] }))] })] }) }));
+    return ((0, jsx_runtime_1.jsx)(Card_1.Card, { className: "p-4 transition-transform hover:scale-[1.02]", children: (0, jsx_runtime_1.jsxs)(Layouts_1.XStack, { className: "items-center gap-4", children: [icon && ((0, jsx_runtime_1.jsx)("div", { className: "p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 items-center justify-center flex", children: icon })), (0, jsx_runtime_1.jsxs)(Layouts_1.YStack, { className: "flex-1", children: [(0, jsx_runtime_1.jsx)(Typography_1.Text, { className: "text-xs uppercase font-bold text-slate-500 dark:text-slate-400", children: title }), (0, jsx_runtime_1.jsx)(Typography_1.Text, { className: "text-2xl font-bold", children: value }), trend && ((0, jsx_runtime_1.jsxs)(Layouts_1.XStack, { className: "items-center gap-1", children: [(0, jsx_runtime_1.jsx)(Typography_1.Text, { className: trend.positive ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400", children: trend.value }), (0, jsx_runtime_1.jsx)(Typography_1.Text, { className: "text-xs text-slate-500 dark:text-slate-400", children: "from last week" })] }))] })] }) }));
 }
 //# sourceMappingURL=StatCard.js.map

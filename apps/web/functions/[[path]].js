@@ -3,6 +3,6 @@ import * as build from "../build/server";
 export const onRequest = createPagesFunctionHandler({
   build,
   getLoadContext: context => ({
-    env: context.env
-  })
+    env: context.env,
+  }),
 });

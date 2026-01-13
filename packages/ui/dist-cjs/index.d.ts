@@ -1,8 +1,6 @@
 export {
-  createTamagui,
   Dialog,
   Form,
-  type GetProps,
   Group,
   H1,
   H2,
@@ -18,18 +16,20 @@ export {
   Sheet,
   Spacer,
   Stack,
-  styled,
-  type TamaguiInternalConfig,
   TamaguiProvider,
   Text,
   Theme,
   Tooltip,
-  useTheme,
-  useThemeName,
   View,
   XStack,
   YStack,
   ZStack,
+  createTamagui,
+  styled,
+  useTheme,
+  useThemeName,
+  type GetProps,
+  type TamaguiInternalConfig,
 } from "tamagui";
 export * from "./Avatar.js";
 export * from "./Button.js";

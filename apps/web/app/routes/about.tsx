@@ -1,5 +1,6 @@
 import { useNavigate } from "@remix-run/react";
-import { Footer, Navigation } from "@syncstuff/ui";
+import Footer from "~/components/Footer";
+import Navigation from "~/components/Navigation";
 
 export default function About() {
   const navigate = useNavigate();

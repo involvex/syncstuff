@@ -6,7 +6,6 @@ import {
   Terminal,
   Tv,
 } from "lucide-react";
-import React from "react";
 
 export type DeviceType =
   | "mobile"

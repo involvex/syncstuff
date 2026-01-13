@@ -29,6 +29,8 @@
     "@syncstuff/ui": "workspace:*",
     "@tailwindcss/vite": "4.1.18",
     "@types/eslint-plugin-tailwindcss": "3.17.0",
+    "class-variance-authority": "0.7.0",
+    "clsx": "2.1.1",
     "eslint-plugin-tailwind": "0.2.1",
     "globals": "17.0.0",
     "ionicons": "8.0.13",
@@ -39,6 +41,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native-web": "0.21.2",
+    "tailwind-merge": "2.5.2",
     "typescript-eslint": "8.52.0",
     "vite-plugin-external": "6.2.2"
   },
@@ -47,7 +50,6 @@
     "@react-router/dev": "7.12.0",
     "@remix-run/dev": "2.17.3",
     "@remix-run/fs-routes": "2.17.3",
-    "@tamagui/vite-plugin": "1.144.1",
     "@types/node": "25.0.5",
     "@types/react": "18.2.0",
     "@types/react-dom": "18.2.0",
@@ -74,7 +76,7 @@
   },
   "private": true,
   "scripts": {
-    "build": "cross-env NODE_OPTIONS=--max-old-space-size=8192 remix vite:build",
+    "build": "cross-env NODE_OPTIONS=--max-old-space-size=4096 remix vite:build",
     "cf-typegen": "wrangler types",
     "check": "tsc && remix vite:build && wrangler deploy --dry-run -c wrangler.toml",
     "deploy": "pnpm build && wrangler deploy -c wrangler.toml",

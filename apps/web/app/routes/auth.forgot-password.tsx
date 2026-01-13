@@ -1,8 +1,9 @@
 import { type ActionFunctionArgs, json } from "@remix-run/cloudflare";
 import { Form, Link, useActionData, useNavigation } from "@remix-run/react";
-import { Button, Card, Input, Text, View, XStack, YStack } from "@syncstuff/ui";
+import { Button, Card, Input, Text } from "@syncstuff/ui";
 
 export async function action({ request, context }: ActionFunctionArgs) {
+  // ... existing action logic ...
   const formData = await request.formData();
   const email = (formData as any).get("email");
 
@@ -82,138 +83,85 @@ export default function ForgotPassword() {
 
   if (actionData?.success) {
     return (
-      <View
-        alignItems="center"
-        backgroundColor="$background"
-        bottom={0}
-        justifyContent="center"
-        left={0}
-        padding="$4"
-        position="absolute"
-        right={0}
-        top={0}
-      >
-        <Card bordered elevate maxWidth={400} padding="$4" width="100%">
-          <YStack alignItems="center" space="$6">
-            <View
-              alignItems="center"
-              backgroundColor="$green4"
-              borderRadius="$full"
-              height={64}
-              justifyContent="center"
-              width={64}
-            >
-              <Text color="$green10" fontSize="$8">
-                ✓
-              </Text>
-            </View>
-            <YStack alignItems="center" space="$2">
-              <Text fontSize="$6" fontWeight="bold">
-                Check Your Email
-              </Text>
-              <Text color="$colorSubtitle" textAlign="center">
+      <div className="bg-background absolute inset-0 flex items-center justify-center p-4">
+        <Card className="w-full max-w-[400px] p-4">
+          <div className="flex flex-col items-center gap-6">
+            <div className="bg-green-100 text-green-600 flex h-16 w-16 items-center justify-center rounded-full text-3xl">
+              ✓
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <Text className="text-xl font-bold">Check Your Email</Text>
+              <Text className="text-color-subtitle text-center">
                 {"message" in actionData
                   ? actionData.message
                   : actionData.error}
               </Text>
-            </YStack>
+            </div>
             <Link
               style={{ textDecoration: "none", width: "100%" }}
               to="/auth/login"
             >
-              <Button theme="blue" width="100%">
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white w-full">
                 Back to Login
               </Button>
             </Link>
-          </YStack>
+          </div>
         </Card>
-      </View>
+      </div>
     );
   }
 
   return (
-    <View
-      alignItems="center"
-      backgroundColor="$background"
-      bottom={0}
-      justifyContent="center"
-      left={0}
-      padding="$4"
-      position="absolute"
-      right={0}
-      top={0}
-    >
-      <Card
-        bordered
-        elevate
-        maxWidth={400}
-        padding="$4"
-        space="$6"
-        width="100%"
-      >
-        <YStack space="$2">
+    <div className="bg-background absolute inset-0 flex items-center justify-center p-4">
+      <Card className="w-full max-w-[400px] p-4 space-y-6">
+        <div className="space-y-2">
           <Link style={{ textDecoration: "none" }} to="/auth/login">
-            <XStack alignItems="center" space="$2">
-              <Text color="$colorSubtitle">←</Text>
-              <Text color="$colorSubtitle" fontWeight="bold">
-                Back to Login
-              </Text>
-            </XStack>
+            <div className="flex items-center gap-2 text-color-subtitle">
+              <Text>←</Text>
+              <Text className="font-bold">Back to Login</Text>
+            </div>
           </Link>
-        </YStack>
+        </div>
 
-        <YStack alignItems="center" space="$2">
-          <View
-            alignItems="center"
-            backgroundColor="$backgroundFocus"
-            borderRadius="$3"
-            height={56}
-            justifyContent="center"
-            width={56}
-          >
-            <Text fontSize="$8">✉️</Text>
-          </View>
-          <Text fontSize="$6" fontWeight="bold">
-            Forgot Password?
-          </Text>
-          <Text color="$colorSubtitle" textAlign="center">
+        <div className="flex flex-col items-center gap-2">
+          <div className="bg-gray-100 dark:bg-gray-800 flex h-14 w-14 items-center justify-center rounded-lg text-3xl">
+            ✉️
+          </div>
+          <Text className="text-xl font-bold">Forgot Password?</Text>
+          <Text className="text-color-subtitle text-center">
             Enter your email address and we'll send you a link to reset your
             password.
           </Text>
-        </YStack>
+        </div>
 
         {actionData && "error" in actionData && actionData.error && (
-          <YStack backgroundColor="$red2" borderRadius="$3" padding="$4">
-            <Text color="$red10" fontSize="$2">
+          <div className="bg-red-100 p-4 rounded-lg">
+            <Text className="text-red-600 text-sm">
               {actionData.error}
             </Text>
-          </YStack>
+          </div>
         )}
 
         <Form method="post">
-          <YStack space="$4">
-            <YStack space="$2">
-              <Text fontSize="$2" fontWeight="bold" textTransform="uppercase">
-                Email Address
-              </Text>
-              <Input id="email" placeholder="john@example.com" />
-            </YStack>
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              <Text className="text-sm font-bold uppercase">Email Address</Text>
+              <Input id="email" name="email" placeholder="john@example.com" />
+            </div>
 
-            <Button disabled={isSubmitting} size="$4" theme="blue">
+            <Button disabled={isSubmitting} className="bg-blue-600 hover:bg-blue-700 text-white w-full">
               {isSubmitting ? "Sending Link..." : "Send Reset Link"}
             </Button>
-          </YStack>
+          </div>
         </Form>
 
-        <XStack justifyContent="center" space="$2">
-          <Text fontSize="$2">Remember your password?</Text>
+        <div className="flex justify-center gap-2">
+          <Text className="text-sm">Remember your password?</Text>
           <Link style={{ textDecoration: "none" }} to="/auth/login">
-            <Text color="$primary" fontSize="$2" fontWeight="bold">
-              Sign in
-            </Text>
+            <Text className="text-primary text-sm font-bold">Sign in</Text>
           </Link>
-        </XStack>
+        </div>
       </Card>
-    </View>
+    </div>
   );
 }

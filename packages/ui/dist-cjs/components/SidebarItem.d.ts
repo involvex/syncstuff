@@ -1,5 +1,5 @@
-import "./_SidebarItem.css";
 import type React from "react";
+import "./_SidebarItem.css";
 export interface SidebarItemProps {
   icon?: React.ReactNode;
   label: string;

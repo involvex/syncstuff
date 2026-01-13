@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTheme } from "../hooks/useTheme";
+import { Button } from "./ui/Button";
 
 export default function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
@@ -12,21 +13,25 @@ export default function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <button
-        className="inline-flex items-center rounded-lg p-2.5 text-sm font-medium text-gray-500 hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 focus:outline-none dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
-        type="button"
+      <Button
+        variant="ghost"
+        size="icon"
+        aria-label="Toggle theme"
+        disabled
+        className="size-10"
       >
         <span className="size-5" /> {/* Placeholder size */}
-      </button>
+      </Button>
     );
   }
 
   return (
-    <button
+    <Button
+      variant="ghost"
+      size="icon"
       aria-label="Toggle theme"
-      className="inline-flex items-center rounded-lg p-2.5 text-sm font-medium text-gray-500 hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 focus:outline-none dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
       onClick={toggleTheme}
-      type="button"
+      className="size-10 text-on-surface hover:bg-surface-hover"
     >
       {theme === "light" ? (
         <svg
@@ -51,6 +56,6 @@ export default function ThemeToggle() {
           <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
         </svg>
       )}
-    </button>
+    </Button>
   );
 }

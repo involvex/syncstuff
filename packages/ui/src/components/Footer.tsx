@@ -1,93 +1,52 @@
-import "./_Footer.css";
-const _cn16 =
-  "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color _fos- ";
-const _cn15 =
-  "_dsp-flex _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-row _jc-space-betwe3241 _ai-center ";
-const _cn14 =
-  "is_Separator _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _btc-borderColor _brc-borderColor _bbc-borderColor _blc-borderColor _fs-1 _btw-0px _brw-0px _bbw-1px _blw-0px _fg-1 _h-0px _mah-0px _bbs-solid _bts-solid _bls-solid _brs-solid _tr-translateY-1736186894 ";
-const _cn13 =
-  "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color ";
-const _cn12 =
-  "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color ";
-const _cn11 =
-  "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color _fow-bold ";
-const _cn10 =
-  "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color ";
-const _cn1 =
-  "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color ";
-const _cn0 =
-  "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color ";
-const _cn9 =
-  "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color ";
-const _cn8 =
-  "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color _fow-bold ";
-const _cn7 =
-  "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color ";
-const _cn6 =
-  "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color ";
-const _cn5 =
-  "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color ";
-const _cn4 =
-  "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color ";
-const _cn3 =
-  "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color _fow-bold ";
-const _cn2 =
-  "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color ";
-const _cn =
-  "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color _fos- _fow-bold ";
+import { Separator } from "../Separator";
+import { Text } from "../Typography";
+import { XStack, YStack } from "../Layouts";
 
-import React from "react";
-import { XStack, YStack } from "tamagui";
 export function Footer() {
   return (
     <YStack
-      backgroundColor="$background"
-      borderColor="$borderColor"
-      borderTopWidth={1}
-      paddingHorizontal="$4"
-      paddingVertical="$8"
-      space="$4"
+      className="bg-background border-t border-slate-200 dark:border-slate-800 px-4 py-8 gap-4"
     >
-      <XStack flexWrap="wrap" justifyContent="space-between" space="$4">
-        <YStack minWidth={200} space="$2">
-          <span className={_cn}>Syncstuff</span>
-          <span className={_cn2}>
+      <XStack className="flex-wrap justify-between gap-4">
+        <YStack className="min-w-[200px] gap-2">
+          <Text className="text-lg font-bold">Syncstuff</Text>
+          <Text className="text-slate-500 dark:text-slate-400">
             Synchronize your files and clipboard across all your devices.
-          </span>
+          </Text>
         </YStack>
 
-        <XStack flexWrap="wrap" space="$8">
-          <YStack space="$2">
-            <span className={_cn3}>Product</span>
-            <span className={_cn4}>Features</span>
-            <span className={_cn5}>Downloads</span>
-            <span className={_cn6}>Premium</span>
-            <span className={_cn7}>Campaigns</span>
+        <XStack className="flex-wrap gap-8">
+          <YStack className="gap-2">
+            <Text className="font-bold">Product</Text>
+            <Text>Features</Text>
+            <Text>Downloads</Text>
+            <Text>Premium</Text>
+            <Text>Campaigns</Text>
           </YStack>
 
-          <YStack space="$2">
-            <span className={_cn8}>Company</span>
-            <span className={_cn9}>About</span>
-            <span className={_cn0}>Blog</span>
-            <span className={_cn1}>FAQ</span>
-            <span className={_cn10}>Contact</span>
+          <YStack className="gap-2">
+            <Text className="font-bold">Company</Text>
+            <Text>About</Text>
+            <Text>Blog</Text>
+            <Text>FAQ</Text>
+            <Text>Contact</Text>
           </YStack>
 
-          <YStack space="$2">
-            <span className={_cn11}>Legal</span>
-            <span className={_cn12}>Privacy</span>
-            <span className={_cn13}>Terms</span>
+          <YStack className="gap-2">
+            <Text className="font-bold">Legal</Text>
+            <Text>Privacy</Text>
+            <Text>Terms</Text>
           </YStack>
         </XStack>
       </XStack>
 
-      <div className={_cn14} />
+      <Separator />
 
-      <div className={_cn15}>
-        <span className={_cn16}>
+      <div className="flex flex-row justify-between items-center">
+        <Text className="text-sm text-slate-500 dark:text-slate-400">
           © {new Date().getFullYear()} Involvex. All rights reserved.
-        </span>
-        <XStack space="$4">{/* Social icons could go here */}</XStack>
+        </Text>
+        <XStack className="gap-4">{/* Social icons could go here */}</XStack>
       </div>
     </YStack>
   );

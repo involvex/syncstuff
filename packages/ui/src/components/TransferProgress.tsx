@@ -1,25 +1,13 @@
-import "./_TransferProgress.css";
-const _cn6 =
-  "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color _fos- ";
-const _cn5 =
-  "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color _fos- ";
-const _cn4 =
-  "_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-row _jc-space-betwe3241 ";
-const _cn3 =
-  "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color _fos- ";
-const _cn2 =
-  "font_body _ff- _dsp-inline _bxs-border-box _ww-break-word _ws-nowrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color _fow-bold _maw-10037 _ox-hidden _oy-hidden _textOverflow-ellipsis ";
-const _cn =
-  "_dsp-flex _ai-stretch _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-row _jc-space-betwe3241 ";
+import { YStack, XStack } from "../Layouts";
+import { Text } from "../Typography";
 
-import React from "react";
-import { Progress, YStack } from "tamagui";
 export interface TransferProgressProps {
   fileName: string;
   progress: number; // 0 to 100
   speed?: string;
   remainingTime?: string;
 }
+
 export function TransferProgress({
   fileName,
   progress,
@@ -28,26 +16,24 @@ export function TransferProgress({
 }: TransferProgressProps) {
   return (
     <YStack
-      backgroundColor="$background"
-      borderColor="$borderColor"
-      borderRadius="$3"
-      borderWidth={1}
-      padding="$3"
-      space="$2"
+      className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-3 gap-2"
     >
-      <div className={_cn}>
-        <span className={_cn2}>{fileName}</span>
-        <span className={_cn3}>{progress}%</span>
+      <XStack className="justify-between">
+        <Text className="font-bold truncate max-w-[70%]">{fileName}</Text>
+        <Text className="text-sm">{Math.round(progress)}%</Text>
+      </XStack>
+
+      <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2 overflow-hidden">
+        <div 
+          className="bg-blue-600 h-full transition-all duration-300 ease-out" 
+          style={{ width: `${Math.max(0, Math.min(100, progress))}%` }}
+        />
       </div>
 
-      <Progress size="$2" value={progress}>
-        <Progress.Indicator animation="quick" backgroundColor="$blue10" />
-      </Progress>
-
-      <div className={_cn4}>
-        {speed && <span className={_cn5}>{speed}</span>}
-        {remainingTime && <span className={_cn6}>{remainingTime}</span>}
-      </div>
+      <XStack className="justify-between">
+        {speed && <Text className="text-xs text-slate-500 dark:text-slate-400">{speed}</Text>}
+        {remainingTime && <Text className="text-xs text-slate-500 dark:text-slate-400">{remainingTime}</Text>}
+      </XStack>
     </YStack>
   );
 }

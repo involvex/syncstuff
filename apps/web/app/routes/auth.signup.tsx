@@ -1,6 +1,6 @@
 import type { ActionFunctionArgs, MetaFunction } from "@remix-run/cloudflare";
 import { Form, Link, useActionData, useNavigation } from "@remix-run/react";
-import { Button, Card, Input, Text, View, XStack, YStack } from "@syncstuff/ui";
+import { Button, Card, Input, Text } from "@syncstuff/ui";
 import { commitSession, getSession } from "~/services/session.server";
 
 export const meta: MetaFunction = () => {
@@ -11,6 +11,7 @@ export const meta: MetaFunction = () => {
 };
 
 export async function action({ request, context }: ActionFunctionArgs) {
+  // ... existing action logic ...
   const formData = await request.formData();
   const email = (formData as any).get("email");
   const password = (formData as any).get("password");
@@ -66,82 +67,49 @@ export default function Signup() {
   const isSubmitting = navigation.state === "submitting";
 
   return (
-    <View
-      alignItems="center"
-      backgroundColor="$background"
-      bottom={0}
-      justifyContent="center"
-      left={0}
-      padding="$4"
-      position="absolute"
-      right={0}
-      top={0}
-    >
-      <Card
-        bordered
-        elevate
-        maxWidth={400}
-        padding="$4"
-        space="$6"
-        width="100%"
-      >
-        <YStack alignItems="center" space="$2">
-          <Text color="$primary" fontSize="$8" fontWeight="bold">
-            Syncstuff
-          </Text>
-
-          <Text fontSize="$4" fontWeight="bold">
-            Create your account
-          </Text>
-        </YStack>
+    <div className="bg-background absolute inset-0 flex items-center justify-center p-4">
+      <Card className="w-full max-w-[400px] p-4 space-y-6">
+        <div className="flex flex-col items-center gap-2">
+          <Text className="text-primary text-4xl font-bold">Syncstuff</Text>
+          <Text className="text-xl font-bold">Create your account</Text>
+        </div>
 
         <Form method="post">
-          <YStack space="$4">
-            <YStack space="$2">
-              <Text fontSize="$2" fontWeight="bold">
-                Username
-              </Text>
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              <Text className="text-sm font-bold">Username</Text>
+              <Input name="username" placeholder="johndoe" />
+            </div>
 
-              <Input placeholder="johndoe" />
-            </YStack>
+            <div className="flex flex-col gap-2">
+              <Text className="text-sm font-bold">Email Address</Text>
+              <Input name="email" placeholder="john@example.com" />
+            </div>
 
-            <YStack space="$2">
-              <Text fontSize="$2" fontWeight="bold">
-                Email Address
-              </Text>
-
-              <Input placeholder="john@example.com" />
-            </YStack>
-
-            <YStack space="$2">
-              <Text fontSize="$2" fontWeight="bold">
-                Password
-              </Text>
-
-              <Input secureTextEntry />
-            </YStack>
+            <div className="flex flex-col gap-2">
+              <Text className="text-sm font-bold">Password</Text>
+              <Input name="password" type="password" />
+            </div>
 
             {actionData?.error && (
-              <Text color="$red10" fontSize="$2" textAlign="center">
+              <Text className="text-red-500 text-sm text-center">
                 {actionData.error}
               </Text>
             )}
 
-            <Button disabled={isSubmitting} size="$4" theme="blue">
+            <Button disabled={isSubmitting} className="bg-blue-600 hover:bg-blue-700 text-white w-full">
               {isSubmitting ? "Creating account..." : "Sign up"}
             </Button>
-          </YStack>
+          </div>
         </Form>
 
-        <XStack justifyContent="center" space="$2">
-          <Text fontSize="$2">Already a member?</Text>
+        <div className="flex justify-center gap-2">
+          <Text className="text-sm">Already a member?</Text>
           <Link style={{ textDecoration: "none" }} to="/auth/login">
-            <Text color="$primary" fontSize="$2" fontWeight="bold">
-              Sign in
-            </Text>
+            <Text className="text-primary text-sm font-bold">Sign in</Text>
           </Link>
-        </XStack>
+        </div>
       </Card>
-    </View>
+    </div>
   );
 }

@@ -4,7 +4,8 @@ import {
   type MetaFunction,
 } from "@remix-run/cloudflare";
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
-import { Footer, Navigation } from "@syncstuff/ui";
+import Footer from "~/components/Footer";
+import Navigation from "~/components/Navigation";
 import { commitSession, getSession } from "~/services/session.server";
 import "../tailwind.css";
 
@@ -58,7 +59,7 @@ export default function Index() {
       <main className="pt-20">
         {/* Hero Section */}
         <section className="bg-surface">
-          <div className="mx-auto grid max-w-screen-xl px-4 py-8 lg:grid-cols-12 lg:gap-8 lg:py-16 xl:gap-0">
+          <div className="mx-auto grid max-w-7xl px-4 py-8 lg:grid-cols-12 lg:gap-8 lg:py-16 xl:gap-0">
             <div className="mr-auto place-self-center lg:col-span-7">
               <h1 className="text-on-background mb-4 max-w-2xl text-4xl leading-none font-extrabold tracking-tight md:text-5xl xl:text-6xl">
                 Sync secure. Sync simple. Sync everything.
@@ -138,8 +139,8 @@ export default function Index() {
 
         {/* Features Section */}
         <section className="bg-background py-16" id="features">
-          <div className="mx-auto max-w-screen-xl px-4 lg:px-6">
-            <div className="mx-auto mb-12 max-w-screen-md text-center lg:mb-16">
+          <div className="mx-auto max-w-7xl px-4 lg:px-6">
+            <div className="mx-auto mb-12 max-w-3xl text-center lg:mb-16">
               <h2 className="text-onBackground mb-4 text-4xl font-extrabold tracking-tight">
                 Designed for seamless productivity
               </h2>
@@ -224,8 +225,8 @@ export default function Index() {
 
         {/* Download Section */}
         <section className="bg-surface" id="download">
-          <div className="mx-auto max-w-screen-xl px-4 py-8 sm:py-16 lg:px-6">
-            <div className="mx-auto max-w-screen-md text-center">
+          <div className="mx-auto max-w-7xl px-4 py-8 sm:py-16 lg:px-6">
+            <div className="mx-auto max-w-3xl text-center">
               <h2 className="text-onBackground mb-4 text-4xl font-extrabold tracking-tight">
                 Download Syncstuff App
               </h2>

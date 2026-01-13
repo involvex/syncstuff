@@ -1,5 +1,5 @@
-import "./_DeviceCard.css";
 import { type DeviceType } from "../DeviceIcon";
+import "./_DeviceCard.css";
 export interface DeviceCardProps {
   name: string;
   type: DeviceType;
