@@ -1,6 +1,6 @@
 {
   "name": "@involvex/syncstuff-cli",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "type": "module",
   "homepage": "https://syncstuff-web.involvex.workers.dev/",
   "sponsor": {
