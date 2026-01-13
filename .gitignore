@@ -121,4 +121,4 @@ apps/desktop/.npmrc
 .kilocode
 apps/web/dev.err
 apps/web/dev.err
-apps/web/*.err
+apps/web/*.err*.log

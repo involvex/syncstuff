@@ -7,6 +7,7 @@ import { Link, useLoaderData, useNavigate } from "@remix-run/react";
 import Footer from "~/components/Footer";
 import Navigation from "~/components/Navigation";
 import { commitSession, getSession } from "~/services/session.server";
+import { Button } from "@syncstuff/ui";
 import "../tailwind.css";
 
 export const meta: MetaFunction = () => {
@@ -88,31 +89,35 @@ export default function Index() {
                   </svg>
                 </Link>
               ) : (
-                <a
-                  className="bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-primary/50 mr-3 inline-flex items-center justify-center rounded-xl px-6 py-3.5 text-center text-base font-medium shadow-md transition-all duration-200 hover:shadow-lg focus:ring-4"
-                  href="/auth/register"
+                <Button
+                  variant="default"
+                  size="lg"
+                  onClick={() => navigate("/auth/register")}
+                  icon={
+                    <svg
+                      className="-mr-1 ml-2 size-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        clipRule="evenodd"
+                        d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                        fillRule="evenodd"
+                      />
+                    </svg>
+                  }
                 >
                   Get started
-                  <svg
-                    className="-mr-1 ml-2 size-5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      clipRule="evenodd"
-                      d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                      fillRule="evenodd"
-                    />
-                  </svg>
-                </a>
+                </Button>
               )}
-              <a
-                className="text-on-surface hover:bg-surface-variant/50 hover:text-primary inline-flex items-center justify-center rounded-xl px-6 py-3.5 text-center text-base font-medium transition-colors duration-200"
-                href="#features"
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={() => navigate("#features")}
               >
                 Learn more
-              </a>
+              </Button>
             </div>
             <div className="hidden lg:col-span-5 lg:mt-0 lg:flex">
               {/* <img src="/hero-mockup.png" alt="mockup" /> */}
