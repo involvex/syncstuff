@@ -1,7 +1,7 @@
 import js from "@eslint/js";
 import globals from "globals";
 export default [{
-  ignores: ["node_modules/**", "dist/**", "build/**", ".next/**", ".expo/**", "android/**", "ios/**", "**/.gradle/**", "packages/shared/dist/**"]
+  ignores: ["node_modules/**", "dist/**", "build/**", ".next/**", ".expo/**", "android/**", "ios/**", "**/.gradle/**", "packages/shared/dist/**", "apps/mobileapp/node_modules/**", "packages/ui/dist/**", "packages/ui/*/**"]
 }, {
   files: ["**/*.{js,mjs,cjs,jsx,ts,tsx}"],
   languageOptions: {

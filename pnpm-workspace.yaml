@@ -9,6 +9,7 @@ onlyBuiltDependencies:
   - electron
   - electron-winstaller
   - esbuild
+  - protobufjs
   - sharp
   - unrs-resolver
   - workerd
