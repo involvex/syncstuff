@@ -1,12 +1,12 @@
 import { useSearchParams } from "@remix-run/react";
 import {
-    Button,
-    Card,
-    PairingCode,
-    Separator,
-    Text,
-    View,
-    YStack,
+  Button,
+  Card,
+  PairingCode,
+  Separator,
+  Text,
+  View,
+  YStack,
 } from "@syncstuff/ui";
 import { useEffect } from "react";
 

@@ -1,8 +1,6 @@
-import { useNavigate } from "@remix-run/react";
 import { Footer } from "@syncstuff/ui";
 
 export default function Affiliate() {
-  const navigate = useNavigate();
   return (
     <>
       <div className="min-h-screen bg-white py-24 sm:py-32 dark:bg-gray-950">

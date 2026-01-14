@@ -27,7 +27,7 @@ function Provider({ children }) {
         root.classList.add(theme);
     }, [theme]);
     const toggleTheme = () => {
-        setThemeState((prev) => (prev === "light" ? "dark" : "light"));
+        setThemeState(prev => (prev === "light" ? "dark" : "light"));
     };
     const setTheme = (val) => setThemeState(val);
     return ((0, jsx_runtime_1.jsx)(ThemeContext.Provider, { value: { theme, toggleTheme, setTheme }, children: children }));

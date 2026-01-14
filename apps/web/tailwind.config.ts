@@ -1,6 +1,6 @@
 // tailwind.config.js
+import { borderRadius, colors, spacing, typography } from "@syncstuff/ui";
 import type { Config } from "tailwindcss";
-import { colors, typography, spacing, borderRadius } from "@syncstuff/ui";
 
 const extendsConfig: Config = {
   darkMode: "class",

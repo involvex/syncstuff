@@ -24,15 +24,24 @@ export function Navigation({
 
       <XStack className="items-center gap-4">
         <XStack className="hidden sm:flex gap-4">
-          <Text className="font-medium cursor-pointer text-foreground">Features</Text>
-          <Text className="font-medium cursor-pointer text-foreground">Pricing</Text>
-          <Text className="font-medium cursor-pointer text-foreground">Docs</Text>
+          <Text className="font-medium cursor-pointer text-foreground">
+            Features
+          </Text>
+          <Text className="font-medium cursor-pointer text-foreground">
+            Pricing
+          </Text>
+          <Text className="font-medium cursor-pointer text-foreground">
+            Docs
+          </Text>
         </XStack>
 
         <ThemeToggle />
 
         {isLoggedIn ? (
-          <Button onClick={onDashboard} className="bg-blue-600 hover:bg-blue-700 text-white">
+          <Button
+            onClick={onDashboard}
+            className="bg-blue-600 hover:bg-blue-700 text-white"
+          >
             Dashboard
           </Button>
         ) : (
@@ -41,7 +50,10 @@ export function Navigation({
               Login
             </Button>
 
-            <Button onClick={onSignup} className="bg-blue-600 hover:bg-blue-700 text-white">
+            <Button
+              onClick={onSignup}
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+            >
               Sign Up
             </Button>
           </XStack>

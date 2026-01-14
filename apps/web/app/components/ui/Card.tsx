@@ -8,21 +8,32 @@ const Card = forwardRef<
     elevate?: boolean;
     hoverable?: boolean;
   }
->(({ className, bordered = false, elevate = false, hoverable = false, ...props }, ref) => {
-  return (
-    <div
-      ref={ref}
-      className={cn(
-        "bg-surface text-on-surface rounded-lg shadow-sm",
-        bordered && "border border-border",
-        elevate && "shadow-md hover:shadow-lg transition-shadow",
-        hoverable && "hover:bg-surface-hover cursor-pointer",
-        className
-      )}
-      {...props}
-    />
-  );
-});
+>(
+  (
+    {
+      className,
+      bordered = false,
+      elevate = false,
+      hoverable = false,
+      ...props
+    },
+    ref,
+  ) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          "bg-surface text-on-surface rounded-lg shadow-sm",
+          bordered && "border-border border",
+          elevate && "shadow-md transition-shadow hover:shadow-lg",
+          hoverable && "hover:bg-surface-hover cursor-pointer",
+          className,
+        )}
+        {...props}
+      />
+    );
+  },
+);
 
 Card.displayName = "Card";
 
@@ -35,7 +46,7 @@ const CardHeader = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
         {...props}
       />
     );
-  }
+  },
 );
 
 CardHeader.displayName = "CardHeader";
@@ -48,8 +59,8 @@ const CardTitle = forwardRef<
     <h3
       ref={ref}
       className={cn(
-        "text-2xl font-bold leading-none tracking-tight text-on-surface",
-        className
+        "text-on-surface text-2xl leading-none font-bold tracking-tight",
+        className,
       )}
       {...props}
     />
@@ -65,7 +76,7 @@ const CardDescription = forwardRef<
   return (
     <p
       ref={ref}
-      className={cn("text-sm text-on-surface-variant", className)}
+      className={cn("text-on-surface-variant text-sm", className)}
       {...props}
     />
   );
@@ -75,10 +86,8 @@ CardDescription.displayName = "CardDescription";
 
 const CardContent = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => {
-    return (
-      <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
-    );
-  }
+    return <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />;
+  },
 );
 
 CardContent.displayName = "CardContent";
@@ -92,16 +101,16 @@ const CardFooter = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
         {...props}
       />
     );
-  }
+  },
 );
 
 CardFooter.displayName = "CardFooter";
 
 export {
   Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
 };

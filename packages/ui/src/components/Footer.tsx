@@ -1,12 +1,10 @@
+import { XStack, YStack } from "../Layouts";
 import { Separator } from "../Separator";
 import { Text } from "../Typography";
-import { XStack, YStack } from "../Layouts";
 
 export function Footer() {
   return (
-    <YStack
-      className="bg-background border-t border-slate-200 dark:border-slate-800 px-4 py-8 gap-4"
-    >
+    <YStack className="bg-background border-t border-slate-200 dark:border-slate-800 px-4 py-8 gap-4">
       <XStack className="flex-wrap justify-between gap-4">
         <YStack className="min-w-[200px] gap-2">
           <Text className="text-lg font-bold">Syncstuff</Text>

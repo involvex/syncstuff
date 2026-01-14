@@ -1,12 +1,12 @@
 import type { LinksFunction } from "@remix-run/cloudflare";
 import { json, type LoaderFunctionArgs } from "@remix-run/cloudflare";
 import {
-    Links,
-    Meta,
-    Outlet,
-    Scripts,
-    ScrollRestoration,
-    useLoaderData,
+  Links,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  useLoaderData,
 } from "@remix-run/react";
 import { Provider } from "@syncstuff/ui";
 

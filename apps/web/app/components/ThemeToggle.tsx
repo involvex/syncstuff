@@ -31,7 +31,7 @@ export default function ThemeToggle() {
       size="icon"
       aria-label="Toggle theme"
       onClick={toggleTheme}
-      className="size-10 text-on-surface hover:bg-surface-hover"
+      className="text-on-surface hover:bg-surface-hover size-10"
     >
       {theme === "light" ? (
         <svg

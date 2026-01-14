@@ -41,7 +41,7 @@ export function Provider({ children }: ProviderProps) {
   }, [theme]);
 
   const toggleTheme = () => {
-    setThemeState((prev) => (prev === "light" ? "dark" : "light"));
+    setThemeState(prev => (prev === "light" ? "dark" : "light"));
   };
 
   const setTheme = (val: Theme) => setThemeState(val);

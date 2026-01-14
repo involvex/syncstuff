@@ -33,16 +33,26 @@ export function DeviceCard({
             <StatusBadge status={status === "online" ? "success" : "neutral"}>
               {status.toUpperCase()}
             </StatusBadge>
-            {lastSeen && <Text className="text-xs text-slate-500 dark:text-slate-400">Last seen: {lastSeen}</Text>}
+            {lastSeen && (
+              <Text className="text-xs text-slate-500 dark:text-slate-400">
+                Last seen: {lastSeen}
+              </Text>
+            )}
           </XStack>
         </YStack>
 
         {status === "online" ? (
-          <Button onClick={onDisconnect} className="bg-red-600 hover:bg-red-700 text-white">
+          <Button
+            onClick={onDisconnect}
+            className="bg-red-600 hover:bg-red-700 text-white"
+          >
             Disconnect
           </Button>
         ) : (
-          <Button onClick={onConnect} className="bg-blue-600 hover:bg-blue-700 text-white">
+          <Button
+            onClick={onConnect}
+            className="bg-blue-600 hover:bg-blue-700 text-white"
+          >
             Connect
           </Button>
         )}

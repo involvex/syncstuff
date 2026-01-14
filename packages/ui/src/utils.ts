@@ -37,7 +37,13 @@ export interface TamaguiProps {
   flexDirection?: "row" | "column" | "row-reverse" | "column-reverse";
   flexWrap?: "wrap" | "nowrap" | "wrap-reverse";
   alignItems?: "flex-start" | "flex-end" | "center" | "stretch" | "baseline";
-  justifyContent?: "flex-start" | "flex-end" | "center" | "space-between" | "space-around" | "space-evenly";
+  justifyContent?:
+    | "flex-start"
+    | "flex-end"
+    | "center"
+    | "space-between"
+    | "space-around"
+    | "space-evenly";
   position?: "absolute" | "relative" | "fixed" | "sticky";
   top?: string | number;
   bottom?: string | number;
@@ -65,7 +71,9 @@ export interface TamaguiProps {
   exitStyle?: any;
 }
 
-function parseValue(val: string | number | undefined): string | number | undefined {
+function parseValue(
+  val: string | number | undefined,
+): string | number | undefined {
   if (val === undefined) return undefined;
   if (typeof val === "number") return val;
   if (typeof val === "string") {
@@ -86,22 +94,60 @@ function parseValue(val: string | number | undefined): string | number | undefin
 
 export function extractLayoutProps(props: any) {
   const {
-    padding, paddingHorizontal, paddingVertical, paddingLeft, paddingRight, paddingTop, paddingBottom,
-    margin, marginHorizontal, marginVertical, marginLeft, marginRight, marginTop, marginBottom,
-    width, height, minWidth, minHeight, maxWidth, maxHeight,
+    padding,
+    paddingHorizontal,
+    paddingVertical,
+    paddingLeft,
+    paddingRight,
+    paddingTop,
+    paddingBottom,
+    margin,
+    marginHorizontal,
+    marginVertical,
+    marginLeft,
+    marginRight,
+    marginTop,
+    marginBottom,
+    width,
+    height,
+    minWidth,
+    minHeight,
+    maxWidth,
+    maxHeight,
     backgroundColor,
     borderRadius,
-    borderWidth, borderColor,
+    borderWidth,
+    borderColor,
     space,
     elevation,
     opacity,
-    flex, flexDirection, flexWrap, alignItems, justifyContent,
-    position, top, bottom, left, right,
-    bordered, elevate,
+    flex,
+    flexDirection,
+    flexWrap,
+    alignItems,
+    justifyContent,
+    position,
+    top,
+    bottom,
+    left,
+    right,
+    bordered,
+    elevate,
     theme,
     separator,
-    color, fontSize, fontWeight, textAlign, textTransform, fontFamily,
-    animation, scale, hoverStyle, pressStyle, focusStyle, enterStyle, exitStyle,
+    color,
+    fontSize,
+    fontWeight,
+    textAlign,
+    textTransform,
+    fontFamily,
+    animation,
+    scale,
+    hoverStyle,
+    pressStyle,
+    focusStyle,
+    enterStyle,
+    exitStyle,
     ...rest
   } = props;
 
@@ -119,7 +165,8 @@ export function extractLayoutProps(props: any) {
   if (paddingLeft !== undefined) style.paddingLeft = parseValue(paddingLeft);
   if (paddingRight !== undefined) style.paddingRight = parseValue(paddingRight);
   if (paddingTop !== undefined) style.paddingTop = parseValue(paddingTop);
-  if (paddingBottom !== undefined) style.paddingBottom = parseValue(paddingBottom);
+  if (paddingBottom !== undefined)
+    style.paddingBottom = parseValue(paddingBottom);
 
   if (margin !== undefined) style.margin = parseValue(margin);
   if (marginHorizontal !== undefined) {
@@ -142,7 +189,8 @@ export function extractLayoutProps(props: any) {
   if (maxWidth !== undefined) style.maxWidth = parseValue(maxWidth);
   if (maxHeight !== undefined) style.maxHeight = parseValue(maxHeight);
 
-  if (backgroundColor) style.backgroundColor = parseValue(backgroundColor) as string;
+  if (backgroundColor)
+    style.backgroundColor = parseValue(backgroundColor) as string;
   if (borderRadius) style.borderRadius = parseValue(borderRadius);
 
   if (space !== undefined) style.gap = parseValue(space);
@@ -158,13 +206,14 @@ export function extractLayoutProps(props: any) {
   if (left !== undefined) style.left = parseValue(left);
   if (right !== undefined) style.right = parseValue(right);
 
-  if (elevation) style.boxShadow = `0px ${elevation}px ${elevation * 2}px rgba(0,0,0,0.1)`;
+  if (elevation)
+    style.boxShadow = `0px ${elevation}px ${elevation * 2}px rgba(0,0,0,0.1)`;
   if (elevate) style.boxShadow = `0px 2px 4px rgba(0,0,0,0.1)`;
 
   if (bordered) {
-    style.borderWidth = '1px';
-    style.borderColor = 'var(--border, #e2e8f0)';
-    style.borderStyle = 'solid';
+    style.borderWidth = "1px";
+    style.borderColor = "var(--border, #e2e8f0)";
+    style.borderStyle = "solid";
   }
   if (borderWidth) style.borderWidth = borderWidth;
   if (borderColor) style.borderColor = parseValue(borderColor) as string;

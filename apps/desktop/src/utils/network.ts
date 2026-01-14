@@ -1,13 +1,17 @@
 import {
-  LocalDevice,
   SYNCSTUFF_PROTOCOL,
   SYNCSTUFF_SERVICE_TYPE,
+  type LocalDevice,
+  type ServiceTxtRecord,
 } from "@syncstuff/network-types";
-import { Bonjour, Service, Browser } from "bonjour-service";
+import { Bonjour, Browser, Service } from "bonjour-service";
 import { createSocket } from "dgram";
 import { createRequire } from "module";
 import { v4 as uuidv4 } from "uuid";
 import { readConfig, writeConfig } from "./config.js";
+
+export type { LocalDevice };
+
 const require = createRequire(import.meta.url);
 const packageJson = require("../../../package.json");
 /**
@@ -39,11 +43,12 @@ class NetworkScanner {
       });
 
       this.browser.on("up", (service: Service) => {
-        const txt = service.txt || {};
+        const txt = (service.txt || {}) as unknown as ServiceTxtRecord;
         const deviceId = txt.deviceId;
 
         if (deviceId && !seenIds.has(deviceId)) {
-          const ip = service.addresses.find(addr => addr.includes("."));
+          const addresses = service.addresses || [];
+          const ip = addresses.find(addr => addr.includes("."));
           if (ip) {
             seenIds.add(deviceId);
             devices.push({
@@ -94,7 +99,7 @@ class NetworkScanner {
    */
   startAdvertising(deviceName: string, port: number, platform = "cli") {
     if (this.ad) {
-      this.ad.stop(() => {
+      this.ad.stop?.(() => {
         this.ad = null;
         this.publish(deviceName, port, platform);
       });
@@ -108,7 +113,7 @@ class NetworkScanner {
    */
   stopAdvertising() {
     if (this.ad) {
-      this.ad.stop(() => {
+      this.ad.stop?.(() => {
         this.ad = null;
         console.log("Stopped advertising.");
       });
@@ -125,7 +130,7 @@ class NetworkScanner {
   }
 
   private publish(deviceName: string, port: number, platform: string) {
-    let config = readConfig();
+    const config = readConfig();
     if (!config.deviceId) {
       config.deviceId = uuidv4();
       writeConfig(config);

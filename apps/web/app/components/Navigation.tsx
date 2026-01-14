@@ -77,7 +77,9 @@ export default function Navigation({ isLoggedIn = false }: NavigationProps) {
 
         <div
           className={`w-full items-center justify-between md:order-1 md:flex md:w-auto ${
-            isMenuOpen ? "absolute left-0 top-full block bg-white/95 px-4 pb-4 shadow-lg backdrop-blur-md dark:bg-gray-900/95 md:relative md:top-auto md:bg-transparent md:p-0 md:shadow-none md:backdrop-blur-none" : "hidden"
+            isMenuOpen
+              ? "absolute top-full left-0 block bg-white/95 px-4 pb-4 shadow-lg backdrop-blur-md md:relative md:top-auto md:bg-transparent md:p-0 md:shadow-none md:backdrop-blur-none dark:bg-gray-900/95"
+              : "hidden"
           }`}
           id="navbar-sticky"
         >

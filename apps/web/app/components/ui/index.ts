@@ -3,8 +3,8 @@
 export * from "./Button";
 export * from "./Card";
 export * from "./Input";
-export * from "./SidebarItem";
 export * from "./MainLayout";
+export * from "./SidebarItem";
 
 // Re-export utility functions
 export { cn } from "~/lib/utils";

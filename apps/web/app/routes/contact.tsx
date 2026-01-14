@@ -76,7 +76,6 @@ export default function Contact() {
               <h2 className="text-sm font-bold tracking-widest text-blue-600 uppercase dark:text-blue-400">
                 Contact Us
               </h2>
-              {/* eslint-disable tailwindcss/no-custom-classname */}
               <p className="mt-2 text-4xl font-extrabold tracking-tight text-gray-900 sm:text-6xl dark:text-white">
                 Get in touch
               </p>

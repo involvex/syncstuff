@@ -24,18 +24,24 @@ export function StatCard({ title, value, icon, trend }: StatCardProps) {
           </div>
         )}
         <YStack className="flex-1">
-          <Text className="text-xs uppercase font-bold text-slate-500 dark:text-slate-400">{title}</Text>
+          <Text className="text-xs uppercase font-bold text-slate-500 dark:text-slate-400">
+            {title}
+          </Text>
           <Text className="text-2xl font-bold">{value}</Text>
           {trend && (
             <XStack className="items-center gap-1">
               <Text
                 className={
-                  trend.positive ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"
+                  trend.positive
+                    ? "text-green-600 dark:text-green-400"
+                    : "text-red-600 dark:text-red-400"
                 }
               >
                 {trend.value}
               </Text>
-              <Text className="text-xs text-slate-500 dark:text-slate-400">from last week</Text>
+              <Text className="text-xs text-slate-500 dark:text-slate-400">
+                from last week
+              </Text>
             </XStack>
           )}
         </YStack>

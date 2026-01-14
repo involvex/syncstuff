@@ -1,5 +1,5 @@
 import { Link } from "@remix-run/react";
-import { Footer, Navigation } from "@syncstuff/ui";
+import { Footer } from "@syncstuff/ui";
 
 export default function Premium() {
   const tiers = [

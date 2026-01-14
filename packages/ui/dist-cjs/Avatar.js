@@ -33,7 +33,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AvatarFallback = exports.AvatarImage = exports.Avatar = void 0;
+exports.AvatarImage = exports.AvatarFallback = exports.Avatar = void 0;
 const jsx_runtime_1 = require("react/jsx-runtime");
 const React = __importStar(require("react"));
 const utils_1 = require("./utils");

@@ -86,7 +86,7 @@ export default function ForgotPassword() {
       <div className="bg-background absolute inset-0 flex items-center justify-center p-4">
         <Card className="w-full max-w-[400px] p-4">
           <div className="flex flex-col items-center gap-6">
-            <div className="bg-green-100 text-green-600 flex h-16 w-16 items-center justify-center rounded-full text-3xl">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-3xl text-green-600">
               ✓
             </div>
             <div className="flex flex-col items-center gap-2">
@@ -101,7 +101,7 @@ export default function ForgotPassword() {
               style={{ textDecoration: "none", width: "100%" }}
               to="/auth/login"
             >
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white w-full">
+              <Button className="w-full bg-blue-600 text-white hover:bg-blue-700">
                 Back to Login
               </Button>
             </Link>
@@ -113,10 +113,10 @@ export default function ForgotPassword() {
 
   return (
     <div className="bg-background absolute inset-0 flex items-center justify-center p-4">
-      <Card className="w-full max-w-[400px] p-4 space-y-6">
+      <Card className="w-full max-w-[400px] space-y-6 p-4">
         <div className="space-y-2">
           <Link style={{ textDecoration: "none" }} to="/auth/login">
-            <div className="flex items-center gap-2 text-color-subtitle">
+            <div className="text-color-subtitle flex items-center gap-2">
               <Text>←</Text>
               <Text className="font-bold">Back to Login</Text>
             </div>
@@ -124,7 +124,7 @@ export default function ForgotPassword() {
         </div>
 
         <div className="flex flex-col items-center gap-2">
-          <div className="bg-gray-100 dark:bg-gray-800 flex h-14 w-14 items-center justify-center rounded-lg text-3xl">
+          <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-gray-100 text-3xl dark:bg-gray-800">
             ✉️
           </div>
           <Text className="text-xl font-bold">Forgot Password?</Text>
@@ -135,10 +135,8 @@ export default function ForgotPassword() {
         </div>
 
         {actionData && "error" in actionData && actionData.error && (
-          <div className="bg-red-100 p-4 rounded-lg">
-            <Text className="text-red-600 text-sm">
-              {actionData.error}
-            </Text>
+          <div className="rounded-lg bg-red-100 p-4">
+            <Text className="text-sm text-red-600">{actionData.error}</Text>
           </div>
         )}
 
@@ -149,7 +147,10 @@ export default function ForgotPassword() {
               <Input id="email" name="email" placeholder="john@example.com" />
             </div>
 
-            <Button disabled={isSubmitting} className="bg-blue-600 hover:bg-blue-700 text-white w-full">
+            <Button
+              disabled={isSubmitting}
+              className="w-full bg-blue-600 text-white hover:bg-blue-700"
+            >
               {isSubmitting ? "Sending Link..." : "Send Reset Link"}
             </Button>
           </div>

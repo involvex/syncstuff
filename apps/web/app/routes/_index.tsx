@@ -1,7 +1,7 @@
 import {
-    json,
-    type LoaderFunctionArgs,
-    type MetaFunction,
+  json,
+  type LoaderFunctionArgs,
+  type MetaFunction,
 } from "@remix-run/cloudflare";
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
 import { Button } from "@syncstuff/ui";

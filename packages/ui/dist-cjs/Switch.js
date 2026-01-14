@@ -43,6 +43,6 @@ const SwitchComponent = React.forwardRef(({ className, checked, onCheckedChange,
 });
 SwitchComponent.displayName = "Switch";
 exports.Switch = Object.assign(SwitchComponent, {
-    Thumb: (_) => null // Shim for sub-component usage
+    Thumb: (_) => null, // Shim for sub-component usage
 });
 //# sourceMappingURL=Switch.js.map

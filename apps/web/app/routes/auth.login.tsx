@@ -109,16 +109,21 @@ export default function Login() {
 
   return (
     <div className="bg-background absolute inset-0 flex items-center justify-center p-4">
-      <Card className="w-full max-w-[400px] p-4 space-y-6">
+      <Card className="w-full max-w-[400px] space-y-6 p-4">
         <div className="flex flex-col items-center gap-2">
           <h1 className="text-color-primary text-4xl font-bold">Syncstuff</h1>
-          <h2 className="text-on-surface text-xl font-bold">Sign in to your account</h2>
+          <h2 className="text-on-surface text-xl font-bold">
+            Sign in to your account
+          </h2>
         </div>
 
         <Form method="post">
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
-              <label htmlFor="email" className="text-sm font-bold text-on-surface">
+              <label
+                htmlFor="email"
+                className="text-on-surface text-sm font-bold"
+              >
                 Email Address
               </label>
               <Input
@@ -131,7 +136,10 @@ export default function Login() {
 
             <div className="flex flex-col gap-2">
               <div className="flex justify-between">
-                <label htmlFor="password" className="text-sm font-bold text-on-surface">
+                <label
+                  htmlFor="password"
+                  className="text-on-surface text-sm font-bold"
+                >
                   Password
                 </label>
                 <Link
@@ -151,7 +159,7 @@ export default function Login() {
             </div>
 
             {actionData?.error && (
-              <p className="text-error text-sm text-center">
+              <p className="text-error text-center text-sm">
                 {actionData.error}
               </p>
             )}
@@ -184,7 +192,7 @@ export default function Login() {
               <span className="mr-2 text-xl">🐙</span> GitHub
             </Button>
             <Button
-              className="flex-1 bg-[#5865F2] hover:bg-[#4752c4] text-white"
+              className="flex-1 bg-[#5865F2] text-white hover:bg-[#4752c4]"
               onClick={() => (window.location.href = "/auth/discord")}
             >
               <span className="mr-2 text-xl">💬</span> Discord

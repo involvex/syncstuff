@@ -26,6 +26,7 @@ __exportStar(require("./components/SidebarItem.js"), exports);
 __exportStar(require("./components/StatCard.js"), exports);
 __exportStar(require("./components/StatusBadge.js"), exports);
 __exportStar(require("./components/TransferProgress.js"), exports);
+__exportStar(require("./design-system.js"), exports);
 __exportStar(require("./DeviceIcon.js"), exports);
 __exportStar(require("./Input.js"), exports);
 __exportStar(require("./Layouts.js"), exports);

@@ -7,7 +7,8 @@ function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, TamaguiProps {
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>, TamaguiProps {
   variant?: "default" | "outline" | "ghost" | "destructive" | "secondary";
   size?: "default" | "sm" | "lg" | "icon";
   onPress?: (e?: any) => void;
@@ -15,7 +16,20 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "default", size = "default", style, onPress, onClick, icon, children, ...props }, ref) => {
+  (
+    {
+      className,
+      variant = "default",
+      size = "default",
+      style,
+      onPress,
+      onClick,
+      icon,
+      children,
+      ...props
+    },
+    ref,
+  ) => {
     const { style: layoutStyle, restProps } = extractLayoutProps(props);
 
     const baseStyles =
@@ -38,7 +52,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     const handleClick = (
-      e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+      e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     ) => {
       onClick?.(e);
       onPress?.(e);
@@ -51,7 +65,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           baseStyles,
           variantStyles[variant],
           sizeStyles[size],
-          className
+          className,
         )}
         style={{ ...layoutStyle, ...style }}
         onClick={handleClick}
@@ -61,6 +75,6 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {children}
       </button>
     );
-  }
+  },
 );
 Button.displayName = "Button";

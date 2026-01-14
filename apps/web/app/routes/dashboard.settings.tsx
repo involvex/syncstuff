@@ -279,7 +279,7 @@ export default function Settings() {
           </YStack>
 
           <XStack alignItems="center" space="$6">
-            <Avatar className="rounded-full size-10">
+            <Avatar className="size-10 rounded-full">
               <View
                 alignItems="center"
                 backgroundColor="$primary"

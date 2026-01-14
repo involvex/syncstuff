@@ -1,8 +1,6 @@
-import { useNavigate } from "@remix-run/react";
 import Footer from "~/components/Footer";
 
 export default function About() {
-  const navigate = useNavigate();
   return (
     <>
       <div className="bg-background text-onBackground min-h-screen transition-colors">

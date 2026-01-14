@@ -12,6 +12,7 @@ export interface Config {
     role: string;
   } | null;
   apiUrl?: string;
+  deviceId?: string;
 }
 
 const CONFIG_DIR = join(homedir(), ".syncstuff");

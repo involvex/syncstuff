@@ -109,9 +109,9 @@ function extractLayoutProps(props) {
     if (elevate)
         style.boxShadow = `0px 2px 4px rgba(0,0,0,0.1)`;
     if (bordered) {
-        style.borderWidth = '1px';
-        style.borderColor = 'var(--border, #e2e8f0)';
-        style.borderStyle = 'solid';
+        style.borderWidth = "1px";
+        style.borderColor = "var(--border, #e2e8f0)";
+        style.borderStyle = "solid";
     }
     if (borderWidth)
         style.borderWidth = borderWidth;

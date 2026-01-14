@@ -8,11 +8,7 @@ import {
   useLocation,
   useNavigation,
 } from "@remix-run/react";
-import {
-  Button,
-  MainLayout,
-  SidebarItem,
-} from "~/components/ui";
+import { Button, MainLayout, SidebarItem } from "~/components/ui";
 import { getSession } from "~/services/session.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -166,7 +162,9 @@ export default function DashboardLayout() {
             {userId.charAt(0).toUpperCase()}
           </div>
           <div className="flex flex-1 flex-col">
-            <h3 className="text-on-surface text-base font-bold truncate">User</h3>
+            <h3 className="text-on-surface truncate text-base font-bold">
+              User
+            </h3>
             <p className="text-color-subtitle truncate">
               {userId.substring(0, 8)}
             </p>
@@ -188,7 +186,7 @@ export default function DashboardLayout() {
         <div className="fixed inset-x-0 top-0 z-50">
           <div className="bg-surface-variant h-1">
             <div
-              className="bg-primary h-full animate-progress"
+              className="bg-primary animate-progress h-full"
               style={{ width: "30%" }}
             />
           </div>
@@ -201,11 +199,11 @@ export default function DashboardLayout() {
 
 export function ErrorBoundary({ error }: { error: Error }) {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="w-full max-w-md rounded-lg bg-surface p-6 shadow-lg border border-border">
-        <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-error/10">
+    <div className="bg-background flex min-h-screen items-center justify-center px-4">
+      <div className="bg-surface border-border w-full max-w-md rounded-lg border p-6 shadow-lg">
+        <div className="bg-error/10 mx-auto flex size-12 items-center justify-center rounded-full">
           <svg
-            className="size-6 text-error"
+            className="text-error size-6"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -218,17 +216,17 @@ export function ErrorBoundary({ error }: { error: Error }) {
             />
           </svg>
         </div>
-        <h2 className="mt-4 text-center text-lg font-semibold text-on-surface">
+        <h2 className="text-on-surface mt-4 text-center text-lg font-semibold">
           Something went wrong
         </h2>
-        <p className="mt-2 text-center text-sm text-color-subtitle">
+        <p className="text-color-subtitle mt-2 text-center text-sm">
           {error instanceof Error
             ? error.message
             : "An unexpected error occurred"}
         </p>
         <div className="mt-6 flex justify-center">
           <Link
-            className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm hover:bg-primary/90 focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-none"
+            className="bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-ring rounded-md px-4 py-2 text-sm font-medium shadow-sm focus:ring-2 focus:ring-offset-2 focus:outline-none"
             to="/dashboard"
           >
             Go back to Dashboard

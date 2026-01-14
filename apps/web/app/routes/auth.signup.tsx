@@ -68,7 +68,7 @@ export default function Signup() {
 
   return (
     <div className="bg-background absolute inset-0 flex items-center justify-center p-4">
-      <Card className="w-full max-w-[400px] p-4 space-y-6">
+      <Card className="w-full max-w-[400px] space-y-6 p-4">
         <div className="flex flex-col items-center gap-2">
           <Text className="text-primary text-4xl font-bold">Syncstuff</Text>
           <Text className="text-xl font-bold">Create your account</Text>
@@ -92,12 +92,15 @@ export default function Signup() {
             </div>
 
             {actionData?.error && (
-              <Text className="text-red-500 text-sm text-center">
+              <Text className="text-center text-sm text-red-500">
                 {actionData.error}
               </Text>
             )}
 
-            <Button disabled={isSubmitting} className="bg-blue-600 hover:bg-blue-700 text-white w-full">
+            <Button
+              disabled={isSubmitting}
+              className="w-full bg-blue-600 text-white hover:bg-blue-700"
+            >
               {isSubmitting ? "Creating account..." : "Sign up"}
             </Button>
           </div>

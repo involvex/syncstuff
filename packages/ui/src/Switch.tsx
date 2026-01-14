@@ -1,7 +1,8 @@
 import * as React from "react";
 import { cn, extractLayoutProps, TamaguiProps } from "./utils";
 
-export interface SwitchProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, TamaguiProps {
+export interface SwitchProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>, TamaguiProps {
   checked?: boolean;
   onCheckedChange?: (checked: boolean) => void;
   size?: string; // Shim for compatibility
@@ -20,7 +21,7 @@ const SwitchComponent = React.forwardRef<HTMLButtonElement, SwitchProps>(
         className={cn(
           "peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-950 disabled:cursor-not-allowed disabled:opacity-50",
           checked ? "bg-blue-600" : "bg-slate-200 dark:bg-slate-700",
-          className
+          className,
         )}
         style={{ ...layoutStyle, ...style }}
         {...restProps}
@@ -28,15 +29,15 @@ const SwitchComponent = React.forwardRef<HTMLButtonElement, SwitchProps>(
         <span
           className={cn(
             "pointer-events-none block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform",
-            checked ? "translate-x-5" : "translate-x-0"
+            checked ? "translate-x-5" : "translate-x-0",
           )}
         />
       </button>
-    )
-  }
-)
-SwitchComponent.displayName = "Switch"
+    );
+  },
+);
+SwitchComponent.displayName = "Switch";
 
 export const Switch = Object.assign(SwitchComponent, {
-  Thumb: (_: any) => null // Shim for sub-component usage
+  Thumb: (_: any) => null, // Shim for sub-component usage
 });
