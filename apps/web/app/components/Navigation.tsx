@@ -13,7 +13,7 @@ export default function Navigation({ isLoggedIn = false }: NavigationProps) {
     // /* eslint-disable tailwindcss/no-custom-classname */
     // /* eslint-disable tailwindcss/no-custom-classname */
     <nav className="bg-surface/80 border-outlineVariant sticky start-0 top-0 z-50 w-full border-b backdrop-blur-md">
-      <div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
+      <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between p-4">
         <Link
           className="flex shrink-0 items-center space-x-3 rtl:space-x-reverse"
           to="/"
@@ -50,11 +50,11 @@ export default function Navigation({ isLoggedIn = false }: NavigationProps) {
           )}
 
           <button
+            type="button"
             aria-controls="navbar-sticky"
             aria-expanded={isMenuOpen}
             className="text-onSurface hover:bg-surfaceVariant focus:ring-outlineVariant inline-flex size-10 items-center justify-center rounded-lg p-2 text-sm focus:ring-2 focus:outline-none md:hidden"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            type="button"
           >
             <span className="sr-only">Open main menu</span>
             <svg
@@ -127,17 +127,7 @@ export default function Navigation({ isLoggedIn = false }: NavigationProps) {
                 FAQs
               </Link>
             </li>
-            {isLoggedIn && (
-              <li>
-                <Link
-                  className="text-onSurface hover:bg-surfaceVariant/50 md:hover:text-primary block rounded-lg px-3 py-2 transition-colors md:p-0 md:hover:bg-transparent"
-                  onClick={() => setIsMenuOpen(false)}
-                  to="/dashboard/settings"
-                >
-                  Settings
-                </Link>
-              </li>
-            )}
+
             <li>
               <Link
                 className="text-onSurface hover:bg-surfaceVariant/50 md:hover:text-primary block rounded-lg px-3 py-2 transition-colors md:p-0 md:hover:bg-transparent"

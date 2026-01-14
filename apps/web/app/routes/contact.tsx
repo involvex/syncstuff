@@ -2,7 +2,6 @@ import emailjs from "@emailjs/browser";
 import { useRef, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { maintainers } from "../../package.json";
-import Navigation from "../components/Navigation";
 
 export async function action() {
   // Keep server action for fallback or potential future use
@@ -31,11 +30,19 @@ export default function Contact() {
 
     setIsSending(true);
 
+    const formData = new FormData(form.current);
+    const templateParams = Object.fromEntries(formData.entries());
+
+    // Explicitly add reCAPTCHA token if not already in formData (it should be via hidden input, but checking)
+    if (!templateParams["g-recaptcha-response"]) {
+      templateParams["g-recaptcha-response"] = recaptchaToken;
+    }
+
     emailjs
-      .sendForm(
+      .send(
         import.meta.env.VITE_EMAILJS_SERVICE_ID,
         import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-        form.current,
+        templateParams,
         {
           publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
         },
@@ -58,7 +65,6 @@ export default function Contact() {
 
   return (
     <>
-      <Navigation />
       <div className="min-h-screen bg-white transition-colors dark:bg-gray-950">
         <div className="relative overflow-hidden py-24 sm:py-32">
           {/* Background Gradients */}

@@ -1,15 +1,10 @@
 import { useNavigate } from "@remix-run/react";
-import { Footer, Navigation } from "@syncstuff/ui";
+import { Footer } from "@syncstuff/ui";
 
 export default function Affiliate() {
   const navigate = useNavigate();
   return (
     <>
-      <Navigation
-        onDashboard={() => navigate("/dashboard")}
-        onLogin={() => navigate("/auth/login")}
-        onSignup={() => navigate("/auth/signup")}
-      />
       <div className="min-h-screen bg-white py-24 sm:py-32 dark:bg-gray-950">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-4xl text-center">

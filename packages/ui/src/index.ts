@@ -20,3 +20,4 @@ export * from "./Spinner.js";
 export * from "./Switch.js";
 export * from "./ThemeToggle.js";
 export * from "./Typography.js";
+export * from "./design-system.js";

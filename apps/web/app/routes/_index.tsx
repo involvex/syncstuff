@@ -1,13 +1,12 @@
 import {
-  json,
-  type LoaderFunctionArgs,
-  type MetaFunction,
+    json,
+    type LoaderFunctionArgs,
+    type MetaFunction,
 } from "@remix-run/cloudflare";
 import { Link, useLoaderData, useNavigate } from "@remix-run/react";
-import Footer from "~/components/Footer";
-import Navigation from "~/components/Navigation";
-import { commitSession, getSession } from "~/services/session.server";
 import { Button } from "@syncstuff/ui";
+import Footer from "~/components/Footer";
+import { commitSession, getSession } from "~/services/session.server";
 import "../tailwind.css";
 
 export const meta: MetaFunction = () => {
@@ -50,14 +49,7 @@ export default function Index() {
 
   return (
     <div className="bg-background text-on-background min-h-screen transition-colors duration-300">
-      <Navigation
-        isLoggedIn={isLoggedIn}
-        onDashboard={() => navigate("/dashboard")}
-        onLogin={() => navigate("/auth/login")}
-        onSignup={() => navigate("/auth/signup")}
-      />
-
-      <main className="pt-20">
+      <main>
         {/* Hero Section */}
         <section className="bg-surface">
           <div className="mx-auto grid max-w-7xl px-4 py-8 lg:grid-cols-12 lg:gap-8 lg:py-16 xl:gap-0">

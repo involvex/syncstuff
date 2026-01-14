@@ -1,14 +1,18 @@
 import type { LinksFunction } from "@remix-run/cloudflare";
+import { json, type LoaderFunctionArgs } from "@remix-run/cloudflare";
 import {
-  Links,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
+    Links,
+    Meta,
+    Outlet,
+    Scripts,
+    ScrollRestoration,
+    useLoaderData,
 } from "@remix-run/react";
 import { Provider } from "@syncstuff/ui";
 
 import React from "react";
+import Navigation from "~/components/Navigation";
+import { getSession } from "~/services/session.server";
 import "./tailwind.css";
 
 export const links: LinksFunction = () => [
@@ -24,6 +28,11 @@ export const links: LinksFunction = () => [
     crossOrigin: "anonymous",
   },
 ];
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const session = await getSession(request.headers.get("Cookie"));
+  return json({ isLoggedIn: session.has("userId") });
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -83,9 +92,13 @@ export function ErrorBoundary() {
 }
 
 export default function App() {
+  const { isLoggedIn } = useLoaderData<typeof loader>();
   return (
     <Provider>
-      <Outlet />
+      <Navigation isLoggedIn={isLoggedIn} />
+      <div className="pt-20">
+        <Outlet />
+      </div>
     </Provider>
   );
 }

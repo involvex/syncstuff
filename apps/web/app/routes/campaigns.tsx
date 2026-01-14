@@ -1,5 +1,5 @@
 import { Link } from "@remix-run/react";
-import { Footer, Navigation } from "@syncstuff/ui";
+import { Footer } from "@syncstuff/ui";
 
 export default function Campaigns() {
   const campaigns = [
@@ -76,7 +76,6 @@ export default function Campaigns() {
 
   return (
     <>
-      <Navigation />
       <div className="bg-background min-h-screen transition-colors dark:bg-gray-950">
         <div className="relative isolate overflow-hidden py-24 sm:py-32">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">

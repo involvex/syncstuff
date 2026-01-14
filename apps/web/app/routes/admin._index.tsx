@@ -200,7 +200,7 @@ export default function AdminOverview() {
       </YStack>
 
       {/* System Health */}
-      <Card bordered elevate padded>
+      <Card bordered elevate padding="$4">
         <XStack alignItems="center" justifyContent="space-between">
           <XStack alignItems="center" space="$4">
             <View
@@ -250,7 +250,7 @@ export default function AdminOverview() {
 
       <XStack flexWrap="wrap" space="$6">
         {/* User Status Breakdown */}
-        <Card bordered elevate flex={2} minWidth={400} padded>
+        <Card bordered elevate flex={2} minWidth={400} padding="$4">
           <YStack space="$4">
             <Text fontSize="$4" fontWeight="bold">
               User Status Breakdown
@@ -268,7 +268,7 @@ export default function AdminOverview() {
                     backgroundColor="$backgroundFocus"
                     borderRadius="$full"
                     height={8}
-                    overflow="hidden"
+                    className="overflow-hidden"
                     width="100%"
                   >
                     <View
@@ -284,7 +284,7 @@ export default function AdminOverview() {
         </Card>
 
         {/* Quick Actions */}
-        <Card bordered elevate flex={1} minWidth={300} padded>
+        <Card bordered elevate flex={1} minWidth={300} padding="$4">
           <YStack space="$4">
             <Text fontSize="$4" fontWeight="bold">
               Quick Actions
@@ -302,7 +302,7 @@ export default function AdminOverview() {
               <Button
                 icon={<Text fontSize="$5">⚙️</Text>}
                 justifyContent="flex-start"
-                variant="outlined"
+                variant="outline"
                 width="100%"
               >
                 System Settings
@@ -310,7 +310,7 @@ export default function AdminOverview() {
               <Button
                 icon={<Text fontSize="$5">📋</Text>}
                 justifyContent="flex-start"
-                variant="outlined"
+                variant="outline"
                 width="100%"
               >
                 View Logs

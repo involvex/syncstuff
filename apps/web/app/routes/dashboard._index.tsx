@@ -249,7 +249,7 @@ export default function DashboardIndex() {
                 Account Overview
               </Text>
               <Link style={{ textDecoration: "none" }} to="/dashboard/settings">
-                <Button size="$2" variant="outlined">
+                <Button size="sm" variant="outline">
                   Edit
                 </Button>
               </Link>
@@ -330,7 +330,7 @@ export default function DashboardIndex() {
               <Text fontSize="$4" fontWeight="bold">
                 Recent Activity
               </Text>
-              <Button size="$2" variant="outlined">
+              <Button size="sm" variant="outline">
                 View All
               </Button>
             </XStack>
@@ -381,10 +381,7 @@ export default function DashboardIndex() {
             >
               <Card
                 bordered
-                cursor={action.href === "#" ? "not-allowed" : "pointer"}
-                elevate
-                hoverStyle={{ borderColor: "$primary" }}
-                padding="$4"
+                className="hover:border-primary cursor-pointer p-4"
               >
                 <YStack space="$3">
                   <View

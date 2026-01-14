@@ -63,7 +63,7 @@ export default function PairPage() {
                   onPress={() => {
                     window.location.href = `syncstuff://pair?id=${id}&name=${encodeURIComponent(name || "")}`;
                   }}
-                  size="$4"
+                  size="lg"
                   theme="blue"
                   width="100%"
                 >
@@ -93,7 +93,7 @@ export default function PairPage() {
 
           <Button
             onPress={() => (window.location.href = "/")}
-            variant="outlined"
+            variant="outline"
           >
             Back to Home
           </Button>

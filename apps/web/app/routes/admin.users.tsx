@@ -111,7 +111,7 @@ export default function AdminUsers() {
         </Text>
       </YStack>
 
-      <Card bordered elevate overflow="hidden">
+      <Card bordered elevate className="overflow-hidden">
         <YStack separator={<Separator />}>
           {/* Header */}
           <XStack backgroundColor="$backgroundFocus" padding="$4" space="$4">
@@ -124,7 +124,7 @@ export default function AdminUsers() {
               Username
             </Text>
             <Text
-              $sm={{ display: "none" }}
+              className="hidden sm:block"
               flex={3}
               fontSize="$2"
               fontWeight="bold"
@@ -175,14 +175,14 @@ export default function AdminUsers() {
                 <YStack flex={2}>
                   <Text fontWeight="bold">{user.username}</Text>
                   <Text
-                    $gtSm={{ display: "none" }}
+                    className="block sm:hidden"
                     color="$colorSubtitle"
                     fontSize="$1"
                   >
                     {user.email}
                   </Text>
                 </YStack>
-                <Text $sm={{ display: "none" }} flex={3} fontSize="$3">
+                <Text className="hidden sm:block" flex={3} fontSize="$3">
                   {user.email}
                 </Text>
                 <View flex={1}>

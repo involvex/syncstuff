@@ -279,7 +279,7 @@ export default function Settings() {
           </YStack>
 
           <XStack alignItems="center" space="$6">
-            <Avatar circular size="$10">
+            <Avatar className="rounded-full size-10">
               <View
                 alignItems="center"
                 backgroundColor="$primary"
@@ -296,7 +296,7 @@ export default function Settings() {
               </View>
             </Avatar>
             <YStack space="$2">
-              <Button disabled size="$3" variant="outlined">
+              <Button disabled size="sm" variant="outline">
                 Change Photo
               </Button>
               <Text color="$colorSubtitle" fontSize="$1">
@@ -373,7 +373,7 @@ export default function Settings() {
                   <Text fontSize="$2" fontWeight="bold">
                     Current Password
                   </Text>
-                  <Input id="current_password" secureTextEntry />
+                  <Input id="current_password" type="password" />
                 </YStack>
               )}
 
@@ -382,13 +382,13 @@ export default function Settings() {
                   <Text fontSize="$2" fontWeight="bold">
                     {hasPassword ? "New Password" : "Password"}
                   </Text>
-                  <Input id="new_password" secureTextEntry />
+                  <Input id="new_password" type="password" />
                 </YStack>
                 <YStack flex={1} minWidth={200} space="$2">
                   <Text fontSize="$2" fontWeight="bold">
                     Confirm Password
                   </Text>
-                  <Input id="confirm_password" secureTextEntry />
+                  <Input id="confirm_password" type="password" />
                 </YStack>
               </XStack>
 

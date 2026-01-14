@@ -26,10 +26,11 @@ jobs:
 
       - name: Install Dependencies
         run: |
+          bun install -g pnpm
           bun install
           # Install electron dependencies
           cd apps/mobileapp/electron
-          npm install
+          pnpm install
 
       - name: Build UI Package
         run: cd packages/ui && bun run build

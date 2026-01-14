@@ -11,5 +11,3 @@ export { cn } from "~/lib/utils";
 
 // Component types
 export type { ButtonProps } from "./Button";
-export type { SidebarItemProps } from "./SidebarItem";
-export type { MainLayoutProps } from "./MainLayout";

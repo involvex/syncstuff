@@ -221,12 +221,12 @@ export default function ResetPassword() {
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
               <Text className="text-sm font-bold">New Password</Text>
-              <Input name="password" type="password" secureTextEntry />
+              <Input name="password" type="password" />
             </div>
 
             <div className="flex flex-col gap-2">
               <Text className="text-sm font-bold">Confirm Password</Text>
-              <Input name="confirm_password" type="password" secureTextEntry />
+              <Input name="confirm_password" type="password" />
             </div>
 
             <Button disabled={isSubmitting} className="bg-blue-600 hover:bg-blue-700 text-white w-full">

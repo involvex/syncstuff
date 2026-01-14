@@ -53,7 +53,6 @@ export default function Premium() {
 
   return (
     <>
-      <Navigation />
       <div className="bg-background min-h-screen py-24 sm:py-32 dark:bg-gray-950">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-4xl text-center">
@@ -129,7 +128,7 @@ export default function Premium() {
                 </div>
                 <Link
                   aria-describedby={tier.id}
-                  className={`mt-8 block rounded-xl px-3 py-2 text-center text-sm leading-6 font-bold transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
+                  className={`mt-8 block rounded-xl px-3 py-2 text-center text-sm leading-6 font-bold transition-all focus-visible:outline focus-visible:outline-offset-2 ${
                     tier.mostPopular
                       ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20 hover:bg-blue-700 focus-visible:outline-blue-600"
                       : "bg-blue-600/10 text-blue-600 hover:bg-blue-600/20 focus-visible:outline-blue-600 dark:bg-blue-500/10 dark:text-blue-400 dark:hover:bg-blue-500/20"
