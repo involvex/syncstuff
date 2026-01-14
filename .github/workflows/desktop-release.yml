@@ -35,6 +35,9 @@ jobs:
       - name: Build UI Package
         run: cd packages/ui && bun run build
 
+      - name: Build Network Types
+        run: cd packages/network-types && bun run build
+
       - name: Build Web Assets
         run: bun run build:app
 
