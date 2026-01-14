@@ -29,7 +29,10 @@
     "inquirer": "13.1.0",
     "ora": "9.0.0",
     "boxen": "8.0.1",
-    "table": "6.9.0"
+    "table": "6.9.0",
+    "bonjour-service": "^1.1.1",
+    "@syncstuff/network-types": "workspace:*",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@eslint/css": "0.14.1",

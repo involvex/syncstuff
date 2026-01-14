@@ -1,146 +1,77 @@
-import { createSocket, type Socket } from "dgram";
-import { networkInterfaces } from "os";
-
-export interface LocalDevice {
-  id: string;
-  name: string;
-  platform: string;
-  ip: string;
-  port: number;
-  version: string;
-}
-
-const SYNCSTUFF_PORT = 5353; // mDNS port
-
+import {
+  LocalDevice,
+  SYNCSTUFF_PROTOCOL,
+  SYNCSTUFF_SERVICE_TYPE,
+} from "@syncstuff/network-types";
+import { Bonjour, Service, Browser } from "bonjour-service";
+import { createSocket } from "dgram";
+import { createRequire } from "module";
+import { v4 as uuidv4 } from "uuid";
+import { readConfig, writeConfig } from "./config.js";
+const require = createRequire(import.meta.url);
+const packageJson = require("../../../package.json");
 /**
- * Network scanner for discovering SyncStuff devices on local network
- * Uses UDP multicast to find devices
+ * Network scanner for discovering SyncStuff devices on the local network using mDNS.
  */
 class NetworkScanner {
-  private socket: Socket | null = null;
+  private bonjour: Bonjour;
+  private browser: Browser | null = null;
+  private ad: Service | null = null;
 
-  /**
-   * Get local IP addresses
-   */
-  getLocalIPs(): string[] {
-    const interfaces = networkInterfaces();
-    const ips: string[] = [];
-
-    for (const name of Object.keys(interfaces)) {
-      const iface = interfaces[name];
-      if (!iface) continue;
-
-      for (const addr of iface) {
-        if (addr.family === "IPv4" && !addr.internal) {
-          ips.push(addr.address);
-        }
-      }
-    }
-
-    return ips;
+  constructor() {
+    this.bonjour = new Bonjour();
   }
 
   /**
-   * Scan the local network for SyncStuff devices
-   * Uses UDP broadcast to discover devices
+   * Scan the local network for SyncStuff devices using mDNS.
    */
-  async scan(timeout = 10000): Promise<LocalDevice[]> {
+  async scan(timeout = 5000): Promise<LocalDevice[]> {
     return new Promise(resolve => {
+      if (this.browser) {
+        this.browser.stop();
+      }
       const devices: LocalDevice[] = [];
       const seenIds = new Set<string>();
 
-      try {
-        this.socket = createSocket({ type: "udp4", reuseAddr: true });
+      this.browser = this.bonjour.find({
+        type: SYNCSTUFF_SERVICE_TYPE,
+        protocol: SYNCSTUFF_PROTOCOL,
+      });
 
-        this.socket.on("error", err => {
-          console.error("Scanner error:", err.message);
-          this.cleanup();
-          resolve(devices);
-        });
+      this.browser.on("up", (service: Service) => {
+        const txt = service.txt || {};
+        const deviceId = txt.deviceId;
 
-        this.socket.on("message", (msg, rinfo) => {
-          try {
-            const data = JSON.parse(msg.toString());
-
-            if (data.service === "syncstuff" && data.deviceId) {
-              if (!seenIds.has(data.deviceId)) {
-                seenIds.add(data.deviceId);
-                devices.push({
-                  id: data.deviceId,
-                  name: data.deviceName || "Unknown Device",
-                  platform: data.platform || "unknown",
-                  ip: rinfo.address,
-                  port: data.port || 8080,
-                  version: data.version || "1.0.0",
-                });
-              }
-            }
-          } catch {
-            // Ignore non-JSON messages
+        if (deviceId && !seenIds.has(deviceId)) {
+          const ip = service.addresses.find(addr => addr.includes("."));
+          if (ip) {
+            seenIds.add(deviceId);
+            devices.push({
+              id: deviceId,
+              name: txt.deviceName || service.name,
+              platform: txt.platform || "unknown",
+              ip,
+              port: service.port,
+              version: txt.version || "1.0.0",
+            });
           }
-        });
+        }
+      });
 
-        this.socket.bind(0, () => {
-          this.socket?.setBroadcast(true);
-
-          // Send discovery broadcast
-          const discoveryMessage = JSON.stringify({
-            service: "syncstuff",
-            action: "discover",
-            timestamp: Date.now(),
-          });
-
-          // Broadcast on local network
-          const localIPs = this.getLocalIPs();
-          for (const ip of localIPs) {
-            const parts = ip.split(".");
-            parts[3] = "255";
-            const broadcastAddr = parts.join(".");
-
-            this.socket?.send(
-              discoveryMessage,
-              0,
-              discoveryMessage.length,
-              SYNCSTUFF_PORT,
-              broadcastAddr,
-            );
-          }
-
-          // Also try mDNS multicast address
-          this.socket?.send(
-            discoveryMessage,
-            0,
-            discoveryMessage.length,
-            SYNCSTUFF_PORT,
-            "224.0.0.251",
-          );
-        });
-
-        // Cleanup after timeout
-        setTimeout(() => {
-          this.cleanup();
-          resolve(devices);
-        }, timeout);
-      } catch (error) {
-        console.error("Failed to start scanner:", error);
+      setTimeout(() => {
+        if (this.browser) {
+          this.browser.stop();
+          this.browser = null;
+        }
         resolve(devices);
-      }
+      }, timeout);
     });
   }
 
-  private cleanup(): void {
-    if (this.socket) {
-      try {
-        this.socket.close();
-      } catch {
-        // Ignore close errors
-      }
-      this.socket = null;
-    }
-  }
-
   /**
-   * Send a message to a specific device
+   * Send a message to a specific device.
+   * Note: This still uses a direct UDP socket, which is fine for direct communication
+   * once a device's IP and port are known.
    */
   async sendTo(ip: string, port: number, message: object): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -159,49 +90,68 @@ class NetworkScanner {
   }
 
   /**
-   * Start advertising this device on the local network
+   * Start advertising this device on the local network using mDNS.
    */
-  startAdvertising(
-    deviceName: string,
-    port: number,
-    platform = "cli",
-  ): ReturnType<typeof setInterval> {
-    const socket = createSocket({ type: "udp4", reuseAddr: true });
+  startAdvertising(deviceName: string, port: number, platform = "cli") {
+    if (this.ad) {
+      this.ad.stop(() => {
+        this.ad = null;
+        this.publish(deviceName, port, platform);
+      });
+    } else {
+      this.publish(deviceName, port, platform);
+    }
+  }
 
-    socket.bind(() => {
-      socket.setBroadcast(true);
+  /**
+   * Stop advertising this device.
+   */
+  stopAdvertising() {
+    if (this.ad) {
+      this.ad.stop(() => {
+        this.ad = null;
+        console.log("Stopped advertising.");
+      });
+    }
+  }
+
+  /**
+   * Unpublish all services and destroy the bonjour instance.
+   */
+  destroy() {
+    this.bonjour.unpublishAll(() => {
+      this.bonjour.destroy();
     });
+  }
 
-    const advertise = () => {
-      const message = JSON.stringify({
-        service: "syncstuff",
-        deviceId: `cli-device-${Math.floor(Math.random() * 10000)}`, // Simple random ID for CLI
+  private publish(deviceName: string, port: number, platform: string) {
+    let config = readConfig();
+    if (!config.deviceId) {
+      config.deviceId = uuidv4();
+      writeConfig(config);
+    }
+    const deviceId = config.deviceId;
+    const version = packageJson.version;
+
+    this.ad = this.bonjour.publish({
+      name: `${deviceName}-${deviceId.substring(0, 6)}`,
+      type: SYNCSTUFF_SERVICE_TYPE,
+      port,
+      protocol: SYNCSTUFF_PROTOCOL,
+      txt: {
+        deviceId,
         deviceName,
         platform,
-        port,
-        version: "0.0.6", // Should match package.json
-        timestamp: Date.now(),
-      });
-
-      const localIPs = this.getLocalIPs();
-      for (const ip of localIPs) {
-        const parts = ip.split(".");
-        parts[3] = "255";
-        const broadcastAddr = parts.join(".");
-
-        socket.send(message, 0, message.length, SYNCSTUFF_PORT, broadcastAddr);
-      }
-
-      // Also send to multicast group
-      socket.send(message, 0, message.length, SYNCSTUFF_PORT, "224.0.0.251");
-    };
-
-    // Advertise immediately
-    advertise();
-
-    // Then every 3 seconds
-    return setInterval(advertise, 3000);
+        version,
+      },
+    });
+    console.log(`Advertising '${deviceName}' on the network...`);
   }
 }
 
 export const networkScanner = new NetworkScanner();
+
+// Graceful shutdown
+process.on("exit", () => networkScanner.destroy());
+process.on("SIGINT", () => process.exit());
+process.on("SIGTERM", () => process.exit());

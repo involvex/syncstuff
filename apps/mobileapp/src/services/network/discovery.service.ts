@@ -4,14 +4,15 @@ import {
   type ZeroConfService,
   type ZeroConfWatchResult,
 } from "capacitor-zeroconf";
-import type { Device } from "../../types/device.types";
 import {
-  type DiscoveredDevice,
-  type ServiceTxtRecord,
+  ServiceTxtRecord,
+  SYNCSTUFF_PROTOCOL,
   SYNCSTUFF_SERVICE_DOMAIN,
   SYNCSTUFF_SERVICE_PORT,
   SYNCSTUFF_SERVICE_TYPE,
-} from "../../types/network.types";
+} from "@syncstuff/network-types";
+import type { Device } from "../../types/device.types";
+import { type DiscoveredDevice } from "../../types/network.types";
 import { isNative } from "../../utils/platform.utils";
 import { logger } from "../logging/logger.service";
 
@@ -49,7 +50,7 @@ class DiscoveryService {
       // Watch for services
       await ZeroConf.watch({
         domain: SYNCSTUFF_SERVICE_DOMAIN,
-        type: SYNCSTUFF_SERVICE_TYPE,
+        type: `_${SYNCSTUFF_SERVICE_TYPE}._${SYNCSTUFF_PROTOCOL}`,
       });
 
       this.isRunning = true;
@@ -115,7 +116,7 @@ class DiscoveryService {
       try {
         await ZeroConf.unwatch({
           domain: SYNCSTUFF_SERVICE_DOMAIN,
-          type: SYNCSTUFF_SERVICE_TYPE,
+          type: `_${SYNCSTUFF_SERVICE_TYPE}._${SYNCSTUFF_PROTOCOL}`,
         });
         logger.debug("ZeroConf unwatch complete");
       } catch (error) {
@@ -160,7 +161,7 @@ class DiscoveryService {
 
       await ZeroConf.register({
         domain: SYNCSTUFF_SERVICE_DOMAIN,
-        type: SYNCSTUFF_SERVICE_TYPE,
+        type: `_${SYNCSTUFF_SERVICE_TYPE}._${SYNCSTUFF_PROTOCOL}`,
         name: `${currentDevice.name}-${currentDevice.id.substring(0, 8)}`,
         port: SYNCSTUFF_SERVICE_PORT,
         props,
