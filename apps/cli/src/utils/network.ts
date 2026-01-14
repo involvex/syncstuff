@@ -13,7 +13,7 @@ import { readConfig, writeConfig } from "./config.js";
 export type { LocalDevice };
 
 const require = createRequire(import.meta.url);
-const packageJson = require("../../../package.json");
+const packageJson = require("../../package.json");
 /**
  * Network scanner for discovering SyncStuff devices on the local network using mDNS.
  */
