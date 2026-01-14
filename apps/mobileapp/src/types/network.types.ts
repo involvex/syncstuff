@@ -58,16 +58,6 @@ export interface NetworkStatus {
 }
 
 // Service Registration
-export const SYNCSTUFF_SERVICE_TYPE = "_syncstuff._tcp";
-export const SYNCSTUFF_SERVICE_DOMAIN = "local.";
-export const SYNCSTUFF_SERVICE_PORT = 8080;
-
-export interface ServiceTxtRecord {
-  version: string;
-  platform: string;
-  deviceId: string;
-  deviceName: string;
-}
 
 // Notification Sync Types
 export interface SyncNotification {
