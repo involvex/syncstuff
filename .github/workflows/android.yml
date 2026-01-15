@@ -31,25 +31,23 @@ jobs:
       - name: Install Android SDK (platform 36, build-tools 36.0.0)
         uses: android-actions/setup-android@v3
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
 
-      - name: Install dependencies with Bun
-        run: bun install
+      - name: Install dependencies
+        run: pnpm install
 
       - name: Build UI Package
-        run: cd packages/ui && bun run build
+        run: pnpm run --filter @syncstuff/ui build
 
       - name: Build Network Types
-        run: cd packages/network-types && bun run build
+        run: pnpm run --filter @syncstuff/network-types build
 
       - name: Build Web Assets
-        run: bun run build:app
+        run: pnpm run build:app
 
       - name: Sync Capacitor Android
-        run: bun x cap sync android
+        run: pnpm exec cap sync android
         working-directory: apps/mobileapp
 
       - name: Accept Android SDK licenses
