@@ -1,6 +1,6 @@
 {
   "name": "@syncstuff/electron",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "Syncstuff Electron Desktop App",
   "author": {
     "name": "Involvex"
