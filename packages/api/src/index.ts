@@ -1165,6 +1165,775 @@ export default {
         }
       }
 
+      // ============================================================================
+      // ANALYTICS ENDPOINTS
+      // ============================================================================
+
+      if (path === "/api/analytics/events" && request.method === "POST") {
+        const auth = request.headers.get("Authorization");
+        if (!auth?.startsWith("Bearer "))
+          return new Response(
+            JSON.stringify({ success: false, error: "Missing token" }),
+            { status: 401, headers },
+          );
+
+        const token = auth.split(" ")[1];
+        const payload = await verifyJWT(token, secret);
+        if (!payload || !payload.sub)
+          return new Response(
+            JSON.stringify({ success: false, error: "Invalid token" }),
+            { status: 401, headers },
+          );
+
+        try {
+          const body = await request.json<{
+            events: Array<{
+              event_type: string;
+              event_data?: unknown;
+              device_id?: string;
+              device_name?: string;
+            }>;
+          }>();
+
+          if (!body.events || !Array.isArray(body.events)) {
+            return new Response(
+              JSON.stringify({
+                success: false,
+                error: "events array is required",
+              }),
+              { status: 400, headers },
+            );
+          }
+
+          // Batch insert analytics events
+          for (const event of body.events) {
+            const eventId = crypto.randomUUID();
+            await env.syncstuff_db
+              .prepare(
+                "INSERT INTO analytics_events (id, user_id, event_type, event_data, device_id, device_name, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
+              )
+              .bind(
+                eventId,
+                payload.sub,
+                event.event_type,
+                event.event_data ? JSON.stringify(event.event_data) : null,
+                event.device_id || null,
+                event.device_name || null,
+                Date.now(),
+              )
+              .run();
+          }
+
+          return new Response(
+            JSON.stringify({
+              success: true,
+              data: { recorded: body.events.length },
+            }),
+            { headers },
+          );
+        } catch (error) {
+          return handleDatabaseError(error, path, request.method);
+        }
+      }
+
+      if (path === "/api/analytics/dashboard" && request.method === "GET") {
+        const auth = request.headers.get("Authorization");
+        if (!auth?.startsWith("Bearer "))
+          return new Response(
+            JSON.stringify({ success: false, error: "Missing token" }),
+            { status: 401, headers },
+          );
+
+        const token = auth.split(" ")[1];
+        const payload = await verifyJWT(token, secret);
+        if (!payload || !payload.sub)
+          return new Response(
+            JSON.stringify({ success: false, error: "Invalid token" }),
+            { status: 401, headers },
+          );
+
+        try {
+          // Get analytics summary for the user
+          const [
+            totalEvents,
+            totalTransfers,
+            avgPerformance,
+            recentErrors,
+          ] = await Promise.all([
+            env.syncstuff_db
+              .prepare(
+                "SELECT COUNT(*) as count FROM analytics_events WHERE user_id = ?",
+              )
+              .bind(payload.sub)
+              .first<{ count: number }>(),
+            env.syncstuff_db
+              .prepare(
+                "SELECT COUNT(*) as count FROM transfer_history WHERE user_id = ? AND status = 'completed'",
+              )
+              .bind(payload.sub)
+              .first<{ count: number }>(),
+            env.syncstuff_db
+              .prepare(
+                "SELECT AVG(value) as avg FROM performance_metrics WHERE user_id = ? AND metric_type = 'transfer_speed'",
+              )
+              .bind(payload.sub)
+              .first<{ avg: number | null }>(),
+            env.syncstuff_db
+              .prepare(
+                "SELECT * FROM error_logs WHERE user_id = ? ORDER BY created_at DESC LIMIT 10",
+              )
+              .bind(payload.sub)
+              .all(),
+          ]);
+
+          return new Response(
+            JSON.stringify({
+              success: true,
+              data: {
+                totalEvents: totalEvents?.count || 0,
+                totalTransfers: totalTransfers?.count || 0,
+                avgTransferSpeed: avgPerformance?.avg || 0,
+                recentErrors: recentErrors.results || [],
+              },
+            }),
+            { headers },
+          );
+        } catch (error) {
+          return handleDatabaseError(error, path, request.method);
+        }
+      }
+
+      if (path === "/api/analytics/performance" && request.method === "POST") {
+        const auth = request.headers.get("Authorization");
+        if (!auth?.startsWith("Bearer "))
+          return new Response(
+            JSON.stringify({ success: false, error: "Missing token" }),
+            { status: 401, headers },
+          );
+
+        const token = auth.split(" ")[1];
+        const payload = await verifyJWT(token, secret);
+        if (!payload || !payload.sub)
+          return new Response(
+            JSON.stringify({ success: false, error: "Invalid token" }),
+            { status: 401, headers },
+          );
+
+        try {
+          const body = await request.json<{
+            metric_type: string;
+            value: number;
+            unit?: string;
+            device_id?: string;
+            device_name?: string;
+          }>();
+
+          if (!body.metric_type || body.value === undefined) {
+            return new Response(
+              JSON.stringify({
+                success: false,
+                error: "metric_type and value are required",
+              }),
+              { status: 400, headers },
+            );
+          }
+
+          const metricId = crypto.randomUUID();
+          await env.syncstuff_db
+            .prepare(
+              "INSERT INTO performance_metrics (id, user_id, metric_type, value, unit, device_id, device_name, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            )
+            .bind(
+              metricId,
+              payload.sub,
+              body.metric_type,
+              body.value,
+              body.unit || null,
+              body.device_id || null,
+              body.device_name || null,
+              Date.now(),
+            )
+            .run();
+
+          return new Response(
+            JSON.stringify({
+              success: true,
+              data: { id: metricId },
+            }),
+            { headers },
+          );
+        } catch (error) {
+          return handleDatabaseError(error, path, request.method);
+        }
+      }
+
+      if (path === "/api/analytics/errors" && request.method === "POST") {
+        const auth = request.headers.get("Authorization");
+        if (!auth?.startsWith("Bearer "))
+          return new Response(
+            JSON.stringify({ success: false, error: "Missing token" }),
+            { status: 401, headers },
+          );
+
+        const token = auth.split(" ")[1];
+        const payload = await verifyJWT(token, secret);
+        if (!payload || !payload.sub)
+          return new Response(
+            JSON.stringify({ success: false, error: "Invalid token" }),
+            { status: 401, headers },
+          );
+
+        try {
+          const body = await request.json<{
+            error_type: string;
+            error_message?: string;
+            error_code?: string;
+            stack_trace?: string;
+            device_id?: string;
+            device_name?: string;
+            platform?: string;
+            app_version?: string;
+          }>();
+
+          if (!body.error_type) {
+            return new Response(
+              JSON.stringify({
+                success: false,
+                error: "error_type is required",
+              }),
+              { status: 400, headers },
+            );
+          }
+
+          const errorId = crypto.randomUUID();
+          await env.syncstuff_db
+            .prepare(
+              "INSERT INTO error_logs (id, user_id, error_type, error_message, error_code, stack_trace, device_id, device_name, platform, app_version, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            )
+            .bind(
+              errorId,
+              payload.sub,
+              body.error_type,
+              body.error_message || null,
+              body.error_code || null,
+              body.stack_trace || null,
+              body.device_id || null,
+              body.device_name || null,
+              body.platform || null,
+              body.app_version || null,
+              Date.now(),
+            )
+            .run();
+
+          return new Response(
+            JSON.stringify({
+              success: true,
+              data: { id: errorId },
+            }),
+            { headers },
+          );
+        } catch (error) {
+          return handleDatabaseError(error, path, request.method);
+        }
+      }
+
+      // ============================================================================
+      // PRESENCE ENDPOINTS
+      // ============================================================================
+
+      if (path === "/api/presence/heartbeat" && request.method === "POST") {
+        const auth = request.headers.get("Authorization");
+        if (!auth?.startsWith("Bearer "))
+          return new Response(
+            JSON.stringify({ success: false, error: "Missing token" }),
+            { status: 401, headers },
+          );
+
+        const token = auth.split(" ")[1];
+        const payload = await verifyJWT(token, secret);
+        if (!payload || !payload.sub)
+          return new Response(
+            JSON.stringify({ success: false, error: "Invalid token" }),
+            { status: 401, headers },
+          );
+
+        try {
+          const body = await request.json<{
+            device_id: string;
+            device_name?: string;
+            platform?: string;
+            current_action?: string;
+            status?: string;
+          }>();
+
+          if (!body.device_id) {
+            return new Response(
+              JSON.stringify({
+                success: false,
+                error: "device_id is required",
+              }),
+              { status: 400, headers },
+            );
+          }
+
+          // Upsert device presence
+          const presenceId = crypto.randomUUID();
+          const now = Date.now();
+
+          // Try to update first
+          const updateResult = await env.syncstuff_db
+            .prepare(
+              "UPDATE device_presence SET status = ?, last_seen = ?, current_action = ?, updated_at = ? WHERE device_id = ?",
+            )
+            .bind(
+              body.status || "online",
+              now,
+              body.current_action || null,
+              now,
+              body.device_id,
+            )
+            .run();
+
+          // If no rows updated, insert new record
+          if (updateResult.meta.changes === 0) {
+            await env.syncstuff_db
+              .prepare(
+                "INSERT INTO device_presence (id, device_id, user_id, device_name, platform, status, last_seen, current_action, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+              )
+              .bind(
+                presenceId,
+                body.device_id,
+                payload.sub,
+                body.device_name || null,
+                body.platform || null,
+                body.status || "online",
+                now,
+                body.current_action || null,
+                now,
+                now,
+              )
+              .run();
+          }
+
+          // Also update devices table if exists
+          try {
+            await env.syncstuff_db
+              .prepare(
+                "UPDATE devices SET is_online = 1, last_seen = ? WHERE id = ?",
+              )
+              .bind(now, body.device_id)
+              .run();
+          } catch {
+            // Devices table might not have device yet
+          }
+
+          return new Response(
+            JSON.stringify({
+              success: true,
+              data: { message: "Heartbeat recorded" },
+            }),
+            { headers },
+          );
+        } catch (error) {
+          return handleDatabaseError(error, path, request.method);
+        }
+      }
+
+      if (
+        path.startsWith("/api/presence/devices/") &&
+        request.method === "GET"
+      ) {
+        const auth = request.headers.get("Authorization");
+        if (!auth?.startsWith("Bearer "))
+          return new Response(
+            JSON.stringify({ success: false, error: "Missing token" }),
+            { status: 401, headers },
+          );
+
+        const token = auth.split(" ")[1];
+        const payload = await verifyJWT(token, secret);
+        if (!payload || !payload.sub)
+          return new Response(
+            JSON.stringify({ success: false, error: "Invalid token" }),
+            { status: 401, headers },
+          );
+
+        const userId = path.split("/").pop();
+        if (userId !== payload.sub) {
+          return new Response(
+            JSON.stringify({
+              success: false,
+              error: "Unauthorized",
+            }),
+            { status: 403, headers },
+          );
+        }
+
+        try {
+          const devices = await env.syncstuff_db
+            .prepare(
+              "SELECT * FROM device_presence WHERE user_id = ? ORDER BY last_seen DESC",
+            )
+            .bind(payload.sub)
+            .all();
+
+          return new Response(
+            JSON.stringify({
+              success: true,
+              data: devices.results || [],
+            }),
+            { headers },
+          );
+        } catch (error) {
+          return handleDatabaseError(error, path, request.method);
+        }
+      }
+
+      if (path === "/api/presence/online" && request.method === "GET") {
+        const auth = request.headers.get("Authorization");
+        if (!auth?.startsWith("Bearer "))
+          return new Response(
+            JSON.stringify({ success: false, error: "Missing token" }),
+            { status: 401, headers },
+          );
+
+        const token = auth.split(" ")[1];
+        const payload = await verifyJWT(token, secret);
+        if (!payload || !payload.sub)
+          return new Response(
+            JSON.stringify({ success: false, error: "Invalid token" }),
+            { status: 401, headers },
+          );
+
+        try {
+          // Devices are considered online if last_seen within 60 seconds
+          const cutoffTime = Date.now() - 60000;
+          const devices = await env.syncstuff_db
+            .prepare(
+              "SELECT * FROM device_presence WHERE user_id = ? AND last_seen > ? ORDER BY last_seen DESC",
+            )
+            .bind(payload.sub, cutoffTime)
+            .all();
+
+          return new Response(
+            JSON.stringify({
+              success: true,
+              data: devices.results || [],
+            }),
+            { headers },
+          );
+        } catch (error) {
+          return handleDatabaseError(error, path, request.method);
+        }
+      }
+
+      // ============================================================================
+      // FILE VERSIONING ENDPOINTS
+      // ============================================================================
+
+      if (path === "/api/files/version" && request.method === "POST") {
+        const auth = request.headers.get("Authorization");
+        if (!auth?.startsWith("Bearer "))
+          return new Response(
+            JSON.stringify({ success: false, error: "Missing token" }),
+            { status: 401, headers },
+          );
+
+        const token = auth.split(" ")[1];
+        const payload = await verifyJWT(token, secret);
+        if (!payload || !payload.sub)
+          return new Response(
+            JSON.stringify({ success: false, error: "Invalid token" }),
+            { status: 401, headers },
+          );
+
+        try {
+          const body = await request.json<{
+            file_id: string;
+            file_name: string;
+            file_hash: string;
+            file_size: number;
+            file_path?: string;
+            mime_type?: string;
+            storage_provider?: string;
+            storage_path?: string;
+            device_id?: string;
+            device_name?: string;
+            notes?: string;
+          }>();
+
+          if (!body.file_id || !body.file_name || !body.file_hash || !body.file_size) {
+            return new Response(
+              JSON.stringify({
+                success: false,
+                error: "file_id, file_name, file_hash, and file_size are required",
+              }),
+              { status: 400, headers },
+            );
+          }
+
+          // Get current version number
+          const currentVersion = await env.syncstuff_db
+            .prepare(
+              "SELECT MAX(version_number) as max_version FROM file_versions WHERE file_id = ?",
+            )
+            .bind(body.file_id)
+            .first<{ max_version: number | null }>();
+
+          const versionNumber = (currentVersion?.max_version || 0) + 1;
+
+          // Mark all previous versions as not current
+          await env.syncstuff_db
+            .prepare(
+              "UPDATE file_versions SET is_current = 0 WHERE file_id = ?",
+            )
+            .bind(body.file_id)
+            .run();
+
+          // Create new version
+          const versionId = crypto.randomUUID();
+          await env.syncstuff_db
+            .prepare(
+              "INSERT INTO file_versions (id, file_id, user_id, version_number, file_name, file_path, file_hash, file_size, mime_type, storage_provider, storage_path, device_id, device_name, is_current, notes, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?)",
+            )
+            .bind(
+              versionId,
+              body.file_id,
+              payload.sub,
+              versionNumber,
+              body.file_name,
+              body.file_path || null,
+              body.file_hash,
+              body.file_size,
+              body.mime_type || null,
+              body.storage_provider || "local",
+              body.storage_path || null,
+              body.device_id || null,
+              body.device_name || null,
+              body.notes || null,
+              Date.now(),
+            )
+            .run();
+
+          return new Response(
+            JSON.stringify({
+              success: true,
+              data: {
+                id: versionId,
+                version_number: versionNumber,
+              },
+            }),
+            { headers },
+          );
+        } catch (error) {
+          return handleDatabaseError(error, path, request.method);
+        }
+      }
+
+      if (path.startsWith("/api/files/") && path.endsWith("/versions") && request.method === "GET") {
+        const auth = request.headers.get("Authorization");
+        if (!auth?.startsWith("Bearer "))
+          return new Response(
+            JSON.stringify({ success: false, error: "Missing token" }),
+            { status: 401, headers },
+          );
+
+        const token = auth.split(" ")[1];
+        const payload = await verifyJWT(token, secret);
+        if (!payload || !payload.sub)
+          return new Response(
+            JSON.stringify({ success: false, error: "Invalid token" }),
+            { status: 401, headers },
+          );
+
+        const fileId = path.split("/")[3]; // Extract file ID from /api/files/{fileId}/versions
+
+        try {
+          const versions = await env.syncstuff_db
+            .prepare(
+              "SELECT * FROM file_versions WHERE file_id = ? AND user_id = ? ORDER BY version_number DESC",
+            )
+            .bind(fileId, payload.sub)
+            .all();
+
+          return new Response(
+            JSON.stringify({
+              success: true,
+              data: versions.results || [],
+            }),
+            { headers },
+          );
+        } catch (error) {
+          return handleDatabaseError(error, path, request.method);
+        }
+      }
+
+      if (path.startsWith("/api/files/version/") && path.endsWith("/restore") && request.method === "POST") {
+        const auth = request.headers.get("Authorization");
+        if (!auth?.startsWith("Bearer "))
+          return new Response(
+            JSON.stringify({ success: false, error: "Missing token" }),
+            { status: 401, headers },
+          );
+
+        const token = auth.split(" ")[1];
+        const payload = await verifyJWT(token, secret);
+        if (!payload || !payload.sub)
+          return new Response(
+            JSON.stringify({ success: false, error: "Invalid token" }),
+            { status: 401, headers },
+          );
+
+        const versionId = path.split("/")[4]; // Extract version ID from /api/files/version/{versionId}/restore
+
+        try {
+          // Get the version to restore
+          const version = await env.syncstuff_db
+            .prepare(
+              "SELECT * FROM file_versions WHERE id = ? AND user_id = ?",
+            )
+            .bind(versionId, payload.sub)
+            .first();
+
+          if (!version) {
+            return new Response(
+              JSON.stringify({
+                success: false,
+                error: "Version not found",
+              }),
+              { status: 404, headers },
+            );
+          }
+
+          // Mark all versions as not current
+          await env.syncstuff_db
+            .prepare(
+              "UPDATE file_versions SET is_current = 0 WHERE file_id = ?",
+            )
+            .bind((version as { file_id: string }).file_id)
+            .run();
+
+          // Mark this version as current
+          await env.syncstuff_db
+            .prepare(
+              "UPDATE file_versions SET is_current = 1 WHERE id = ?",
+            )
+            .bind(versionId)
+            .run();
+
+          return new Response(
+            JSON.stringify({
+              success: true,
+              data: { message: "Version restored", version },
+            }),
+            { headers },
+          );
+        } catch (error) {
+          return handleDatabaseError(error, path, request.method);
+        }
+      }
+
+      // ============================================================================
+      // CONFLICT RESOLUTION ENDPOINTS
+      // ============================================================================
+
+      if (path === "/api/conflicts" && request.method === "GET") {
+        const auth = request.headers.get("Authorization");
+        if (!auth?.startsWith("Bearer "))
+          return new Response(
+            JSON.stringify({ success: false, error: "Missing token" }),
+            { status: 401, headers },
+          );
+
+        const token = auth.split(" ")[1];
+        const payload = await verifyJWT(token, secret);
+        if (!payload || !payload.sub)
+          return new Response(
+            JSON.stringify({ success: false, error: "Invalid token" }),
+            { status: 401, headers },
+          );
+
+        try {
+          const conflicts = await env.syncstuff_db
+            .prepare(
+              "SELECT c.*, va.file_name as version_a_name, vb.file_name as version_b_name FROM file_conflicts c LEFT JOIN file_versions va ON c.version_a_id = va.id LEFT JOIN file_versions vb ON c.version_b_id = vb.id WHERE c.user_id = ? AND c.resolved = 0 ORDER BY c.created_at DESC",
+            )
+            .bind(payload.sub)
+            .all();
+
+          return new Response(
+            JSON.stringify({
+              success: true,
+              data: conflicts.results || [],
+            }),
+            { headers },
+          );
+        } catch (error) {
+          return handleDatabaseError(error, path, request.method);
+        }
+      }
+
+      if (path.startsWith("/api/conflicts/") && path.endsWith("/resolve") && request.method === "POST") {
+        const auth = request.headers.get("Authorization");
+        if (!auth?.startsWith("Bearer "))
+          return new Response(
+            JSON.stringify({ success: false, error: "Missing token" }),
+            { status: 401, headers },
+          );
+
+        const token = auth.split(" ")[1];
+        const payload = await verifyJWT(token, secret);
+        if (!payload || !payload.sub)
+          return new Response(
+            JSON.stringify({ success: false, error: "Invalid token" }),
+            { status: 401, headers },
+          );
+
+        const conflictId = path.split("/")[3]; // Extract conflict ID from /api/conflicts/{conflictId}/resolve
+
+        try {
+          const body = await request.json<{
+            resolution_strategy: string;
+            resolved_version_id: string;
+          }>();
+
+          if (!body.resolution_strategy || !body.resolved_version_id) {
+            return new Response(
+              JSON.stringify({
+                success: false,
+                error: "resolution_strategy and resolved_version_id are required",
+              }),
+              { status: 400, headers },
+            );
+          }
+
+          // Update conflict as resolved
+          await env.syncstuff_db
+            .prepare(
+              "UPDATE file_conflicts SET resolved = 1, resolution_strategy = ?, resolved_version_id = ?, resolved_at = ?, resolved_by = ? WHERE id = ? AND user_id = ?",
+            )
+            .bind(
+              body.resolution_strategy,
+              body.resolved_version_id,
+              Date.now(),
+              payload.sub,
+              conflictId,
+              payload.sub,
+            )
+            .run();
+
+          return new Response(
+            JSON.stringify({
+              success: true,
+              data: { message: "Conflict resolved" },
+            }),
+            { headers },
+          );
+        } catch (error) {
+          return handleDatabaseError(error, path, request.method);
+        }
+      }
+
       return new Response(
         JSON.stringify({
           error: "Not found",
@@ -1183,6 +1952,18 @@ export default {
             "GET /api/devices",
             "POST /api/devices/register",
             "/api/transfer",
+            "POST /api/analytics/events",
+            "GET /api/analytics/dashboard",
+            "POST /api/analytics/performance",
+            "POST /api/analytics/errors",
+            "POST /api/presence/heartbeat",
+            "GET /api/presence/devices/:userId",
+            "GET /api/presence/online",
+            "POST /api/files/version",
+            "GET /api/files/:fileId/versions",
+            "POST /api/files/version/:versionId/restore",
+            "GET /api/conflicts",
+            "POST /api/conflicts/:id/resolve",
           ],
         }),
         { status: 404, headers },
