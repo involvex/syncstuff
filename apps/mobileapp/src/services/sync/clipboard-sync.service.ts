@@ -57,40 +57,37 @@ class ClipboardSyncService {
       return;
     }
 
-    clipboardService.startMonitoring(
-      async result => {
-        // Check battery if enabled
-        if (settings.clipboardStopOnLowBattery) {
-          try {
-            const info = await Device.getBatteryInfo();
-            if (
-              info.batteryLevel !== undefined &&
-              info.batteryLevel < 0.2 &&
-              !info.isCharging
-            ) {
-              console.log("Clipboard sync paused: low battery");
-              return;
-            }
-          } catch (error) {
-            console.warn("Failed to check battery info:", error);
+    clipboardService.startMonitoring(async result => {
+      // Check battery if enabled
+      if (settings.clipboardStopOnLowBattery) {
+        try {
+          const info = await Device.getBatteryInfo();
+          if (
+            info.batteryLevel !== undefined &&
+            info.batteryLevel < 0.2 &&
+            !info.isCharging
+          ) {
+            console.log("Clipboard sync paused: low battery");
+            return;
           }
+        } catch (error) {
+          console.warn("Failed to check battery info:", error);
         }
+      }
 
-        // Debounce clipboard changes
-        if (this.debounceTimer) {
-          clearTimeout(this.debounceTimer);
-        }
+      // Debounce clipboard changes
+      if (this.debounceTimer) {
+        clearTimeout(this.debounceTimer);
+      }
 
-        this.debounceTimer = setTimeout(() => {
-          this.handleLocalClipboardChange(
-            result.type,
-            result.content,
-            result.mimeType,
-          );
-        }, DEBOUNCE_MS);
-      },
-      settings.clipboardMonitoringInterval || 1000,
-    );
+      this.debounceTimer = setTimeout(() => {
+        this.handleLocalClipboardChange(
+          result.type,
+          result.content,
+          result.mimeType,
+        );
+      }, DEBOUNCE_MS);
+    }, settings.clipboardMonitoringInterval || 1000);
 
     useClipboardStore.getState().setMonitoring(true);
     console.log("Clipboard monitoring started");

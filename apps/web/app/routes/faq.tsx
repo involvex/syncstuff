@@ -1,7 +1,4 @@
-import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
-import { json } from "@remix-run/cloudflare";
 import { useState } from "react";
-import { getSession } from "~/services/session.server";
 
 const faqs = [
   {

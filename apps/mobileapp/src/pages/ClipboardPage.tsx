@@ -305,7 +305,7 @@ const ClipboardPage: React.FC = () => {
                         }
                         variant={
                           clipboardMonitoringInterval === val
-                            ? "solid"
+                            ? "default"
                             : "outline"
                         }
                       >

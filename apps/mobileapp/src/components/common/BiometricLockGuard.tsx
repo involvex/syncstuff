@@ -1,10 +1,4 @@
-import {
-  IonButton,
-  IonContent,
-  IonIcon,
-  IonPage,
-  IonText,
-} from "@ionic/react";
+import { IonButton, IonContent, IonIcon, IonPage, IonText } from "@ionic/react";
 import { lockClosedOutline, fingerPrintOutline } from "ionicons/icons";
 import type React from "react";
 import { useEffect, useState, useCallback } from "react";
@@ -54,13 +48,16 @@ export const BiometricLockGuard: React.FC<BiometricLockGuardProps> = ({
   }, [initialized, biometricLock, verify]);
 
   useEffect(() => {
-    const listener = CapacitorApp.addListener("appStateChange", ({ isActive }) => {
-      if (!isActive && biometricLock) {
-        setIsLocked(true);
-      } else if (isActive && biometricLock && isLocked) {
-        verify();
-      }
-    });
+    const listener = CapacitorApp.addListener(
+      "appStateChange",
+      ({ isActive }) => {
+        if (!isActive && biometricLock) {
+          setIsLocked(true);
+        } else if (isActive && biometricLock && isLocked) {
+          verify();
+        }
+      },
+    );
 
     return () => {
       listener.then(l => l.remove());
@@ -90,7 +87,8 @@ export const BiometricLockGuard: React.FC<BiometricLockGuardProps> = ({
               width: "80px",
               height: "80px",
               borderRadius: "50%",
-              backgroundColor: "var(--ion-color-primary-tiny, rgba(56, 128, 255, 0.1))",
+              backgroundColor:
+                "var(--ion-color-primary-tiny, rgba(56, 128, 255, 0.1))",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -104,7 +102,9 @@ export const BiometricLockGuard: React.FC<BiometricLockGuardProps> = ({
 
           <div>
             <IonText color="dark">
-              <h1 style={{ fontWeight: "bold", marginBottom: "8px" }}>App Locked</h1>
+              <h1 style={{ fontWeight: "bold", marginBottom: "8px" }}>
+                App Locked
+              </h1>
             </IonText>
             <IonText color="medium">
               <p>Biometric authentication is required to access SyncStuff</p>

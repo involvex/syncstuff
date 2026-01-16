@@ -435,7 +435,8 @@ export default function Settings() {
               Danger Zone
             </Text>
             <Text color="$colorSubtitle" fontSize="$2">
-              Permanently delete your account and all associated data. This action cannot be undone.
+              Permanently delete your account and all associated data. This
+              action cannot be undone.
             </Text>
           </YStack>
 
@@ -451,7 +452,8 @@ export default function Settings() {
                   Delete Account
                 </Text>
                 <Text color="$red10" fontSize="$2">
-                  Once you delete your account, there is no going back. All your data, devices, and settings will be permanently removed.
+                  Once you delete your account, there is no going back. All your
+                  data, devices, and settings will be permanently removed.
                 </Text>
               </YStack>
               <Form
