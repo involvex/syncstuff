@@ -44,6 +44,9 @@ project(':capacitor-share').projectDir = new File('../../../node_modules/.pnpm/@
 include ':capacitor-status-bar'
 project(':capacitor-status-bar').projectDir = new File('../../../node_modules/.pnpm/@capacitor+status-bar@8.0.0_@capacitor+core@8.0.0/node_modules/@capacitor/status-bar/android')
 
+include ':capgo-capacitor-native-biometric'
+project(':capgo-capacitor-native-biometric').projectDir = new File('../../../node_modules/.pnpm/@capgo+capacitor-native-bio_6654866d8184096ea0dbfc7a3c2919ab/node_modules/@capgo/capacitor-native-biometric/android')
+
 include ':capacitor-native-settings'
 project(':capacitor-native-settings').projectDir = new File('../../../node_modules/.pnpm/capacitor-native-settings@7.0.2_@capacitor+core@8.0.0/node_modules/capacitor-native-settings/android')
 
