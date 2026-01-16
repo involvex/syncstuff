@@ -99,10 +99,15 @@ export default function AdminLayout() {
   const isLoading = navigation.state === "loading";
 
   const sidebar = (
-    <YStack flex={1} padding="$4" space="$4">
+    <YStack
+      flex={1}
+      padding="$4"
+      space="$4"
+      className="border-border bg-surface h-full border-r"
+    >
       <Link style={{ textDecoration: "none" }} to="/">
         <Text
-          color="$primary"
+          className="text-primary"
           fontSize="$7"
           fontWeight="bold"
           paddingVertical="$4"
@@ -113,7 +118,7 @@ export default function AdminLayout() {
 
       <YStack space="$1">
         <Text
-          color="$colorSubtitle"
+          className="text-color-subtitle"
           fontSize="$2"
           fontWeight="bold"
           marginBottom="$2"
@@ -137,11 +142,11 @@ export default function AdminLayout() {
         ))}
       </YStack>
 
-      <Separator />
+      <Separator className="bg-border" />
 
       <YStack space="$1">
         <Text
-          color="$colorSubtitle"
+          className="text-color-subtitle"
           fontSize="$2"
           fontWeight="bold"
           marginBottom="$2"
@@ -179,7 +184,9 @@ export default function AdminLayout() {
           </div>
         </div>
       )}
-      <Outlet />
+      <div className="bg-background text-on-background min-h-screen">
+        <Outlet />
+      </div>
     </MainLayout>
   );
 }

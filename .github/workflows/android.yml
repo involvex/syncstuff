@@ -23,18 +23,18 @@ jobs:
           distribution: "temurin"
           cache: gradle
 
+      - name: Install Android SDK (platform 36, build-tools 36.0.0)
+        uses: android-actions/setup-android@v3
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Setup Node.js 22
         uses: actions/setup-node@v4
         with:
           node-version: "22"
           cache: "pnpm"
           cache-dependency-path: pnpm-lock.yaml
-
-      - name: Install Android SDK (platform 36, build-tools 36.0.0)
-        uses: android-actions/setup-android@v3
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
 
       - name: Install dependencies
         run: pnpm install

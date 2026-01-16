@@ -95,7 +95,9 @@
       "@remix-run/router": "^1.23.2",
       "estree-util-value-to-estree": "^3.5.0",
       "@remix-run/react>react-router": "^6.30.2",
-      "@remix-run/react>react-router-dom": "^6.30.2"
+      "@remix-run/react>react-router-dom": "^6.30.2",
+      "ip": "2.0.1",
+      "elliptic": "^6.6.1"
     }
   },
   "overrides": {

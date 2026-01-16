@@ -13,8 +13,10 @@
 
   --color-primary: var(--color-primary);
   --color-on-primary: var(--color-on-primary);
+  --color-primary-foreground: var(--color-primary-foreground);
   --color-secondary: var(--color-secondary);
   --color-on-secondary: var(--color-on-secondary);
+  --color-secondary-foreground: var(--color-secondary-foreground);
   --color-tertiary: var(--color-tertiary);
   --color-on-tertiary: var(--color-on-tertiary);
   --color-error: var(--color-error);
@@ -25,6 +27,11 @@
   --color-on-warning: var(--color-on-warning);
   --color-info: var(--color-info);
   --color-on-info: var(--color-on-info);
+
+  --color-ring: var(--color-ring);
+  --color-input: var(--color-input);
+  --color-accent: var(--color-accent);
+  --color-accent-foreground: var(--color-accent-foreground);
 }
 
 html,

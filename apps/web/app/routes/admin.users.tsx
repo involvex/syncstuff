@@ -103,28 +103,33 @@ export default function AdminUsers() {
   return (
     <YStack space="$6">
       <YStack>
-        <Text fontSize="$8" fontWeight="bold">
+        <Text fontSize="$8" fontWeight="bold" className="text-on-surface">
           Users
         </Text>
-        <Text color="$colorSubtitle">
+        <Text className="text-color-subtitle">
           A list of all the users in your account.
         </Text>
       </YStack>
 
-      <Card bordered elevate className="overflow-hidden">
-        <YStack separator={<Separator />}>
+      <Card
+        bordered
+        elevate
+        className="bg-surface border-border overflow-hidden"
+      >
+        <YStack separator={<Separator className="bg-border" />}>
           {/* Header */}
-          <XStack backgroundColor="$backgroundFocus" padding="$4" space="$4">
+          <XStack className="bg-surface-variant space-x-4 p-4">
             <Text
               flex={2}
               fontSize="$2"
               fontWeight="bold"
               textTransform="uppercase"
+              className="text-on-surface"
             >
               Username
             </Text>
             <Text
-              className="hidden sm:block"
+              className="text-on-surface hidden sm:block"
               flex={3}
               fontSize="$2"
               fontWeight="bold"
@@ -137,6 +142,7 @@ export default function AdminUsers() {
               fontSize="$2"
               fontWeight="bold"
               textTransform="uppercase"
+              className="text-on-surface"
             >
               Role
             </Text>
@@ -145,6 +151,7 @@ export default function AdminUsers() {
               fontSize="$2"
               fontWeight="bold"
               textTransform="uppercase"
+              className="text-on-surface"
             >
               Status
             </Text>
@@ -154,6 +161,7 @@ export default function AdminUsers() {
               fontWeight="bold"
               textAlign="right"
               textTransform="uppercase"
+              className="text-on-surface"
             >
               Action
             </Text>
@@ -161,28 +169,31 @@ export default function AdminUsers() {
 
           {users.length === 0 ? (
             <YStack alignItems="center" padding="$4">
-              <Text color="$colorSubtitle">No users found</Text>
+              <Text className="text-color-subtitle">No users found</Text>
             </YStack>
           ) : (
             users.map((user: any) => (
               <XStack
                 alignItems="center"
-                hoverStyle={{ backgroundColor: "$backgroundHover" }}
+                className="hover:bg-surface-hover space-x-4 p-4 transition-colors"
                 key={user.id}
-                padding="$4"
-                space="$4"
               >
                 <YStack flex={2}>
-                  <Text fontWeight="bold">{user.username}</Text>
+                  <Text fontWeight="bold" className="text-on-surface">
+                    {user.username}
+                  </Text>
                   <Text
-                    className="block sm:hidden"
-                    color="$colorSubtitle"
+                    className="text-color-subtitle block sm:hidden"
                     fontSize="$1"
                   >
                     {user.email}
                   </Text>
                 </YStack>
-                <Text className="hidden sm:block" flex={3} fontSize="$3">
+                <Text
+                  className="text-on-surface hidden sm:block"
+                  flex={3}
+                  fontSize="$3"
+                >
                   {user.email}
                 </Text>
                 <View flex={1}>
@@ -201,20 +212,11 @@ export default function AdminUsers() {
                     <button
                       disabled={navigation.state === "submitting"}
                       name="intent"
-                      style={{
-                        backgroundColor:
-                          user.status === "active"
-                            ? "var(--red10)"
-                            : "var(--blue10)",
-                        color: "white",
-                        border: "none",
-                        borderRadius: "4px",
-                        padding: "4px 8px",
-                        cursor:
-                          navigation.state === "submitting"
-                            ? "not-allowed"
-                            : "pointer",
-                      }}
+                      className={`rounded px-2 py-1 text-sm font-medium text-white transition-colors ${
+                        user.status === "active"
+                          ? "bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600"
+                          : "bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
+                      } disabled:cursor-not-allowed disabled:opacity-50`}
                       type="submit"
                       value="toggle_status"
                     >

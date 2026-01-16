@@ -109,7 +109,7 @@ export default function DashboardIndex() {
         </svg>
       ),
       color: "text-primary",
-      bgColor: "bg-surfaceVariant",
+      bgColor: "bg-surface-variant",
       href: "#",
     },
     {
@@ -131,7 +131,7 @@ export default function DashboardIndex() {
         </svg>
       ),
       color: "text-primary",
-      bgColor: "bg-surfaceVariant",
+      bgColor: "bg-surface-variant",
       href: "#",
     },
     {
@@ -152,8 +152,8 @@ export default function DashboardIndex() {
           />
         </svg>
       ),
-      color: "text-green-600 dark:text-green-400",
-      bgColor: "bg-green-50 dark:bg-green-900/20",
+      color: "text-success",
+      bgColor: "bg-surface-variant",
       href: "#",
     },
   ];
@@ -178,8 +178,7 @@ export default function DashboardIndex() {
           />
         </svg>
       ),
-      color:
-        "bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600",
+      color: "bg-primary hover:bg-primary/90 text-primary-foreground",
     },
     {
       name: "Upload Files",
@@ -200,7 +199,7 @@ export default function DashboardIndex() {
           />
         </svg>
       ),
-      color: "bg-primary hover:bg-primary/90",
+      color: "bg-secondary hover:bg-secondary/90 text-secondary-foreground",
     },
     {
       name: "Device Settings",
@@ -221,13 +220,12 @@ export default function DashboardIndex() {
           />
         </svg>
       ),
-      color:
-        "bg-gray-700 hover:bg-gray-800 dark:bg-gray-600 dark:hover:bg-gray-500",
+      color: "bg-surface-variant hover:bg-surface-variant/80 text-on-surface",
     },
   ];
 
   return (
-    <YStack space="$8">
+    <YStack space="$8" className="text-on-background">
       {/* Stats Cards */}
       <XStack flexWrap="wrap" space="$6">
         {statCards.map(card => (
@@ -242,10 +240,16 @@ export default function DashboardIndex() {
 
       <XStack flexWrap="wrap" space="$8">
         {/* User Profile Card */}
-        <Card bordered elevate flex={1} minWidth={300}>
+        <Card
+          bordered
+          elevate
+          flex={1}
+          minWidth={300}
+          className="bg-surface border-border"
+        >
           <View padding="$4">
             <XStack alignItems="center" justifyContent="space-between">
-              <Text fontSize="$4" fontWeight="bold">
+              <Text fontSize="$4" fontWeight="bold" className="text-on-surface">
                 Account Overview
               </Text>
               <Link style={{ textDecoration: "none" }} to="/dashboard/settings">
@@ -260,21 +264,25 @@ export default function DashboardIndex() {
             <XStack alignItems="center" space="$4">
               <View
                 alignItems="center"
-                backgroundColor="$primary"
+                className="bg-primary"
                 borderRadius="$4"
                 height={48}
                 justifyContent="center"
                 width={48}
               >
-                <Text color="white" fontSize="$6" fontWeight="bold">
+                <Text
+                  className="text-primary-foreground"
+                  fontSize="$6"
+                  fontWeight="bold"
+                >
                   {user?.username?.charAt(0).toUpperCase() || "U"}
                 </Text>
               </View>
               <YStack>
-                <Text fontWeight="bold">
+                <Text fontWeight="bold" className="text-on-surface">
                   {user?.full_name || user?.username || "Sync User"}
                 </Text>
-                <Text color="$colorSubtitle" fontSize="$2">
+                <Text className="text-color-subtitle" fontSize="$2">
                   {user?.email}
                 </Text>
               </YStack>
@@ -282,37 +290,37 @@ export default function DashboardIndex() {
 
             <XStack space="$4">
               <YStack
-                backgroundColor="$backgroundFocus"
+                className="bg-surface-variant"
                 borderRadius="$3"
                 flex={1}
                 padding="$4"
               >
                 <Text
-                  color="$colorSubtitle"
+                  className="text-color-subtitle"
                   fontSize="$1"
                   textTransform="uppercase"
                 >
                   Status
                 </Text>
-                <Text color="$primary" fontWeight="bold">
+                <Text className="text-primary" fontWeight="bold">
                   {user?.status || "active"}
                 </Text>
               </YStack>
               <YStack
-                backgroundColor="$backgroundFocus"
+                className="bg-surface-variant"
                 borderRadius="$3"
                 flex={1}
                 padding="$4"
               >
                 <Text
-                  color="$colorSubtitle"
+                  className="text-color-subtitle"
                   fontSize="$1"
                   textTransform="uppercase"
                 >
                   Role
                 </Text>
                 <Text
-                  color="$primary"
+                  className="text-primary"
                   fontWeight="bold"
                   textTransform="capitalize"
                 >
@@ -324,10 +332,16 @@ export default function DashboardIndex() {
         </Card>
 
         {/* Recent Activity Card */}
-        <Card bordered elevate flex={2} minWidth={400}>
+        <Card
+          bordered
+          elevate
+          flex={2}
+          minWidth={400}
+          className="bg-surface border-border"
+        >
           <View padding="$4">
             <XStack alignItems="center" justifyContent="space-between">
-              <Text fontSize="$4" fontWeight="bold">
+              <Text fontSize="$4" fontWeight="bold" className="text-on-surface">
                 Recent Activity
               </Text>
               <Button size="sm" variant="outline">
@@ -336,25 +350,29 @@ export default function DashboardIndex() {
             </XStack>
           </View>
 
-          <YStack separator={<Separator />}>
+          <YStack separator={<Separator className="bg-border" />}>
             {activity.length === 0 ? (
               <YStack alignItems="center" padding="$4">
-                <Text color="$colorSubtitle">No activity logged yet</Text>
+                <Text className="text-color-subtitle">
+                  No activity logged yet
+                </Text>
               </YStack>
             ) : (
               (activity as ActivityItem[]).map(item => (
                 <XStack
                   alignItems="center"
-                  hoverStyle={{ backgroundColor: "$backgroundHover" }}
+                  className="hover:bg-surface-hover transition-colors"
                   key={item.id}
                   padding="$4"
                   space="$4"
                 >
                   <Text fontSize="$6">{item.icon || "📋"}</Text>
                   <YStack flex={1}>
-                    <Text fontWeight="bold">{item.description}</Text>
+                    <Text fontWeight="bold" className="text-on-surface">
+                      {item.description}
+                    </Text>
                     <Text
-                      color="$colorSubtitle"
+                      className="text-color-subtitle"
                       fontSize="$2"
                       suppressHydrationWarning
                     >
@@ -373,7 +391,12 @@ export default function DashboardIndex() {
 
       {/* Quick Actions */}
       <YStack space="$4">
-        <Text fontSize="$4" fontWeight="bold" paddingHorizontal="$1">
+        <Text
+          fontSize="$4"
+          fontWeight="bold"
+          paddingHorizontal="$1"
+          className="text-on-surface"
+        >
           Instant Operations
         </Text>
         <XStack flexWrap="wrap" space="$4">
@@ -385,12 +408,12 @@ export default function DashboardIndex() {
             >
               <Card
                 bordered
-                className="hover:border-primary cursor-pointer p-4"
+                className="hover:border-primary bg-surface border-border cursor-pointer p-4 transition-colors"
               >
                 <YStack space="$3">
                   <View
                     alignItems="center"
-                    backgroundColor="$primary"
+                    className={action.color}
                     borderRadius="$3"
                     height={48}
                     justifyContent="center"
@@ -399,8 +422,10 @@ export default function DashboardIndex() {
                     {action.icon}
                   </View>
                   <YStack>
-                    <Text fontWeight="bold">{action.name}</Text>
-                    <Text color="$colorSubtitle" fontSize="$2">
+                    <Text fontWeight="bold" className="text-on-surface">
+                      {action.name}
+                    </Text>
+                    <Text className="text-color-subtitle" fontSize="$2">
                       {action.description}
                     </Text>
                   </YStack>

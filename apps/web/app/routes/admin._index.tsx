@@ -191,28 +191,32 @@ export default function AdminOverview() {
   return (
     <YStack space="$6">
       <YStack>
-        <Text fontSize="$8" fontWeight="bold">
+        <Text fontSize="$8" fontWeight="bold" className="text-on-surface">
           Admin Overview
         </Text>
-        <Text color="$colorSubtitle">
+        <Text className="text-color-subtitle">
           Monitor and manage your Syncstuff instance
         </Text>
       </YStack>
 
       {/* System Health */}
-      <Card bordered elevate padding="$4">
+      <Card bordered elevate padding="$4" className="bg-surface border-border">
         <XStack alignItems="center" justifyContent="space-between">
           <XStack alignItems="center" space="$4">
             <View
-              backgroundColor={
-                stats.systemHealth === "healthy" ? "$green4" : "$red4"
+              className={
+                stats.systemHealth === "healthy"
+                  ? "bg-green-100 dark:bg-green-900/30"
+                  : "bg-red-100 dark:bg-red-900/30"
               }
               borderRadius="$full"
               padding="$2"
             >
               <View
-                backgroundColor={
-                  stats.systemHealth === "healthy" ? "$green10" : "$red10"
+                className={
+                  stats.systemHealth === "healthy"
+                    ? "bg-green-500"
+                    : "bg-red-500"
                 }
                 borderRadius="$full"
                 height={10}
@@ -220,8 +224,10 @@ export default function AdminOverview() {
               />
             </View>
             <YStack>
-              <Text fontWeight="bold">System Status</Text>
-              <Text color="$colorSubtitle" fontSize="$2">
+              <Text fontWeight="bold" className="text-on-surface">
+                System Status
+              </Text>
+              <Text className="text-color-subtitle" fontSize="$2">
                 {stats.systemHealth === "healthy"
                   ? "All systems operational"
                   : "Issues detected"}
@@ -250,25 +256,33 @@ export default function AdminOverview() {
 
       <XStack flexWrap="wrap" space="$6">
         {/* User Status Breakdown */}
-        <Card bordered elevate flex={2} minWidth={400} padding="$4">
+        <Card
+          bordered
+          elevate
+          flex={2}
+          minWidth={400}
+          padding="$4"
+          className="bg-surface border-border"
+        >
           <YStack space="$4">
-            <Text fontSize="$4" fontWeight="bold">
+            <Text fontSize="$4" fontWeight="bold" className="text-on-surface">
               User Status Breakdown
             </Text>
             <YStack space="$4">
               {userStatusBreakdown.map(item => (
                 <YStack key={item.label} space="$1">
                   <XStack justifyContent="space-between">
-                    <Text fontWeight="medium">{item.label}</Text>
-                    <Text color="$colorSubtitle" fontSize="$2">
+                    <Text fontWeight="medium" className="text-on-surface">
+                      {item.label}
+                    </Text>
+                    <Text className="text-color-subtitle" fontSize="$2">
                       {item.value} ({item.percentage}%)
                     </Text>
                   </XStack>
                   <View
-                    backgroundColor="$backgroundFocus"
+                    className="bg-surface-variant overflow-hidden"
                     borderRadius="$full"
                     height={8}
-                    className="overflow-hidden"
                     width="100%"
                   >
                     <View
@@ -284,9 +298,16 @@ export default function AdminOverview() {
         </Card>
 
         {/* Quick Actions */}
-        <Card bordered elevate flex={1} minWidth={300} padding="$4">
+        <Card
+          bordered
+          elevate
+          flex={1}
+          minWidth={300}
+          padding="$4"
+          className="bg-surface border-border"
+        >
           <YStack space="$4">
-            <Text fontSize="$4" fontWeight="bold">
+            <Text fontSize="$4" fontWeight="bold" className="text-on-surface">
               Quick Actions
             </Text>
             <YStack space="$3">
@@ -295,6 +316,7 @@ export default function AdminOverview() {
                   icon={<Text fontSize="$5">👥</Text>}
                   justifyContent="flex-start"
                   width="100%"
+                  variant="outline"
                 >
                   Manage Users
                 </Button>

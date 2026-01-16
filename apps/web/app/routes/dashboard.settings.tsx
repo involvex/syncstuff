@@ -268,22 +268,22 @@ export default function Settings() {
     <YStack space="$8">
       {/* Page Header */}
       <YStack space="$2">
-        <Text fontSize="$8" fontWeight="bold" color="$color">
+        <Text fontSize="$8" fontWeight="bold" className="text-on-surface">
           Settings
         </Text>
-        <Text color="$colorSubtitle" fontSize="$3">
+        <Text className="text-color-subtitle" fontSize="$3">
           Manage your account settings and preferences
         </Text>
       </YStack>
 
       {/* Profile Section */}
-      <Card bordered elevate padding="$6">
+      <Card bordered elevate padding="$6" className="bg-surface border-border">
         <YStack space="$6">
           <YStack space="$2">
-            <Text fontSize="$6" fontWeight="bold" color="$color">
+            <Text fontSize="$6" fontWeight="bold" className="text-on-surface">
               Profile Information
             </Text>
-            <Text color="$colorSubtitle" fontSize="$2">
+            <Text className="text-color-subtitle" fontSize="$2">
               Manage your public-facing information and personal details.
             </Text>
           </YStack>
@@ -292,7 +292,7 @@ export default function Settings() {
             <Avatar className="size-10 rounded-full">
               <View
                 alignItems="center"
-                backgroundColor="$primary"
+                className="bg-primary"
                 bottom={0}
                 justifyContent="center"
                 left={0}
@@ -300,7 +300,11 @@ export default function Settings() {
                 right={0}
                 top={0}
               >
-                <Text color="white" fontSize="$8" fontWeight="bold">
+                <Text
+                  className="text-primary-foreground"
+                  fontSize="$8"
+                  fontWeight="bold"
+                >
                   {user?.username?.charAt(0).toUpperCase() || "U"}
                 </Text>
               </View>
@@ -309,31 +313,40 @@ export default function Settings() {
               <Button disabled size="sm" variant="outline">
                 Change Photo
               </Button>
-              <Text color="$colorSubtitle" fontSize="$1">
+              <Text className="text-color-subtitle" fontSize="$1">
                 Custom profile pictures coming soon.
               </Text>
             </YStack>
           </XStack>
 
           <Form method="post">
+            <input name="intent" type="hidden" value="update_profile" />
             <YStack space="$4">
               <XStack flexWrap="wrap" space="$4">
                 <YStack flex={1} minWidth={200} space="$2">
-                  <Text fontSize="$2" fontWeight="bold">
+                  <Text
+                    fontSize="$2"
+                    fontWeight="bold"
+                    className="text-on-surface"
+                  >
                     Username
                   </Text>
                   <Input
-                    backgroundColor="$backgroundFocus"
+                    className="bg-surface-variant text-on-surface"
                     defaultValue={user?.username}
                     readOnly
                   />
                 </YStack>
                 <YStack flex={1} minWidth={200} space="$2">
-                  <Text fontSize="$2" fontWeight="bold">
+                  <Text
+                    fontSize="$2"
+                    fontWeight="bold"
+                    className="text-on-surface"
+                  >
                     Email Address
                   </Text>
                   <Input
-                    backgroundColor="$backgroundFocus"
+                    className="bg-surface-variant text-on-surface"
                     defaultValue={user?.email}
                     readOnly
                   />
@@ -341,18 +354,24 @@ export default function Settings() {
               </XStack>
 
               <YStack space="$2">
-                <Text fontSize="$2" fontWeight="bold">
+                <Text
+                  fontSize="$2"
+                  fontWeight="bold"
+                  className="text-on-surface"
+                >
                   Display Name
                 </Text>
                 <Input
+                  className="bg-surface text-on-surface border-input"
                   defaultValue={user?.full_name || ""}
                   id="full_name"
+                  name="full_name"
                   placeholder="Sync User"
                 />
               </YStack>
 
               <XStack justifyContent="flex-end">
-                <Button disabled={isSubmitting} theme="blue">
+                <Button disabled={isSubmitting} type="submit">
                   Update Profile
                 </Button>
               </XStack>
@@ -362,13 +381,13 @@ export default function Settings() {
       </Card>
 
       {/* Password Section */}
-      <Card bordered elevate padding="$6">
+      <Card bordered elevate padding="$6" className="bg-surface border-border">
         <YStack space="$6">
           <YStack space="$2">
-            <Text fontSize="$6" fontWeight="bold" color="$color">
+            <Text fontSize="$6" fontWeight="bold" className="text-on-surface">
               Security
             </Text>
-            <Text color="$colorSubtitle" fontSize="$2">
+            <Text className="text-color-subtitle" fontSize="$2">
               {hasPassword
                 ? "Change your existing password to keep your account secure."
                 : "Set a secure password for your account to enhance security."}
@@ -380,41 +399,68 @@ export default function Settings() {
             <YStack space="$4">
               {hasPassword && (
                 <YStack space="$2">
-                  <Text fontSize="$2" fontWeight="bold">
+                  <Text
+                    fontSize="$2"
+                    fontWeight="bold"
+                    className="text-on-surface"
+                  >
                     Current Password
                   </Text>
-                  <Input id="current_password" type="password" />
+                  <Input
+                    id="current_password"
+                    name="current_password"
+                    type="password"
+                    className="bg-surface text-on-surface border-input"
+                  />
                 </YStack>
               )}
 
               <XStack flexWrap="wrap" space="$4">
                 <YStack flex={1} minWidth={200} space="$2">
-                  <Text fontSize="$2" fontWeight="bold">
+                  <Text
+                    fontSize="$2"
+                    fontWeight="bold"
+                    className="text-on-surface"
+                  >
                     {hasPassword ? "New Password" : "Password"}
                   </Text>
-                  <Input id="new_password" type="password" />
+                  <Input
+                    id="new_password"
+                    name="new_password"
+                    type="password"
+                    className="bg-surface text-on-surface border-input"
+                  />
                 </YStack>
                 <YStack flex={1} minWidth={200} space="$2">
-                  <Text fontSize="$2" fontWeight="bold">
+                  <Text
+                    fontSize="$2"
+                    fontWeight="bold"
+                    className="text-on-surface"
+                  >
                     Confirm Password
                   </Text>
-                  <Input id="confirm_password" type="password" />
+                  <Input
+                    id="confirm_password"
+                    name="confirm_password"
+                    type="password"
+                    className="bg-surface text-on-surface border-input"
+                  />
                 </YStack>
               </XStack>
 
               {actionData?.error && (
-                <Text color="$red10" fontSize="$2">
+                <Text className="text-error" fontSize="$2">
                   {actionData.error}
                 </Text>
               )}
               {actionData?.message && (
-                <Text color="$green10" fontSize="$2">
+                <Text className="text-success" fontSize="$2">
                   {actionData.message}
                 </Text>
               )}
 
               <XStack justifyContent="flex-end">
-                <Button disabled={isSubmitting} theme="blue">
+                <Button disabled={isSubmitting} type="submit">
                   {isSubmitting
                     ? "Processing..."
                     : hasPassword
@@ -428,19 +474,24 @@ export default function Settings() {
       </Card>
 
       {/* Danger Zone */}
-      <Card borderColor="$red8" bordered elevate padding="$6">
+      <Card
+        className="border-error bg-surface shadow-sm"
+        bordered
+        elevate
+        padding="$6"
+      >
         <YStack space="$6">
           <YStack space="$2">
-            <Text color="$red10" fontSize="$6" fontWeight="bold">
+            <Text className="text-error" fontSize="$6" fontWeight="bold">
               Danger Zone
             </Text>
-            <Text color="$colorSubtitle" fontSize="$2">
+            <Text className="text-color-subtitle" fontSize="$2">
               Permanently delete your account and all associated data. This
               action cannot be undone.
             </Text>
           </YStack>
 
-          <View backgroundColor="$red2" borderRadius="$4" padding="$5">
+          <View className="bg-error/10 rounded-lg p-5">
             <XStack
               alignItems="center"
               flexWrap="wrap"
@@ -448,10 +499,10 @@ export default function Settings() {
               space="$4"
             >
               <YStack flex={1} minWidth={300} space="$2">
-                <Text color="$red11" fontWeight="600" fontSize="$3">
+                <Text className="text-error font-semibold" fontSize="$3">
                   Delete Account
                 </Text>
-                <Text color="$red10" fontSize="$2">
+                <Text className="text-error/80" fontSize="$2">
                   Once you delete your account, there is no going back. All your
                   data, devices, and settings will be permanently removed.
                 </Text>
@@ -468,10 +519,8 @@ export default function Settings() {
                   }
                 }}
               >
-                <Button
-                  theme="red"
-                  {...({ name: "intent", value: "delete_account" } as any)}
-                >
+                <input name="intent" type="hidden" value="delete_account" />
+                <Button variant="destructive" type="submit">
                   Delete Account
                 </Button>
               </Form>

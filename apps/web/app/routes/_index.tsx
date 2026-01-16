@@ -234,8 +234,7 @@ export default function Index() {
                 {/* Android Download */}
                 <a
                   className="inline-flex items-center justify-center gap-2 rounded-lg bg-green-600 px-6 py-3 text-base font-medium text-white transition-colors hover:bg-green-700 focus:ring-4 focus:ring-green-300 dark:focus:ring-green-800"
-                  download
-                  href="/downloads/syncstuff-v0.0.1.apk"
+                  href="https://github.com/involvex/syncstuff/releases/latest/download/app-release.apk"
                 >
                   <svg
                     className="size-6"
@@ -247,7 +246,7 @@ export default function Index() {
                   </svg>
                   Download for Android
                   <span className="rounded bg-green-500 px-2 py-0.5 text-xs font-semibold">
-                    v0.0.1
+                    Latest
                   </span>
                 </a>
 

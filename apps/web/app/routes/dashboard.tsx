@@ -103,11 +103,9 @@ export default function DashboardLayout() {
   const isLoading = navigation.state === "loading";
 
   const sidebar = (
-    <div className="flex flex-1 flex-col gap-4 p-4">
+    <div className="border-border bg-surface flex h-full flex-1 flex-col gap-4 border-r p-4">
       <Link style={{ textDecoration: "none" }} to="/">
-        <h1 className="text-color-primary py-4 text-3xl font-bold">
-          Syncstuff
-        </h1>
+        <h1 className="text-primary py-4 text-3xl font-bold">Syncstuff</h1>
       </Link>
 
       <div className="flex flex-col gap-1">
@@ -158,7 +156,7 @@ export default function DashboardLayout() {
 
       <div className="border-border flex flex-col gap-4 border-t pt-4">
         <div className="flex items-center gap-3">
-          <div className="bg-surface-variant text-color-primary flex size-8 items-center justify-center rounded-full font-bold">
+          <div className="bg-surface-variant text-primary flex size-8 items-center justify-center rounded-full font-bold">
             {userId.charAt(0).toUpperCase()}
           </div>
           <div className="flex flex-1 flex-col">
@@ -192,7 +190,9 @@ export default function DashboardLayout() {
           </div>
         </div>
       )}
-      <Outlet />
+      <div className="bg-background text-on-background min-h-screen">
+        <Outlet />
+      </div>
     </MainLayout>
   );
 }
