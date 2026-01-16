@@ -353,7 +353,7 @@ export default function DashboardIndex() {
                   <Text fontSize="$6">{item.icon || "📋"}</Text>
                   <YStack flex={1}>
                     <Text fontWeight="bold">{item.description}</Text>
-                    <Text color="$colorSubtitle" fontSize="$2">
+                    <Text color="$colorSubtitle" fontSize="$2" suppressHydrationWarning>
                       {new Date(item.date).toLocaleString([], {
                         dateStyle: "medium",
                         timeStyle: "short",
