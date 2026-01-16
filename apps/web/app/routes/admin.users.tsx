@@ -4,15 +4,7 @@ import {
   type LoaderFunctionArgs,
 } from "@remix-run/cloudflare";
 import { Form, redirect, useLoaderData, useNavigation } from "@remix-run/react";
-import {
-  Card,
-  Separator,
-  StatusBadge,
-  Text,
-  View,
-  XStack,
-  YStack,
-} from "@syncstuff/ui";
+import { Badge, Card, CardContent } from "~/components/ui";
 import { getSession } from "~/services/session.server";
 
 export async function loader({ request, context }: LoaderFunctionArgs) {
@@ -101,112 +93,60 @@ export default function AdminUsers() {
   const navigation = useNavigation();
 
   return (
-    <YStack space="$6">
-      <YStack>
-        <Text fontSize="$8" fontWeight="bold" className="text-on-surface">
-          Users
-        </Text>
-        <Text className="text-color-subtitle">
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-1">
+        <h1 className="text-3xl font-bold text-on-surface">Users</h1>
+        <p className="text-color-subtitle">
           A list of all the users in your account.
-        </Text>
-      </YStack>
+        </p>
+      </div>
 
-      <Card
-        bordered
-        elevate
-        className="bg-surface border-border overflow-hidden"
-      >
-        <YStack separator={<Separator className="bg-border" />}>
+      <Card bordered elevate className="bg-surface border-border overflow-hidden">
+        <CardContent className="p-0">
           {/* Header */}
-          <XStack className="bg-surface-variant space-x-4 p-4">
-            <Text
-              flex={2}
-              fontSize="$2"
-              fontWeight="bold"
-              textTransform="uppercase"
-              className="text-on-surface"
-            >
-              Username
-            </Text>
-            <Text
-              className="text-on-surface hidden sm:block"
-              flex={3}
-              fontSize="$2"
-              fontWeight="bold"
-              textTransform="uppercase"
-            >
-              Email
-            </Text>
-            <Text
-              flex={1}
-              fontSize="$2"
-              fontWeight="bold"
-              textTransform="uppercase"
-              className="text-on-surface"
-            >
-              Role
-            </Text>
-            <Text
-              flex={1}
-              fontSize="$2"
-              fontWeight="bold"
-              textTransform="uppercase"
-              className="text-on-surface"
-            >
-              Status
-            </Text>
-            <Text
-              flex={1}
-              fontSize="$2"
-              fontWeight="bold"
-              textAlign="right"
-              textTransform="uppercase"
-              className="text-on-surface"
-            >
-              Action
-            </Text>
-          </XStack>
+          <div className="bg-surface-variant grid grid-cols-12 gap-4 border-b border-border p-4 text-xs font-bold text-on-surface uppercase">
+            <div className="col-span-3">Username</div>
+            <div className="col-span-4 hidden sm:block">Email</div>
+            <div className="col-span-2">Role</div>
+            <div className="col-span-2">Status</div>
+            <div className="col-span-1 text-right">Action</div>
+          </div>
 
           {users.length === 0 ? (
-            <YStack alignItems="center" padding="$4">
-              <Text className="text-color-subtitle">No users found</Text>
-            </YStack>
+            <div className="flex flex-col items-center p-8">
+              <p className="text-color-subtitle">No users found</p>
+            </div>
           ) : (
             users.map((user: any) => (
-              <XStack
-                alignItems="center"
-                className="hover:bg-surface-hover space-x-4 p-4 transition-colors"
+              <div
+                className="grid grid-cols-12 items-center gap-4 border-b border-border p-4 transition-colors hover:bg-surface-hover last:border-0"
                 key={user.id}
               >
-                <YStack flex={2}>
-                  <Text fontWeight="bold" className="text-on-surface">
+                <div className="col-span-3 flex flex-col">
+                  <span className="font-bold text-on-surface">
                     {user.username}
-                  </Text>
-                  <Text
-                    className="text-color-subtitle block sm:hidden"
-                    fontSize="$1"
-                  >
+                  </span>
+                  <span className="block text-xs text-color-subtitle sm:hidden">
                     {user.email}
-                  </Text>
-                </YStack>
-                <Text
-                  className="text-on-surface hidden sm:block"
-                  flex={3}
-                  fontSize="$3"
-                >
+                  </span>
+                </div>
+                <div className="col-span-4 hidden truncate text-on-surface sm:block">
                   {user.email}
-                </Text>
-                <View flex={1}>
-                  <StatusBadge status="info">{user.role}</StatusBadge>
-                </View>
-                <View flex={1}>
-                  <StatusBadge
-                    status={user.status === "active" ? "success" : "error"}
+                </div>
+                <div className="col-span-2">
+                  <Badge variant="info" className="capitalize">
+                    {user.role}
+                  </Badge>
+                </div>
+                <div className="col-span-2">
+                  <Badge
+                    variant={user.status === "active" ? "success" : "destructive"}
+                    className="capitalize"
                   >
                     {user.status}
-                  </StatusBadge>
-                </View>
-                <XStack flex={1} justifyContent="flex-end">
+                  </Badge>
+                </div>
+                <div className="col-span-1 flex justify-end">
                   <Form method="post">
                     <input name="userId" type="hidden" value={user.id} />
                     <button
@@ -223,12 +163,12 @@ export default function AdminUsers() {
                       {user.status === "active" ? "Suspend" : "Activate"}
                     </button>
                   </Form>
-                </XStack>
-              </XStack>
+                </div>
+              </div>
             ))
           )}
-        </YStack>
+        </CardContent>
       </Card>
-    </YStack>
+    </div>
   );
 }

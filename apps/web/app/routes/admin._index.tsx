@@ -1,15 +1,6 @@
 import { json, type LoaderFunctionArgs } from "@remix-run/cloudflare";
 import { Link, useLoaderData } from "@remix-run/react";
-import {
-  Button,
-  Card,
-  StatCard,
-  StatusBadge,
-  Text,
-  View,
-  XStack,
-  YStack,
-} from "@syncstuff/ui";
+import { Badge, Button, Card, CardContent, StatCard } from "~/components/ui";
 
 export async function loader({ context }: LoaderFunctionArgs) {
   let userCount = 0;
@@ -162,7 +153,7 @@ export default function AdminOverview() {
     {
       label: "Active",
       value: stats.activeUserCount,
-      color: "$green10",
+      color: "bg-green-500 dark:bg-green-400",
       percentage:
         stats.userCount > 0
           ? Math.round((stats.activeUserCount / stats.userCount) * 100)
@@ -171,7 +162,7 @@ export default function AdminOverview() {
     {
       label: "Suspended",
       value: stats.suspendedUserCount,
-      color: "$red10",
+      color: "bg-red-500 dark:bg-red-400",
       percentage:
         stats.userCount > 0
           ? Math.round((stats.suspendedUserCount / stats.userCount) * 100)
@@ -180,7 +171,7 @@ export default function AdminOverview() {
     {
       label: "Pending",
       value: stats.pendingUserCount,
-      color: "$yellow10",
+      color: "bg-yellow-500 dark:bg-yellow-400",
       percentage:
         stats.userCount > 0
           ? Math.round((stats.pendingUserCount / stats.userCount) * 100)
@@ -189,158 +180,127 @@ export default function AdminOverview() {
   ];
 
   return (
-    <YStack space="$6">
-      <YStack>
-        <Text fontSize="$8" fontWeight="bold" className="text-on-surface">
-          Admin Overview
-        </Text>
-        <Text className="text-color-subtitle">
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-1">
+        <h1 className="text-3xl font-bold text-on-surface">Admin Overview</h1>
+        <p className="text-color-subtitle">
           Monitor and manage your Syncstuff instance
-        </Text>
-      </YStack>
+        </p>
+      </div>
 
       {/* System Health */}
-      <Card bordered elevate padding="$4" className="bg-surface border-border">
-        <XStack alignItems="center" justifyContent="space-between">
-          <XStack alignItems="center" space="$4">
-            <View
-              className={
-                stats.systemHealth === "healthy"
-                  ? "bg-green-100 dark:bg-green-900/30"
-                  : "bg-red-100 dark:bg-red-900/30"
-              }
-              borderRadius="$full"
-              padding="$2"
-            >
-              <View
-                className={
+      <Card bordered elevate className="bg-surface border-border">
+        <CardContent className="p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div
+                className={`flex h-10 w-10 items-center justify-center rounded-full p-2 ${
                   stats.systemHealth === "healthy"
-                    ? "bg-green-500"
-                    : "bg-red-500"
-                }
-                borderRadius="$full"
-                height={10}
-                width={10}
-              />
-            </View>
-            <YStack>
-              <Text fontWeight="bold" className="text-on-surface">
-                System Status
-              </Text>
-              <Text className="text-color-subtitle" fontSize="$2">
-                {stats.systemHealth === "healthy"
-                  ? "All systems operational"
-                  : "Issues detected"}
-              </Text>
-            </YStack>
-          </XStack>
-          <StatusBadge
-            status={stats.systemHealth === "healthy" ? "success" : "error"}
-          >
-            {stats.systemHealth === "healthy" ? "Healthy" : "Degraded"}
-          </StatusBadge>
-        </XStack>
+                    ? "bg-green-100 dark:bg-green-900/30"
+                    : "bg-red-100 dark:bg-red-900/30"
+                }`}
+              >
+                <div
+                  className={`h-2.5 w-2.5 rounded-full ${
+                    stats.systemHealth === "healthy"
+                      ? "bg-green-500"
+                      : "bg-red-500"
+                  }`}
+                />
+              </div>
+              <div className="flex flex-col">
+                <span className="font-bold text-on-surface">System Status</span>
+                <span className="text-sm text-color-subtitle">
+                  {stats.systemHealth === "healthy"
+                    ? "All systems operational"
+                    : "Issues detected"}
+                </span>
+              </div>
+            </div>
+            <Badge
+              variant={
+                stats.systemHealth === "healthy" ? "success" : "destructive"
+              }
+            >
+              {stats.systemHealth === "healthy" ? "Healthy" : "Degraded"}
+            </Badge>
+          </div>
+        </CardContent>
       </Card>
 
       {/* Stats Cards */}
-      <XStack flexWrap="wrap" space="$4">
-        {statCards.map(card => (
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {statCards.map((card) => (
           <StatCard
-            icon={card.icon}
             key={card.name}
+            icon={card.icon}
             title={card.name}
             value={card.stat}
           />
         ))}
-      </XStack>
+      </div>
 
-      <XStack flexWrap="wrap" space="$6">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* User Status Breakdown */}
-        <Card
-          bordered
-          elevate
-          flex={2}
-          minWidth={400}
-          padding="$4"
-          className="bg-surface border-border"
-        >
-          <YStack space="$4">
-            <Text fontSize="$4" fontWeight="bold" className="text-on-surface">
+        <Card bordered elevate className="bg-surface border-border lg:col-span-2">
+          <CardContent className="p-6">
+            <h3 className="mb-4 text-lg font-bold text-on-surface">
               User Status Breakdown
-            </Text>
-            <YStack space="$4">
-              {userStatusBreakdown.map(item => (
-                <YStack key={item.label} space="$1">
-                  <XStack justifyContent="space-between">
-                    <Text fontWeight="medium" className="text-on-surface">
+            </h3>
+            <div className="flex flex-col gap-4">
+              {userStatusBreakdown.map((item) => (
+                <div key={item.label} className="flex flex-col gap-1">
+                  <div className="flex justify-between">
+                    <span className="font-medium text-on-surface">
                       {item.label}
-                    </Text>
-                    <Text className="text-color-subtitle" fontSize="$2">
+                    </span>
+                    <span className="text-sm text-color-subtitle">
                       {item.value} ({item.percentage}%)
-                    </Text>
-                  </XStack>
-                  <View
-                    className="bg-surface-variant overflow-hidden"
-                    borderRadius="$full"
-                    height={8}
-                    width="100%"
-                  >
-                    <View
-                      backgroundColor={item.color as any}
-                      height="100%"
-                      width={`${item.percentage}%`}
+                    </span>
+                  </div>
+                  <div className="h-2 w-full overflow-hidden rounded-full bg-surface-variant">
+                    <div
+                      className={`h-full ${item.color}`}
+                      style={{ width: `${item.percentage}%` }}
                     />
-                  </View>
-                </YStack>
+                  </div>
+                </div>
               ))}
-            </YStack>
-          </YStack>
+            </div>
+          </CardContent>
         </Card>
 
         {/* Quick Actions */}
-        <Card
-          bordered
-          elevate
-          flex={1}
-          minWidth={300}
-          padding="$4"
-          className="bg-surface border-border"
-        >
-          <YStack space="$4">
-            <Text fontSize="$4" fontWeight="bold" className="text-on-surface">
+        <Card bordered elevate className="bg-surface border-border">
+          <CardContent className="p-6">
+            <h3 className="mb-4 text-lg font-bold text-on-surface">
               Quick Actions
-            </Text>
-            <YStack space="$3">
-              <Link style={{ textDecoration: "none" }} to="/admin/users">
-                <Button
-                  icon={<Text fontSize="$5">👥</Text>}
-                  justifyContent="flex-start"
-                  width="100%"
-                  variant="outline"
-                >
+            </h3>
+            <div className="flex flex-col gap-3">
+              <Link to="/admin/users" className="w-full">
+                <Button className="w-full justify-start gap-2">
+                  <span className="text-xl">👥</span>
                   Manage Users
                 </Button>
               </Link>
               <Button
-                icon={<Text fontSize="$5">⚙️</Text>}
-                justifyContent="flex-start"
                 variant="outline"
-                width="100%"
+                className="w-full justify-start gap-2"
               >
+                <span className="text-xl">⚙️</span>
                 System Settings
               </Button>
               <Button
-                icon={<Text fontSize="$5">📋</Text>}
-                justifyContent="flex-start"
                 variant="outline"
-                width="100%"
+                className="w-full justify-start gap-2"
               >
+                <span className="text-xl">📋</span>
                 View Logs
               </Button>
-            </YStack>
-          </YStack>
+            </div>
+          </CardContent>
         </Card>
-      </XStack>
-    </YStack>
+      </div>
+    </div>
   );
 }

@@ -1,12 +1,6 @@
 import { json, type LoaderFunctionArgs, redirect } from "@remix-run/cloudflare";
 import { Link, Outlet, useLocation, useNavigation } from "@remix-run/react";
-import {
-  MainLayout,
-  Separator,
-  SidebarItem,
-  Text,
-  YStack,
-} from "@syncstuff/ui";
+import { MainLayout, SidebarItem } from "~/components/ui";
 import { getSession } from "~/services/session.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -99,35 +93,16 @@ export default function AdminLayout() {
   const isLoading = navigation.state === "loading";
 
   const sidebar = (
-    <YStack
-      flex={1}
-      padding="$4"
-      space="$4"
-      className="border-border bg-surface h-full border-r"
-    >
+    <div className="flex h-full flex-col gap-4 bg-surface p-4">
       <Link style={{ textDecoration: "none" }} to="/">
-        <Text
-          className="text-primary"
-          fontSize="$7"
-          fontWeight="bold"
-          paddingVertical="$4"
-        >
-          Admin Panel
-        </Text>
+        <h1 className="text-primary py-4 text-3xl font-bold">Admin Panel</h1>
       </Link>
 
-      <YStack space="$1">
-        <Text
-          className="text-color-subtitle"
-          fontSize="$2"
-          fontWeight="bold"
-          marginBottom="$2"
-          paddingHorizontal="$4"
-          textTransform="uppercase"
-        >
+      <div className="flex flex-col gap-1">
+        <h4 className="text-color-subtitle mb-2 px-4 text-xs font-bold uppercase">
           Admin
-        </Text>
-        {navItems.map(item => (
+        </h4>
+        {navItems.map((item) => (
           <Link
             key={item.name}
             style={{ textDecoration: "none" }}
@@ -140,22 +115,15 @@ export default function AdminLayout() {
             />
           </Link>
         ))}
-      </YStack>
+      </div>
 
-      <Separator className="bg-border" />
+      <div className="my-2 border-t border-border" />
 
-      <YStack space="$1">
-        <Text
-          className="text-color-subtitle"
-          fontSize="$2"
-          fontWeight="bold"
-          marginBottom="$2"
-          paddingHorizontal="$4"
-          textTransform="uppercase"
-        >
+      <div className="flex flex-col gap-1">
+        <h4 className="text-color-subtitle mb-2 px-4 text-xs font-bold uppercase">
           App
-        </Text>
-        {dashboardNavItems.map(item => (
+        </h4>
+        {dashboardNavItems.map((item) => (
           <Link
             key={item.name}
             style={{ textDecoration: "none" }}
@@ -168,23 +136,23 @@ export default function AdminLayout() {
             />
           </Link>
         ))}
-      </YStack>
-    </YStack>
+      </div>
+    </div>
   );
 
   return (
     <MainLayout sidebar={sidebar} title="Admin">
       {isLoading && (
         <div className="fixed inset-x-0 top-0 z-50">
-          <div className="bg-surface-variant h-1">
+          <div className="h-1 bg-surface-variant">
             <div
-              className="bg-primary animate-progress h-full"
+              className="h-full bg-primary animate-progress"
               style={{ width: "30%" }}
             />
           </div>
         </div>
       )}
-      <div className="bg-background text-on-background min-h-screen">
+      <div className="bg-background text-on-background min-h-full">
         <Outlet />
       </div>
     </MainLayout>
