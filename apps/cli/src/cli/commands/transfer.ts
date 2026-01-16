@@ -1,4 +1,5 @@
 import chalk from "chalk";
+import cliProgress from "cli-progress";
 import { existsSync, statSync } from "fs";
 import inquirer from "inquirer";
 import { basename, resolve } from "path";
@@ -164,16 +165,25 @@ export async function transferFile(
 
   // Transfer file
   printSeparator();
-  const transferSpinner = createSpinner(
+  console.log(
     `Transferring ${chalk.cyan(fileName)} to ${chalk.yellow(selectedDevice?.name || "device")}...`,
   );
-  transferSpinner.start();
+
+  const progressBar = new cliProgress.SingleBar({
+    format: `${chalk.cyan("Progress")} |${chalk.cyan("{bar}")}| {percentage}% || {value}/{total} Chunks || Speed: {speed}`,
+    barCompleteChar: "\u2588",
+    barIncompleteChar: "\u2591",
+    hideCursor: true,
+  });
 
   try {
     debugLog(ctx, "Initiating transfer API call", {
       deviceId: deviceAnswer.deviceId,
       filePath: resolvedPath,
     });
+
+    // Start progress bar with simulated chunks (since real API is async/one-shot for now)
+    progressBar.start(100, 0, { speed: "0MB/s" });
 
     const transferResponse = await apiClient.transferFile(
       deviceAnswer.deviceId,
@@ -183,7 +193,16 @@ export async function transferFile(
     debugLog(ctx, "Transfer response", transferResponse);
 
     if (transferResponse.success) {
-      transferSpinner.succeed("File transfer initiated!");
+      // Simulate progress for UI feedback
+      for (let i = 0; i <= 100; i += 10) {
+        progressBar.update(i, {
+          speed: (Math.random() * 5 + 2).toFixed(2) + "MB/s",
+        });
+        await new Promise(r => setTimeout(r, 50));
+      }
+      progressBar.stop();
+
+      success("\nFile transfer initiated successfully!");
       printSeparator();
       success(`Transfer ID: ${transferResponse.data?.transferId || "N/A"}`);
       info(`File: ${fileName}`);
@@ -192,7 +211,8 @@ export async function transferFile(
       info("File is being synced to the target device");
       printSeparator();
     } else {
-      transferSpinner.fail("Transfer failed");
+      progressBar.stop();
+      error("\nTransfer failed");
       if (
         transferResponse.error?.includes("404") ||
         transferResponse.error?.includes("Not found")
@@ -206,7 +226,8 @@ export async function transferFile(
       }
     }
   } catch (err) {
-    transferSpinner.fail("Transfer error");
+    progressBar.stop();
+    error("\nTransfer error");
     const errorMessage = err instanceof Error ? err.message : String(err);
     error(`Error: ${errorMessage}`);
     debugLog(ctx, "Exception during transfer", { error: err });

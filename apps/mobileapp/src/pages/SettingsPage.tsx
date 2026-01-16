@@ -28,6 +28,7 @@ import { DebugSettings } from "../components/settings/DebugSettings";
 import { ElectronSettings } from "../components/settings/ElectronSettings";
 import { NotificationSettings } from "../components/settings/NotificationSettings";
 import { PermissionsSettings } from "../components/settings/PermissionsSettings";
+import { SecuritySettings } from "../components/settings/SecuritySettings";
 
 const SettingsPage: React.FC = () => {
   const { deviceName, deviceId, initialize, devMode, setDevMode } =
@@ -89,6 +90,8 @@ const SettingsPage: React.FC = () => {
           </Card>
 
           <CloudAccounts />
+
+          <SecuritySettings />
 
           <PermissionsSettings />
 

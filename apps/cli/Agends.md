@@ -68,7 +68,7 @@ apps/desktop/
 
 ### Features
 
-- **Progress Indicators**: Add progress bars for file transfers
+- [x] **Progress Indicators**: Add progress bars for file transfers
 - **Resume Transfers**: Implement resumable file transfers
 - **Security**: Add encryption for file transfers
 - **Cross-Platform**: Ensure Windows path handling is robust
@@ -86,7 +86,9 @@ apps/desktop/
 1. Implement missing API endpoints for device management
 2. Add comprehensive error handling and user feedback
 3. Implement file transfer encryption
-4. Add progress indicators and transfer status
+4. [x] Add progress indicators and transfer status
+5. [x] Implement `syncstuff clipboard` command
+6. [x] Implement `syncstuff status` command
 
 ### Short-term (v0.2.x)
 

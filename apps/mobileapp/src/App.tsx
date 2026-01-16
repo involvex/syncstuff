@@ -18,6 +18,7 @@ import {
 } from "ionicons/icons";
 import { useEffect, useState } from "react";
 import { Redirect, Route } from "react-router-dom";
+import { BiometricLockGuard } from "./components/common/BiometricLockGuard";
 import { PermissionRequestModal } from "./components/common/PermissionRequestModal";
 import { ResponsiveLayout } from "./components/common/ResponsiveLayout";
 import { useTheme } from "./hooks/useTheme";
@@ -195,47 +196,49 @@ const App: React.FC = () => {
   return (
     <Provider>
       <IonApp>
-        <ResponsiveLayout>
-          <IonReactRouter>
-            <IonTabs>
-              <IonRouterOutlet>
-                <Route exact path="/devices">
-                  <DevicesPage />
-                </Route>
-                <Route exact path="/transfers">
-                  <TransfersPage />
-                </Route>
-                <Route exact path="/clipboard">
-                  <ClipboardPage />
-                </Route>
-                <Route exact path="/settings">
-                  <SettingsPage />
-                </Route>
-                <Route exact path="/">
-                  <Redirect to="/devices" />
-                </Route>
-              </IonRouterOutlet>
-              <IonTabBar slot="bottom">
-                <IonTabButton href="/devices" tab="devices">
-                  <IonIcon aria-hidden="true" icon={phonePortrait} />
-                  <IonLabel>Devices</IonLabel>
-                </IonTabButton>
-                <IonTabButton href="/transfers" tab="transfers">
-                  <IonIcon aria-hidden="true" icon={swapHorizontal} />
-                  <IonLabel>Transfers</IonLabel>
-                </IonTabButton>
-                <IonTabButton href="/clipboard" tab="clipboard">
-                  <IonIcon aria-hidden="true" icon={clipboard} />
-                  <IonLabel>Clipboard</IonLabel>
-                </IonTabButton>
-                <IonTabButton href="/settings" tab="settings">
-                  <IonIcon aria-hidden="true" icon={settings} />
-                  <IonLabel>Settings</IonLabel>
-                </IonTabButton>
-              </IonTabBar>
-            </IonTabs>
-          </IonReactRouter>
-        </ResponsiveLayout>
+        <BiometricLockGuard>
+          <ResponsiveLayout>
+            <IonReactRouter>
+              <IonTabs>
+                <IonRouterOutlet>
+                  <Route exact path="/devices">
+                    <DevicesPage />
+                  </Route>
+                  <Route exact path="/transfers">
+                    <TransfersPage />
+                  </Route>
+                  <Route exact path="/clipboard">
+                    <ClipboardPage />
+                  </Route>
+                  <Route exact path="/settings">
+                    <SettingsPage />
+                  </Route>
+                  <Route exact path="/">
+                    <Redirect to="/devices" />
+                  </Route>
+                </IonRouterOutlet>
+                <IonTabBar slot="bottom">
+                  <IonTabButton href="/devices" tab="devices">
+                    <IonIcon aria-hidden="true" icon={phonePortrait} />
+                    <IonLabel>Devices</IonLabel>
+                  </IonTabButton>
+                  <IonTabButton href="/transfers" tab="transfers">
+                    <IonIcon aria-hidden="true" icon={swapHorizontal} />
+                    <IonLabel>Transfers</IonLabel>
+                  </IonTabButton>
+                  <IonTabButton href="/clipboard" tab="clipboard">
+                    <IonIcon aria-hidden="true" icon={clipboard} />
+                    <IonLabel>Clipboard</IonLabel>
+                  </IonTabButton>
+                  <IonTabButton href="/settings" tab="settings">
+                    <IonIcon aria-hidden="true" icon={settings} />
+                    <IonLabel>Settings</IonLabel>
+                  </IonTabButton>
+                </IonTabBar>
+              </IonTabs>
+            </IonReactRouter>
+          </ResponsiveLayout>
+        </BiometricLockGuard>
         <PermissionRequestModal
           isOpen={showPermissionModal}
           onDismiss={() => setShowPermissionModal(false)}

@@ -66,6 +66,18 @@ export async function run() {
         await transferFile(commandArgs[0], ctx);
       }
       break;
+    case "clipboard":
+      {
+        const { clipboardSync } = await import("./commands/clipboard.js");
+        await clipboardSync(ctx);
+      }
+      break;
+    case "status":
+      {
+        const { showStatus } = await import("./commands/status.js");
+        await showStatus(ctx);
+      }
+      break;
     case "scan":
       {
         const { scanLocal } = await import("./commands/scan.js");
