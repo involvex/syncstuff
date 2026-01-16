@@ -266,14 +266,24 @@ export default function Settings() {
 
   return (
     <YStack space="$8">
+      {/* Page Header */}
+      <YStack space="$2">
+        <Text fontSize="$8" fontWeight="bold" color="$color">
+          Settings
+        </Text>
+        <Text color="$colorSubtitle" fontSize="$3">
+          Manage your account settings and preferences
+        </Text>
+      </YStack>
+
       {/* Profile Section */}
-      <Card bordered elevate padding="$4">
+      <Card bordered elevate padding="$6">
         <YStack space="$6">
-          <YStack>
-            <Text fontSize="$6" fontWeight="bold">
+          <YStack space="$2">
+            <Text fontSize="$6" fontWeight="bold" color="$color">
               Profile Information
             </Text>
-            <Text color="$colorSubtitle">
+            <Text color="$colorSubtitle" fontSize="$2">
               Manage your public-facing information and personal details.
             </Text>
           </YStack>
@@ -352,16 +362,16 @@ export default function Settings() {
       </Card>
 
       {/* Password Section */}
-      <Card bordered elevate padding="$4">
+      <Card bordered elevate padding="$6">
         <YStack space="$6">
-          <YStack>
-            <Text fontSize="$6" fontWeight="bold">
+          <YStack space="$2">
+            <Text fontSize="$6" fontWeight="bold" color="$color">
               Security
             </Text>
-            <Text color="$colorSubtitle">
+            <Text color="$colorSubtitle" fontSize="$2">
               {hasPassword
-                ? "Change your existing password."
-                : "Set a secure password for your account."}
+                ? "Change your existing password to keep your account secure."
+                : "Set a secure password for your account to enhance security."}
             </Text>
           </YStack>
 
@@ -418,28 +428,32 @@ export default function Settings() {
       </Card>
 
       {/* Danger Zone */}
-      <Card borderColor="$red8" bordered elevate padding="$4">
-        <YStack space="$4">
-          <YStack>
+      <Card borderColor="$red8" bordered elevate padding="$6">
+        <YStack space="$6">
+          <YStack space="$2">
             <Text color="$red10" fontSize="$6" fontWeight="bold">
               Danger Zone
             </Text>
-            <Text color="$colorSubtitle">
-              Permanently delete your account and all associated data.
+            <Text color="$colorSubtitle" fontSize="$2">
+              Permanently delete your account and all associated data. This action cannot be undone.
             </Text>
           </YStack>
 
-          <View backgroundColor="$red2" borderRadius="$3" padding="$4">
+          <View backgroundColor="$red2" borderRadius="$4" padding="$5">
             <XStack
               alignItems="center"
               flexWrap="wrap"
               justifyContent="space-between"
               space="$4"
             >
-              <Text color="$red10" flex={1} minWidth={300}>
-                Once you delete your account, there is no going back. Please be
-                certain.
-              </Text>
+              <YStack flex={1} minWidth={300} space="$2">
+                <Text color="$red11" fontWeight="600" fontSize="$3">
+                  Delete Account
+                </Text>
+                <Text color="$red10" fontSize="$2">
+                  Once you delete your account, there is no going back. All your data, devices, and settings will be permanently removed.
+                </Text>
+              </YStack>
               <Form
                 method="post"
                 onSubmit={e => {

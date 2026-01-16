@@ -1,4 +1,7 @@
+import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
+import { json } from "@remix-run/cloudflare";
 import { useState } from "react";
+import { getSession } from "~/services/session.server";
 
 const faqs = [
   {
@@ -33,16 +36,24 @@ const faqs = [
   },
 ];
 
-import { useNavigate } from "@remix-run/react";
+import { useLoaderData, useNavigate } from "@remix-run/react";
 import { Footer, Navigation } from "@syncstuff/ui";
 
+export async function loader({ request }: LoaderFunctionArgs) {
+  const session = await getSession(request.headers.get("Cookie"));
+  const userId = session.get("userId");
+  return json({ isLoggedIn: !!userId });
+}
+
 export default function FAQ() {
+  const { isLoggedIn } = useLoaderData<typeof loader>();
   const navigate = useNavigate();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
     <>
       <Navigation
+        isLoggedIn={isLoggedIn}
         onDashboard={() => navigate("/dashboard")}
         onLogin={() => navigate("/auth/login")}
         onSignup={() => navigate("/auth/signup")}

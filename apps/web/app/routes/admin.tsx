@@ -102,7 +102,7 @@ export default function AdminLayout() {
     <YStack flex={1} padding="$4" space="$4">
       <Link style={{ textDecoration: "none" }} to="/">
         <Text
-          color="$purple10"
+          color="$primary"
           fontSize="$7"
           fontWeight="bold"
           paddingVertical="$4"
@@ -171,9 +171,9 @@ export default function AdminLayout() {
     <MainLayout sidebar={sidebar} title="Admin">
       {isLoading && (
         <div className="fixed inset-x-0 top-0 z-50">
-          <div className="h-1 bg-purple-200 dark:bg-purple-900">
+          <div className="bg-surface-variant h-1">
             <div
-              className="h-full animate-pulse bg-purple-600 dark:bg-purple-400"
+              className="bg-primary animate-progress h-full"
               style={{ width: "30%" }}
             />
           </div>
@@ -186,11 +186,11 @@ export default function AdminLayout() {
 
 export function ErrorBoundary({ error }: { error: Error }) {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 pl-64 dark:bg-gray-900">
-      <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg dark:bg-gray-800">
-        <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-red-100 dark:bg-red-900">
+    <div className="bg-background flex min-h-screen items-center justify-center px-4 pl-64">
+      <div className="bg-surface border-border w-full max-w-md rounded-lg border p-6 shadow-lg">
+        <div className="bg-error/10 mx-auto flex size-12 items-center justify-center rounded-full">
           <svg
-            className="size-6 text-red-600 dark:text-red-400"
+            className="text-error size-6"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -203,23 +203,23 @@ export function ErrorBoundary({ error }: { error: Error }) {
             />
           </svg>
         </div>
-        <h2 className="mt-4 text-center text-lg font-semibold text-gray-900 dark:text-white">
+        <h2 className="text-on-surface mt-4 text-center text-lg font-semibold">
           Admin Error
         </h2>
-        <p className="mt-2 text-center text-sm text-gray-500 dark:text-gray-400">
+        <p className="text-color-subtitle mt-2 text-center text-sm">
           {error instanceof Error
             ? error.message
             : "An unexpected error occurred"}
         </p>
         <div className="mt-6 flex justify-center gap-3">
           <Link
-            className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none"
+            className="bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-ring rounded-md px-4 py-2 text-sm font-medium shadow-sm focus:ring-2 focus:ring-offset-2 focus:outline-none"
             to="/admin"
           >
             Go to Admin
           </Link>
           <Link
-            className="rounded-md bg-gray-200 px-4 py-2 text-sm font-medium text-gray-900 shadow-sm hover:bg-gray-300 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:outline-none dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
+            className="bg-surface-variant text-on-surface hover:bg-surface-variant/80 focus:ring-ring rounded-md px-4 py-2 text-sm font-medium shadow-sm focus:ring-2 focus:ring-offset-2 focus:outline-none"
             to="/dashboard"
           >
             Back to Dashboard

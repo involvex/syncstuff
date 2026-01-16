@@ -145,3 +145,6 @@ packages/telemetry/*.log
 packages/telemetry/*.err
 packages/telemetry/*.out
 packages/telemetry/.turbo
+
+tmpclaude-*-cwd
+nul

@@ -17,13 +17,16 @@ export default function Contact() {
   const [errorMessage, setErrorMessage] = useState("");
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
 
+  const recaptchaSiteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+  const isRecaptchaEnabled = !!recaptchaSiteKey;
+
   const sendEmail = (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage("");
 
     if (!form.current) return;
 
-    if (!recaptchaToken) {
+    if (isRecaptchaEnabled && !recaptchaToken) {
       setErrorMessage("Please complete the reCAPTCHA verification.");
       return;
     }
@@ -215,13 +218,21 @@ export default function Contact() {
                       />
                     </div>
 
-                    <div className="flex justify-center">
-                      <ReCAPTCHA
-                        sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
-                        onChange={setRecaptchaToken}
-                        theme="light"
-                      />
-                    </div>
+                    {isRecaptchaEnabled && recaptchaSiteKey && (
+                      <div className="flex justify-center">
+                        <ReCAPTCHA
+                          sitekey={recaptchaSiteKey}
+                          onChange={setRecaptchaToken}
+                          theme="light"
+                        />
+                      </div>
+                    )}
+
+                    {!isRecaptchaEnabled && (
+                      <p className="text-xs text-center text-gray-500 dark:text-gray-400">
+                        Note: reCAPTCHA is not configured. Contact form may be vulnerable to spam.
+                      </p>
+                    )}
 
                     {emailStatus === "error" && (
                       <p className="text-sm font-medium text-red-600 dark:text-red-400">
@@ -231,8 +242,8 @@ export default function Contact() {
 
                     <button
                       type="submit"
-                      disabled={isSending || !recaptchaToken}
-                      className="flex w-full justify-center rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-blue-500/20 transition-all hover:scale-[1.02] hover:bg-blue-700 disabled:opacity-50"
+                      disabled={isSending || (isRecaptchaEnabled && !recaptchaToken)}
+                      className="flex w-full justify-center rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-blue-500/20 transition-all hover:scale-[1.02] hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {isSending ? "Sending..." : "Send Message"}
                     </button>
