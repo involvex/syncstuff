@@ -19,16 +19,22 @@ interface SettingsStore {
   // App Settings
   autoAcceptFiles: boolean;
   setAutoAcceptFiles: (value: boolean) => void;
+  biometricLock: boolean;
+  setBiometricLock: (value: boolean) => void;
 
   // Clipboard Settings
   clipboardAutoSync: boolean;
   clipboardSyncImages: boolean;
   clipboardShowPreview: boolean;
   clipboardCloudBackup: boolean;
+  clipboardMonitoringInterval: number;
+  clipboardStopOnLowBattery: boolean;
   setClipboardAutoSync: (value: boolean) => void;
   setClipboardSyncImages: (value: boolean) => void;
   setClipboardShowPreview: (value: boolean) => void;
   setClipboardCloudBackup: (value: boolean) => void;
+  setClipboardMonitoringInterval: (value: number) => void;
+  setClipboardStopOnLowBattery: (value: boolean) => void;
 
   // Connection Settings
   signalingServerUrl: string;
@@ -53,10 +59,13 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
   deviceName: "",
   deviceId: "",
   autoAcceptFiles: false,
+  biometricLock: false,
   clipboardAutoSync: false, // Default to manual approval for privacy
   clipboardSyncImages: true,
   clipboardShowPreview: true,
   clipboardCloudBackup: false,
+  clipboardMonitoringInterval: 1000,
+  clipboardStopOnLowBattery: true,
   signalingServerUrl:
     getPlatform() === "android"
       ? "http://10.0.2.2:3001"
@@ -72,6 +81,11 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
 
   setAutoAcceptFiles: value => set({ autoAcceptFiles: value }),
 
+  setBiometricLock: value => {
+    set({ biometricLock: value });
+    localStorageService.set(STORAGE_KEYS.BIOMETRIC_LOCK, value);
+  },
+
   setClipboardAutoSync: value => set({ clipboardAutoSync: value }),
 
   setClipboardSyncImages: value => set({ clipboardSyncImages: value }),
@@ -79,6 +93,16 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
   setClipboardShowPreview: value => set({ clipboardShowPreview: value }),
 
   setClipboardCloudBackup: value => set({ clipboardCloudBackup: value }),
+
+  setClipboardMonitoringInterval: value => {
+    set({ clipboardMonitoringInterval: value });
+    localStorageService.set(STORAGE_KEYS.CLIPBOARD_MONITORING_INTERVAL, value);
+  },
+
+  setClipboardStopOnLowBattery: value => {
+    set({ clipboardStopOnLowBattery: value });
+    localStorageService.set(STORAGE_KEYS.CLIPBOARD_STOP_ON_LOW_BATTERY, value);
+  },
 
   setSignalingServerUrl: url => {
     set({ signalingServerUrl: url });
@@ -119,6 +143,9 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
     const storedAutoAcceptFiles = await localStorageService.get<boolean>(
       STORAGE_KEYS.AUTO_ACCEPT_FILES,
     );
+    const storedBiometricLock = await localStorageService.get<boolean>(
+      STORAGE_KEYS.BIOMETRIC_LOCK,
+    );
     const storedClipboardAutoSync = await localStorageService.get<boolean>(
       STORAGE_KEYS.CLIPBOARD_AUTO_SYNC,
     );
@@ -131,6 +158,14 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
     const storedClipboardCloudBackup = await localStorageService.get<boolean>(
       "clipboardCloudBackup", // Use string key directly for now or add to STORAGE_KEYS
     );
+    const storedClipboardMonitoringInterval =
+      await localStorageService.get<number>(
+        STORAGE_KEYS.CLIPBOARD_MONITORING_INTERVAL,
+      );
+    const storedClipboardStopOnLowBattery =
+      await localStorageService.get<boolean>(
+        STORAGE_KEYS.CLIPBOARD_STOP_ON_LOW_BATTERY,
+      );
     const storedSignalingServerUrl = await localStorageService.get<string>(
       STORAGE_KEYS.SIGNALING_SERVER_URL,
     );
@@ -158,10 +193,13 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
       deviceName: currentDeviceName,
       deviceId: currentDeviceId,
       autoAcceptFiles: storedAutoAcceptFiles ?? false,
+      biometricLock: storedBiometricLock ?? false,
       clipboardAutoSync: storedClipboardAutoSync ?? false,
       clipboardSyncImages: storedClipboardSyncImages ?? true,
       clipboardShowPreview: storedClipboardShowPreview ?? true,
       clipboardCloudBackup: storedClipboardCloudBackup ?? false,
+      clipboardMonitoringInterval: storedClipboardMonitoringInterval ?? 1000,
+      clipboardStopOnLowBattery: storedClipboardStopOnLowBattery ?? true,
       signalingServerUrl:
         storedSignalingServerUrl ||
         (getPlatform() === "android"

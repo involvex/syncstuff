@@ -39,6 +39,8 @@ A command-line interface tool for managing SyncStuff operations.
 - **Ora**: Elegant terminal spinners
 - **Boxen**: Terminal boxes for output formatting
 - **Table**: ASCII table generation for data display
+- **Clipboardy**: Cross-platform clipboard access
+- **CLI Progress**: Terminal progress bars for file transfers
 
 **Purpose:** Provides a CLI interface for users to interact with SyncStuff services, manage devices, and perform administrative tasks.
 
@@ -62,7 +64,7 @@ A hybrid mobile app built with Ionic and Capacitor for iOS and Android.
 - Clipboard, Filesystem, Network, Preferences, Push Notifications
 - Device info, Haptics, Keyboard, Share, Status Bar
 - Barcode scanning, File sharing, Dark mode support
-- Native settings, ZeroConf networking
+- **Biometric authentication**, Native settings, ZeroConf networking
 
 **Testing:**
 - **Vitest**: Unit testing framework

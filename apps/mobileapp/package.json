@@ -31,7 +31,6 @@
     "electron:start": "bun run --cwd electron start"
   },
   "dependencies": {
-    "@syncstuff/ui": "workspace:*",
     "@aparajita/capacitor-dark-mode": "6.0.0",
     "@byteowls/capacitor-filesharer": "7.0.0",
     "@capacitor-community/electron": "5.0.1",
@@ -50,10 +49,12 @@
     "@capacitor/push-notifications": "8.0.0",
     "@capacitor/share": "8.0.0",
     "@capacitor/status-bar": "8.0.0",
+    "@capgo/capacitor-native-biometric": "^8.3.1",
     "@eslint/js": "9.39.2",
     "@ionic/react": "8.7.16",
     "@ionic/react-router": "8.7.16",
     "@ionic/storage": "4.0.0",
+    "@syncstuff/ui": "workspace:*",
     "@types/cypress": "1.1.6",
     "@types/react-router": "5.1.20",
     "@types/react-router-dom": "5.3.3",
@@ -65,20 +66,20 @@
     "qrcode.react": "4.2.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-native-svg": "^15.0.0",
+    "react-native-web": "^0.21.2",
     "react-router": "5.3.4",
     "react-router-dom": "5.3.4",
     "simple-peer": "9.11.1",
     "socket.io": "4.8.3",
     "socket.io-client": "4.8.3",
     "uuid": "13.0.0",
-    "zustand": "5.0.9",
-    "react-native-svg": "^15.0.0",
-    "react-native-web": "^0.21.2"
+    "zustand": "5.0.9"
   },
   "devDependencies": {
     "@capacitor/assets": "3.0.5",
     "@capacitor/cli": "8.0.0",
-    "react-native-worklets": "^0.7.1",
+    "@syncstuff/network-types": "workspace:*",
     "@testing-library/dom": "10.4.1",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.1",
@@ -101,13 +102,13 @@
     "globals": "17.0.0",
     "jsdom": "27.4.0",
     "prettier": "3.7.4",
+    "react-native-worklets": "^0.7.1",
     "terser": "5.44.1",
     "typescript": "5.9.3",
     "typescript-eslint": "8.52.0",
     "vite": "7.3.1",
     "vite-plugin-node-polyfills": "0.24.0",
-    "vitest": "4.0.16",
-    "@syncstuff/network-types": "workspace:*"
+    "vitest": "4.0.16"
   },
   "overrides": {
     "@types/react": "18.2.0",

@@ -41,10 +41,14 @@ const ClipboardPage: React.FC = () => {
     clipboardSyncImages,
     clipboardShowPreview,
     clipboardCloudBackup,
+    clipboardMonitoringInterval,
+    clipboardStopOnLowBattery,
     setClipboardAutoSync,
     setClipboardSyncImages,
     setClipboardShowPreview,
     setClipboardCloudBackup,
+    setClipboardMonitoringInterval,
+    setClipboardStopOnLowBattery,
   } = useSettingsStore();
 
   // Show modal for first pending approval
@@ -91,6 +95,14 @@ const ClipboardPage: React.FC = () => {
   const handleCloudBackupToggle = async (enabled: boolean) => {
     setClipboardCloudBackup(enabled);
     await localStorageService.set("clipboardCloudBackup", enabled);
+  };
+
+  const handleStopOnLowBatteryToggle = (enabled: boolean) => {
+    setClipboardStopOnLowBattery(enabled);
+  };
+
+  const handleIntervalChange = (value: string) => {
+    setClipboardMonitoringInterval(Number.parseInt(value));
   };
 
   return (
@@ -254,6 +266,54 @@ const ClipboardPage: React.FC = () => {
                     <Switch.Thumb animation="quick" />
                   </Switch>
                 </XStack>
+
+                <XStack
+                  alignItems="center"
+                  justifyContent="space-between"
+                  padding="$4"
+                >
+                  <YStack flex={1} space="$1">
+                    <Text fontWeight="bold">Stop on Low Battery</Text>
+                    <Text color="$colorSubtitle" fontSize="$1">
+                      Pause monitoring when battery is low
+                    </Text>
+                  </YStack>
+                  <Switch
+                    checked={clipboardStopOnLowBattery}
+                    onCheckedChange={handleStopOnLowBatteryToggle}
+                  >
+                    <Switch.Thumb animation="quick" />
+                  </Switch>
+                </XStack>
+
+                <YStack padding="$4" space="$2">
+                  <YStack flex={1} space="$1">
+                    <Text fontWeight="bold">Monitoring Interval</Text>
+                    <Text color="$colorSubtitle" fontSize="$1">
+                      How often to check for changes (ms)
+                    </Text>
+                  </YStack>
+                  <XStack space="$2">
+                    {[500, 1000, 2000, 5000].map(val => (
+                      <Button
+                        key={val}
+                        flex={1}
+                        onPress={() => handleIntervalChange(val.toString())}
+                        size="sm"
+                        theme={
+                          clipboardMonitoringInterval === val ? "blue" : "gray"
+                        }
+                        variant={
+                          clipboardMonitoringInterval === val
+                            ? "solid"
+                            : "outline"
+                        }
+                      >
+                        {val}ms
+                      </Button>
+                    ))}
+                  </XStack>
+                </YStack>
               </YStack>
             </Card>
 

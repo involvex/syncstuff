@@ -17,6 +17,9 @@ export interface StorageKeys {
   DEV_MODE: "devMode";
   VERBOSE_LOGGING: "verboseLogging";
   TRACE_HANDSHAKE: "traceHandshake";
+  BIOMETRIC_LOCK: "biometricLock";
+  CLIPBOARD_MONITORING_INTERVAL: "clipboardMonitoringInterval";
+  CLIPBOARD_STOP_ON_LOW_BATTERY: "clipboardStopOnLowBattery";
 }
 
 export const STORAGE_KEYS: StorageKeys = {
@@ -36,6 +39,9 @@ export const STORAGE_KEYS: StorageKeys = {
   DEV_MODE: "devMode",
   VERBOSE_LOGGING: "verboseLogging",
   TRACE_HANDSHAKE: "traceHandshake",
+  BIOMETRIC_LOCK: "biometricLock",
+  CLIPBOARD_MONITORING_INTERVAL: "clipboardMonitoringInterval",
+  CLIPBOARD_STOP_ON_LOW_BATTERY: "clipboardStopOnLowBattery",
 };
 
 export interface StorageService {

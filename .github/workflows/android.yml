@@ -27,6 +27,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
+          cache: "pnpm"
+          cache-dependency-path: pnpm-lock.yaml
 
       - name: Install Android SDK (platform 36, build-tools 36.0.0)
         uses: android-actions/setup-android@v3
