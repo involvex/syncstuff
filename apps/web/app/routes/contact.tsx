@@ -36,9 +36,12 @@ export default function Contact() {
     const formData = new FormData(form.current);
     const templateParams = Object.fromEntries(formData.entries());
 
-    // Explicitly add reCAPTCHA token if not already in formData (it should be via hidden input, but checking)
-    if (!templateParams["g-recaptcha-response"]) {
+    // Only add reCAPTCHA token if reCAPTCHA is enabled
+    if (isRecaptchaEnabled && recaptchaToken) {
       templateParams["g-recaptcha-response"] = recaptchaToken;
+    } else {
+      // Remove the field if it exists but reCAPTCHA is disabled
+      delete templateParams["g-recaptcha-response"];
     }
 
     emailjs
@@ -140,11 +143,13 @@ export default function Contact() {
                   </div>
                 ) : (
                   <form ref={form} onSubmit={sendEmail} className="space-y-6">
-                    <input
-                      type="hidden"
-                      name="g-recaptcha-response"
-                      value={recaptchaToken || ""}
-                    />
+                    {isRecaptchaEnabled && (
+                      <input
+                        type="hidden"
+                        name="g-recaptcha-response"
+                        value={recaptchaToken || ""}
+                      />
+                    )}
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                       <div className="space-y-2">
                         <label

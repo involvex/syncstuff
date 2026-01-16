@@ -36,28 +36,13 @@ const faqs = [
   },
 ];
 
-import { useLoaderData, useNavigate } from "@remix-run/react";
-import { Footer, Navigation } from "@syncstuff/ui";
-
-export async function loader({ request }: LoaderFunctionArgs) {
-  const session = await getSession(request.headers.get("Cookie"));
-  const userId = session.get("userId");
-  return json({ isLoggedIn: !!userId });
-}
+import { Footer } from "@syncstuff/ui";
 
 export default function FAQ() {
-  const { isLoggedIn } = useLoaderData<typeof loader>();
-  const navigate = useNavigate();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
     <>
-      <Navigation
-        isLoggedIn={isLoggedIn}
-        onDashboard={() => navigate("/dashboard")}
-        onLogin={() => navigate("/auth/login")}
-        onSignup={() => navigate("/auth/signup")}
-      />
       <div className="bg-background min-h-screen py-24 sm:py-32 dark:bg-gray-950">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-4xl text-center">
