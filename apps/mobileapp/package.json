@@ -49,7 +49,7 @@
     "@capacitor/push-notifications": "8.0.0",
     "@capacitor/share": "8.0.0",
     "@capacitor/status-bar": "8.0.0",
-    "@capgo/capacitor-native-biometric": "^8.3.1",
+    "@capgo/capacitor-native-biometric": "^8.3.6",
     "@eslint/js": "9.39.2",
     "@ionic/react": "8.7.16",
     "@ionic/react-router": "8.7.16",
