@@ -31,6 +31,7 @@ export const SignalModal: React.FC<SignalModalProps> = ({
 
   useEffect(() => {
     // Clear pasted signal when modal re-opens
+
     if (isOpen) {
       setPastedSignal("");
     }

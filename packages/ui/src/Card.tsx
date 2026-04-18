@@ -1,5 +1,5 @@
 import React from "react";
-import { cn, extractLayoutProps, TamaguiProps } from "./utils";
+import { cn, extractLayoutProps, type TamaguiProps } from "./utils";
 
 export const Card = React.forwardRef<
   HTMLDivElement,
@@ -8,11 +8,11 @@ export const Card = React.forwardRef<
   const { style: layoutStyle, restProps } = extractLayoutProps(props);
   return (
     <div
-      ref={ref}
       className={cn(
         "rounded-lg border bg-white dark:bg-slate-800 text-slate-950 dark:text-slate-50 shadow-sm p-4",
         className,
       )}
+      ref={ref}
       style={{ ...layoutStyle, ...style }}
       {...restProps}
     />

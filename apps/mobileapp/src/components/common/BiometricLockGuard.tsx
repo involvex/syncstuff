@@ -1,10 +1,10 @@
-import { IonButton, IonContent, IonIcon, IonPage, IonText } from "@ionic/react";
-import { lockClosedOutline, fingerPrintOutline } from "ionicons/icons";
-import type React from "react";
-import { useEffect, useState, useCallback } from "react";
-import { useSettingsStore } from "../../store/settings.store";
-import { NativeBiometric } from "@capgo/capacitor-native-biometric";
 import { App as CapacitorApp } from "@capacitor/app";
+import { NativeBiometric } from "@capgo/capacitor-native-biometric";
+import { IonButton, IonContent, IonIcon, IonPage, IonText } from "@ionic/react";
+import { fingerPrintOutline, lockClosedOutline } from "ionicons/icons";
+import type React from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useSettingsStore } from "../../store/settings.store";
 
 interface BiometricLockGuardProps {
   children: React.ReactNode;
@@ -42,7 +42,6 @@ export const BiometricLockGuard: React.FC<BiometricLockGuardProps> = ({
 
   useEffect(() => {
     if (initialized && biometricLock) {
-      setIsLocked(true);
       verify();
     }
   }, [initialized, biometricLock, verify]);

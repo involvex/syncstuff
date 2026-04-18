@@ -1,14 +1,15 @@
-import { clsx, type ClassValue } from "clsx";
+import { type ClassValue, clsx } from "clsx";
 import React from "react";
 import { twMerge } from "tailwind-merge";
-import { extractLayoutProps, TamaguiProps } from "./utils";
+import { extractLayoutProps, type TamaguiProps } from "./utils";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>, TamaguiProps {
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    TamaguiProps {
   variant?: "default" | "outline" | "ghost" | "destructive" | "secondary";
   size?: "default" | "sm" | "lg" | "icon";
   onPress?: (e?: any) => void;
@@ -60,15 +61,15 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <button
-        ref={ref}
         className={cn(
           baseStyles,
           variantStyles[variant],
           sizeStyles[size],
           className,
         )}
-        style={{ ...layoutStyle, ...style }}
         onClick={handleClick}
+        ref={ref}
+        style={{ ...layoutStyle, ...style }}
         {...restProps}
       >
         {icon && <span className="mr-2">{icon}</span>}

@@ -43,15 +43,15 @@ export function DeviceCard({
 
         {status === "online" ? (
           <Button
-            onClick={onDisconnect}
             className="bg-red-600 hover:bg-red-700 text-white"
+            onClick={onDisconnect}
           >
             Disconnect
           </Button>
         ) : (
           <Button
-            onClick={onConnect}
             className="bg-blue-600 hover:bg-blue-700 text-white"
+            onClick={onConnect}
           >
             Connect
           </Button>

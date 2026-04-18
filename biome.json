@@ -19,7 +19,8 @@
       "!**/.wrangler",
       "!**/.cache",
       "!**/build",
-      "!**/.next"
+      "!**/.next",
+      "!**/apps/web/.tamagui"
     ],
     "maxSize": 15548576
   },

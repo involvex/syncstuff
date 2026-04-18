@@ -1,5 +1,5 @@
 import React from "react";
-import { cn, extractLayoutProps, TamaguiProps } from "./utils";
+import { cn, extractLayoutProps, type TamaguiProps } from "./utils";
 
 export const View = React.forwardRef<
   HTMLDivElement,
@@ -8,8 +8,8 @@ export const View = React.forwardRef<
   const { style: layoutStyle, restProps } = extractLayoutProps(props);
   return (
     <div
-      ref={ref}
       className={cn("flex flex-col", className)}
+      ref={ref}
       style={{ ...layoutStyle, ...style }}
       {...restProps}
     />
@@ -26,8 +26,8 @@ export const XStack = React.forwardRef<
   const { style: layoutStyle, restProps } = extractLayoutProps(props);
   return (
     <div
-      ref={ref}
       className={cn("flex flex-row", className)}
+      ref={ref}
       style={{ ...layoutStyle, ...style }}
       {...restProps}
     />
@@ -42,8 +42,8 @@ export const YStack = React.forwardRef<
   const { style: layoutStyle, restProps } = extractLayoutProps(props);
   return (
     <div
-      ref={ref}
       className={cn("flex flex-col", className)}
+      ref={ref}
       style={{ ...layoutStyle, ...style }}
       {...restProps}
     />
@@ -58,8 +58,8 @@ export const ZStack = React.forwardRef<
   const { style: layoutStyle, restProps } = extractLayoutProps(props);
   return (
     <div
-      ref={ref}
       className={cn("relative flex", className)}
+      ref={ref}
       style={{ ...layoutStyle, ...style }}
       {...restProps}
     />
@@ -74,8 +74,8 @@ export const ScrollView = React.forwardRef<
   const { style: layoutStyle, restProps } = extractLayoutProps(props);
   return (
     <div
-      ref={ref}
       className={cn("overflow-auto flex flex-col", className)}
+      ref={ref}
       style={{ ...layoutStyle, ...style }}
       {...restProps}
     />

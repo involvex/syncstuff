@@ -17,7 +17,7 @@ import {
   swapHorizontal,
 } from "ionicons/icons";
 import { useEffect, useState } from "react";
-import { Redirect, Route } from "react-router-dom";
+import { Redirect, Route } from "react-router";
 import { BiometricLockGuard } from "./components/common/BiometricLockGuard";
 import { PermissionRequestModal } from "./components/common/PermissionRequestModal";
 import { ResponsiveLayout } from "./components/common/ResponsiveLayout";
@@ -103,8 +103,9 @@ const App: React.FC = () => {
 
       // Initialize remote action service (KDE Connect features)
       try {
-        const { remoteActionService } =
-          await import("./services/remote/remote-action.service");
+        const { remoteActionService } = await import(
+          "./services/remote/remote-action.service"
+        );
         remoteActionService.initialize();
       } catch (error) {
         console.error("Failed to initialize remote actions:", error);
@@ -113,8 +114,9 @@ const App: React.FC = () => {
       // Initialize Electron sync service if in Electron
       if (isElectron()) {
         try {
-          const { electronSyncService } =
-            await import("./services/electron/sync.service");
+          const { electronSyncService } = await import(
+            "./services/electron/sync.service"
+          );
           await electronSyncService.initialize();
         } catch (error) {
           console.error("Failed to initialize Electron sync:", error);
@@ -138,8 +140,9 @@ const App: React.FC = () => {
 
       // Initialize notification sync
       try {
-        const { notificationSyncService } =
-          await import("./services/notifications/notification-sync.service");
+        const { notificationSyncService } = await import(
+          "./services/notifications/notification-sync.service"
+        );
         notificationSyncService.initialize();
       } catch (error) {
         console.error("Failed to initialize notification sync:", error);

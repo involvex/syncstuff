@@ -1,18 +1,18 @@
 import type { PluginListenerHandle } from "@capacitor/core";
 import {
-  ZeroConf,
-  type ZeroConfService,
-  type ZeroConfWatchResult,
-} from "capacitor-zeroconf";
-import {
-  ServiceTxtRecord,
+  type ServiceTxtRecord,
   SYNCSTUFF_PROTOCOL,
   SYNCSTUFF_SERVICE_DOMAIN,
   SYNCSTUFF_SERVICE_PORT,
   SYNCSTUFF_SERVICE_TYPE,
 } from "@syncstuff/network-types";
+import {
+  ZeroConf,
+  type ZeroConfService,
+  type ZeroConfWatchResult,
+} from "capacitor-zeroconf";
 import type { Device } from "../../types/device.types";
-import { type DiscoveredDevice } from "../../types/network.types";
+import type { DiscoveredDevice } from "../../types/network.types";
 import { isNative } from "../../utils/platform.utils";
 import { logger } from "../logging/logger.service";
 

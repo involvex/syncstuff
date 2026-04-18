@@ -189,7 +189,7 @@ export default function AdminOverview() {
       </div>
 
       {/* System Health */}
-      <Card bordered elevate className="bg-surface border-border">
+      <Card bordered className="bg-surface border-border" elevate>
         <CardContent className="p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -232,8 +232,8 @@ export default function AdminOverview() {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {statCards.map(card => (
           <StatCard
-            key={card.name}
             icon={card.icon}
+            key={card.name}
             title={card.name}
             value={card.stat}
           />
@@ -244,8 +244,8 @@ export default function AdminOverview() {
         {/* User Status Breakdown */}
         <Card
           bordered
-          elevate
           className="bg-surface border-border lg:col-span-2"
+          elevate
         >
           <CardContent className="p-6">
             <h3 className="text-on-surface mb-4 text-lg font-bold">
@@ -253,7 +253,7 @@ export default function AdminOverview() {
             </h3>
             <div className="flex flex-col gap-4">
               {userStatusBreakdown.map(item => (
-                <div key={item.label} className="flex flex-col gap-1">
+                <div className="flex flex-col gap-1" key={item.label}>
                   <div className="flex justify-between">
                     <span className="text-on-surface font-medium">
                       {item.label}
@@ -275,23 +275,23 @@ export default function AdminOverview() {
         </Card>
 
         {/* Quick Actions */}
-        <Card bordered elevate className="bg-surface border-border">
+        <Card bordered className="bg-surface border-border" elevate>
           <CardContent className="p-6">
             <h3 className="text-on-surface mb-4 text-lg font-bold">
               Quick Actions
             </h3>
             <div className="flex flex-col gap-3">
-              <Link to="/admin/users" className="w-full">
+              <Link className="w-full" to="/admin/users">
                 <Button className="w-full justify-start gap-2">
                   <span className="text-xl">👥</span>
                   Manage Users
                 </Button>
               </Link>
-              <Button variant="outline" className="w-full justify-start gap-2">
+              <Button className="w-full justify-start gap-2" variant="outline">
                 <span className="text-xl">⚙️</span>
                 System Settings
               </Button>
-              <Button variant="outline" className="w-full justify-start gap-2">
+              <Button className="w-full justify-start gap-2" variant="outline">
                 <span className="text-xl">📋</span>
                 View Logs
               </Button>

@@ -40,6 +40,7 @@ export const AuthCodeModal: React.FC<AuthCodeModalProps> = ({
   const [copied, setCopied] = useState(false);
 
   // Generate code when modal opens in display mode
+
   useEffect(() => {
     if (isOpen && mode === "display") {
       const { code } = authCodeService.generateCode(deviceId);
@@ -61,6 +62,7 @@ export const AuthCodeModal: React.FC<AuthCodeModalProps> = ({
   }, [isOpen, mode, deviceId]);
 
   // Reset entered code when modal opens in enter mode
+
   useEffect(() => {
     if (isOpen && mode === "enter") {
       setEnteredCode("");

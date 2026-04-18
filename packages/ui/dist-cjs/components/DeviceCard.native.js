@@ -1,4 +1,3 @@
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeviceCard = DeviceCard;
 const jsx_runtime_1 = require("react/jsx-runtime");

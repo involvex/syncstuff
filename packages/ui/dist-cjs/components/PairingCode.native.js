@@ -1,4 +1,3 @@
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PairingCode = PairingCode;
 const jsx_runtime_1 = require("react/jsx-runtime");

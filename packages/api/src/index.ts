@@ -1254,37 +1254,33 @@ export default {
 
         try {
           // Get analytics summary for the user
-          const [
-            totalEvents,
-            totalTransfers,
-            avgPerformance,
-            recentErrors,
-          ] = await Promise.all([
-            env.syncstuff_db
-              .prepare(
-                "SELECT COUNT(*) as count FROM analytics_events WHERE user_id = ?",
-              )
-              .bind(payload.sub)
-              .first<{ count: number }>(),
-            env.syncstuff_db
-              .prepare(
-                "SELECT COUNT(*) as count FROM transfer_history WHERE user_id = ? AND status = 'completed'",
-              )
-              .bind(payload.sub)
-              .first<{ count: number }>(),
-            env.syncstuff_db
-              .prepare(
-                "SELECT AVG(value) as avg FROM performance_metrics WHERE user_id = ? AND metric_type = 'transfer_speed'",
-              )
-              .bind(payload.sub)
-              .first<{ avg: number | null }>(),
-            env.syncstuff_db
-              .prepare(
-                "SELECT * FROM error_logs WHERE user_id = ? ORDER BY created_at DESC LIMIT 10",
-              )
-              .bind(payload.sub)
-              .all(),
-          ]);
+          const [totalEvents, totalTransfers, avgPerformance, recentErrors] =
+            await Promise.all([
+              env.syncstuff_db
+                .prepare(
+                  "SELECT COUNT(*) as count FROM analytics_events WHERE user_id = ?",
+                )
+                .bind(payload.sub)
+                .first<{ count: number }>(),
+              env.syncstuff_db
+                .prepare(
+                  "SELECT COUNT(*) as count FROM transfer_history WHERE user_id = ? AND status = 'completed'",
+                )
+                .bind(payload.sub)
+                .first<{ count: number }>(),
+              env.syncstuff_db
+                .prepare(
+                  "SELECT AVG(value) as avg FROM performance_metrics WHERE user_id = ? AND metric_type = 'transfer_speed'",
+                )
+                .bind(payload.sub)
+                .first<{ avg: number | null }>(),
+              env.syncstuff_db
+                .prepare(
+                  "SELECT * FROM error_logs WHERE user_id = ? ORDER BY created_at DESC LIMIT 10",
+                )
+                .bind(payload.sub)
+                .all(),
+            ]);
 
           return new Response(
             JSON.stringify({
@@ -1662,11 +1658,17 @@ export default {
             notes?: string;
           }>();
 
-          if (!body.file_id || !body.file_name || !body.file_hash || !body.file_size) {
+          if (
+            !body.file_id ||
+            !body.file_name ||
+            !body.file_hash ||
+            !body.file_size
+          ) {
             return new Response(
               JSON.stringify({
                 success: false,
-                error: "file_id, file_name, file_hash, and file_size are required",
+                error:
+                  "file_id, file_name, file_hash, and file_size are required",
               }),
               { status: 400, headers },
             );
@@ -1730,7 +1732,11 @@ export default {
         }
       }
 
-      if (path.startsWith("/api/files/") && path.endsWith("/versions") && request.method === "GET") {
+      if (
+        path.startsWith("/api/files/") &&
+        path.endsWith("/versions") &&
+        request.method === "GET"
+      ) {
         const auth = request.headers.get("Authorization");
         if (!auth?.startsWith("Bearer "))
           return new Response(
@@ -1768,7 +1774,11 @@ export default {
         }
       }
 
-      if (path.startsWith("/api/files/version/") && path.endsWith("/restore") && request.method === "POST") {
+      if (
+        path.startsWith("/api/files/version/") &&
+        path.endsWith("/restore") &&
+        request.method === "POST"
+      ) {
         const auth = request.headers.get("Authorization");
         if (!auth?.startsWith("Bearer "))
           return new Response(
@@ -1789,9 +1799,7 @@ export default {
         try {
           // Get the version to restore
           const version = await env.syncstuff_db
-            .prepare(
-              "SELECT * FROM file_versions WHERE id = ? AND user_id = ?",
-            )
+            .prepare("SELECT * FROM file_versions WHERE id = ? AND user_id = ?")
             .bind(versionId, payload.sub)
             .first();
 
@@ -1815,9 +1823,7 @@ export default {
 
           // Mark this version as current
           await env.syncstuff_db
-            .prepare(
-              "UPDATE file_versions SET is_current = 1 WHERE id = ?",
-            )
+            .prepare("UPDATE file_versions SET is_current = 1 WHERE id = ?")
             .bind(versionId)
             .run();
 
@@ -1873,7 +1879,11 @@ export default {
         }
       }
 
-      if (path.startsWith("/api/conflicts/") && path.endsWith("/resolve") && request.method === "POST") {
+      if (
+        path.startsWith("/api/conflicts/") &&
+        path.endsWith("/resolve") &&
+        request.method === "POST"
+      ) {
         const auth = request.headers.get("Authorization");
         if (!auth?.startsWith("Bearer "))
           return new Response(
@@ -1901,7 +1911,8 @@ export default {
             return new Response(
               JSON.stringify({
                 success: false,
-                error: "resolution_strategy and resolved_version_id are required",
+                error:
+                  "resolution_strategy and resolved_version_id are required",
               }),
               { status: 400, headers },
             );
@@ -1973,7 +1984,6 @@ export default {
       const errorMsg = error instanceof Error ? error.message : String(error);
       const errorString = String(error);
 
-      // eslint-disable-next-line no-console
       console.error("[API-ERROR]", errorMsg, {
         error,
         path,

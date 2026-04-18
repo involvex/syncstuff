@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 import { Card } from "../Card";
 import { XStack, YStack } from "../Layouts";
 import { Text } from "../Typography";

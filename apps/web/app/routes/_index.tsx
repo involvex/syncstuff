@@ -82,9 +82,6 @@ export default function Index() {
                 </Link>
               ) : (
                 <Button
-                  variant="default"
-                  size="lg"
-                  onClick={() => navigate("/auth/register")}
                   icon={
                     <svg
                       className="-mr-1 ml-2 size-5"
@@ -99,14 +96,17 @@ export default function Index() {
                       />
                     </svg>
                   }
+                  onClick={() => navigate("/auth/register")}
+                  size="lg"
+                  variant="default"
                 >
                   Get started
                 </Button>
               )}
               <Button
-                variant="outline"
-                size="lg"
                 onClick={() => navigate("#features")}
+                size="lg"
+                variant="outline"
               >
                 Learn more
               </Button>

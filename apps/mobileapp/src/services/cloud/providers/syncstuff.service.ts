@@ -110,9 +110,10 @@ export class SyncstuffService implements CloudProvider {
         let data: AuthResponse;
         try {
           data = JSON.parse(responseText) as AuthResponse;
-        } catch (_parseError) {
+        } catch (parseError) {
           throw new Error(
             `Failed to parse response: ${responseText.substring(0, 100)}`,
+            { cause: parseError },
           );
         }
 

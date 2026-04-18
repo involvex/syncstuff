@@ -11,7 +11,6 @@ const SidebarItem = forwardRef<HTMLDivElement, SidebarItemProps>(
   ({ className, icon, label, active = false, ...props }, ref) => {
     return (
       <div
-        ref={ref}
         className={cn(
           "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium",
           "hover:bg-surface-hover transition-colors",
@@ -20,6 +19,7 @@ const SidebarItem = forwardRef<HTMLDivElement, SidebarItemProps>(
             : "text-on-surface hover:text-primary",
           className,
         )}
+        ref={ref}
         {...props}
       >
         <span className="size-5">{icon}</span>

@@ -1,5 +1,5 @@
 import React from "react";
-import { cn, extractLayoutProps, TamaguiProps } from "./utils";
+import { cn, extractLayoutProps, type TamaguiProps } from "./utils";
 
 export const Text = React.forwardRef<
   HTMLSpanElement,
@@ -8,8 +8,8 @@ export const Text = React.forwardRef<
   const { style: layoutStyle, restProps } = extractLayoutProps(props);
   return (
     <span
-      ref={ref}
       className={cn("text-base text-slate-900 dark:text-slate-100", className)}
+      ref={ref}
       style={{ ...layoutStyle, ...style }}
       {...restProps}
     />
@@ -24,11 +24,11 @@ export const Paragraph = React.forwardRef<
   const { style: layoutStyle, restProps } = extractLayoutProps(props);
   return (
     <p
-      ref={ref}
       className={cn(
         "text-base text-slate-900 dark:text-slate-100 mb-2",
         className,
       )}
+      ref={ref}
       style={{ ...layoutStyle, ...style }}
       {...restProps}
     />
@@ -43,11 +43,11 @@ export const H1 = React.forwardRef<
   const { style: layoutStyle, restProps } = extractLayoutProps(props);
   return (
     <h1
-      ref={ref}
       className={cn(
         "scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl text-slate-900 dark:text-slate-100",
         className,
       )}
+      ref={ref}
       style={{ ...layoutStyle, ...style }}
       {...restProps}
     />
@@ -62,11 +62,11 @@ export const H2 = React.forwardRef<
   const { style: layoutStyle, restProps } = extractLayoutProps(props);
   return (
     <h2
-      ref={ref}
       className={cn(
         "scroll-m-20 border-b border-slate-200 dark:border-slate-800 pb-2 text-3xl font-semibold tracking-tight first:mt-0 text-slate-900 dark:text-slate-100",
         className,
       )}
+      ref={ref}
       style={{ ...layoutStyle, ...style }}
       {...restProps}
     />
@@ -81,11 +81,11 @@ export const H3 = React.forwardRef<
   const { style: layoutStyle, restProps } = extractLayoutProps(props);
   return (
     <h3
-      ref={ref}
       className={cn(
         "scroll-m-20 text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100",
         className,
       )}
+      ref={ref}
       style={{ ...layoutStyle, ...style }}
       {...restProps}
     />
@@ -100,11 +100,11 @@ export const H4 = React.forwardRef<
   const { style: layoutStyle, restProps } = extractLayoutProps(props);
   return (
     <h4
-      ref={ref}
       className={cn(
         "scroll-m-20 text-xl font-semibold tracking-tight text-slate-900 dark:text-slate-100",
         className,
       )}
+      ref={ref}
       style={{ ...layoutStyle, ...style }}
       {...restProps}
     />
@@ -119,11 +119,11 @@ export const H5 = React.forwardRef<
   const { style: layoutStyle, restProps } = extractLayoutProps(props);
   return (
     <h5
-      ref={ref}
       className={cn(
         "scroll-m-20 text-lg font-semibold tracking-tight text-slate-900 dark:text-slate-100",
         className,
       )}
+      ref={ref}
       style={{ ...layoutStyle, ...style }}
       {...restProps}
     />
@@ -138,11 +138,11 @@ export const H6 = React.forwardRef<
   const { style: layoutStyle, restProps } = extractLayoutProps(props);
   return (
     <h6
-      ref={ref}
       className={cn(
         "scroll-m-20 text-base font-semibold tracking-tight text-slate-900 dark:text-slate-100",
         className,
       )}
+      ref={ref}
       style={{ ...layoutStyle, ...style }}
       {...restProps}
     />

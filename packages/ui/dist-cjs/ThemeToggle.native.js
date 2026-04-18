@@ -1,4 +1,3 @@
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ThemeToggle = ThemeToggle;
 const jsx_runtime_1 = require("react/jsx-runtime");

@@ -1,10 +1,10 @@
 import {
-  SYNCSTUFF_PROTOCOL,
-  SYNCSTUFF_SERVICE_TYPE,
   type LocalDevice,
   type ServiceTxtRecord,
+  SYNCSTUFF_PROTOCOL,
+  SYNCSTUFF_SERVICE_TYPE,
 } from "@syncstuff/network-types";
-import { Bonjour, Browser, Service } from "bonjour-service";
+import { Bonjour, type Browser, type Service } from "bonjour-service";
 import { createSocket } from "dgram";
 import { createRequire } from "module";
 import { v4 as uuidv4 } from "uuid";

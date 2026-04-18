@@ -7,7 +7,6 @@ const Input = forwardRef<
 >(({ className, type, ...props }, ref) => {
   return (
     <input
-      type={type}
       className={cn(
         "border-input bg-background flex h-10 w-full rounded-md border px-3 py-2",
         "ring-offset-background text-sm file:border-0 file:bg-transparent",
@@ -18,6 +17,7 @@ const Input = forwardRef<
         className,
       )}
       ref={ref}
+      type={type}
       {...props}
     />
   );

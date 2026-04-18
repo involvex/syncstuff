@@ -116,14 +116,14 @@ export default function Contact() {
                       <svg
                         className="size-10 text-emerald-600 dark:text-emerald-400"
                         fill="none"
-                        viewBox="0 0 24 24"
                         stroke="currentColor"
+                        viewBox="0 0 24 24"
                       >
                         <path
+                          d="M5 13l4 4L19 7"
                           strokeLinecap="round"
                           strokeLinejoin="round"
                           strokeWidth={2}
-                          d="M5 13l4 4L19 7"
                         />
                       </svg>
                     </div>
@@ -135,68 +135,68 @@ export default function Contact() {
                       shortly.
                     </p>
                     <button
-                      onClick={() => setEmailStatus("idle")}
                       className="mt-8 text-sm font-bold text-blue-600 hover:underline dark:text-blue-400"
+                      onClick={() => setEmailStatus("idle")}
                     >
                       Send another message
                     </button>
                   </div>
                 ) : (
-                  <form ref={form} onSubmit={sendEmail} className="space-y-6">
+                  <form className="space-y-6" onSubmit={sendEmail} ref={form}>
                     {isRecaptchaEnabled && (
                       <input
-                        type="hidden"
                         name="g-recaptcha-response"
+                        type="hidden"
                         value={recaptchaToken || ""}
                       />
                     )}
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                       <div className="space-y-2">
                         <label
-                          htmlFor="name"
                           className="text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400"
+                          htmlFor="name"
                         >
                           Name
                         </label>
                         <input
-                          type="text"
+                          className="block w-full rounded-xl border-gray-200 bg-gray-50 px-4 py-3 text-sm transition-all focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
                           id="name"
                           name="user_name"
-                          required
-                          className="block w-full rounded-xl border-gray-200 bg-gray-50 px-4 py-3 text-sm transition-all focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
                           placeholder="John Doe"
+                          required
+                          type="text"
                         />
                       </div>
                       <div className="space-y-2">
                         <label
-                          htmlFor="email"
                           className="text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400"
+                          htmlFor="email"
                         >
                           Email
                         </label>
                         <input
-                          type="email"
+                          className="block w-full rounded-xl border-gray-200 bg-gray-50 px-4 py-3 text-sm transition-all focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
                           id="email"
                           name="user_email"
-                          required
-                          className="block w-full rounded-xl border-gray-200 bg-gray-50 px-4 py-3 text-sm transition-all focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
                           placeholder="john@example.com"
+                          required
+                          type="email"
                         />
                       </div>
                     </div>
 
                     <div className="space-y-2">
                       <label
-                        htmlFor="subject"
                         className="text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400"
+                        htmlFor="subject"
                       >
                         Subject
                       </label>
                       <select
+                        className="block w-full rounded-xl border-gray-200 bg-gray-50 px-4 py-3 text-sm transition-all focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
                         id="subject"
                         name="subject"
                         required
-                        className="block w-full rounded-xl border-gray-200 bg-gray-50 px-4 py-3 text-sm transition-all focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
                       >
                         <option value="">Select a topic</option>
                         <option value="support">Technical Support</option>
@@ -208,26 +208,26 @@ export default function Contact() {
 
                     <div className="space-y-2">
                       <label
-                        htmlFor="message"
                         className="text-xs font-bold tracking-wider text-gray-500 uppercase dark:text-gray-400"
+                        htmlFor="message"
                       >
                         Message
                       </label>
                       <textarea
+                        className="block w-full rounded-xl border-gray-200 bg-gray-50 px-4 py-3 text-sm transition-all focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
                         id="message"
                         name="message"
-                        rows={4}
-                        required
-                        className="block w-full rounded-xl border-gray-200 bg-gray-50 px-4 py-3 text-sm transition-all focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
                         placeholder="How can we help you?"
+                        required
+                        rows={4}
                       />
                     </div>
 
                     {isRecaptchaEnabled && recaptchaSiteKey && (
                       <div className="flex justify-center">
                         <ReCAPTCHA
-                          sitekey={recaptchaSiteKey}
                           onChange={setRecaptchaToken}
+                          sitekey={recaptchaSiteKey}
                           theme="light"
                         />
                       </div>
@@ -247,11 +247,11 @@ export default function Contact() {
                     )}
 
                     <button
-                      type="submit"
+                      className="flex w-full justify-center rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-blue-500/20 transition-all hover:scale-[1.02] hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
                       disabled={
                         isSending || (isRecaptchaEnabled && !recaptchaToken)
                       }
-                      className="flex w-full justify-center rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-blue-500/20 transition-all hover:scale-[1.02] hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+                      type="submit"
                     >
                       {isSending ? "Sending..." : "Send Message"}
                     </button>

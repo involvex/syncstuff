@@ -1,4 +1,4 @@
-import { clsx, type ClassValue } from "clsx";
+import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -80,7 +80,7 @@ function parseValue(
     if (val.startsWith("$")) {
       const token = val.substring(1);
       // Heuristic for spacing tokens: $4 -> 1rem
-      const num = parseFloat(token);
+      const num = Number.parseFloat(token);
       if (!isNaN(num)) {
         return `${num * 0.25}rem`;
       }
@@ -208,7 +208,7 @@ export function extractLayoutProps(props: any) {
 
   if (elevation)
     style.boxShadow = `0px ${elevation}px ${elevation * 2}px rgba(0,0,0,0.1)`;
-  if (elevate) style.boxShadow = `0px 2px 4px rgba(0,0,0,0.1)`;
+  if (elevate) style.boxShadow = "0px 2px 4px rgba(0,0,0,0.1)";
 
   if (bordered) {
     style.borderWidth = "1px";

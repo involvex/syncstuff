@@ -14,11 +14,11 @@ export default function ThemeToggle() {
   if (!mounted) {
     return (
       <Button
-        variant="ghost"
-        size="icon"
         aria-label="Toggle theme"
-        disabled
         className="size-10"
+        disabled
+        size="icon"
+        variant="ghost"
       >
         <span className="size-5" /> {/* Placeholder size */}
       </Button>
@@ -27,11 +27,11 @@ export default function ThemeToggle() {
 
   return (
     <Button
-      variant="ghost"
-      size="icon"
       aria-label="Toggle theme"
-      onClick={toggleTheme}
       className="text-on-surface hover:bg-surface-hover size-10"
+      onClick={toggleTheme}
+      size="icon"
+      variant="ghost"
     >
       {theme === "light" ? (
         <svg

@@ -103,8 +103,8 @@ export default function AdminUsers() {
 
       <Card
         bordered
-        elevate
         className="bg-surface border-border overflow-hidden"
+        elevate
       >
         <CardContent className="p-0">
           {/* Header */}
@@ -138,16 +138,16 @@ export default function AdminUsers() {
                   {user.email}
                 </div>
                 <div className="col-span-2">
-                  <Badge variant="info" className="capitalize">
+                  <Badge className="capitalize" variant="info">
                     {user.role}
                   </Badge>
                 </div>
                 <div className="col-span-2">
                   <Badge
+                    className="capitalize"
                     variant={
                       user.status === "active" ? "success" : "destructive"
                     }
-                    className="capitalize"
                   >
                     {user.status}
                   </Badge>
@@ -156,13 +156,13 @@ export default function AdminUsers() {
                   <Form method="post">
                     <input name="userId" type="hidden" value={user.id} />
                     <button
-                      disabled={navigation.state === "submitting"}
-                      name="intent"
                       className={`rounded px-2 py-1 text-sm font-medium text-white transition-colors ${
                         user.status === "active"
                           ? "bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600"
                           : "bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
                       } disabled:cursor-not-allowed disabled:opacity-50`}
+                      disabled={navigation.state === "submitting"}
+                      name="intent"
                       type="submit"
                       value="toggle_status"
                     >

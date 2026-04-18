@@ -21,7 +21,6 @@ const Card = forwardRef<
   ) => {
     return (
       <div
-        ref={ref}
         className={cn(
           "bg-surface text-on-surface rounded-lg shadow-sm",
           bordered && "border-border border",
@@ -29,6 +28,7 @@ const Card = forwardRef<
           hoverable && "hover:bg-surface-hover cursor-pointer",
           className,
         )}
+        ref={ref}
         {...props}
       />
     );
@@ -41,8 +41,8 @@ const CardHeader = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => {
     return (
       <div
-        ref={ref}
         className={cn("flex flex-col space-y-1.5 p-6", className)}
+        ref={ref}
         {...props}
       />
     );
@@ -57,11 +57,11 @@ const CardTitle = forwardRef<
 >(({ className, ...props }, ref) => {
   return (
     <h3
-      ref={ref}
       className={cn(
         "text-on-surface text-2xl leading-none font-bold tracking-tight",
         className,
       )}
+      ref={ref}
       {...props}
     />
   );
@@ -75,8 +75,8 @@ const CardDescription = forwardRef<
 >(({ className, ...props }, ref) => {
   return (
     <p
-      ref={ref}
       className={cn("text-on-surface-variant text-sm", className)}
+      ref={ref}
       {...props}
     />
   );
@@ -86,7 +86,7 @@ CardDescription.displayName = "CardDescription";
 
 const CardContent = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => {
-    return <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />;
+    return <div className={cn("p-6 pt-0", className)} ref={ref} {...props} />;
   },
 );
 
@@ -96,8 +96,8 @@ const CardFooter = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => {
     return (
       <div
-        ref={ref}
         className={cn("flex items-center p-6 pt-0", className)}
+        ref={ref}
         {...props}
       />
     );

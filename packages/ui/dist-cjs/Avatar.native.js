@@ -1,4 +1,3 @@
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AvatarFallback = exports.AvatarImage = exports.Avatar = void 0;
 const tamagui_1 = require("tamagui");

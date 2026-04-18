@@ -21,7 +21,7 @@ import {
   shieldCheckmarkOutline,
 } from "ionicons/icons";
 import type React from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import {
   type PermissionsState,
   permissionsService,
@@ -45,6 +45,8 @@ export const PermissionRequestModal: React.FC<PermissionRequestModalProps> = ({
     const state = await permissionsService.getPermissionsState();
     setPermissions(state);
   }, []);
+
+  // Load permissions when modal opens
 
   useEffect(() => {
     if (isOpen) {
@@ -136,8 +138,8 @@ export const PermissionRequestModal: React.FC<PermissionRequestModalProps> = ({
 
         <IonList lines="none">
           {requiredPermissions.map(type => {
-            const info = getPermissionInfo(type);
-            const status = permissions?.[type];
+            const info = getPermissionInfo(type as keyof PermissionsState);
+            const status = permissions?.[type as keyof PermissionsState];
             const isGranted = status?.granted;
 
             return (
@@ -173,7 +175,9 @@ export const PermissionRequestModal: React.FC<PermissionRequestModalProps> = ({
                     ) : (
                       <IonButton
                         fill="solid"
-                        onClick={() => handleRequest(type)}
+                        onClick={() =>
+                          handleRequest(type as keyof PermissionsState)
+                        }
                         size="small"
                       >
                         Allow

@@ -59,9 +59,9 @@ var require_interopRequireDefault = __commonJS({
           };
     }
     __name(_interopRequireDefault, "_interopRequireDefault");
-    ((module2.exports = _interopRequireDefault),
+    (module2.exports = _interopRequireDefault),
       (module2.exports.__esModule = true),
-      (module2.exports["default"] = module2.exports));
+      (module2.exports["default"] = module2.exports);
   },
 });
 
@@ -239,9 +239,9 @@ var require_typeof = __commonJS({
       );
     }
     __name(_typeof, "_typeof");
-    ((module2.exports = _typeof),
+    (module2.exports = _typeof),
       (module2.exports.__esModule = true),
-      (module2.exports["default"] = module2.exports));
+      (module2.exports["default"] = module2.exports);
   },
 });
 
@@ -263,9 +263,9 @@ var require_toPrimitive = __commonJS({
       return ("string" === r ? String : Number)(t);
     }
     __name(toPrimitive, "toPrimitive");
-    ((module2.exports = toPrimitive),
+    (module2.exports = toPrimitive),
       (module2.exports.__esModule = true),
-      (module2.exports["default"] = module2.exports));
+      (module2.exports["default"] = module2.exports);
   },
 });
 
@@ -282,9 +282,9 @@ var require_toPropertyKey = __commonJS({
       return "symbol" == _typeof(i) ? i : i + "";
     }
     __name(toPropertyKey, "toPropertyKey");
-    ((module2.exports = toPropertyKey),
+    (module2.exports = toPropertyKey),
       (module2.exports.__esModule = true),
-      (module2.exports["default"] = module2.exports));
+      (module2.exports["default"] = module2.exports);
   },
 });
 
@@ -309,9 +309,9 @@ var require_defineProperty = __commonJS({
       );
     }
     __name(_defineProperty, "_defineProperty");
-    ((module2.exports = _defineProperty),
+    (module2.exports = _defineProperty),
       (module2.exports.__esModule = true),
-      (module2.exports["default"] = module2.exports));
+      (module2.exports["default"] = module2.exports);
   },
 });
 
@@ -326,11 +326,11 @@ var require_objectSpread2 = __commonJS({
       var t = Object.keys(e);
       if (Object.getOwnPropertySymbols) {
         var o = Object.getOwnPropertySymbols(e);
-        (r &&
+        r &&
           (o = o.filter(function (r2) {
             return Object.getOwnPropertyDescriptor(e, r2).enumerable;
           })),
-          t.push.apply(t, o));
+          t.push.apply(t, o);
       }
       return t;
     }
@@ -355,9 +355,9 @@ var require_objectSpread2 = __commonJS({
       return e;
     }
     __name(_objectSpread2, "_objectSpread2");
-    ((module2.exports = _objectSpread2),
+    (module2.exports = _objectSpread2),
       (module2.exports.__esModule = true),
-      (module2.exports["default"] = module2.exports));
+      (module2.exports["default"] = module2.exports);
   },
 });
 
@@ -378,9 +378,9 @@ var require_objectWithoutPropertiesLoose = __commonJS({
       return t;
     }
     __name(_objectWithoutPropertiesLoose, "_objectWithoutPropertiesLoose");
-    ((module2.exports = _objectWithoutPropertiesLoose),
+    (module2.exports = _objectWithoutPropertiesLoose),
       (module2.exports.__esModule = true),
-      (module2.exports["default"] = module2.exports));
+      (module2.exports["default"] = module2.exports);
   },
 });
 
@@ -5258,9 +5258,9 @@ var require_interopRequireWildcard = __commonJS({
       (module2.exports["default"] = module2.exports))(e, t);
     }
     __name(_interopRequireWildcard, "_interopRequireWildcard");
-    ((module2.exports = _interopRequireWildcard),
+    (module2.exports = _interopRequireWildcard),
       (module2.exports.__esModule = true),
-      (module2.exports["default"] = module2.exports));
+      (module2.exports["default"] = module2.exports);
   },
 });
 
@@ -6043,9 +6043,9 @@ var require_extends = __commonJS({
       );
     }
     __name(_extends, "_extends");
-    ((module2.exports = _extends),
+    (module2.exports = _extends),
       (module2.exports.__esModule = true),
-      (module2.exports["default"] = module2.exports));
+      (module2.exports["default"] = module2.exports);
   },
 });
 
@@ -7981,9 +7981,9 @@ var require_arrayLikeToArray = __commonJS({
       return n;
     }
     __name(_arrayLikeToArray, "_arrayLikeToArray");
-    ((module2.exports = _arrayLikeToArray),
+    (module2.exports = _arrayLikeToArray),
       (module2.exports.__esModule = true),
-      (module2.exports["default"] = module2.exports));
+      (module2.exports["default"] = module2.exports);
   },
 });
 
@@ -8010,9 +8010,9 @@ var require_unsupportedIterableToArray = __commonJS({
       }
     }
     __name(_unsupportedIterableToArray, "_unsupportedIterableToArray");
-    ((module2.exports = _unsupportedIterableToArray),
+    (module2.exports = _unsupportedIterableToArray),
       (module2.exports.__esModule = true),
-      (module2.exports["default"] = module2.exports));
+      (module2.exports["default"] = module2.exports);
   },
 });
 
@@ -8050,9 +8050,9 @@ var require_createForOfIteratorHelperLoose = __commonJS({
       );
     }
     __name(_createForOfIteratorHelperLoose, "_createForOfIteratorHelperLoose");
-    ((module2.exports = _createForOfIteratorHelperLoose),
+    (module2.exports = _createForOfIteratorHelperLoose),
       (module2.exports.__esModule = true),
-      (module2.exports["default"] = module2.exports));
+      (module2.exports["default"] = module2.exports);
   },
 });
 
@@ -11262,9 +11262,7 @@ var require_VirtualizedList = __commonJS({
       return null;
     }
     __name(findLastWhere, "findLastWhere");
-    var VirtualizedList = class _VirtualizedList
-      extends _StateSafePureComponent.default
-    {
+    var VirtualizedList = class _VirtualizedList extends _StateSafePureComponent.default {
       static {
         __name(this, "VirtualizedList");
       }
@@ -14881,9 +14879,7 @@ var require_AnimatedInterpolation = __commonJS({
       );
     }
     __name(checkInfiniteRange, "checkInfiniteRange");
-    var AnimatedInterpolation = class _AnimatedInterpolation
-      extends _AnimatedWithChildren.default
-    {
+    var AnimatedInterpolation = class _AnimatedInterpolation extends _AnimatedWithChildren.default {
       static {
         __name(this, "AnimatedInterpolation");
       }
@@ -28598,8 +28594,7 @@ var PresenceChild = React7.memo(
           }, "onExitComplete"),
           register: /* @__PURE__ */ __name(
             () => (
-              presenceChildren.set(id, false),
-              () => presenceChildren.delete(id)
+              presenceChildren.set(id, false), () => presenceChildren.delete(id)
             ),
             "register",
           ),
@@ -28734,15 +28729,15 @@ var AnimatePresence = /* @__PURE__ */ __name(
             {
               isPresent: false,
               onExitComplete: /* @__PURE__ */ __name(() => {
-                (allChildren.delete(key), exiting.delete(key));
+                allChildren.delete(key), exiting.delete(key);
                 const removeIndex = presentChildren.current.findIndex(
                   presentChild => presentChild.key === key,
                 );
-                (presentChildren.current.splice(removeIndex, 1),
+                presentChildren.current.splice(removeIndex, 1),
                   exiting.size ||
                     ((presentChildren.current = filteredChildren),
                     forceRender(),
-                    onExitComplete?.()));
+                    onExitComplete?.());
               }, "onExitComplete"),
               presenceAffectsLayout,
               enterExitVariant,
@@ -28812,7 +28807,7 @@ var simpleHash = /* @__PURE__ */ __name((strIn, hashMin = 10) => {
         continue;
       }
       if (isValidCSSCharCode(char)) {
-        (added++, (valids += str[i]));
+        added++, (valids += str[i]);
         continue;
       }
     }
@@ -29252,7 +29247,7 @@ var withStaticProperties = /* @__PURE__ */ __name((component, staticProps) => {
     }
     return component;
   })();
-  return (Object.assign(next, staticProps), (next[Decorated] = true), next);
+  return Object.assign(next, staticProps), (next[Decorated] = true), next;
 }, "withStaticProperties");
 
 // ../../node_modules/.pnpm/@tamagui+use-event@1.144.1__4114736a66ef7e280830f7227d832a59/node_modules/@tamagui/use-event/dist/esm/useGet.mjs
@@ -29307,7 +29302,7 @@ function useControllableState({
     value = propWins ? prop : state,
     onChangeCb = useEvent(onChange || idFn2),
     transitionFn = transition ? startTransition : emptyCallbackFn;
-  (React10.useEffect(() => {
+  React10.useEffect(() => {
     prop !== void 0 &&
       ((previous.current = prop),
       transitionFn(() => {
@@ -29318,7 +29313,7 @@ function useControllableState({
       propWins ||
         (state !== previous.current &&
           ((previous.current = state), onChangeCb(state)));
-    }, [onChangeCb, state, propWins]));
+    }, [onChangeCb, state, propWins]);
   const setter = useEvent(next => {
     if (!preventUpdate)
       if (propWins) {
@@ -29685,21 +29680,21 @@ var stepTokenUpOrDown = /* @__PURE__ */ __name(
       prefixed: true,
     })[type];
     if (!(type in cacheVariables)) {
-      ((cacheKeys[type] = []),
+      (cacheKeys[type] = []),
         (cacheVariables[type] = []),
         (cacheWholeKeys[type] = []),
-        (cacheWholeVariables[type] = []));
+        (cacheWholeVariables[type] = []);
       const sorted = Object.keys(tokens)
         .map(k => tokens[k])
         .sort((a, b) => a.val - b.val);
       for (const token of sorted)
-        (cacheKeys[type].push(token.key), cacheVariables[type].push(token));
+        cacheKeys[type].push(token.key), cacheVariables[type].push(token);
       const sortedExcludingHalfSteps = sorted.filter(
         x => !x.key.endsWith(".5"),
       );
       for (const token of sortedExcludingHalfSteps)
-        (cacheWholeKeys[type].push(token.key),
-          cacheWholeVariables[type].push(token));
+        cacheWholeKeys[type].push(token.key),
+          cacheWholeVariables[type].push(token);
     }
     const isString = typeof current == "string",
       tokensOrdered = (
@@ -30362,12 +30357,12 @@ var AccordionImpl = React17.forwardRef((props, forwardedRef) => {
       const homeIndex = 0,
         endIndex = triggerCount - 1,
         moveNext = /* @__PURE__ */ __name(() => {
-          ((nextIndex = triggerIndex + 1),
-            nextIndex > endIndex && (nextIndex = homeIndex));
+          (nextIndex = triggerIndex + 1),
+            nextIndex > endIndex && (nextIndex = homeIndex);
         }, "moveNext"),
         movePrev = /* @__PURE__ */ __name(() => {
-          ((nextIndex = triggerIndex - 1),
-            nextIndex < homeIndex && (nextIndex = endIndex));
+          (nextIndex = triggerIndex - 1),
+            nextIndex < homeIndex && (nextIndex = endIndex);
         }, "movePrev");
       switch (event.key) {
         case "Home":
@@ -30784,7 +30779,7 @@ var removePortal = /* @__PURE__ */ __name((state, hostName, portalName) => {
       state
     );
   const index3 = state[hostName].findIndex(item => item.name === portalName);
-  return (index3 !== -1 && state[hostName].splice(index3, 1), state);
+  return index3 !== -1 && state[hostName].splice(index3, 1), state;
 }, "removePortal");
 var reducer = /* @__PURE__ */ __name((state, action) => {
   const { type } = action;
@@ -31085,7 +31080,7 @@ var AdaptParent = /* @__PURE__ */ __name(
             ),
           "element",
         );
-        return (AdaptPortals.set(portalName, element), element);
+        return AdaptPortals.set(portalName, element), element;
       }, [portalName, Contents]);
     useIsomorphicLayoutEffect(
       () => (
@@ -31141,16 +31136,16 @@ var Adapt = withStaticProperties(
     const { platform: platform2, when, children, scope } = props,
       context2 = useAdaptContext(scope),
       enabled = useAdaptIsActiveGiven(props);
-    (useIsomorphicLayoutEffect(() => {
-      (context2?.setWhen?.(when || enabled),
-        context2?.setPlatform?.(platform2 || null));
+    useIsomorphicLayoutEffect(() => {
+      context2?.setWhen?.(when || enabled),
+        context2?.setPlatform?.(platform2 || null);
     }, [when, platform2, enabled, context2.setWhen, context2.setPlatform]),
       useIsomorphicLayoutEffect(
         () => () => {
-          (context2?.setWhen?.(null), context2?.setPlatform?.(null));
+          context2?.setWhen?.(null), context2?.setPlatform?.(null);
         },
         [],
-      ));
+      );
     let output;
     if (typeof children == "function") {
       const Component = context2?.Contents;
@@ -31330,7 +31325,7 @@ function composeContextScopes(...scopes) {
       );
     };
   }, "createScope");
-  return ((createScope.scopeName = baseScope.scopeName), createScope);
+  return (createScope.scopeName = baseScope.scopeName), createScope;
 }
 __name(composeContextScopes, "composeContextScopes");
 
@@ -31571,9 +31566,9 @@ function usePointerDownOutside(onPointerDownOutside) {
           document.addEventListener("pointerdown", handlePointerDown);
         }, 0);
       return () => {
-        (window.clearTimeout(timerId),
+        window.clearTimeout(timerId),
           document.removeEventListener("pointerdown", handlePointerDown),
-          document.removeEventListener("click", handleClickRef.current));
+          document.removeEventListener("click", handleClickRef.current);
       };
     }, [handlePointerDownOutside]),
     {
@@ -31632,13 +31627,13 @@ function handleAndDispatchCustomEvent(name, handler, detail, { discrete }) {
       cancelable: true,
       detail,
     });
-  (handler &&
+  handler &&
     target.addEventListener(name, handler, {
       once: true,
     }),
     discrete
       ? dispatchDiscreteCustomEvent(target, event)
-      : target.dispatchEvent(event));
+      : target.dispatchEvent(event);
 }
 __name(handleAndDispatchCustomEvent, "handleAndDispatchCustomEvent");
 
@@ -31651,7 +31646,7 @@ var AbortError = class extends Error {
     __name(this, "AbortError");
   }
   constructor(message = "") {
-    (super(message), (this.name = "AbortError"));
+    super(message), (this.name = "AbortError");
   }
 };
 
@@ -31873,7 +31868,7 @@ function useFocusScope(props, forwardedRef) {
         this.paused = false;
       },
     }).current;
-  (React26.useEffect(() => {
+  React26.useEffect(() => {
     if (!enabled || !trapped) return;
     const controller = new AbortController();
     function handleFocusIn(event) {
@@ -31890,12 +31885,12 @@ function useFocusScope(props, forwardedRef) {
     }
     __name(handleFocusIn, "handleFocusIn");
     function handleFocusOut(event) {
-      (controller.abort(),
+      controller.abort(),
         !(focusScope.paused || !container) &&
           (container.contains(event.relatedTarget) ||
             focus(lastFocusedElementRef.current, {
               select: true,
-            })));
+            }));
     }
     __name(handleFocusOut, "handleFocusOut");
     function handleBlur() {
@@ -31906,9 +31901,9 @@ function useFocusScope(props, forwardedRef) {
       document.addEventListener("focusin", handleFocusIn),
       document.addEventListener("focusout", handleFocusOut),
       () => {
-        (controller.abort(),
+        controller.abort(),
           document.removeEventListener("focusin", handleFocusIn),
-          document.removeEventListener("focusout", handleFocusOut));
+          document.removeEventListener("focusout", handleFocusOut);
       }
     );
   }, [trapped, forceUnmount, container, focusScope.paused]),
@@ -31942,7 +31937,7 @@ function useFocusScope(props, forwardedRef) {
                     upTo: container,
                   }),
               );
-            (focusFirst(visibleCandidates, {
+            focusFirst(visibleCandidates, {
               select: true,
             }),
               visibleCandidates.length > 0
@@ -31950,7 +31945,7 @@ function useFocusScope(props, forwardedRef) {
                 : (lastFocusedElementRef.current = container),
               document.activeElement === previouslyFocusedElement &&
                 visibleCandidates.length === 0 &&
-                focus(container));
+                focus(container);
           }
         }
         return () => {
@@ -31959,7 +31954,7 @@ function useFocusScope(props, forwardedRef) {
             AUTOFOCUS_ON_UNMOUNT,
             EVENT_OPTIONS,
           );
-          (container.addEventListener(AUTOFOCUS_ON_UNMOUNT, onUnmountAutoFocus),
+          container.addEventListener(AUTOFOCUS_ON_UNMOUNT, onUnmountAutoFocus),
             container.dispatchEvent(unmountEvent),
             unmountEvent.defaultPrevented ||
               focus(previouslyFocusedElement ?? document.body, {
@@ -31969,7 +31964,7 @@ function useFocusScope(props, forwardedRef) {
               AUTOFOCUS_ON_UNMOUNT,
               onUnmountAutoFocus,
             ),
-            focusScopesStack.remove(focusScope));
+            focusScopesStack.remove(focusScope);
         };
       },
       [
@@ -31981,7 +31976,7 @@ function useFocusScope(props, forwardedRef) {
         focusScope,
         focusOnIdle,
       ],
-    ));
+    );
   const handleKeyDown = React26.useCallback(
     event => {
       if (!trapped || !loop || focusScope.paused || !enabled || !container)
@@ -32103,13 +32098,13 @@ function focus(element, { select = false } = {}) {
   if (element?.focus) {
     const previouslyFocusedElement = document.activeElement;
     try {
-      (element.focus({
+      element.focus({
         preventScroll: true,
       }),
         element !== previouslyFocusedElement &&
           isSelectableInput(element) &&
           select &&
-          element.select());
+          element.select();
     } catch {}
   }
 }
@@ -32120,12 +32115,12 @@ function createFocusScopesStack() {
   return {
     add(focusScope) {
       const activeFocusScope = stack[0];
-      (focusScope !== activeFocusScope && activeFocusScope?.pause(),
+      focusScope !== activeFocusScope && activeFocusScope?.pause(),
         (stack = arrayRemove(stack, focusScope)),
-        stack.unshift(focusScope));
+        stack.unshift(focusScope);
     },
     remove(focusScope) {
-      ((stack = arrayRemove(stack, focusScope)), stack[0]?.resume());
+      (stack = arrayRemove(stack, focusScope)), stack[0]?.resume();
     },
   };
 }
@@ -32133,7 +32128,7 @@ __name(createFocusScopesStack, "createFocusScopesStack");
 function arrayRemove(array, item) {
   const updatedArray = [...array],
     index3 = updatedArray.indexOf(item);
-  return (index3 !== -1 && updatedArray.splice(index3, 1), updatedArray);
+  return index3 !== -1 && updatedArray.splice(index3, 1), updatedArray;
 }
 __name(arrayRemove, "arrayRemove");
 function removeLinks(items) {
@@ -32258,7 +32253,7 @@ var SheetControllerContext = import_react22.default.createContext(null);
 var useSheetOpenState = /* @__PURE__ */ __name(props => {
   const { isHidden: isHidden2, controller } = useSheetController(),
     onOpenChangeInternal = /* @__PURE__ */ __name(val => {
-      (controller?.onOpenChange?.(val), props.onOpenChange?.(val));
+      controller?.onOpenChange?.(val), props.onOpenChange?.(val);
     }, "onOpenChangeInternal"),
     propVal = props.preferAdaptParentOpenState
       ? (controller?.open ?? props.open)
@@ -32320,7 +32315,7 @@ function useSheetProviderProps(props, state, options = {}) {
         state.setOpen,
       ],
     );
-  (process.env.NODE_ENV === "development" &&
+  process.env.NODE_ENV === "development" &&
     (snapPointsMode === "mixed" &&
       snapPoints.some(p => {
         if (typeof p == "string") {
@@ -32360,7 +32355,7 @@ function useSheetProviderProps(props, state, options = {}) {
     open &&
       props.dismissOnSnapToBottom &&
       position === snapPoints.length - 1 &&
-      setPositionImmediate(0));
+      setPositionImmediate(0);
   const shouldSetPositionOpen = open && position < 0;
   import_react23.default.useEffect(() => {
     shouldSetPositionOpen && setPosition(0);
@@ -32562,16 +32557,16 @@ var SheetImplementationCustom = import_react24.default.forwardRef(
       },
       import_react24.default.useCallback(
         value => {
-          ((at.current = value), (scrollBridge.paneY = value));
+          (at.current = value), (scrollBridge.paneY = value);
         },
         [animationDriver],
       ),
     );
     function stopSpring() {
-      (animatedNumber.stop(),
+      animatedNumber.stop(),
         scrollBridge.onFinishAnimate &&
           (scrollBridge.onFinishAnimate(),
-          (scrollBridge.onFinishAnimate = void 0)));
+          (scrollBridge.onFinishAnimate = void 0));
     }
     __name(stopSpring, "stopSpring");
     const animateTo = (0, import_core9.useEvent)(position2 => {
@@ -32588,7 +32583,7 @@ var SheetImplementationCustom = import_react24.default.forwardRef(
     });
     useIsomorphicLayoutEffect(() => {
       if (hasntMeasured && screenSize && frameSize) {
-        ((at.current = screenSize),
+        (at.current = screenSize),
           animatedNumber.setValue(
             screenSize,
             {
@@ -32600,7 +32595,7 @@ var SheetImplementationCustom = import_react24.default.forwardRef(
                 setDisableAnimation(false);
               }, 10);
             },
-          ));
+          );
         return;
       }
       disableAnimation ||
@@ -32630,7 +32625,7 @@ var SheetImplementationCustom = import_react24.default.forwardRef(
         scrollBridge.paneMinY = minY;
         let startY = at.current;
         function setPanning(val) {
-          (setIsDragging(val),
+          setIsDragging(val),
             isClient &&
               (sheetHiddenStyleSheet ||
                 ((sheetHiddenStyleSheet = document.createElement("style")),
@@ -32639,7 +32634,7 @@ var SheetImplementationCustom = import_react24.default.forwardRef(
               val
                 ? (sheetHiddenStyleSheet.innerText =
                     ":root * { user-select: none !important; -webkit-user-select: none !important; }")
-                : (sheetHiddenStyleSheet.innerText = "")));
+                : (sheetHiddenStyleSheet.innerText = ""));
         }
         __name(setPanning, "setPanning");
         const release = /* @__PURE__ */ __name(({ vy, dragAt }) => {
@@ -32647,9 +32642,9 @@ var SheetImplementationCustom = import_react24.default.forwardRef(
               (scrollBridge.setParentDragging(false), scrollBridge.scrollLock)
             )
               return;
-            ((isExternalDrag = false),
+            (isExternalDrag = false),
               (previouslyScrolling = false),
-              setPanning(false));
+              setPanning(false);
             const end = dragAt + startY + frameSize * vy * 0.2;
             let closestPoint = 0,
               dist = Number.POSITIVE_INFINITY;
@@ -32658,7 +32653,7 @@ var SheetImplementationCustom = import_react24.default.forwardRef(
                 curDist = end > position2 ? end - position2 : position2 - end;
               curDist < dist && ((dist = curDist), (closestPoint = i));
             }
-            (setPosition(closestPoint), animateTo(closestPoint));
+            setPosition(closestPoint), animateTo(closestPoint);
           }, "release"),
           finish = /* @__PURE__ */ __name((_e, state2) => {
             release({
@@ -32675,7 +32670,7 @@ var SheetImplementationCustom = import_react24.default.forwardRef(
                 const isScrolled = scrollBridge.y !== 0,
                   isDraggingUp = dy < 0,
                   isNearTop = scrollBridge.paneY - 5 <= scrollBridge.paneMinY;
-                if (isScrolled) return ((previouslyScrolling = true), false);
+                if (isScrolled) return (previouslyScrolling = true), false;
                 if (isNearTop && hasScrollView.current && isDraggingUp)
                   return false;
               }
@@ -32683,10 +32678,10 @@ var SheetImplementationCustom = import_react24.default.forwardRef(
             }
             __name(getShouldSet, "getShouldSet");
             const granted = getShouldSet();
-            return (granted && scrollBridge.setParentDragging(true), granted);
+            return granted && scrollBridge.setParentDragging(true), granted;
           }, "onMoveShouldSet"),
           grant = /* @__PURE__ */ __name(() => {
-            (setPanning(true), stopSpring(), (startY = at.current));
+            setPanning(true), stopSpring(), (startY = at.current);
           }, "grant");
         let isExternalDrag = false;
         return (
@@ -32704,12 +32699,12 @@ var SheetImplementationCustom = import_react24.default.forwardRef(
             onPanResponderMove: /* @__PURE__ */ __name((_e, { dy }) => {
               const toFull = dy + startY,
                 to = resisted(toFull, minY);
-              (to <= minY
+              to <= minY
                 ? scrollBridge.setParentDragging(false)
                 : scrollBridge.setParentDragging(true),
                 animatedNumber.setValue(to, {
                   type: "direct",
-                }));
+                });
             }, "onPanResponderMove"),
             onPanResponderEnd: finish,
             onPanResponderTerminate: finish,
@@ -32787,11 +32782,11 @@ var SheetImplementationCustom = import_react24.default.forwardRef(
           },
         );
       return () => {
-        (keyboardDidHideListener.remove(), keyboardShowListener.remove());
+        keyboardDidHideListener.remove(), keyboardShowListener.remove();
       };
     }, [moveOnKeyboardChange, positions, position, isHidden2]);
     const [opacity, setOpacity] = import_react24.default.useState(open ? 1 : 0);
-    (open && opacity === 0 && setOpacity(1),
+    open && opacity === 0 && setOpacity(1),
       import_react24.default.useEffect(() => {
         if (!open) {
           const tm = setTimeout(() => {
@@ -32801,7 +32796,7 @@ var SheetImplementationCustom = import_react24.default.forwardRef(
             clearTimeout(tm);
           };
         }
-      }, [open]));
+      }, [open]);
     const forcedContentHeight = hasFit
         ? void 0
         : snapPointsMode === "percent"
@@ -32929,7 +32924,7 @@ function getYPositions(mode, point, screenSize, frameSize) {
         ? (console.warn("Invalid snapPoint percentage string"), 0)
         : Math.round(screenSize - pct2 * screenSize);
     }
-    return (console.warn("Invalid snapPoint unknown value"), 0);
+    return console.warn("Invalid snapPoint unknown value"), 0;
   }
   if (mode === "fit")
     return point === 0
@@ -32991,10 +32986,10 @@ var SheetScrollView = import_react25.default.forwardRef(
       }),
       scrollRef = import_react25.default.useRef(null),
       setScrollEnabled = /* @__PURE__ */ __name(next => {
-        (scrollRef.current?.setNativeProps?.({
+        scrollRef.current?.setNativeProps?.({
           scrollEnabled: next,
         }),
-          setScrollEnabled_(next));
+          setScrollEnabled_(next);
       }, "setScrollEnabled"),
       state = import_react25.default.useRef({
         lastPageY: 0,
@@ -33015,11 +33010,11 @@ var SheetScrollView = import_react25.default.forwardRef(
     );
     const release = /* @__PURE__ */ __name(() => {
         if (!state.current.isDraggingScrollArea) return;
-        ((state.current.isDraggingScrollArea = false),
+        (state.current.isDraggingScrollArea = false),
           (scrollBridge.scrollStartY = -1),
           (scrollBridge.scrollLock = false),
           (state.current.isScrolling = false),
-          setScrollEnabled(true));
+          setScrollEnabled(true);
         let vy = 0;
         if (state.current.dys.length) {
           const recentDys = state.current.dys.slice(-10);
@@ -33028,11 +33023,11 @@ var SheetScrollView = import_react25.default.forwardRef(
               recentDys.length) *
             0.04;
         }
-        ((state.current.dys = []),
+        (state.current.dys = []),
           scrollBridge.release({
             dragAt: state.current.dragAt,
             vy,
-          }));
+          });
       }, "release"),
       scrollable = scrollEnabled;
     (0, import_react25.useEffect)(() => {
@@ -33056,7 +33051,7 @@ var SheetScrollView = import_react25.default.forwardRef(
       );
       const disposeBridgeListen = scrollBridge.onParentDragging(val => {});
       return () => {
-        (disposeBridgeListen(), controller.abort());
+        disposeBridgeListen(), controller.abort();
       };
     }, [scrollRef]);
     const [hasScrollableContent, setHasScrollableContent] = (0,
@@ -33074,8 +33069,8 @@ var SheetScrollView = import_react25.default.forwardRef(
       }, [hasScrollableContent]),
       /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(ScrollView, {
         onLayout: /* @__PURE__ */ __name(e => {
-          ((parentHeight.current = Math.ceil(e.nativeEvent.layout.height)),
-            setIsScrollable());
+          (parentHeight.current = Math.ceil(e.nativeEvent.layout.height)),
+            setIsScrollable();
         }, "onLayout"),
         ref: composeRefs(scrollRef, ref),
         flex: 1,
@@ -33085,10 +33080,10 @@ var SheetScrollView = import_react25.default.forwardRef(
         scrollEnabled: scrollable,
         onScroll: /* @__PURE__ */ __name(e => {
           const { y } = e.nativeEvent.contentOffset;
-          ((scrollBridge.y = y),
+          (scrollBridge.y = y),
             import_core10.isWeb && (scrollBridge.scrollLock = y > 0),
             y > 0 && (scrollBridge.scrollStartY = -1),
-            onScroll?.(e));
+            onScroll?.(e);
         }, "onScroll"),
         onStartShouldSetResponder: /* @__PURE__ */ __name(
           () => (
@@ -33123,9 +33118,9 @@ var SheetScrollView = import_react25.default.forwardRef(
               isPaneAtTop &&
               !state.current.isScrolling
             ) {
-              ((state.current.isScrolling = true),
+              (state.current.isScrolling = true),
                 (scrollBridge.scrollLock = true),
-                setScrollEnabled(true));
+                setScrollEnabled(true);
               return;
             }
             if (
@@ -33133,12 +33128,12 @@ var SheetScrollView = import_react25.default.forwardRef(
               scrollBridge.y >= 0
             )
               return;
-            (setScrollEnabled(false),
+            setScrollEnabled(false),
               scrollBridge.drag(dragAt),
               (state.current.dragAt = dragAt),
               state.current.dys.push(dy),
               state.current.dys.length > 100 &&
-                (state.current.dys = state.current.dys.slice(-10)));
+                (state.current.dys = state.current.dys.slice(-10));
           }
         }, "onResponderMove"),
         ...props,
@@ -33149,10 +33144,8 @@ var SheetScrollView = import_react25.default.forwardRef(
             pointerEvents: "none",
             zIndex: -1,
             onLayout: /* @__PURE__ */ __name(e => {
-              ((contentHeight.current = Math.floor(
-                e.nativeEvent.layout.height,
-              )),
-                setIsScrollable());
+              (contentHeight.current = Math.floor(e.nativeEvent.layout.height)),
+                setIsScrollable();
             }, "onLayout"),
           }),
           children,
@@ -33517,7 +33510,7 @@ function setupNativeSheet(platform2, RNIOSModal) {
         open ? ref.current?.presentModal() : ref.current?.dismissModal();
       }, [open]);
       function setOpenInternal(next) {
-        (props.onOpenChange?.(open), setOpen(next));
+        props.onOpenChange?.(open), setOpen(next);
       }
       __name(setOpenInternal, "setOpenInternal");
       return /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
@@ -33692,13 +33685,13 @@ var DialogPortal = React34.forwardRef((props, forwardRef24) => {
     [isFullyHidden, setIsFullyHidden] = React34.useState(!isMountedOrOpen),
     isAdapted = useAdaptIsActive(context2.adaptScope),
     isVisible = isMountedOrOpen ? true : !isFullyHidden;
-  (isMountedOrOpen && isFullyHidden && setIsFullyHidden(false),
+  isMountedOrOpen && isFullyHidden && setIsFullyHidden(false),
     isWeb &&
       useIsomorphicLayoutEffect(() => {
         const node = dialogRef.current;
         node instanceof HTMLDialogElement &&
           (isVisible ? node.show?.() : node.close?.());
-      }, [isVisible]));
+      }, [isVisible]);
   const handleExitComplete = React34.useCallback(() => {
       setIsFullyHidden(true);
     }, []),
@@ -33866,7 +33859,7 @@ var DialogContentModal = React34.forwardRef(
       trapFocus: context2.open,
       disableOutsidePointerEvents: true,
       onCloseAutoFocus: composeEventHandlers(props.onCloseAutoFocus, event => {
-        (event.preventDefault(), context2.triggerRef.current?.focus());
+        event.preventDefault(), context2.triggerRef.current?.focus();
       }),
       onPointerDownOutside: composeEventHandlers(
         props.onPointerDownOutside,
@@ -33896,16 +33889,16 @@ var DialogContentNonModal = React34.forwardRef((props, forwardedRef) => {
     trapFocus: false,
     disableOutsidePointerEvents: false,
     onCloseAutoFocus: /* @__PURE__ */ __name(event => {
-      (props.onCloseAutoFocus?.(event),
+      props.onCloseAutoFocus?.(event),
         event.defaultPrevented ||
           (hasInteractedOutsideRef.current ||
             props.context.triggerRef.current?.focus(),
           event.preventDefault()),
-        (hasInteractedOutsideRef.current = false));
+        (hasInteractedOutsideRef.current = false);
     }, "onCloseAutoFocus"),
     onInteractOutside: /* @__PURE__ */ __name(event => {
-      (props.onInteractOutside?.(event),
-        event.defaultPrevented || (hasInteractedOutsideRef.current = true));
+      props.onInteractOutside?.(event),
+        event.defaultPrevented || (hasInteractedOutsideRef.current = true);
       const target = event.target,
         trigger = props.context.triggerRef.current;
       if (!(trigger instanceof HTMLElement)) return;
@@ -34285,11 +34278,11 @@ var AlertDialogContent = React35.forwardRef(function (props, forwardedRef) {
             onOpenAutoFocus: composeEventHandlers(
               contentProps.onOpenAutoFocus,
               event => {
-                (event.preventDefault(),
+                event.preventDefault(),
                   isWeb &&
                     cancelRef.current?.focus({
                       preventScroll: true,
-                    }));
+                    });
               },
             ),
             onPointerDownOutside: /* @__PURE__ */ __name(
@@ -34580,8 +34573,8 @@ var AvatarImage = React37.forwardRef((props, forwardedRef) => {
       setStatus(resolvedSrc ? "idle" : "error");
     }, [resolvedSrc]),
     React37.useEffect(() => {
-      (onLoadingStatusChange(status),
-        context2.onImageLoadingStatusChange(status));
+      onLoadingStatusChange(status),
+        context2.onImageLoadingStatusChange(status);
     }, [status]),
     resolvedSrc
       ? /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(YStack, {
@@ -34690,7 +34683,7 @@ var getFontSizeToken = /* @__PURE__ */ __name((inSize, opts) => {
       ("$true" in fontSize ? "$true" : "$4"),
     sizeTokens = Object.keys(fontSize);
   let foundIndex = sizeTokens.indexOf(size4);
-  (foundIndex === -1 &&
+  foundIndex === -1 &&
     size4.endsWith(".5") &&
     (foundIndex = sizeTokens.indexOf(size4.replace(".5", ""))),
     process.env.NODE_ENV === "development" &&
@@ -34701,7 +34694,7 @@ var getFontSizeToken = /* @__PURE__ */ __name((inSize, opts) => {
         opts,
         "in size tokens",
         sizeTokens,
-      ));
+      );
   const tokenIndex = Math.min(
     Math.max(0, foundIndex + relativeSize),
     sizeTokens.length - 1,
@@ -35182,10 +35175,10 @@ function useFocusable({ isInput, props, ref }) {
     inputValue = import_react32.default.useRef(value || defaultValue2 || ""),
     unregisterFocusable = import_react32.default.useRef(void 0),
     focusAndSelect = import_react32.default.useCallback(input => {
-      (input.focus(),
+      input.focus(),
         input.setSelection &&
           typeof inputValue.current == "string" &&
-          input.setSelection(0, inputValue.current.length));
+          input.setSelection(0, inputValue.current.length);
     }, []),
     registerFocusableHandler = import_react32.default.useCallback(
       input => {
@@ -35211,7 +35204,7 @@ function useFocusable({ isInput, props, ref }) {
       [registerFocusableHandler],
     ),
     handleChangeText = (0, import_web14.useEvent)(value2 => {
-      ((inputValue.current = value2), onChangeText?.(value2));
+      (inputValue.current = value2), onChangeText?.(value2);
     });
   return (
     import_react32.default.useEffect(
@@ -35316,10 +35309,10 @@ var LabelComponent = React40.forwardRef((props, forwardedRef) => {
         ...labelProps,
         ref: composedRefs,
         onMouseDown: /* @__PURE__ */ __name(event => {
-          (props.onMouseDown?.(event),
+          props.onMouseDown?.(event),
             !event.defaultPrevented &&
               event.detail > 1 &&
-              event.preventDefault());
+              event.preventDefault();
         }, "onMouseDown"),
         onPress: /* @__PURE__ */ __name(event => {
           if ((props.onPress?.(event), isWeb)) {
@@ -35409,9 +35402,9 @@ var BubbleInput = /* @__PURE__ */ __name(props => {
         const event = new Event("click", {
           bubbles,
         });
-        ((input.indeterminate = isIndeterminate(checked)),
+        (input.indeterminate = isIndeterminate(checked)),
           setChecked.call(input, isIndeterminate(checked) ? false : checked),
-          input.dispatchEvent(event));
+          input.dispatchEvent(event);
       }
     }, [prevChecked, checked, bubbles]),
     /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("input", {
@@ -35469,7 +35462,7 @@ function useCheckbox(props, [checked, setChecked], ref) {
     handlePress = (0, import_react33.useMemo)(
       () =>
         composeEventHandlers(props.onPress, event => {
-          (setChecked(prevChecked =>
+          setChecked(prevChecked =>
             isIndeterminate(prevChecked) ? true : !prevChecked,
           ),
             isFormControl &&
@@ -35477,7 +35470,7 @@ function useCheckbox(props, [checked, setChecked], ref) {
               ((hasConsumerStoppedPropagationRef.current =
                 event.isPropagationStopped()),
               hasConsumerStoppedPropagationRef.current ||
-                event.stopPropagation()));
+                event.stopPropagation());
         }),
       [isFormControl],
     );
@@ -35531,7 +35524,7 @@ function createCheckbox(createProps) {
     Frame: Frame2 = CheckboxFrame,
     Indicator = CheckboxIndicatorFrame,
   } = createProps;
-  (ensureContext(Frame2), ensureContext(Indicator));
+  ensureContext(Frame2), ensureContext(Indicator);
   const FrameComponent = Frame2.styleable(function (_props, forwardedRef) {
       const {
           scaleSize = 0.45,
@@ -36045,7 +36038,7 @@ var matchMedia = globalThis.matchMedia;
 
 // ../../node_modules/.pnpm/@tamagui+react-native-media_55be23b62691ae792ae8407d5531508f/node_modules/@tamagui/react-native-media-driver/dist/esm/createMedia.mjs
 function createMedia(media) {
-  return ((0, import_web16.setupMatchMedia)(matchMedia), media);
+  return (0, import_web16.setupMatchMedia)(matchMedia), media;
 }
 __name(createMedia, "createMedia");
 
@@ -39009,13 +39002,13 @@ var PopperArrow = React49.forwardRef(function (propsIn, forwardedRef) {
   if (primaryPlacement) {
     arrowStyle[isVertical ? "width" : "height"] = size4 * 2;
     const oppSide = opposites[primaryPlacement];
-    (oppSide &&
+    oppSide &&
       ((arrowStyle[oppSide] = -size4), (innerArrowStyle[oppSide] = size4 / 2)),
       (oppSide === "top" || oppSide === "bottom") && (arrowStyle.left = 0),
       (oppSide === "left" || oppSide === "right") && (arrowStyle.top = 0),
       useIsomorphicLayoutEffect(() => {
         context2.onArrowSize?.(size4);
-      }, [size4, context2.onArrowSize]));
+      }, [size4, context2.onArrowSize]);
   }
   return /* @__PURE__ */ (0, import_jsx_runtime37.jsx)(PopperArrowOuterFrame, {
     ref: refs,
@@ -44638,7 +44631,7 @@ var PopoverInner = React53.forwardRef(function (props, forwardedRef) {
       }, "onChange"),
     }),
     handleOpenChange = (0, import_core27.useEvent)((val, via) => {
-      ((viaRef.current = via), setOpen(val));
+      (viaRef.current = via), setOpen(val);
     }),
     isAdapted = useAdaptIsActive(adaptScope),
     floatingContext = useFloatingContext({
@@ -44881,7 +44874,7 @@ var Progress = withStaticProperties(
         }),
         ...progressProps,
         onLayout: /* @__PURE__ */ __name(e => {
-          (setWidth(e.nativeEvent.layout.width), progressProps.onLayout?.(e));
+          setWidth(e.nativeEvent.layout.width), progressProps.onLayout?.(e);
         }, "onLayout"),
         ref: forwardedRef,
       }),
@@ -45028,7 +45021,7 @@ var BubbleInput2 = /* @__PURE__ */ __name(props => {
         const event = new Event("click", {
           bubbles,
         });
-        (setChecked.call(input, checked), input.dispatchEvent(event));
+        setChecked.call(input, checked), input.dispatchEvent(event);
       }
     }, [prevChecked, checked, bubbles]),
     /* @__PURE__ */ (0, import_jsx_runtime41.jsx)("input", {
@@ -45149,8 +45142,8 @@ var useRadioGroupItem = /* @__PURE__ */ __name(params => {
         document.addEventListener("keydown", handleKeyDown),
         document.addEventListener("keyup", handleKeyUp),
         () => {
-          (document.removeEventListener("keydown", handleKeyDown),
-            document.removeEventListener("keyup", handleKeyUp));
+          document.removeEventListener("keydown", handleKeyDown),
+            document.removeEventListener("keyup", handleKeyUp);
         }
       );
     }
@@ -45193,12 +45186,12 @@ var useRadioGroupItem = /* @__PURE__ */ __name(params => {
       }),
       id,
       onPress: composeEventHandlers(onPress, event => {
-        (checked || onChange?.(value),
+        checked || onChange?.(value),
           isFormControl &&
             ((hasConsumerStoppedPropagationRef.current =
               event.isPropagationStopped()),
             hasConsumerStoppedPropagationRef.current ||
-              event.stopPropagation()));
+              event.stopPropagation());
       }),
       ...(isWeb && {
         onKeyDown: composeEventHandlers(onKeyDown, event => {
@@ -45364,7 +45357,7 @@ var RovingFocusGroupItem = React56.forwardRef((props, forwardedRef) => {
   return (
     React56.useEffect(() => {
       if (focusable2)
-        return (onFocusableItemAdd(), () => onFocusableItemRemove());
+        return onFocusableItemAdd(), () => onFocusableItemRemove();
     }, [focusable2, onFocusableItemAdd, onFocusableItemRemove]),
     /* @__PURE__ */ (0, import_jsx_runtime43.jsx)(Collection2.ItemSlot, {
       scope: __scopeRovingFocusGroup || ROVING_FOCUS_GROUP_CONTEXT,
@@ -45513,7 +45506,7 @@ function createRadioGroup(createProps) {
     Indicator = RadioGroupIndicatorFrame,
     Item = RadioGroupItemFrame,
   } = createProps;
-  (ensureContext2(Frame2), ensureContext2(Indicator), ensureContext2(Item));
+  ensureContext2(Frame2), ensureContext2(Indicator), ensureContext2(Item);
   const RadioGroupImp = Frame2.styleable((props, ref) => {
       const {
           value,
@@ -45636,7 +45629,7 @@ function createRadioGroup(createProps) {
     Item: RadioGroupItemImp,
     Indicator: RadioIndicator,
   });
-  return ((RadioGroup2.displayName = "RadioGroup"), RadioGroup2);
+  return (RadioGroup2.displayName = "RadioGroup"), RadioGroup2;
 }
 __name(createRadioGroup, "createRadioGroup");
 
@@ -45699,13 +45692,13 @@ function debounce(func, wait, leading) {
   function debounced() {
     isCancelled = false;
     const args = arguments;
-    (leading && !timeout && func.apply(this, args),
+    leading && !timeout && func.apply(this, args),
       clearTimeout(timeout),
       (timeout = setTimeout(() => {
-        ((timeout = null),
+        (timeout = null),
           leading || isCancelled || func.apply(this, args),
-          (isCancelled = false));
-      }, wait)));
+          (isCancelled = false);
+      }, wait));
   }
   __name(debounced, "debounced");
   return (
@@ -45895,7 +45888,7 @@ var SelectInlineImpl = /* @__PURE__ */ __name(props => {
     [innerOffset, setInnerOffset] = React60.useState(0),
     [blockSelection, setBlockSelection] = React60.useState(false),
     floatingStyle = React60.useRef({});
-  (useIsomorphicLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     queueMicrotask(() => {
       open ||
         (setScrollTop(0),
@@ -45917,7 +45910,7 @@ var SelectInlineImpl = /* @__PURE__ */ __name(props => {
             document.removeEventListener("mouseup", mouseUp);
           }
         );
-      }, [open]));
+      }, [open]);
   const {
       x,
       y,
@@ -45938,14 +45931,14 @@ var SelectInlineImpl = /* @__PURE__ */ __name(props => {
               reference: { width },
             },
           }) {
-            (Object.assign(floatingStyle.current, {
+            Object.assign(floatingStyle.current, {
               minWidth: width + 8,
             }),
               refs.floating.current &&
                 Object.assign(
                   refs.floating.current.style,
                   floatingStyle.current,
-                ));
+                );
           },
         }),
         inner({
@@ -46052,15 +46045,15 @@ var SelectInlineImpl = /* @__PURE__ */ __name(props => {
               ...props2?.style,
             },
             onPointerEnter() {
-              (setControlledScrolling(false),
-                (state.current.isMouseOutside = false));
+              setControlledScrolling(false),
+                (state.current.isMouseOutside = false);
             },
             onPointerLeave() {
               state.current.isMouseOutside = true;
             },
             onPointerMove() {
-              ((state.current.isMouseOutside = false),
-                setControlledScrolling(false));
+              (state.current.isMouseOutside = false),
+                setControlledScrolling(false);
             },
             onKeyDown() {
               setControlledScrolling(true);
@@ -46089,11 +46082,11 @@ var SelectInlineImpl = /* @__PURE__ */ __name(props => {
             clearTimeout(selectTimeoutRef.current);
           }
         );
-      ((allowSelectRef.current = false),
+      (allowSelectRef.current = false),
         (allowMouseUpRef.current = true),
         setInnerOffset(0),
         setFallback(false),
-        setBlockSelection(false));
+        setBlockSelection(false);
     }, [open]),
     useIsomorphicLayoutEffect(() => {
       !open &&
@@ -46118,13 +46111,13 @@ var SelectInlineImpl = /* @__PURE__ */ __name(props => {
         );
     }, [open, refs, setOpen]),
     React60.useEffect(() => {
-      (open &&
+      open &&
         controlledScrolling &&
         activeIndex != null &&
         listItemsRef.current[activeIndex]?.scrollIntoView({
           block: "nearest",
         }),
-        setScrollTop(refs.floating.current?.scrollTop ?? 0));
+        setScrollTop(refs.floating.current?.scrollTop ?? 0);
     }, [open, refs, controlledScrolling, activeIndex]),
     React60.useEffect(() => {
       open &&
@@ -46217,7 +46210,7 @@ var SelectItem = ListItemFrame.styleable(
         initialValue: initialValue2,
       } = context2,
       [isSelected, setSelected] = React61.useState(initialValue2 === value);
-    (React61.useEffect(
+    React61.useEffect(
       () =>
         activeIndexSubscribe(i => {
           index3 === i &&
@@ -46231,7 +46224,7 @@ var SelectItem = ListItemFrame.styleable(
             setSelected(val === value);
           }),
         [value],
-      ));
+      );
     const textId = React61.useId(),
       refCallback = React61.useCallback(node => {
         isWeb &&
@@ -46244,7 +46237,7 @@ var SelectItem = ListItemFrame.styleable(
       setValueAtIndex(index3, value);
     }, [index3, setValueAtIndex, value]);
     function handleSelect() {
-      (setSelectedIndex(index3), onChange(value), setOpen(false));
+      setSelectedIndex(index3), onChange(value), setOpen(false);
     }
     __name(handleSelect, "handleSelect");
     const selectItemProps = React61.useMemo(
@@ -46252,12 +46245,12 @@ var SelectItem = ListItemFrame.styleable(
         interactions
           ? interactions.getItemProps({
               onTouchMove() {
-                ((allowSelectRef.current = true),
-                  (allowMouseUpRef.current = false));
+                (allowSelectRef.current = true),
+                  (allowMouseUpRef.current = false);
               },
               onTouchEnd() {
-                ((allowSelectRef.current = false),
-                  (allowMouseUpRef.current = true));
+                (allowSelectRef.current = false),
+                  (allowMouseUpRef.current = true);
               },
               onKeyDown(event) {
                 event.key === "Enter" ||
@@ -46500,21 +46493,21 @@ var SelectScrollButtonImpl = React63.memo(
                   ? element.scrollTop - pixelsToScroll > 0
                   : element.scrollTop + pixelsToScroll <
                     element.scrollHeight - element.clientHeight;
-            (onScroll(
+            onScroll(
               dir === "up"
                 ? Math.min(pixelsToScroll, remainingPixels)
                 : Math.max(-pixelsToScroll, -remainingPixels),
             ),
               scrollRemaining &&
-                (frameRef.current = requestAnimationFrame(frame)));
+                (frameRef.current = requestAnimationFrame(frame));
           }
         }
         __name(frame, "frame");
-        (cancelAnimationFrame(frameRef.current),
-          (frameRef.current = requestAnimationFrame(frame)));
+        cancelAnimationFrame(frameRef.current),
+          (frameRef.current = requestAnimationFrame(frame));
       }, "onPointerEnter"),
       onPointerLeave: /* @__PURE__ */ __name(() => {
-        ((statusRef.current = "idle"), cancelAnimationFrame(frameRef.current));
+        (statusRef.current = "idle"), cancelAnimationFrame(frameRef.current);
       }, "onPointerLeave"),
     });
   }),
@@ -46577,8 +46570,8 @@ var SelectTrigger = React64.forwardRef(function (props, forwardedRef) {
                   }
                 : {
                     onMouseDown() {
-                      (context2.floatingContext?.update(),
-                        itemParentContext.setOpen(!context2.open));
+                      context2.floatingContext?.update(),
+                        itemParentContext.setOpen(!context2.open);
                     },
                   }),
             }
@@ -47036,12 +47029,12 @@ function SelectInner(props) {
       onChange: onValueChange,
       transition: true,
     });
-  (React65.useEffect(() => {
+  React65.useEffect(() => {
     open && emitValue(value);
   }, [open]),
     React65.useEffect(() => {
       emitValue(value);
-    }, [value]));
+    }, [value]);
   const [activeIndex, setActiveIndex] = React65.useState(0),
     [emitValue, valueSubscribe] = useEmitter(),
     [emitActiveIndex, activeIndexSubscribe] = useEmitter(),
@@ -47051,8 +47044,8 @@ function SelectInner(props) {
     [selectedIndex, setSelectedIndex] = React65.useState(0),
     [valueNode, setValueNode] = React65.useState(null);
   useIsomorphicLayoutEffect(() => {
-    ((selectedIndexRef.current = selectedIndex),
-      (activeIndexRef.current = activeIndex));
+    (selectedIndexRef.current = selectedIndex),
+      (activeIndexRef.current = activeIndex);
   });
   const shouldRenderWebNative =
       isWeb &&
@@ -47084,7 +47077,7 @@ function SelectInner(props) {
       setOpen,
       id,
       onChange: React65.useCallback(val => {
-        (setValue(val), emitValue(val));
+        setValue(val), emitValue(val);
       }, []),
       onActiveChange: (0, import_core41.useEvent)((value2, index3) => {
         onActiveChange?.(value2, index3);
@@ -47173,7 +47166,7 @@ var BACK_KEYS = {
 // ../../node_modules/.pnpm/@tamagui+slider@1.144.1_rea_1257e4b2ca4a637b0f079e6e48bdede9/node_modules/@tamagui/slider/dist/esm/helpers.mjs
 function getNextSortedValues(prevValues = [], nextValue, atIndex) {
   const nextValues = [...prevValues];
-  return ((nextValues[atIndex] = nextValue), nextValues.sort((a, b) => a - b));
+  return (nextValues[atIndex] = nextValue), nextValues.sort((a, b) => a - b);
 }
 __name(getNextSortedValues, "getNextSortedValues");
 function convertValueToPercentage(value, min2, max2) {
@@ -47314,17 +47307,17 @@ var SliderImpl = React66.forwardRef((props, forwardedRef) => {
       const target = event.target,
         thumbIndex = context2.thumbs.get(target),
         isStartingOnThumb = thumbIndex !== void 0;
-      (isWeb &&
+      isWeb &&
         target instanceof HTMLElement &&
         context2.thumbs.has(target) &&
         target.focus(),
         !isWeb &&
           isStartingOnThumb &&
           (context2.valueIndexToChangeRef.current = thumbIndex),
-        onSlideStart(event, isStartingOnThumb ? "thumb" : "track"));
+        onSlideStart(event, isStartingOnThumb ? "thumb" : "track");
     }),
     onResponderMove: composeEventHandlers(props.onResponderMove, event => {
-      (event.stopPropagation(), onSlideMove(event));
+      event.stopPropagation(), onSlideMove(event);
     }),
     onResponderRelease: composeEventHandlers(
       props.onResponderRelease,
@@ -47391,17 +47384,17 @@ var SliderHorizontal = React67.forwardRef((props, forwardedRef) => {
         if (!node) return;
         let measureTm;
         const debouncedMeasure = /* @__PURE__ */ __name(() => {
-            (clearTimeout(measureTm),
+            clearTimeout(measureTm),
               (measureTm = setTimeout(() => {
                 measure();
-              }, 200)));
+              }, 200));
           }, "debouncedMeasure"),
           io = new IntersectionObserver(
             entries => {
-              (debouncedMeasure(),
+              debouncedMeasure(),
                 entries?.[0].isIntersecting
                   ? activeSliderMeasureListeners.add(debouncedMeasure)
-                  : activeSliderMeasureListeners.delete(debouncedMeasure));
+                  : activeSliderMeasureListeners.delete(debouncedMeasure);
             },
             {
               root: null,
@@ -47413,8 +47406,8 @@ var SliderHorizontal = React67.forwardRef((props, forwardedRef) => {
         return (
           io.observe(node),
           () => {
-            (activeSliderMeasureListeners.delete(debouncedMeasure),
-              io.disconnect());
+            activeSliderMeasureListeners.delete(debouncedMeasure),
+              io.disconnect();
           }
         );
       }, [])),
@@ -47462,12 +47455,12 @@ function useOnDebouncedWindowResize(callback, amt = 200) {
   React67.useEffect(() => {
     let last;
     const onResize = /* @__PURE__ */ __name(() => {
-      (clearTimeout(last), (last = setTimeout(callback, amt)));
+      clearTimeout(last), (last = setTimeout(callback, amt));
     }, "onResize");
     return (
       window.addEventListener("resize", onResize),
       () => {
-        (clearTimeout(last), window.removeEventListener("resize", onResize));
+        clearTimeout(last), window.removeEventListener("resize", onResize);
       }
     );
   }, []);
@@ -47766,8 +47759,7 @@ var SliderComponent = React67.forwardRef((props, forwardedRef) => {
       defaultProp: defaultValue2,
       transition: true,
       onChange: /* @__PURE__ */ __name(value2 => {
-        (updateThumbFocus(valueIndexToChangeRef.current),
-          onValueChange(value2));
+        updateThumbFocus(valueIndexToChangeRef.current), onValueChange(value2);
       }, "onChange"),
     });
   isWeb &&
@@ -47795,8 +47787,8 @@ var SliderComponent = React67.forwardRef((props, forwardedRef) => {
   }
   __name(updateThumbFocus, "updateThumbFocus");
   function handleSlideMove(value2, event) {
-    (updateValues(value2, valueIndexToChangeRef.current),
-      onSlideMove?.(event, value2));
+    updateValues(value2, valueIndexToChangeRef.current),
+      onSlideMove?.(event, value2);
   }
   __name(handleSlideMove, "handleSlideMove");
   function updateValues(value2, atIndex) {
@@ -47904,9 +47896,13 @@ var BubbleInput3 = /* @__PURE__ */ __name(props => {
         const event = new Event("click", {
           bubbles,
         });
-        (setChecked.call(input, checked), input.dispatchEvent(event));
+        setChecked.call(input, checked), input.dispatchEvent(event);
       }
-    }, [prevChecked, checked, bubbles]), // @ts-ignore
+    }, [
+      prevChecked,
+      checked,
+      bubbles,
+    ]), // @ts-ignore
     /* @__PURE__ */ (0, import_jsx_runtime56.jsx)("input", {
       type: "checkbox",
       "aria-hidden": true,
@@ -47951,13 +47947,13 @@ function useSwitch(props, [checked, setChecked], ref) {
           : {}),
         "aria-labelledby": ariaLabelledBy,
         onPress: composeEventHandlers(props.onPress, event => {
-          (setChecked(prevChecked => !prevChecked),
+          setChecked(prevChecked => !prevChecked),
             isWeb &&
               isFormControl &&
               ((hasConsumerStoppedPropagationRef.current =
                 event.isPropagationStopped()),
               hasConsumerStoppedPropagationRef.current ||
-                event.stopPropagation()));
+                event.stopPropagation());
         }),
       },
       switchRef: composedRefs,
@@ -48083,7 +48079,7 @@ function createSwitch(createProps) {
     Frame: Frame2 = SwitchFrame,
     Thumb: Thumb2 = SwitchThumb,
   } = createProps;
-  (process.env.NODE_ENV === "development" &&
+  process.env.NODE_ENV === "development" &&
     ((Frame2 !== SwitchFrame &&
       Frame2.staticConfig.context &&
       Frame2.staticConfig.context !== SwitchStyledContext) ||
@@ -48094,7 +48090,7 @@ function createSwitch(createProps) {
       "Warning: createSwitch() needs to control context to pass checked state from Frame to Thumb, any custom context passed will be overridden.",
     ),
     (Frame2.staticConfig.context = SwitchStyledContext),
-    (Thumb2.staticConfig.context = SwitchStyledContext));
+    (Thumb2.staticConfig.context = SwitchStyledContext);
   const SwitchThumbComponent = Thumb2.styleable(function (props, forwardedRef) {
       const {
           size: sizeProp,
@@ -48389,8 +48385,7 @@ function createTabs(createProps) {
       return (
         React70.useEffect(
           () => (
-            context2.registerTrigger(),
-            () => context2.unregisterTrigger()
+            context2.registerTrigger(), () => context2.unregisterTrigger()
           ),
           [],
         ),
@@ -48669,8 +48664,8 @@ function _mutateTheme(props) {
 __name(_mutateTheme, "_mutateTheme");
 function updateThemeConfig(themeName, theme) {
   const config = (0, import_web19.getConfig)();
-  ((config.themes[themeName] = theme),
-    (0, import_web19.updateConfig)("themes", config.themes));
+  (config.themes[themeName] = theme),
+    (0, import_web19.updateConfig)("themes", config.themes);
 }
 __name(updateThemeConfig, "updateThemeConfig");
 function updateThemeStates() {
@@ -48689,8 +48684,8 @@ function insertThemeCSS(themes, batch = false) {
         hasDarkLight: true,
         theme,
       });
-    ((cssRules = [...cssRules, ...rules]),
-      batch || updateStyle(`t_theme_style_${themeName}`, rules));
+    (cssRules = [...cssRules, ...rules]),
+      batch || updateStyle(`t_theme_style_${themeName}`, rules);
   }
   if (batch) {
     const id =
@@ -48705,7 +48700,7 @@ __name(insertThemeCSS, "insertThemeCSS");
 function updateStyle(id, rules) {
   const existing = document.querySelector(`#${id}`),
     style = document.createElement("style");
-  ((style.id = id),
+  (style.id = id),
     style.appendChild(
       document.createTextNode(
         rules.join(`
@@ -48713,7 +48708,7 @@ function updateStyle(id, rules) {
       ),
     ),
     document.head.appendChild(style),
-    existing && existing.parentElement?.removeChild(existing));
+    existing && existing.parentElement?.removeChild(existing);
 }
 __name(updateStyle, "updateStyle");
 
@@ -49272,7 +49267,7 @@ var TooltipComponent = React73.forwardRef(function (props, ref) {
     }),
     id = props.groupId,
     onOpenChange = (0, import_core50.useEvent)(open2 => {
-      (open2 && setCurrentId(id), setOpen(open2));
+      open2 && setCurrentId(id), setOpen(open2);
     });
   React73.useEffect(() => {
     if (!open || disableAutoCloseOnScroll || typeof document > "u") return;
@@ -49283,8 +49278,8 @@ var TooltipComponent = React73.forwardRef(function (props, ref) {
       setOpens.add(setOpen),
       document.documentElement.addEventListener("scroll", closeIt),
       () => {
-        (setOpens.delete(setOpen),
-          document.documentElement.removeEventListener("scroll", closeIt));
+        setOpens.delete(setOpen),
+          document.documentElement.removeEventListener("scroll", closeIt);
       }
     );
   }, [open, disableAutoCloseOnScroll]);
@@ -49507,7 +49502,7 @@ __name(getWindowSize, "getWindowSize");
 var cbs = /* @__PURE__ */ new Set();
 if (isClient) {
   let flushUpdate = /* @__PURE__ */ __name(function () {
-      ((lastUpdate = Date.now()), cbs.forEach(cb => cb(getWindowSize())));
+      (lastUpdate = Date.now()), cbs.forEach(cb => cb(getWindowSize()));
     }, "flushUpdate"),
     lastUpdate = Date.now(),
     tm;
@@ -49525,7 +49520,7 @@ if (isClient) {
   window.addEventListener("resize", onResize);
 }
 function subscribe2(cb) {
-  return (cbs.add(cb), () => cbs.delete(cb));
+  return cbs.add(cb), () => cbs.delete(cb);
 }
 __name(subscribe2, "subscribe");
 
@@ -49677,9 +49672,8 @@ var Anchor = AnchorFrame.styleable(({ href, target, ...props }, ref) =>
         }
       : {
           onPress: /* @__PURE__ */ __name(event => {
-            (props.onPress?.(event),
-              href !== void 0 &&
-                import_react_native_web8.Linking.openURL(href));
+            props.onPress?.(event),
+              href !== void 0 && import_react_native_web8.Linking.openURL(href);
           }, "onPress"),
         }),
     ref,

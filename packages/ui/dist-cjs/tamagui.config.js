@@ -1,4 +1,3 @@
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.tamaguiConfig = void 0;
 const v3_1 = require("@tamagui/config/v3");

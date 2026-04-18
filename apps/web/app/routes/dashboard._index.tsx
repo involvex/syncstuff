@@ -225,7 +225,7 @@ export default function DashboardIndex() {
   ];
 
   return (
-    <YStack space="$8" className="text-on-background">
+    <YStack className="text-on-background" space="$8">
       {/* Stats Cards */}
       <XStack flexWrap="wrap" space="$6">
         {statCards.map(card => (
@@ -242,14 +242,14 @@ export default function DashboardIndex() {
         {/* User Profile Card */}
         <Card
           bordered
+          className="bg-surface border-border"
           elevate
           flex={1}
           minWidth={300}
-          className="bg-surface border-border"
         >
           <View padding="$4">
             <XStack alignItems="center" justifyContent="space-between">
-              <Text fontSize="$4" fontWeight="bold" className="text-on-surface">
+              <Text className="text-on-surface" fontSize="$4" fontWeight="bold">
                 Account Overview
               </Text>
               <Link style={{ textDecoration: "none" }} to="/dashboard/settings">
@@ -264,8 +264,8 @@ export default function DashboardIndex() {
             <XStack alignItems="center" space="$4">
               <View
                 alignItems="center"
-                className="bg-primary"
                 borderRadius="$4"
+                className="bg-primary"
                 height={48}
                 justifyContent="center"
                 width={48}
@@ -279,7 +279,7 @@ export default function DashboardIndex() {
                 </Text>
               </View>
               <YStack>
-                <Text fontWeight="bold" className="text-on-surface">
+                <Text className="text-on-surface" fontWeight="bold">
                   {user?.full_name || user?.username || "Sync User"}
                 </Text>
                 <Text className="text-color-subtitle" fontSize="$2">
@@ -290,8 +290,8 @@ export default function DashboardIndex() {
 
             <XStack space="$4">
               <YStack
-                className="bg-surface-variant"
                 borderRadius="$3"
+                className="bg-surface-variant"
                 flex={1}
                 padding="$4"
               >
@@ -307,8 +307,8 @@ export default function DashboardIndex() {
                 </Text>
               </YStack>
               <YStack
-                className="bg-surface-variant"
                 borderRadius="$3"
+                className="bg-surface-variant"
                 flex={1}
                 padding="$4"
               >
@@ -334,14 +334,14 @@ export default function DashboardIndex() {
         {/* Recent Activity Card */}
         <Card
           bordered
+          className="bg-surface border-border"
           elevate
           flex={2}
           minWidth={400}
-          className="bg-surface border-border"
         >
           <View padding="$4">
             <XStack alignItems="center" justifyContent="space-between">
-              <Text fontSize="$4" fontWeight="bold" className="text-on-surface">
+              <Text className="text-on-surface" fontSize="$4" fontWeight="bold">
                 Recent Activity
               </Text>
               <Button size="sm" variant="outline">
@@ -368,7 +368,7 @@ export default function DashboardIndex() {
                 >
                   <Text fontSize="$6">{item.icon || "📋"}</Text>
                   <YStack flex={1}>
-                    <Text fontWeight="bold" className="text-on-surface">
+                    <Text className="text-on-surface" fontWeight="bold">
                       {item.description}
                     </Text>
                     <Text
@@ -392,10 +392,10 @@ export default function DashboardIndex() {
       {/* Quick Actions */}
       <YStack space="$4">
         <Text
+          className="text-on-surface"
           fontSize="$4"
           fontWeight="bold"
           paddingHorizontal="$1"
-          className="text-on-surface"
         >
           Instant Operations
         </Text>
@@ -413,8 +413,8 @@ export default function DashboardIndex() {
                 <YStack space="$3">
                   <View
                     alignItems="center"
-                    className={action.color}
                     borderRadius="$3"
+                    className={action.color}
                     height={48}
                     justifyContent="center"
                     width={48}
@@ -422,7 +422,7 @@ export default function DashboardIndex() {
                     {action.icon}
                   </View>
                   <YStack>
-                    <Text fontWeight="bold" className="text-on-surface">
+                    <Text className="text-on-surface" fontWeight="bold">
                       {action.name}
                     </Text>
                     <Text className="text-color-subtitle" fontSize="$2">

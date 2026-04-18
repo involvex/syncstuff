@@ -7,10 +7,10 @@ export const ThemeToggle = () => {
 
   return (
     <Button
-      variant="ghost"
-      onClick={toggleTheme}
-      className="w-10 h-10 p-0 rounded-full"
       aria-label="Toggle theme"
+      className="w-10 h-10 p-0 rounded-full"
+      onClick={toggleTheme}
+      variant="ghost"
     >
       {theme === "dark"
         ? (Sun({ className: "h-5 w-5 text-yellow-500" }) as React.ReactElement)

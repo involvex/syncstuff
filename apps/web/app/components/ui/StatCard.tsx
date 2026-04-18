@@ -1,4 +1,4 @@
-import { type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { Card, CardContent } from "./Card";
 
 interface StatCardProps {
@@ -12,8 +12,8 @@ export function StatCard({ title, value, icon, description }: StatCardProps) {
   return (
     <Card
       bordered
-      elevate
       className="bg-surface border-border min-w-[200px] flex-1"
+      elevate
     >
       <CardContent className="p-6">
         <div className="flex items-center justify-between space-x-4">

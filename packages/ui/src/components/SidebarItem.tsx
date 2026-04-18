@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 import { Text } from "../Typography";
 import { cn } from "../utils";
 
@@ -17,12 +17,12 @@ export function SidebarItem({
 }: SidebarItemProps) {
   return (
     <div
-      onClick={onClick}
       className={cn(
         "flex flex-row items-center gap-3 px-4 py-3 rounded-lg cursor-pointer transition-colors",
         "hover:bg-slate-100 dark:hover:bg-slate-800",
         active && "bg-blue-50 dark:bg-blue-900/20",
       )}
+      onClick={onClick}
     >
       {icon && (
         <div className="shrink-0 text-slate-500 dark:text-slate-400">

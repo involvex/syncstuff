@@ -268,7 +268,7 @@ export default function Settings() {
     <YStack space="$8">
       {/* Page Header */}
       <YStack space="$2">
-        <Text fontSize="$8" fontWeight="bold" className="text-on-surface">
+        <Text className="text-on-surface" fontSize="$8" fontWeight="bold">
           Settings
         </Text>
         <Text className="text-color-subtitle" fontSize="$3">
@@ -277,10 +277,10 @@ export default function Settings() {
       </YStack>
 
       {/* Profile Section */}
-      <Card bordered elevate padding="$6" className="bg-surface border-border">
+      <Card bordered className="bg-surface border-border" elevate padding="$6">
         <YStack space="$6">
           <YStack space="$2">
-            <Text fontSize="$6" fontWeight="bold" className="text-on-surface">
+            <Text className="text-on-surface" fontSize="$6" fontWeight="bold">
               Profile Information
             </Text>
             <Text className="text-color-subtitle" fontSize="$2">
@@ -292,8 +292,8 @@ export default function Settings() {
             <Avatar className="size-10 rounded-full">
               <View
                 alignItems="center"
-                className="bg-primary"
                 bottom={0}
+                className="bg-primary"
                 justifyContent="center"
                 left={0}
                 position="absolute"
@@ -325,9 +325,9 @@ export default function Settings() {
               <XStack flexWrap="wrap" space="$4">
                 <YStack flex={1} minWidth={200} space="$2">
                   <Text
+                    className="text-on-surface"
                     fontSize="$2"
                     fontWeight="bold"
-                    className="text-on-surface"
                   >
                     Username
                   </Text>
@@ -339,9 +339,9 @@ export default function Settings() {
                 </YStack>
                 <YStack flex={1} minWidth={200} space="$2">
                   <Text
+                    className="text-on-surface"
                     fontSize="$2"
                     fontWeight="bold"
-                    className="text-on-surface"
                   >
                     Email Address
                   </Text>
@@ -355,9 +355,9 @@ export default function Settings() {
 
               <YStack space="$2">
                 <Text
+                  className="text-on-surface"
                   fontSize="$2"
                   fontWeight="bold"
-                  className="text-on-surface"
                 >
                   Display Name
                 </Text>
@@ -381,10 +381,10 @@ export default function Settings() {
       </Card>
 
       {/* Password Section */}
-      <Card bordered elevate padding="$6" className="bg-surface border-border">
+      <Card bordered className="bg-surface border-border" elevate padding="$6">
         <YStack space="$6">
           <YStack space="$2">
-            <Text fontSize="$6" fontWeight="bold" className="text-on-surface">
+            <Text className="text-on-surface" fontSize="$6" fontWeight="bold">
               Security
             </Text>
             <Text className="text-color-subtitle" fontSize="$2">
@@ -400,17 +400,17 @@ export default function Settings() {
               {hasPassword && (
                 <YStack space="$2">
                   <Text
+                    className="text-on-surface"
                     fontSize="$2"
                     fontWeight="bold"
-                    className="text-on-surface"
                   >
                     Current Password
                   </Text>
                   <Input
+                    className="bg-surface text-on-surface border-input"
                     id="current_password"
                     name="current_password"
                     type="password"
-                    className="bg-surface text-on-surface border-input"
                   />
                 </YStack>
               )}
@@ -418,32 +418,32 @@ export default function Settings() {
               <XStack flexWrap="wrap" space="$4">
                 <YStack flex={1} minWidth={200} space="$2">
                   <Text
+                    className="text-on-surface"
                     fontSize="$2"
                     fontWeight="bold"
-                    className="text-on-surface"
                   >
                     {hasPassword ? "New Password" : "Password"}
                   </Text>
                   <Input
+                    className="bg-surface text-on-surface border-input"
                     id="new_password"
                     name="new_password"
                     type="password"
-                    className="bg-surface text-on-surface border-input"
                   />
                 </YStack>
                 <YStack flex={1} minWidth={200} space="$2">
                   <Text
+                    className="text-on-surface"
                     fontSize="$2"
                     fontWeight="bold"
-                    className="text-on-surface"
                   >
                     Confirm Password
                   </Text>
                   <Input
+                    className="bg-surface text-on-surface border-input"
                     id="confirm_password"
                     name="confirm_password"
                     type="password"
-                    className="bg-surface text-on-surface border-input"
                   />
                 </YStack>
               </XStack>
@@ -475,8 +475,8 @@ export default function Settings() {
 
       {/* Danger Zone */}
       <Card
-        className="border-error bg-surface shadow-sm"
         bordered
+        className="border-error bg-surface shadow-sm"
         elevate
         padding="$6"
       >
@@ -520,7 +520,7 @@ export default function Settings() {
                 }}
               >
                 <input name="intent" type="hidden" value="delete_account" />
-                <Button variant="destructive" type="submit">
+                <Button type="submit" variant="destructive">
                   Delete Account
                 </Button>
               </Form>

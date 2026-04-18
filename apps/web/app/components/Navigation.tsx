@@ -50,11 +50,11 @@ export default function Navigation({ isLoggedIn = false }: NavigationProps) {
           )}
 
           <button
-            type="button"
             aria-controls="navbar-sticky"
             aria-expanded={isMenuOpen}
             className="text-onSurface hover:bg-surfaceVariant focus:ring-outlineVariant inline-flex size-10 items-center justify-center rounded-lg p-2 text-sm focus:ring-2 focus:outline-none md:hidden"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            type="button"
           >
             <span className="sr-only">Open main menu</span>
             <svg

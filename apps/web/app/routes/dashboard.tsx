@@ -170,7 +170,7 @@ export default function DashboardLayout() {
         </div>
 
         <Form action="/auth/logout" method="post">
-          <Button variant="destructive" className="w-full">
+          <Button className="w-full" variant="destructive">
             Sign out
           </Button>
         </Form>

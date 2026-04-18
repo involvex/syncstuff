@@ -98,8 +98,8 @@ export default function Signup() {
             )}
 
             <Button
-              disabled={isSubmitting}
               className="w-full bg-blue-600 text-white hover:bg-blue-700"
+              disabled={isSubmitting}
             >
               {isSubmitting ? "Creating account..." : "Sign up"}
             </Button>

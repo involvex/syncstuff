@@ -121,40 +121,40 @@ export default function Login() {
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
               <label
-                htmlFor="email"
                 className="text-on-surface text-sm font-bold"
+                htmlFor="email"
               >
                 Email Address
               </label>
               <Input
+                className="bg-surface border-border text-on-surface"
                 id="email"
                 name="email"
                 placeholder="john@example.com"
-                className="bg-surface border-border text-on-surface"
               />
             </div>
 
             <div className="flex flex-col gap-2">
               <div className="flex justify-between">
                 <label
-                  htmlFor="password"
                   className="text-on-surface text-sm font-bold"
+                  htmlFor="password"
                 >
                   Password
                 </label>
                 <Link
+                  className="text-color-primary text-sm font-bold hover:underline"
                   style={{ textDecoration: "none" }}
                   to="/auth/forgot-password"
-                  className="text-color-primary text-sm font-bold hover:underline"
                 >
                   Forgot password?
                 </Link>
               </div>
               <Input
+                className="bg-surface border-border text-on-surface"
                 id="password"
                 name="password"
                 type="password"
-                className="bg-surface border-border text-on-surface"
               />
             </div>
 
@@ -165,9 +165,9 @@ export default function Login() {
             )}
 
             <Button
+              className="bg-primary hover:bg-primary/90 text-primary-foreground w-full"
               disabled={isSubmitting}
               isLoading={isSubmitting}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground w-full"
             >
               {isSubmitting ? "Signing in..." : "Sign in"}
             </Button>
@@ -186,8 +186,8 @@ export default function Login() {
           <div className="flex gap-3">
             <Button
               className="flex-1 border border-gray-300"
-              variant="outline"
               onClick={() => (window.location.href = "/auth/github")}
+              variant="outline"
             >
               <span className="mr-2 text-xl">🐙</span> GitHub
             </Button>

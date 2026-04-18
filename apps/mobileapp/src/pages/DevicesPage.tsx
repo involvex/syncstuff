@@ -70,6 +70,7 @@ const DevicesPage: React.FC = () => {
   );
 
   // Auto-set pairing device if an inbound request arrives
+
   useEffect(() => {
     const pendingRequest = pairingRequests.find(r => r.status === "pending");
     if (pendingRequest && !pairingDevice) {

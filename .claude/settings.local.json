@@ -154,10 +154,7 @@
     ]
   },
   "enableAllProjectMcpServers": true,
-  "enabledMcpjsonServers": [
-    "cloudflare-builds",
-    "chrome-devtools"
-  ],
+  "enabledMcpjsonServers": ["cloudflare-builds", "chrome-devtools"],
   "hooks": {
     "UserPromptSubmit": [
       {

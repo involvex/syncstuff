@@ -1,8 +1,9 @@
 import * as React from "react";
-import { cn, extractLayoutProps, TamaguiProps } from "./utils";
+import { cn, extractLayoutProps, type TamaguiProps } from "./utils";
 
 export interface SwitchProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>, TamaguiProps {
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    TamaguiProps {
   checked?: boolean;
   onCheckedChange?: (checked: boolean) => void;
   size?: string; // Shim for compatibility
@@ -13,17 +14,17 @@ const SwitchComponent = React.forwardRef<HTMLButtonElement, SwitchProps>(
     const { style: layoutStyle, restProps } = extractLayoutProps(props);
     return (
       <button
-        type="button"
-        role="switch"
         aria-checked={checked}
-        ref={ref}
-        onClick={() => onCheckedChange?.(!checked)}
         className={cn(
           "peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-950 disabled:cursor-not-allowed disabled:opacity-50",
           checked ? "bg-blue-600" : "bg-slate-200 dark:bg-slate-700",
           className,
         )}
+        onClick={() => onCheckedChange?.(!checked)}
+        ref={ref}
+        role="switch"
         style={{ ...layoutStyle, ...style }}
+        type="button"
         {...restProps}
       >
         <span

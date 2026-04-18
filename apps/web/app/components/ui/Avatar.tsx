@@ -11,15 +11,15 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
   ({ className, src, alt, fallback, ...props }, ref) => {
     return (
       <div
-        ref={ref}
         className={cn(
           "bg-surface-variant relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full",
           className,
         )}
+        ref={ref}
         {...props}
       >
         {src ? (
-          <img className="aspect-square h-full w-full" src={src} alt={alt} />
+          <img alt={alt} className="aspect-square h-full w-full" src={src} />
         ) : (
           <div className="bg-primary flex h-full w-full items-center justify-center font-bold text-white">
             {fallback || "U"}

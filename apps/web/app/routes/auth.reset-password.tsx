@@ -175,7 +175,7 @@ export default function ResetPassword() {
               style={{ textDecoration: "none", width: "100%" }}
               to="/auth/login"
             >
-              <Button variant="outline" className="w-full">
+              <Button className="w-full" variant="outline">
                 Back to Login
               </Button>
             </Link>
@@ -228,8 +228,8 @@ export default function ResetPassword() {
             </div>
 
             <Button
-              disabled={isSubmitting}
               className="w-full bg-blue-600 text-white hover:bg-blue-700"
+              disabled={isSubmitting}
             >
               {isSubmitting ? "Resetting..." : "Reset Password"}
             </Button>

@@ -1,3 +1,4 @@
+import { NativeBiometric } from "@capgo/capacitor-native-biometric";
 import {
   IonCard,
   IonCardContent,
@@ -11,10 +12,9 @@ import {
   IonToggle,
   useIonToast,
 } from "@ionic/react";
-import { lockClosedOutline, fingerPrintOutline } from "ionicons/icons";
+import { fingerPrintOutline, lockClosedOutline } from "ionicons/icons";
 import type React from "react";
 import { useSettingsStore } from "../../store/settings.store";
-import { NativeBiometric } from "@capgo/capacitor-native-biometric";
 
 export const SecuritySettings: React.FC = () => {
   const { biometricLock, setBiometricLock } = useSettingsStore();

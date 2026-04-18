@@ -65,6 +65,7 @@ export const CloudFileBrowser: React.FC<CloudFileBrowserProps> = ({
     [account.provider],
   );
 
+  // Load files on mount
   useEffect(() => {
     loadFiles();
   }, [loadFiles]);

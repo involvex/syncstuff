@@ -10,7 +10,7 @@ import {
 } from "@remix-run/react";
 import { Provider } from "@syncstuff/ui";
 
-import React from "react";
+import type React from "react";
 import Navigation from "~/components/Navigation";
 import { getSession } from "~/services/session.server";
 import "./tailwind.css";

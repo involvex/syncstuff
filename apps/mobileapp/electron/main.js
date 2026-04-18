@@ -14,6 +14,7 @@ import unhandled from "electron-unhandled";
 import fs from "fs";
 import * as path from "path";
 import { fileURLToPath } from "url";
+
 unhandled();
 let mainWindow = null;
 let tray = null;

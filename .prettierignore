@@ -22,3 +22,6 @@ node_modules
 .kilocode
 .turbo
 .mira
+apps\web\.tamagui
+packages\ui\.tamagui
+*/*/.tamagui

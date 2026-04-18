@@ -296,8 +296,8 @@ const ClipboardPage: React.FC = () => {
                   <XStack space="$2">
                     {[500, 1000, 2000, 5000].map(val => (
                       <Button
-                        key={val}
                         flex={1}
+                        key={val}
                         onPress={() => handleIntervalChange(val.toString())}
                         size="sm"
                         theme={
