@@ -12,11 +12,9 @@ export const ThemeToggle = () => {
       className="w-10 h-10 p-0 rounded-full"
       aria-label="Toggle theme"
     >
-      {theme === "dark" ? (
-        <Sun className="h-5 w-5 text-yellow-500" />
-      ) : (
-        <Moon className="h-5 w-5 text-slate-700" />
-      )}
+      {theme === "dark"
+        ? (Sun({ className: "h-5 w-5 text-yellow-500" }) as React.ReactElement)
+        : (Moon({ className: "h-5 w-5 text-slate-700" }) as React.ReactElement)}
     </Button>
   );
 };

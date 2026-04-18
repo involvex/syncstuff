@@ -23,6 +23,7 @@ let package = Package(
         .package(name: "CapacitorPushNotifications", path: "..\..\..\..\..\node_modules\.pnpm\@capacitor+push-notifications@8.0.0_@capacitor+core@8.0.0\node_modules\@capacitor\push-notifications"),
         .package(name: "CapacitorShare", path: "..\..\..\..\..\node_modules\.pnpm\@capacitor+share@8.0.0_@capacitor+core@8.0.0\node_modules\@capacitor\share"),
         .package(name: "CapacitorStatusBar", path: "..\..\..\..\..\node_modules\.pnpm\@capacitor+status-bar@8.0.0_@capacitor+core@8.0.0\node_modules\@capacitor\status-bar"),
+        .package(name: "CapgoCapacitorNativeBiometric", path: "..\..\..\..\..\node_modules\.pnpm\@capgo+capacitor-native-bio_6654866d8184096ea0dbfc7a3c2919ab\node_modules\@capgo\capacitor-native-biometric"),
         .package(name: "CapacitorNativeSettings", path: "..\..\..\..\..\node_modules\.pnpm\capacitor-native-settings@7.0.2_@capacitor+core@8.0.0\node_modules\capacitor-native-settings")
     ],
     targets: [
@@ -42,6 +43,7 @@ let package = Package(
                 .product(name: "CapacitorPushNotifications", package: "CapacitorPushNotifications"),
                 .product(name: "CapacitorShare", package: "CapacitorShare"),
                 .product(name: "CapacitorStatusBar", package: "CapacitorStatusBar"),
+                .product(name: "CapgoCapacitorNativeBiometric", package: "CapgoCapacitorNativeBiometric"),
                 .product(name: "CapacitorNativeSettings", package: "CapacitorNativeSettings")
             ]
         )

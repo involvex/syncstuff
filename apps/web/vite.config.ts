@@ -1,11 +1,7 @@
-import {
-  cloudflareDevProxyVitePlugin,
-  vitePlugin as remix,
-} from "@remix-run/dev";
+import { vitePlugin as remix } from "@remix-run/dev";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
-import { getLoadContext } from "./load-context";
 import { reactNativeSvgAlias } from "./react-native-svg-alias.mjs";
 
 declare module "@remix-run/cloudflare" {
@@ -20,9 +16,6 @@ export default defineConfig(async () => {
     plugins: [
       reactNativeSvgAlias(),
       tailwindcss(),
-      cloudflareDevProxyVitePlugin({
-        getLoadContext,
-      }),
       remix({
         ssr: true,
         future: {

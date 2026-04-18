@@ -10,7 +10,11 @@ interface StatCardProps {
 
 export function StatCard({ title, value, icon, description }: StatCardProps) {
   return (
-    <Card bordered elevate className="bg-surface border-border flex-1 min-w-[200px]">
+    <Card
+      bordered
+      elevate
+      className="bg-surface border-border min-w-[200px] flex-1"
+    >
       <CardContent className="p-6">
         <div className="flex items-center justify-between space-x-4">
           <div className="flex items-center space-x-4">
@@ -20,10 +24,10 @@ export function StatCard({ title, value, icon, description }: StatCardProps) {
               </div>
             )}
             <div>
-              <p className="text-sm font-medium text-color-subtitle">{title}</p>
-              <h3 className="text-2xl font-bold text-on-surface">{value}</h3>
+              <p className="text-color-subtitle text-sm font-medium">{title}</p>
+              <h3 className="text-on-surface text-2xl font-bold">{value}</h3>
               {description && (
-                <p className="text-xs text-color-subtitle">{description}</p>
+                <p className="text-color-subtitle text-xs">{description}</p>
               )}
             </div>
           </div>

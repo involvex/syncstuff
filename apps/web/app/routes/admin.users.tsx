@@ -95,16 +95,20 @@ export default function AdminUsers() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-1">
-        <h1 className="text-3xl font-bold text-on-surface">Users</h1>
+        <h1 className="text-on-surface text-3xl font-bold">Users</h1>
         <p className="text-color-subtitle">
           A list of all the users in your account.
         </p>
       </div>
 
-      <Card bordered elevate className="bg-surface border-border overflow-hidden">
+      <Card
+        bordered
+        elevate
+        className="bg-surface border-border overflow-hidden"
+      >
         <CardContent className="p-0">
           {/* Header */}
-          <div className="bg-surface-variant grid grid-cols-12 gap-4 border-b border-border p-4 text-xs font-bold text-on-surface uppercase">
+          <div className="bg-surface-variant border-border text-on-surface grid grid-cols-12 gap-4 border-b p-4 text-xs font-bold uppercase">
             <div className="col-span-3">Username</div>
             <div className="col-span-4 hidden sm:block">Email</div>
             <div className="col-span-2">Role</div>
@@ -119,18 +123,18 @@ export default function AdminUsers() {
           ) : (
             users.map((user: any) => (
               <div
-                className="grid grid-cols-12 items-center gap-4 border-b border-border p-4 transition-colors hover:bg-surface-hover last:border-0"
+                className="border-border hover:bg-surface-hover grid grid-cols-12 items-center gap-4 border-b p-4 transition-colors last:border-0"
                 key={user.id}
               >
                 <div className="col-span-3 flex flex-col">
-                  <span className="font-bold text-on-surface">
+                  <span className="text-on-surface font-bold">
                     {user.username}
                   </span>
-                  <span className="block text-xs text-color-subtitle sm:hidden">
+                  <span className="text-color-subtitle block text-xs sm:hidden">
                     {user.email}
                   </span>
                 </div>
-                <div className="col-span-4 hidden truncate text-on-surface sm:block">
+                <div className="text-on-surface col-span-4 hidden truncate sm:block">
                   {user.email}
                 </div>
                 <div className="col-span-2">
@@ -140,7 +144,9 @@ export default function AdminUsers() {
                 </div>
                 <div className="col-span-2">
                   <Badge
-                    variant={user.status === "active" ? "success" : "destructive"}
+                    variant={
+                      user.status === "active" ? "success" : "destructive"
+                    }
                     className="capitalize"
                   >
                     {user.status}

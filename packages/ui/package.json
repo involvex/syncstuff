@@ -17,13 +17,7 @@
     },
     "./dist-cjs/tamagui.config.cjs": "./dist-cjs/tamagui.config.cjs"
   },
-  "files": [
-    "dist",
-    "dist-cjs",
-    "src",
-    "package.json",
-    "README.md"
-  ],
+  "files": ["dist", "dist-cjs", "src", "package.json", "README.md"],
   "scripts": {
     "build": "tsc && tsc --project tsconfig.cjs.json && node copy-css.mjs && node copy-config-cjs.mjs",
     "lint": "eslint .",
@@ -41,17 +35,21 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@eslint/js": "9.39.2",
-    "@eslint/json": "0.14.0",
+    "@eslint/js": "^9.39.2",
+    "@eslint/json": "^0.14.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "@types/react-native": "^0.73.0",
-    "eslint": "9.39.2",
-    "glob": "13.0.0",
-    "globals": "17.0.0",
-    "prettier": "3.7.4",
+    "eslint": "^9.39.2",
+    "glob": "^13.0.0",
+    "globals": "^17.5.0",
+    "prettier": "^3.7.4",
     "react-native": "^0.83.1",
     "typescript": "^5.9.3",
-    "typescript-eslint": "8.52.0"
+    "typescript-eslint": "^8.52.0"
+  },
+  "overrides": {
+    "@types/react": "18.2.0",
+    "@types/react-dom": "18.2.0"
   }
 }

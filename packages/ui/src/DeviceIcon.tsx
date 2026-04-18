@@ -22,23 +22,18 @@ export interface DeviceIconProps {
   color?: string;
 }
 
-export function DeviceIcon({ type, size = 24, color }: DeviceIconProps) {
-  const iconProps = { size: Number(size), color };
+const icons = {
+  mobile: Smartphone,
+  tablet: Tablet,
+  desktop: Monitor,
+  laptop: Laptop,
+  tv: Tv,
+  cli: Terminal,
+  unknown: Smartphone,
+} as const;
 
-  switch (type) {
-    case "mobile":
-      return <Smartphone {...iconProps} />;
-    case "tablet":
-      return <Tablet {...iconProps} />;
-    case "desktop":
-      return <Monitor {...iconProps} />;
-    case "laptop":
-      return <Laptop {...iconProps} />;
-    case "tv":
-      return <Tv {...iconProps} />;
-    case "cli":
-      return <Terminal {...iconProps} />;
-    default:
-      return <Smartphone {...iconProps} />;
-  }
+export function DeviceIcon({ type, size = 24, color }: DeviceIconProps) {
+  const Icon = icons[type] ?? icons.unknown;
+  const props = { size: Number(size), color };
+  return Icon(props) as React.ReactElement;
 }

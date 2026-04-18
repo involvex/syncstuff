@@ -12,14 +12,7 @@ type GetLoadContextArgs = {
 
 declare module "@remix-run/cloudflare" {
   /* eslint-disable @typescript-eslint/no-empty-object-type */
-  /**
-   * Extend the Remix `AppLoadContext` with your own custom properties.
-   *
-   * Note: This is an empty object type. You can extend it with your own properties.
-   */
-  interface AppLoadContext extends ReturnType<typeof getLoadContext> {
-    // This will merge the result of `getLoadContext` into the `AppLoadContext`
-  }
+  interface AppLoadContext extends ReturnType<typeof getLoadContext> {}
 }
 
 export function getLoadContext({ context }: GetLoadContextArgs) {

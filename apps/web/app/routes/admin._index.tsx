@@ -182,7 +182,7 @@ export default function AdminOverview() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-1">
-        <h1 className="text-3xl font-bold text-on-surface">Admin Overview</h1>
+        <h1 className="text-on-surface text-3xl font-bold">Admin Overview</h1>
         <p className="text-color-subtitle">
           Monitor and manage your Syncstuff instance
         </p>
@@ -209,8 +209,8 @@ export default function AdminOverview() {
                 />
               </div>
               <div className="flex flex-col">
-                <span className="font-bold text-on-surface">System Status</span>
-                <span className="text-sm text-color-subtitle">
+                <span className="text-on-surface font-bold">System Status</span>
+                <span className="text-color-subtitle text-sm">
                   {stats.systemHealth === "healthy"
                     ? "All systems operational"
                     : "Issues detected"}
@@ -230,7 +230,7 @@ export default function AdminOverview() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {statCards.map((card) => (
+        {statCards.map(card => (
           <StatCard
             key={card.name}
             icon={card.icon}
@@ -242,23 +242,27 @@ export default function AdminOverview() {
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* User Status Breakdown */}
-        <Card bordered elevate className="bg-surface border-border lg:col-span-2">
+        <Card
+          bordered
+          elevate
+          className="bg-surface border-border lg:col-span-2"
+        >
           <CardContent className="p-6">
-            <h3 className="mb-4 text-lg font-bold text-on-surface">
+            <h3 className="text-on-surface mb-4 text-lg font-bold">
               User Status Breakdown
             </h3>
             <div className="flex flex-col gap-4">
-              {userStatusBreakdown.map((item) => (
+              {userStatusBreakdown.map(item => (
                 <div key={item.label} className="flex flex-col gap-1">
                   <div className="flex justify-between">
-                    <span className="font-medium text-on-surface">
+                    <span className="text-on-surface font-medium">
                       {item.label}
                     </span>
-                    <span className="text-sm text-color-subtitle">
+                    <span className="text-color-subtitle text-sm">
                       {item.value} ({item.percentage}%)
                     </span>
                   </div>
-                  <div className="h-2 w-full overflow-hidden rounded-full bg-surface-variant">
+                  <div className="bg-surface-variant h-2 w-full overflow-hidden rounded-full">
                     <div
                       className={`h-full ${item.color}`}
                       style={{ width: `${item.percentage}%` }}
@@ -273,7 +277,7 @@ export default function AdminOverview() {
         {/* Quick Actions */}
         <Card bordered elevate className="bg-surface border-border">
           <CardContent className="p-6">
-            <h3 className="mb-4 text-lg font-bold text-on-surface">
+            <h3 className="text-on-surface mb-4 text-lg font-bold">
               Quick Actions
             </h3>
             <div className="flex flex-col gap-3">
@@ -283,17 +287,11 @@ export default function AdminOverview() {
                   Manage Users
                 </Button>
               </Link>
-              <Button
-                variant="outline"
-                className="w-full justify-start gap-2"
-              >
+              <Button variant="outline" className="w-full justify-start gap-2">
                 <span className="text-xl">⚙️</span>
                 System Settings
               </Button>
-              <Button
-                variant="outline"
-                className="w-full justify-start gap-2"
-              >
+              <Button variant="outline" className="w-full justify-start gap-2">
                 <span className="text-xl">📋</span>
                 View Logs
               </Button>

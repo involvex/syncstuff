@@ -21,7 +21,7 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
         {src ? (
           <img className="aspect-square h-full w-full" src={src} alt={alt} />
         ) : (
-          <div className="bg-primary flex h-full w-full items-center justify-center text-white font-bold">
+          <div className="bg-primary flex h-full w-full items-center justify-center font-bold text-white">
             {fallback || "U"}
           </div>
         )}

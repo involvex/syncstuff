@@ -93,7 +93,7 @@ export default function AdminLayout() {
   const isLoading = navigation.state === "loading";
 
   const sidebar = (
-    <div className="flex h-full flex-col gap-4 bg-surface p-4">
+    <div className="bg-surface flex h-full flex-col gap-4 p-4">
       <Link style={{ textDecoration: "none" }} to="/">
         <h1 className="text-primary py-4 text-3xl font-bold">Admin Panel</h1>
       </Link>
@@ -102,7 +102,7 @@ export default function AdminLayout() {
         <h4 className="text-color-subtitle mb-2 px-4 text-xs font-bold uppercase">
           Admin
         </h4>
-        {navItems.map((item) => (
+        {navItems.map(item => (
           <Link
             key={item.name}
             style={{ textDecoration: "none" }}
@@ -117,13 +117,13 @@ export default function AdminLayout() {
         ))}
       </div>
 
-      <div className="my-2 border-t border-border" />
+      <div className="border-border my-2 border-t" />
 
       <div className="flex flex-col gap-1">
         <h4 className="text-color-subtitle mb-2 px-4 text-xs font-bold uppercase">
           App
         </h4>
-        {dashboardNavItems.map((item) => (
+        {dashboardNavItems.map(item => (
           <Link
             key={item.name}
             style={{ textDecoration: "none" }}
@@ -144,9 +144,9 @@ export default function AdminLayout() {
     <MainLayout sidebar={sidebar} title="Admin">
       {isLoading && (
         <div className="fixed inset-x-0 top-0 z-50">
-          <div className="h-1 bg-surface-variant">
+          <div className="bg-surface-variant h-1">
             <div
-              className="h-full bg-primary animate-progress"
+              className="bg-primary animate-progress h-full"
               style={{ width: "30%" }}
             />
           </div>
