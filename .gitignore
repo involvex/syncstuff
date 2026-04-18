@@ -148,3 +148,4 @@ packages/telemetry/.turbo
 
 tmpclaude-*-cwd
 nul
+*.log
