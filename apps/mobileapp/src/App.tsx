@@ -18,9 +18,7 @@ import {
 } from "ionicons/icons";
 import { useEffect, useState } from "react";
 import { Redirect, Route } from "react-router";
-import { BiometricLockGuard } from "./components/common/BiometricLockGuard";
 import { PermissionRequestModal } from "./components/common/PermissionRequestModal";
-import { ResponsiveLayout } from "./components/common/ResponsiveLayout";
 import { useTheme } from "./hooks/useTheme";
 import ClipboardPage from "./pages/ClipboardPage";
 import DevicesPage from "./pages/DevicesPage";
@@ -103,8 +101,9 @@ const App: React.FC = () => {
 
       // Initialize remote action service (KDE Connect features)
       try {
-        const { remoteActionService } =
-          await import("./services/remote/remote-action.service");
+        const { remoteActionService } = await import(
+          "./services/remote/remote-action.service"
+        );
         remoteActionService.initialize();
       } catch (error) {
         console.error("Failed to initialize remote actions:", error);
@@ -113,8 +112,9 @@ const App: React.FC = () => {
       // Initialize Electron sync service if in Electron
       if (isElectron()) {
         try {
-          const { electronSyncService } =
-            await import("./services/electron/sync.service");
+          const { electronSyncService } = await import(
+            "./services/electron/sync.service"
+          );
           await electronSyncService.initialize();
         } catch (error) {
           console.error("Failed to initialize Electron sync:", error);
@@ -138,8 +138,9 @@ const App: React.FC = () => {
 
       // Initialize notification sync
       try {
-        const { notificationSyncService } =
-          await import("./services/notifications/notification-sync.service");
+        const { notificationSyncService } = await import(
+          "./services/notifications/notification-sync.service"
+        );
         notificationSyncService.initialize();
       } catch (error) {
         console.error("Failed to initialize notification sync:", error);
@@ -196,49 +197,49 @@ const App: React.FC = () => {
   return (
     <Provider>
       <IonApp>
-        <BiometricLockGuard>
-          <ResponsiveLayout>
-            <IonReactRouter>
-              <IonTabs>
-                <IonRouterOutlet>
-                  <Route exact path="/devices">
-                    <DevicesPage />
-                  </Route>
-                  <Route exact path="/transfers">
-                    <TransfersPage />
-                  </Route>
-                  <Route exact path="/clipboard">
-                    <ClipboardPage />
-                  </Route>
-                  <Route exact path="/settings">
-                    <SettingsPage />
-                  </Route>
-                  <Route exact path="/">
-                    <Redirect to="/devices" />
-                  </Route>
-                </IonRouterOutlet>
-                <IonTabBar slot="bottom">
-                  <IonTabButton href="/devices" tab="devices">
-                    <IonIcon aria-hidden="true" icon={phonePortrait} />
-                    <IonLabel>Devices</IonLabel>
-                  </IonTabButton>
-                  <IonTabButton href="/transfers" tab="transfers">
-                    <IonIcon aria-hidden="true" icon={swapHorizontal} />
-                    <IonLabel>Transfers</IonLabel>
-                  </IonTabButton>
-                  <IonTabButton href="/clipboard" tab="clipboard">
-                    <IonIcon aria-hidden="true" icon={clipboard} />
-                    <IonLabel>Clipboard</IonLabel>
-                  </IonTabButton>
-                  <IonTabButton href="/settings" tab="settings">
-                    <IonIcon aria-hidden="true" icon={settings} />
-                    <IonLabel>Settings</IonLabel>
-                  </IonTabButton>
-                </IonTabBar>
-              </IonTabs>
-            </IonReactRouter>
-          </ResponsiveLayout>
-        </BiometricLockGuard>
+        {/* <BiometricLockGuard> */}
+        {/* <ResponsiveLayout> */}
+        <IonReactRouter>
+          <IonTabs>
+            <IonRouterOutlet>
+              <Route exact path="/devices">
+                <DevicesPage />
+              </Route>
+              <Route exact path="/transfers">
+                <TransfersPage />
+              </Route>
+              <Route exact path="/clipboard">
+                <ClipboardPage />
+              </Route>
+              <Route exact path="/settings">
+                <SettingsPage />
+              </Route>
+              <Route exact path="/">
+                <Redirect to="/devices" />
+              </Route>
+            </IonRouterOutlet>
+            <IonTabBar slot="bottom">
+              <IonTabButton href="/devices" tab="devices">
+                <IonIcon aria-hidden="true" icon={phonePortrait} />
+                <IonLabel>Devices</IonLabel>
+              </IonTabButton>
+              <IonTabButton href="/transfers" tab="transfers">
+                <IonIcon aria-hidden="true" icon={swapHorizontal} />
+                <IonLabel>Transfers</IonLabel>
+              </IonTabButton>
+              <IonTabButton href="/clipboard" tab="clipboard">
+                <IonIcon aria-hidden="true" icon={clipboard} />
+                <IonLabel>Clipboard</IonLabel>
+              </IonTabButton>
+              <IonTabButton href="/settings" tab="settings">
+                <IonIcon aria-hidden="true" icon={settings} />
+                <IonLabel>Settings</IonLabel>
+              </IonTabButton>
+            </IonTabBar>
+          </IonTabs>
+        </IonReactRouter>
+        {/* </ResponsiveLayout> */}
+        {/* </BiometricLockGuard> */}
         <PermissionRequestModal
           isOpen={showPermissionModal}
           onDismiss={() => setShowPermissionModal(false)}

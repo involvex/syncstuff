@@ -2,6 +2,7 @@
 
 import react from "@vitejs/plugin-react";
 // import { tamaguiPlugin } from "@tamagui/vite-plugin";
+import path from "path";
 import { defineConfig } from "vite";
 import { nodePolyfills } from "vite-plugin-node-polyfills";
 
@@ -10,12 +11,9 @@ import { nodePolyfills } from "vite-plugin-node-polyfills";
 // Will be re-enabled after verifying base functionality works
 export default defineConfig({
   plugins: [
-    react(),
-    // tamaguiPlugin({
-    //   components: ["tamagui"],
-    //   config: "./node_modules/@syncstuff/ui/src/tamagui.config.ts",
-    //   outputCSS: "./src/tamagui.css",
-    // }),
+    react({
+      fastRefresh: false,
+    }),
     nodePolyfills({
       globals: {
         Buffer: true,
@@ -30,17 +28,31 @@ export default defineConfig({
   define: {
     "process.env.TAMAGUI_TARGET": JSON.stringify("native"),
   },
+  // Only optimize main app entry, exclude Android/iOS build artifacts
   optimizeDeps: {
-    include: ["@syncstuff/ui", "react-native-web", "react-native-svg"],
+    entries: ["./index.html"],
+    include: [
+      "react-native-web",
+      "react-native-svg",
+      "zustand",
+      "lucide-react",
+    ],
     exclude: ["react-native"],
-    esbuildOptions: {
-      resolveExtensions: [".web.js", ".js", ".ts", ".tsx", ".json"],
-    },
   },
   resolve: {
     alias: {
       // Alias react-native to react-native-web
       "react-native": "react-native-web",
+      // Point to root node_modules for consistent resolution
+      "lucide-react": path.resolve(
+        __dirname,
+        "../../node_modules/lucide-react/dist/esm/lucide-react.js",
+      ),
+      // Ensure @syncstuff/ui resolves correctly
+      "@syncstuff/ui": path.resolve(
+        __dirname,
+        "../../packages/ui/dist/index.js",
+      ),
     },
     extensions: [".web.js", ".js", ".ts", ".tsx", ".json"],
   },
@@ -49,7 +61,7 @@ export default defineConfig({
   },
   server: {
     host: "0.0.0.0",
-    port: 8100,
+    port: 8101,
     strictPort: true,
     allowedHosts: ["localhost", "127.0.0.1", "0.0.0.0", "1.1.1.1"],
   },
@@ -59,18 +71,8 @@ export default defineConfig({
     assetsDir: "assets",
     commonjsOptions: {
       transformMixedEsModules: true,
-      ignore: ["react-native", "react-native/**"],
     },
     rollupOptions: {
-      external: id => {
-        // Externalize react-native and all its sub-paths
-        if (id.startsWith("react-native")) return true;
-        // Externalize the node process shim injected by node polyfills to avoid resolution errors
-        if (id === "vite-plugin-node-polyfills/shims/process") return true;
-        // Externalize the UI package and its built provider to avoid bundling server-only shims
-        if (id.endsWith("/packages/ui/dist/provider.js")) return true;
-        return false;
-      },
       output: {
         // Use relative paths for chunks
         chunkFileNames: "assets/[name]-[hash].js",
