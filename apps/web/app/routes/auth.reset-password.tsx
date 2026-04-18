@@ -28,10 +28,16 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export async function action({ request, context }: ActionFunctionArgs) {
   // ... existing action logic ...
   const formData = await request.formData();
-  const token = (formData as any).get("token");
-  const email = (formData as any).get("email");
-  const password = (formData as any).get("password");
-  const confirmPassword = (formData as any).get("confirm_password");
+  const getFormValue = (name: string): string | null => {
+    const value = (
+      formData as unknown as { get(name: string): FormDataEntryValue | null }
+    ).get(name);
+    return typeof value === "string" ? value : null;
+  };
+  const token = getFormValue("token");
+  const email = getFormValue("email");
+  const password = getFormValue("password");
+  const confirmPassword = getFormValue("confirm_password");
 
   if (!token || !email || !password || !confirmPassword) {
     return json({ success: false, error: "All fields are required" });

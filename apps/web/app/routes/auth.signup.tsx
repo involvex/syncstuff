@@ -13,9 +13,15 @@ export const meta: MetaFunction = () => {
 export async function action({ request, context }: ActionFunctionArgs) {
   // ... existing action logic ...
   const formData = await request.formData();
-  const email = (formData as any).get("email");
-  const password = (formData as any).get("password");
-  const username = (formData as any).get("username");
+  const getFormValue = (name: string): string | null => {
+    const value = (
+      formData as unknown as { get(name: string): FormDataEntryValue | null }
+    ).get(name);
+    return typeof value === "string" ? value : null;
+  };
+  const email = getFormValue("email");
+  const password = getFormValue("password");
+  const username = getFormValue("username");
 
   if (
     typeof email !== "string" ||
@@ -35,16 +41,20 @@ export async function action({ request, context }: ActionFunctionArgs) {
       body: JSON.stringify({ email, password, username }),
     });
 
-    const data = await response.json<any>();
+    const data = (await response.json()) as {
+      success: boolean;
+      error?: string;
+      data?: { token: string; user: { id: string; role: string } };
+    };
 
     if (!data.success) {
       return { error: data.error || "Registration failed" };
     }
 
     const session = await getSession(request.headers.get("Cookie"));
-    session.set("token", data.data.token);
-    session.set("userId", data.data.user.id);
-    session.set("role", data.data.user.role);
+    session.set("token", data.data!.token);
+    session.set("userId", data.data!.user.id);
+    session.set("role", data.data!.user.role);
 
     return new Response(null, {
       status: 302,

@@ -2,6 +2,47 @@ import { type LoaderFunctionArgs, redirect } from "@remix-run/cloudflare";
 import * as jose from "jose";
 import { commitSession, getSession } from "~/services/session.server";
 
+// Type definitions for OAuth responses
+interface DiscordTokenResponse {
+  access_token?: string;
+  token_type?: string;
+  expires_in?: number;
+  refresh_token?: string;
+  scope?: string;
+  error?: string;
+  error_description?: string;
+}
+
+interface DiscordUser {
+  id: string;
+  username: string;
+  discriminator: string;
+  avatar?: string;
+  email?: string;
+  global_name?: string;
+}
+
+interface GitHubTokenResponse {
+  access_token?: string;
+  token_type?: string;
+  scope?: string;
+  error?: string;
+  error_description?: string;
+}
+
+interface GitHubUser {
+  id: number;
+  login: string;
+  name?: string;
+  email?: string;
+  avatar_url?: string;
+}
+
+interface DbUser {
+  id: string;
+  role: string;
+}
+
 export async function loader({ request, context }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
@@ -20,7 +61,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     }
     const session = await getSession(request.headers.get("Cookie"));
 
-    let userData: any = null;
+    let userData: DiscordUser | GitHubUser | null = null;
 
     const providerParam = url.searchParams.get("provider");
 
@@ -64,7 +105,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
         },
       );
 
-      const tokenData: any = await tokenResponse.json();
+      const tokenData = (await tokenResponse.json()) as DiscordTokenResponse;
 
       if (tokenData.error) {
         console.error("Discord Token Error Body:", tokenData);
@@ -76,14 +117,15 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
       const userResponse = await fetch("https://discord.com/api/users/@me", {
         headers: { Authorization: `Bearer ${tokenData.access_token}` },
       });
-      userData = await userResponse.json();
+      const discordUser = (await userResponse.json()) as DiscordUser;
+      userData = discordUser;
 
       // Map Discord user to our DB
 
-      let user: any = await db
+      let user = await db
         .prepare("SELECT id, role FROM users WHERE discord_id = ?")
         .bind(userData.id)
-        .first();
+        .first<DbUser>();
       if (!user) {
         user = await db
           .prepare("SELECT id, role FROM users WHERE email = ?")
@@ -95,6 +137,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
             .bind(userData.id, user.id)
             .run();
         } else {
+          const discordUser = userData as DiscordUser;
           const userId = crypto.randomUUID();
           const now = Date.now();
           await db
@@ -104,10 +147,10 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
             )
             .bind(
               userId,
-              userData.email,
-              userData.username,
-              userData.global_name || userData.username,
-              userData.id,
+              discordUser.email,
+              discordUser.username,
+              discordUser.global_name || discordUser.username,
+              discordUser.id,
               now,
               now,
             )
@@ -165,7 +208,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
         },
       );
 
-      const tokenData: any = await tokenResponse.json();
+      const tokenData = (await tokenResponse.json()) as GitHubTokenResponse;
       if (tokenData.error)
         throw new Error(
           tokenData.error_description || "GitHub token exchange failed",
@@ -177,7 +220,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
           "User-Agent": "Syncstuff-Web",
         },
       });
-      userData = await userResponse.json();
+      userData = (await userResponse.json()) as GitHubUser;
 
       const emailResponse = await fetch("https://api.github.com/user/emails", {
         headers: {
@@ -186,14 +229,18 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
         },
       });
 
-      const emails: any[] = await emailResponse.json();
+      const emails = (await emailResponse.json()) as Array<{
+        primary: boolean;
+        verified: boolean;
+        email: string;
+      }>;
       const primaryEmail =
         emails.find(e => e.primary && e.verified)?.email || userData.email;
 
-      let user: any = await db
+      let user = await db
         .prepare("SELECT id, role FROM users WHERE github_id = ?")
         .bind(userData.id.toString())
-        .first();
+        .first<DbUser>();
       if (!user) {
         user = await db
           .prepare("SELECT id, role FROM users WHERE email = ?")

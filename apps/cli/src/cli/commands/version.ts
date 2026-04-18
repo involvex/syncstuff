@@ -1,7 +1,7 @@
+import chalk from "chalk";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import chalk from "chalk";
 import { DebugMode } from "../../core.js";
 import { createBox, printHeader, printSeparator } from "../../utils/ui.js";
 

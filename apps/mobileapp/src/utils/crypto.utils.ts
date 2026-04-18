@@ -28,10 +28,11 @@ export const calculateChecksum = (
     return SHA256(data).toString();
   }
 
-  // The @types/crypto-js definitions are not complete for lib-typedarrays,
-  // so we cast to any to allow passing an ArrayBuffer which the library supports.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const wordArr = WordArray.create(data as any);
+  // The crypto-js library accepts ArrayBuffer/Uint8Array but the types are incomplete.
+  // We use type assertion to handle this known compatibility.
+  const wordArr = WordArray.create(
+    data as unknown as Parameters<typeof WordArray.create>[0],
+  );
   return SHA256(wordArr).toString();
 };
 

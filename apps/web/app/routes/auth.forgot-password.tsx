@@ -5,7 +5,13 @@ import { Button, Card, Input, Text } from "@syncstuff/ui";
 export async function action({ request, context }: ActionFunctionArgs) {
   // ... existing action logic ...
   const formData = await request.formData();
-  const email = (formData as any).get("email");
+  const getFormValue = (name: string): string | null => {
+    const value = (
+      formData as unknown as { get(name: string): FormDataEntryValue | null }
+    ).get(name);
+    return typeof value === "string" ? value : null;
+  };
+  const email = getFormValue("email");
 
   if (!email || typeof email !== "string") {
     return json({ success: false, error: "Email is required" });

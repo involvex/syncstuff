@@ -1,7 +1,7 @@
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
 import boxen from "boxen";
 import chalk from "chalk";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import ora from "ora";
 import Table from "table";
 

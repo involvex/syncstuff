@@ -263,9 +263,8 @@ class PermissionsService {
   async openSettings(): Promise<void> {
     try {
       if (isNative()) {
-        const { NativeSettings, AndroidSettings, IOSSettings } = await import(
-          "capacitor-native-settings"
-        );
+        const { NativeSettings, AndroidSettings, IOSSettings } =
+          await import("capacitor-native-settings");
 
         await NativeSettings.open({
           optionAndroid: AndroidSettings.ApplicationDetails,

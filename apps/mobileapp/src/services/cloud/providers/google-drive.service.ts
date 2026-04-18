@@ -8,13 +8,95 @@ const CLIENT_ID =
   "699308700646-6a9no4bf3osp21v6rljeq7p4cqsriims.apps.googleusercontent.com";
 const SCOPES = "https://www.googleapis.com/auth/drive";
 
-// Declare global types for Google Identity Services and GAPI if not already present
+// Google Identity Services types
+interface GoogleIdentityServices {
+  accounts: {
+    oauth2: {
+      initTokenClient: (config: TokenClientConfig) => TokenClient;
+      revoke: (accessToken: string, callback: () => void) => void;
+    };
+  };
+}
+
+interface TokenClientConfig {
+  client_id: string;
+  scope: string;
+  callback: (response: TokenResponse) => void;
+}
+
+interface TokenClient {
+  requestAccessToken: (config?: { prompt?: string }) => void;
+}
+
+interface TokenResponse {
+  access_token?: string;
+  error?: string;
+  error_description?: string;
+}
+
+// GAPI types
+interface GapiClient {
+  load: (name: string, callback: () => void) => void;
+  client: {
+    init: (config: GapiClientConfig) => Promise<void>;
+    getToken: () => { access_token?: string } | null;
+    drive: {
+      files: {
+        list: (
+          config: DriveFilesListConfig,
+        ) => Promise<{ result: DriveFilesListResponse }>;
+      };
+      about: {
+        get: (config: {
+          fields: string;
+        }) => Promise<{ result: DriveAboutResponse }>;
+      };
+    };
+  };
+}
+
+interface GapiClientConfig {
+  discoveryDocs: string[];
+}
+
+interface DriveFilesListConfig {
+  pageSize: number;
+  fields: string;
+  q: string;
+}
+
+interface DriveFilesListResponse {
+  files: DriveFile[];
+  nextPageToken?: string;
+}
+
+interface DriveFile {
+  id: string;
+  name: string;
+  mimeType: string;
+  size?: string;
+  modifiedTime: string;
+  thumbnailLink?: string;
+  parents?: string[];
+}
+
+interface DriveAboutResponse {
+  user: {
+    displayName?: string;
+    emailAddress?: string;
+    photoLink?: string;
+    permissionId?: string;
+  };
+  storageQuota?: {
+    usage: string;
+    limit: string;
+  };
+}
+
 declare global {
   interface Window {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    google: any;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    gapi: any;
+    google: GoogleIdentityServices;
+    gapi: GapiClient;
   }
 }
 
@@ -23,8 +105,7 @@ export class GoogleDriveService implements CloudProvider {
   name = "Google Drive";
   icon = "logo-google";
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private tokenClient: any;
+  private tokenClient: TokenClient | null = null;
   private accessToken: string | null = null;
   private gapiInited = false;
   private gisInited = false;
@@ -90,8 +171,7 @@ export class GoogleDriveService implements CloudProvider {
         this.tokenClient = window.google.accounts.oauth2.initTokenClient({
           client_id: CLIENT_ID,
           scope: SCOPES,
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          callback: async (resp: any) => {
+          callback: async (resp: TokenResponse) => {
             if (resp.error !== undefined) {
               const errorText =
                 resp.error_description || resp.error || "Unknown error";
@@ -199,8 +279,7 @@ export class GoogleDriveService implements CloudProvider {
     const files = response.result.files;
     if (!files) return [];
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return files.map((f: any) => ({
+    return files.map((f: DriveFile) => ({
       id: f.id,
       name: f.name,
       mimeType: f.mimeType,
@@ -240,8 +319,7 @@ export class GoogleDriveService implements CloudProvider {
       },
     );
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const result: any = await response.json();
+    const result = (await response.json()) as DriveFile;
 
     return {
       id: result.id,

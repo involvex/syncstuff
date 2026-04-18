@@ -60,7 +60,7 @@ export function sleep(ms: number): Promise<void> {
 /**
  * Debounce a function
  */
-export function debounce<T extends (...args: any[]) => any>(
+export function debounce<T extends (...args: never[]) => void>(
   func: T,
   wait: number,
 ): (...args: Parameters<T>) => void {
@@ -74,7 +74,7 @@ export function debounce<T extends (...args: any[]) => any>(
 /**
  * Throttle a function
  */
-export function throttle<T extends (...args: any[]) => any>(
+export function throttle<T extends (...args: never[]) => void>(
   func: T,
   limit: number,
 ): (...args: Parameters<T>) => void {

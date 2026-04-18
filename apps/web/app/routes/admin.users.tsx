@@ -7,6 +7,19 @@ import { Form, redirect, useLoaderData, useNavigation } from "@remix-run/react";
 import { Badge, Card, CardContent } from "~/components/ui";
 import { getSession } from "~/services/session.server";
 
+interface UserData {
+  id: string;
+  username: string;
+  email: string;
+  role: string;
+  status: string;
+}
+
+interface ApiResponse {
+  success: boolean;
+  data: UserData[];
+}
+
 export async function loader({ request, context }: LoaderFunctionArgs) {
   const session = await getSession(request.headers.get("Cookie"));
   const token = session.get("token");
@@ -33,7 +46,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
       throw new Error(`Failed to fetch users: ${response.statusText}`);
     }
 
-    const data = (await response.json()) as { success: boolean; data: any[] };
+    const data = (await response.json()) as ApiResponse;
     return json({ users: data.data || [] });
   } catch (error) {
     console.error("Admin users loader error:", error);
@@ -51,10 +64,18 @@ export async function action({ request, context }: ActionFunctionArgs) {
   }
 
   const formData = await request.formData();
-  const intent = (formData as any).get("intent");
-  const userId = (formData as any).get("userId");
+  const intent = (
+    formData as unknown as { get(name: string): string | null }
+  ).get("intent");
+  const userId = (
+    formData as unknown as { get(name: string): string | null }
+  ).get("userId");
 
-  if (intent === "toggle_status" && typeof userId === "string") {
+  if (
+    intent === "toggle_status" &&
+    typeof userId === "string" &&
+    userId !== null
+  ) {
     try {
       const API_URL =
         context.cloudflare.env.API_URL ||
@@ -121,7 +142,7 @@ export default function AdminUsers() {
               <p className="text-color-subtitle">No users found</p>
             </div>
           ) : (
-            users.map((user: any) => (
+            users.map((user: UserData) => (
               <div
                 className="border-border hover:bg-surface-hover grid grid-cols-12 items-center gap-4 border-b p-4 transition-colors last:border-0"
                 key={user.id}

@@ -2,8 +2,7 @@ import * as React from "react";
 import { cn, extractLayoutProps, type TamaguiProps } from "./utils";
 
 export interface SwitchProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    TamaguiProps {
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>, TamaguiProps {
   checked?: boolean;
   onCheckedChange?: (checked: boolean) => void;
   size?: string; // Shim for compatibility
@@ -39,6 +38,11 @@ const SwitchComponent = React.forwardRef<HTMLButtonElement, SwitchProps>(
 );
 SwitchComponent.displayName = "Switch";
 
+export interface SwitchThumbProps {
+  animation?: string;
+  className?: string;
+}
+
 export const Switch = Object.assign(SwitchComponent, {
-  Thumb: (_: any) => null, // Shim for sub-component usage
+  Thumb: (_props: SwitchThumbProps) => null, // Shim for sub-component usage
 });

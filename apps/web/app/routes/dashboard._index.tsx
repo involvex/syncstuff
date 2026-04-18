@@ -20,11 +20,21 @@ interface ActivityItem {
   icon: string;
 }
 
+interface UserData {
+  id: string;
+  email: string;
+  username: string;
+  full_name: string | null;
+  role: string;
+  status: string;
+  created_at: string;
+}
+
 export async function loader({ request, context }: LoaderFunctionArgs) {
   const session = await getSession(request.headers.get("Cookie"));
   const userId = session.get("userId");
 
-  let user: any = null;
+  let user: UserData | null = null;
   const stats = {
     totalFiles: 0,
     storageUsed: "0 GB",
@@ -41,7 +51,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
           "SELECT email, username, full_name, role, status, created_at FROM users WHERE id = ?",
         )
         .bind(userId)
-        .first();
+        .first<UserData>();
     } catch (e) {
       console.error("Database error:", e);
     }
@@ -49,12 +59,13 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     // Mock user for local dev if DB is missing
     console.warn("Database binding not found, using mock data");
     user = {
+      id: "mock-user-id",
       username: "mockuser",
       email: "mock@example.com",
       full_name: "Mock User",
       role: "admin",
       status: "active",
-      created_at: Date.now(),
+      created_at: new Date().toISOString(),
     };
   }
 

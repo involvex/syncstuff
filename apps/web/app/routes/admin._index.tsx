@@ -11,28 +11,32 @@ export async function loader({ context }: LoaderFunctionArgs) {
   if (context.cloudflare?.env?.syncstuff_db) {
     const db = context.cloudflare.env.syncstuff_db;
     try {
+      interface DbCountResult {
+        count: number;
+      }
+
       // Fetch basic stats
 
-      const userCountResult: any = await db
+      const userCountResult = await db
         .prepare("SELECT COUNT(*) as count FROM users")
-        .first();
+        .first<DbCountResult>();
       userCount = userCountResult?.count || 0;
 
-      const activeUserCountResult: any = await db
+      const activeUserCountResult = await db
         .prepare("SELECT COUNT(*) as count FROM users WHERE status = 'active'")
-        .first();
+        .first<DbCountResult>();
       activeUserCount = activeUserCountResult?.count || 0;
 
-      const suspendedUserCountResult: any = await db
+      const suspendedUserCountResult = await db
         .prepare(
           "SELECT COUNT(*) as count FROM users WHERE status = 'suspended'",
         )
-        .first();
+        .first<DbCountResult>();
       suspendedUserCount = suspendedUserCountResult?.count || 0;
 
-      const pendingUserCountResult: any = await db
+      const pendingUserCountResult = await db
         .prepare("SELECT COUNT(*) as count FROM users WHERE status = 'pending'")
-        .first();
+        .first<DbCountResult>();
       pendingUserCount = pendingUserCountResult?.count || 0;
     } catch (error) {
       console.error("Database error in admin loader:", error);

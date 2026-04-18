@@ -1,8 +1,8 @@
-import { existsSync, statSync } from "node:fs";
-import { basename, resolve } from "node:path";
 import chalk from "chalk";
 import cliProgress from "cli-progress";
 import inquirer from "inquirer";
+import { existsSync, statSync } from "node:fs";
+import { basename, resolve } from "node:path";
 import { apiClient } from "../../utils/api-client.js";
 import { type CommandContext, debugLog } from "../../utils/context.js";
 import {

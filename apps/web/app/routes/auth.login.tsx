@@ -14,8 +14,14 @@ export const meta: MetaFunction = () => {
 export async function action({ request, context }: ActionFunctionArgs) {
   // ... existing action logic remains unchanged ...
   const formData = await request.formData();
-  const email = (formData as any).get("email");
-  const password = (formData as any).get("password");
+  const getFormValue = (name: string): string | null => {
+    const value = (
+      formData as unknown as { get(name: string): FormDataEntryValue | null }
+    ).get(name);
+    return typeof value === "string" ? value : null;
+  };
+  const email = getFormValue("email");
+  const password = getFormValue("password");
 
   if (typeof email !== "string" || typeof password !== "string") {
     return { error: "Invalid form data" };

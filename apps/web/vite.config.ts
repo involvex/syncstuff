@@ -1,7 +1,7 @@
 import { vitePlugin as remix } from "@remix-run/dev";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
+// import tsconfigPaths from "vite-tsconfig-paths";
 import { reactNativeSvgAlias } from "./react-native-svg-alias.mjs";
 
 declare module "@remix-run/cloudflare" {
@@ -26,7 +26,6 @@ export default defineConfig(async () => {
           v3_lazyRouteDiscovery: true,
         },
       }),
-      tsconfigPaths(),
     ],
     define: {
       "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
@@ -40,6 +39,7 @@ export default defineConfig(async () => {
     },
     resolve: {
       mainFields: ["browser", "module", "main"],
+      tsconfigPaths: true,
       alias: {
         "react-native": "react-native-web",
         "react-native-svg": "./react-native-svg-stub.js",
@@ -65,7 +65,7 @@ export default defineConfig(async () => {
         output: {
           chunkFileNames: "app/[name]-[hash].js",
           entryFileNames: "app/[name]-[hash].js",
-          assetFileNames: (assetInfo: any) => {
+          assetFileNames: (assetInfo: { name?: string }) => {
             if (assetInfo.name === "style.css") return "app/tailwind.css";
             return assetInfo.name ?? "";
           },

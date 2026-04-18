@@ -62,13 +62,13 @@ export interface TamaguiProps {
   fontFamily?: string;
 
   // Animation & Interaction props (shims)
-  animation?: any;
+  animation?: string | object;
   scale?: number | string; // Deprecated or shimmed
-  hoverStyle?: any;
-  pressStyle?: any;
-  focusStyle?: any;
-  enterStyle?: any;
-  exitStyle?: any;
+  hoverStyle?: React.CSSProperties;
+  pressStyle?: React.CSSProperties;
+  focusStyle?: React.CSSProperties;
+  enterStyle?: React.CSSProperties;
+  exitStyle?: React.CSSProperties;
 }
 
 function parseValue(
@@ -92,7 +92,7 @@ function parseValue(
   return val;
 }
 
-export function extractLayoutProps(props: any) {
+export function extractLayoutProps(props: TamaguiProps) {
   const {
     padding,
     paddingHorizontal,

@@ -22,6 +22,18 @@ import {
 } from "@syncstuff/ui";
 import { getSession } from "~/services/session.server";
 
+interface UserData {
+  id: string;
+  username: string;
+  email: string;
+  full_name: string | null;
+  role: string;
+  status: string;
+  github_id: string | null;
+  discord_id: string | null;
+  password_hash: string | null;
+}
+
 export async function loader({ request, context }: LoaderFunctionArgs) {
   const session = await getSession(request.headers.get("Cookie"));
   const userId = session.get("userId");
@@ -33,12 +45,12 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     );
   }
 
-  const user: any = await db
+  const user = await db
     .prepare(
       "SELECT id, username, email, full_name, role, status, github_id, discord_id, password_hash FROM users WHERE id = ?",
     )
     .bind(userId)
-    .first();
+    .first<UserData>();
 
   const hasPassword = !!user?.password_hash;
 
@@ -60,12 +72,18 @@ export async function action({ request, context }: ActionFunctionArgs) {
   }
 
   const formData = await request.formData();
-  const intent = (formData as any).get("intent");
+  const getFormValue = (name: string): string | null => {
+    const value = (
+      formData as unknown as { get(name: string): FormDataEntryValue | null }
+    ).get(name);
+    return typeof value === "string" ? value : null;
+  };
+  const intent = getFormValue("intent");
 
   if (intent === "change_password") {
-    const currentPassword = (formData as any).get("current_password");
-    const newPassword = (formData as any).get("new_password");
-    const confirmPassword = (formData as any).get("confirm_password");
+    const currentPassword = getFormValue("current_password");
+    const newPassword = getFormValue("new_password");
+    const confirmPassword = getFormValue("confirm_password");
 
     if (newPassword !== confirmPassword) {
       return json({ success: false, error: "New passwords do not match" });
@@ -187,7 +205,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
   }
 
   if (intent === "update_profile") {
-    const fullName = (formData as any).get("full_name");
+    const fullName = getFormValue("full_name");
 
     try {
       const API_URL =
