@@ -1,8 +1,8 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import boxen from "boxen";
 import chalk from "chalk";
-import { readFileSync } from "fs";
 import ora from "ora";
-import { join } from "path";
 import Table from "table";
 
 export function success(message: string): void {

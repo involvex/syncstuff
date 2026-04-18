@@ -81,7 +81,7 @@ function parseValue(
       const token = val.substring(1);
       // Heuristic for spacing tokens: $4 -> 1rem
       const num = Number.parseFloat(token);
-      if (!isNaN(num)) {
+      if (!Number.isNaN(num)) {
         return `${num * 0.25}rem`;
       }
       // Common tokens mapping if num is NaN (like $color)

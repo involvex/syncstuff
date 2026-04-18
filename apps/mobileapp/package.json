@@ -82,7 +82,7 @@
     "@types/react-router": "^5.1.20",
     "@types/react-router-dom": "^5.3.3",
     "@types/simple-peer": "^9.11.9",
-    "@types/testing-library__jest-dom": "^6.0.0",
+    "@types/testing-library__jest-dom": "6.0.0",
     "@types/uuid": "^11.0.0",
     "@vitejs/plugin-legacy": "^8.0.1",
     "@vitejs/plugin-react": "^6.0.1",

@@ -1,3 +1,5 @@
+import { createSocket } from "node:dgram";
+import { createRequire } from "node:module";
 import {
   type LocalDevice,
   type ServiceTxtRecord,
@@ -5,8 +7,6 @@ import {
   SYNCSTUFF_SERVICE_TYPE,
 } from "@syncstuff/network-types";
 import { Bonjour, type Browser, type Service } from "bonjour-service";
-import { createSocket } from "dgram";
-import { createRequire } from "module";
 import { v4 as uuidv4 } from "uuid";
 import { readConfig, writeConfig } from "./config.js";
 

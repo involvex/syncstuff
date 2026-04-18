@@ -21,7 +21,7 @@ import {
   shieldCheckmarkOutline,
 } from "ionicons/icons";
 import type React from "react";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   type PermissionsState,
   permissionsService,

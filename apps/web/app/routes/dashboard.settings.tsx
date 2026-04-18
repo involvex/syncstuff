@@ -125,7 +125,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
       try {
         responseText = await response.text();
 
-        if (!contentType || !contentType.includes("application/json")) {
+        if (!contentType?.includes("application/json")) {
           console.error("Non-JSON response from API:", responseText);
           // Check if it's the specific error code 1042
           if (

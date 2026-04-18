@@ -1,4 +1,4 @@
-import { resolve } from "path";
+import { resolve } from "node:path";
 
 const stubPath = resolve(import.meta.dirname, "./react-native-svg-stub.js");
 

@@ -101,7 +101,7 @@ export class SyncstuffService implements CloudProvider {
         }
 
         // Response is ok, try to parse as JSON
-        if (!contentType || !contentType.includes("application/json")) {
+        if (!contentType?.includes("application/json")) {
           throw new Error(
             `Invalid response format: ${responseText.substring(0, 100)}`,
           );
@@ -121,7 +121,7 @@ export class SyncstuffService implements CloudProvider {
           throw new Error(data.error || "Login failed");
         }
 
-        if (!data.data || !data.data.token || !data.data.user) {
+        if (!data.data?.token || !data.data.user) {
           throw new Error("Invalid response data from server");
         }
 

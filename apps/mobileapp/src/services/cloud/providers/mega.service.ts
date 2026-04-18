@@ -85,7 +85,7 @@ export class MegaService implements CloudProvider {
     if (!this.storage) throw new Error("Not authenticated");
 
     const folder = folderId ? this.storage.files[folderId] : this.storage.root;
-    if (!folder || !folder.children) return [];
+    if (!folder?.children) return [];
 
     return (folder.children as unknown as MegaFile[]).map((f: MegaFile) => ({
       id: f.nodeId,

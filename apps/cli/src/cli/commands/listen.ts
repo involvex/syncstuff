@@ -1,6 +1,10 @@
+import {
+  createServer,
+  type IncomingMessage,
+  type ServerResponse,
+} from "node:http";
+import { networkInterfaces } from "node:os";
 import chalk from "chalk";
-import { createServer, type IncomingMessage, type ServerResponse } from "http";
-import { networkInterfaces } from "os";
 import { type CommandContext, debugLog } from "../../utils/context.js";
 import { networkScanner } from "../../utils/network.js"; // Added this line
 import {

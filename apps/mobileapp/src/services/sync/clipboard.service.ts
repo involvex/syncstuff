@@ -71,7 +71,7 @@ class ClipboardService {
     try {
       if (isWeb()) {
         // Web: Use Clipboard API with ClipboardItem
-        if (!navigator.clipboard || !navigator.clipboard.read) {
+        if (!navigator.clipboard?.read) {
           return null; // Not supported on all browsers
         }
 
@@ -110,7 +110,7 @@ class ClipboardService {
     try {
       if (isWeb()) {
         // Web: Convert base64 to blob and use ClipboardItem
-        if (!navigator.clipboard || !navigator.clipboard.write) {
+        if (!navigator.clipboard?.write) {
           throw new Error("Clipboard write API not available");
         }
 

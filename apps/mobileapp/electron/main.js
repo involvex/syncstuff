@@ -1,3 +1,6 @@
+import fs from "node:fs";
+import * as path from "node:path";
+import { fileURLToPath } from "node:url";
 import {
   app,
   BrowserWindow,
@@ -11,9 +14,6 @@ import debug from "electron-debug";
 import isDev from "electron-is-dev";
 import reloader from "electron-reloader";
 import unhandled from "electron-unhandled";
-import fs from "fs";
-import * as path from "path";
-import { fileURLToPath } from "url";
 
 unhandled();
 let mainWindow = null;

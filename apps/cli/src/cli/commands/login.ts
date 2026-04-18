@@ -21,7 +21,7 @@ export async function login(ctx: CommandContext): Promise<void> {
         name: "email",
         message: "Email address:",
         validate: (input: string) => {
-          if (!input || !input.includes("@")) {
+          if (!input?.includes("@")) {
             return "Please enter a valid email address";
           }
           return true;

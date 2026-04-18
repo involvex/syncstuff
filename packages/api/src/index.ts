@@ -227,8 +227,7 @@ export default {
           }
 
           if (
-            !user ||
-            !user.password_hash ||
+            !user?.password_hash ||
             !(await verifyPassword(body.password, user.password_hash))
           ) {
             return new Response(
@@ -285,7 +284,7 @@ export default {
 
         const token = auth.split(" ")[1];
         const payload = await verifyJWT(token, secret);
-        if (!payload || !payload.sub)
+        if (!payload?.sub)
           return new Response(
             JSON.stringify({ success: false, error: "Invalid token" }),
             { status: 401, headers },
@@ -364,7 +363,7 @@ export default {
             }
 
             // Check if the update actually affected a row
-            if (!result || !result.success) {
+            if (!result?.success) {
               console.error("[DB-ERROR] Update failed:", result);
               // Check if result has error message
               const errorMsg =
@@ -494,7 +493,7 @@ export default {
 
         const token = auth.split(" ")[1];
         const payload = await verifyJWT(token, secret);
-        if (!payload || !payload.sub)
+        if (!payload?.sub)
           return new Response(
             JSON.stringify({ success: false, error: "Invalid token" }),
             { status: 401, headers },
@@ -537,7 +536,7 @@ export default {
 
         const token = auth.split(" ")[1];
         const payload = await verifyJWT(token, secret);
-        if (!payload || !payload.sub)
+        if (!payload?.sub)
           return new Response(
             JSON.stringify({ success: false, error: "Invalid token" }),
             { status: 401, headers },
@@ -617,7 +616,7 @@ export default {
 
         const token = auth.split(" ")[1];
         const payload = await verifyJWT(token, secret);
-        if (!payload || !payload.sub)
+        if (!payload?.sub)
           return new Response(
             JSON.stringify({ success: false, error: "Invalid token" }),
             { status: 401, headers },
@@ -647,7 +646,7 @@ export default {
 
         const token = auth.split(" ")[1];
         const payload = await verifyJWT(token, secret);
-        if (!payload || !payload.sub || payload.role !== "admin")
+        if (!payload?.sub || payload.role !== "admin")
           return new Response(
             JSON.stringify({ success: false, error: "Forbidden" }),
             { status: 403, headers },
@@ -684,7 +683,7 @@ export default {
 
         const token = auth.split(" ")[1];
         const payload = await verifyJWT(token, secret);
-        if (!payload || !payload.sub || payload.role !== "admin")
+        if (!payload?.sub || payload.role !== "admin")
           return new Response(
             JSON.stringify({ success: false, error: "Forbidden" }),
             { status: 403, headers },
@@ -886,7 +885,7 @@ export default {
 
         const token = auth.split(" ")[1];
         const payload = await verifyJWT(token, secret);
-        if (!payload || !payload.sub)
+        if (!payload?.sub)
           return new Response(
             JSON.stringify({ success: false, error: "Invalid token" }),
             { status: 401, headers },
@@ -953,7 +952,7 @@ export default {
 
         const token = auth.split(" ")[1];
         const payload = await verifyJWT(token, secret);
-        if (!payload || !payload.sub)
+        if (!payload?.sub)
           return new Response(
             JSON.stringify({ success: false, error: "Invalid token" }),
             { status: 401, headers },
@@ -1094,7 +1093,7 @@ export default {
 
         const token = auth.split(" ")[1];
         const payload = await verifyJWT(token, secret);
-        if (!payload || !payload.sub)
+        if (!payload?.sub)
           return new Response(
             JSON.stringify({ success: false, error: "Invalid token" }),
             { status: 401, headers },
@@ -1179,7 +1178,7 @@ export default {
 
         const token = auth.split(" ")[1];
         const payload = await verifyJWT(token, secret);
-        if (!payload || !payload.sub)
+        if (!payload?.sub)
           return new Response(
             JSON.stringify({ success: false, error: "Invalid token" }),
             { status: 401, headers },
@@ -1246,7 +1245,7 @@ export default {
 
         const token = auth.split(" ")[1];
         const payload = await verifyJWT(token, secret);
-        if (!payload || !payload.sub)
+        if (!payload?.sub)
           return new Response(
             JSON.stringify({ success: false, error: "Invalid token" }),
             { status: 401, headers },
@@ -1309,7 +1308,7 @@ export default {
 
         const token = auth.split(" ")[1];
         const payload = await verifyJWT(token, secret);
-        if (!payload || !payload.sub)
+        if (!payload?.sub)
           return new Response(
             JSON.stringify({ success: false, error: "Invalid token" }),
             { status: 401, headers },
@@ -1373,7 +1372,7 @@ export default {
 
         const token = auth.split(" ")[1];
         const payload = await verifyJWT(token, secret);
-        if (!payload || !payload.sub)
+        if (!payload?.sub)
           return new Response(
             JSON.stringify({ success: false, error: "Invalid token" }),
             { status: 401, headers },
@@ -1447,7 +1446,7 @@ export default {
 
         const token = auth.split(" ")[1];
         const payload = await verifyJWT(token, secret);
-        if (!payload || !payload.sub)
+        if (!payload?.sub)
           return new Response(
             JSON.stringify({ success: false, error: "Invalid token" }),
             { status: 401, headers },
@@ -1548,7 +1547,7 @@ export default {
 
         const token = auth.split(" ")[1];
         const payload = await verifyJWT(token, secret);
-        if (!payload || !payload.sub)
+        if (!payload?.sub)
           return new Response(
             JSON.stringify({ success: false, error: "Invalid token" }),
             { status: 401, headers },
@@ -1595,7 +1594,7 @@ export default {
 
         const token = auth.split(" ")[1];
         const payload = await verifyJWT(token, secret);
-        if (!payload || !payload.sub)
+        if (!payload?.sub)
           return new Response(
             JSON.stringify({ success: false, error: "Invalid token" }),
             { status: 401, headers },
@@ -1637,7 +1636,7 @@ export default {
 
         const token = auth.split(" ")[1];
         const payload = await verifyJWT(token, secret);
-        if (!payload || !payload.sub)
+        if (!payload?.sub)
           return new Response(
             JSON.stringify({ success: false, error: "Invalid token" }),
             { status: 401, headers },
@@ -1746,7 +1745,7 @@ export default {
 
         const token = auth.split(" ")[1];
         const payload = await verifyJWT(token, secret);
-        if (!payload || !payload.sub)
+        if (!payload?.sub)
           return new Response(
             JSON.stringify({ success: false, error: "Invalid token" }),
             { status: 401, headers },
@@ -1788,7 +1787,7 @@ export default {
 
         const token = auth.split(" ")[1];
         const payload = await verifyJWT(token, secret);
-        if (!payload || !payload.sub)
+        if (!payload?.sub)
           return new Response(
             JSON.stringify({ success: false, error: "Invalid token" }),
             { status: 401, headers },
@@ -1853,7 +1852,7 @@ export default {
 
         const token = auth.split(" ")[1];
         const payload = await verifyJWT(token, secret);
-        if (!payload || !payload.sub)
+        if (!payload?.sub)
           return new Response(
             JSON.stringify({ success: false, error: "Invalid token" }),
             { status: 401, headers },
@@ -1893,7 +1892,7 @@ export default {
 
         const token = auth.split(" ")[1];
         const payload = await verifyJWT(token, secret);
-        if (!payload || !payload.sub)
+        if (!payload?.sub)
           return new Response(
             JSON.stringify({ success: false, error: "Invalid token" }),
             { status: 401, headers },

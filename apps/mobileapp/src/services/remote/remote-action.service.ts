@@ -23,7 +23,7 @@ class RemoteActionService {
   }
 
   private handleIncomingMessage(deviceId: string, message: SyncMessage) {
-    if (!message || !message.type) return;
+    if (!message?.type) return;
 
     switch (message.type) {
       case "battery":

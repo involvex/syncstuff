@@ -188,7 +188,7 @@ class CloudManagerService {
     type: CloudProviderType,
   ): Promise<CloudAccount | null> {
     const state = this.providerStates.get(type);
-    if (!state || !state.account) {
+    if (!state?.account) {
       return null;
     }
 

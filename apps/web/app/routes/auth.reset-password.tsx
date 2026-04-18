@@ -70,7 +70,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
     try {
       responseText = await response.text();
 
-      if (!contentType || !contentType.includes("application/json")) {
+      if (!contentType?.includes("application/json")) {
         console.error("Non-JSON response from API:", responseText);
         return json({
           success: false,

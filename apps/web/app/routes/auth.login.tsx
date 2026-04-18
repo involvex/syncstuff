@@ -50,7 +50,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
     try {
       responseText = await response.text();
 
-      if (!contentType || !contentType.includes("application/json")) {
+      if (!contentType?.includes("application/json")) {
         console.error("Non-JSON response from login API:", responseText);
         return {
           error: "Server returned invalid response. Please try again.",

@@ -102,7 +102,7 @@ const ClipboardPage: React.FC = () => {
   };
 
   const handleIntervalChange = (value: string) => {
-    setClipboardMonitoringInterval(Number.parseInt(value));
+    setClipboardMonitoringInterval(Number.parseInt(value, 10));
   };
 
   return (

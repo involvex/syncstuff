@@ -26,7 +26,7 @@ var __setModuleDefault =
         Object.defineProperty(o, "default", { enumerable: true, value: v });
       }
     : (o, v) => {
-        o["default"] = v;
+        o.default = v;
       });
 var __importStar =
   (this && this.__importStar) ||
@@ -42,7 +42,7 @@ var __importStar =
       return ownKeys(o);
     };
     return mod => {
-      if (mod && mod.__esModule) return mod;
+      if (mod?.__esModule) return mod;
       var result = {};
       if (mod != null)
         for (var k = ownKeys(mod), i = 0; i < k.length; i++)
