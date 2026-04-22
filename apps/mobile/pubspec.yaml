@@ -1,0 +1,64 @@
+name: syncstuff_mobile
+description: "SyncStuff - P2P file sync across devices"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  
+  # State Management
+  flutter_bloc: ^9.1.1
+  equatable: ^2.0.7
+  
+  # Dependency Injection
+  get_it: ^8.3.0
+  
+  # Local Storage
+  sqflite: ^2.4.2
+  path_provider: ^2.1.5
+  shared_preferences: ^2.5.3
+  
+  # Networking
+  network_info_plus: ^6.1.4
+  web_socket_channel: ^3.0.2
+  dartz: ^0.10.1
+  
+  # P2P & Discovery
+  flutter_webrtc: ^0.12.12
+  
+  # QR Code
+  qr_flutter: ^4.1.0
+  mobile_scanner: ^6.0.11
+  
+  # File Handling
+  file_picker: ^9.2.3
+  permission_handler: ^11.4.0
+  share_plus: ^10.1.4
+  
+  # Utilities
+  uuid: ^4.5.1
+  intl: ^0.20.2
+  path: ^1.9.1
+  
+  # UI
+  google_fonts: ^6.3.3
+  flutter_svg: ^2.0.17
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  very_good_analysis: ^7.0.0
+
+dependency_overrides:
+  # Windows desktop doesn't need mobile-specific packages
+  network_info_plus: ^6.1.0
+  permission_handler: ^11.3.1
+
+flutter:
+  uses-material-design: true

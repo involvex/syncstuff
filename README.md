@@ -8,7 +8,7 @@ Detailed implementation plans and status reports are now organized in the [docs/
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Bun](https://img.shields.io/badge/Bun-1.0+-green)](https://bun.sh)
-[![npm version](https://badge.fury.io/js/@involvex%2Fsyncstuff-cli.svg)](https://badge.fury.io/js/@involvex%2Fsyncstuff-cli)
+[![Flutter](https://img.shields.io/badge/Flutter-3.x-blue)](https://flutter.dev)
 
 Syncstuff is a comprehensive file synchronization ecosystem that enables secure peer-to-peer file transfer, clipboard synchronization, and cloud storage integration across mobile and web platforms.
 
@@ -21,7 +21,7 @@ Syncstuff is a comprehensive file synchronization ecosystem that enables secure 
 - **Peer-to-Peer File Transfer**: Direct file sharing between devices using WebRTC
 - **Universal Clipboard**: Copy on one device, paste on another seamlessly
 - **Cloud Integration**: Support for Google Drive, Mega, and custom cloud providers
-- **Cross-Platform**: Works on Android, iOS, and web browsers
+- **Cross-Platform**: Works on Android, iOS, Windows, and web browsers
 - **No Cloud Required**: P2P transfers work without internet connectivity
 
 ### Advanced Features
@@ -38,15 +38,16 @@ Syncstuff is a comprehensive file synchronization ecosystem that enables secure 
 
 ```
 syncstuff-monorepo/
+├── apps/
+│   ├── mobile/       # Flutter mobile application
+│   ├── cli/          # TypeScript CLI (Bun)
+│   ├── cli_dart/     # Dart CLI (native exe)
+│   └── web/          # Web dashboard (Remix.js)
 ├── packages/
-│   ├── app/          # Mobile application (Ionic + React)
-│   ├── app/electron/ # Electron application (Bun)
-│   ├── web/          # Web dashboard (Remix.js)
-│   ├── ui/           # Shared UI component library (Tamagui)
+│   ├── ui/           # Shared UI component library
 │   ├── api/          # Backend API (Cloudflare Workers)
 │   ├── database/     # Database schema and migrations
 │   └── shared/       # Shared types and utilities
-│   └── cli/          # Command line interface (Bun)
 └── docs/
     ├── CLAUDE.md     # Technical reference for AI assistants
     └── README.md     # This file
@@ -54,19 +55,22 @@ syncstuff-monorepo/
 
 ### Technology Stack
 
-- **Frontend**: React 18, Ionic 8, Tailwind CSS, Tamagui
-- **Mobile**: Capacitor 8, WebRTC, mDNS
+- **Mobile**: Flutter 3.x, Dart 3.x, flutter_bloc, WebRTC
+- **CLI (Dart)**: Native executable, no runtime needed
+- **CLI (Bun)**: TypeScript CLI for web/API integration
+- **Frontend**: React 18, Remix, Tailwind CSS
 - **Backend**: Cloudflare Workers, D1 (SQLite), R2 (Storage)
 - **Database**: Cloudflare D1 with migrations
-- **Build Tools**: Bun, Vite, Wrangler
-- **Type Safety**: TypeScript with strict mode
+- **Build Tools**: Bun, Flutter, Wrangler
+- **Type Safety**: TypeScript with strict mode, Dart with strict linting
 
 ## 📦 Installation
 
 ### Prerequisites
 
-- **Node.js**: Version 20 or higher
+- **Node.js**: Version 20 or higher (for web/CLI packages)
 - **Bun**: Latest version (package manager)
+- **Flutter**: 3.x with Dart 3.x
 - **Java**: JDK 17 (for Android builds)
 
 ### Quick Start
@@ -99,11 +103,33 @@ syncstuff-monorepo/
    # Start web development server
    bun run web
 
-   # Build and run mobile app
-   bun run android
+   # Run mobile app (Flutter)
+   cd apps/mobile
+   flutter run
    ```
 
 ## 🛠️ Development
+
+### Mobile App (Flutter)
+
+```bash
+cd apps/mobile
+
+# Run on connected device/emulator
+flutter run
+
+# Build APK
+flutter build apk
+
+# Build Windows desktop
+flutter build windows
+
+# Run analyzer
+flutter analyze
+
+# Run tests
+flutter test
+```
 
 ### Package Management
 
@@ -112,7 +138,6 @@ syncstuff-monorepo/
 bun install
 
 # Build specific packages
-bun run build:app    # Mobile app
 bun run build:web    # Web application
 bun run build:api    # Backend API
 bun run build:ui     # UI Library
@@ -120,17 +145,20 @@ bun run build:ui     # UI Library
 # Development commands
 bun run web          # Web dev server
 bun run api          # API dev server
-bun run android      # Mobile app with live reload
 ```
 
 ### Code Quality
 
 ```bash
-# Lint and format code
+# Lint and format code (TypeScript/JS)
 bun run lint         # Run ESLint for all packages
 bun run lint:fix     # Auto-fix linting issues
 bun run format       # Format with Prettier
 bun run typecheck    # TypeScript type checking
+
+# Flutter analysis
+cd apps/mobile
+flutter analyze     # Run Flutter analyzer with strict rules
 
 # Pre-commit checks
 bun run check        # Format + lint + typecheck
@@ -139,7 +167,11 @@ bun run check        # Format + lint + typecheck
 ### Testing
 
 ```bash
-# Unit tests
+# Flutter tests
+cd apps/mobile
+flutter test
+
+# Unit tests (legacy)
 bun run test.unit
 
 # E2E tests
@@ -177,9 +209,16 @@ bun run deploy:db
 ### Mobile App
 
 ```bash
+cd apps/mobile
+
 # Build production APK
-bun run build
-ionic cap run android --prod --release
+flutter build apk --release
+
+# Build iOS (requires macOS)
+flutter build ios --release
+
+# Build Windows desktop
+flutter build windows --release
 ```
 
 ## 📱 Mobile App Features
@@ -187,14 +226,22 @@ ionic cap run android --prod --release
 ### Device Discovery
 
 - **Local Network**: Automatic mDNS discovery on Android
+- **UDP Broadcast**: Device announcements on local network
 - **QR Code Pairing**: Cross-network device pairing
 - **Manual Connection**: Direct IP-based connections
 
 ### File Transfer
 
-- **Chunked Transfer**: Efficient large file handling
+- **WebRTC P2P**: Direct peer-to-peer file transfer
+- **Chunked Transfer**: Efficient large file handling (16KB chunks)
 - **Progress Tracking**: Real-time transfer progress
 - **Resume Support**: Continue interrupted transfers
+
+### Clipboard Sync
+
+- **Real-time Sync**: Instant clipboard content sharing
+- **Automatic Detection**: Monitor clipboard changes
+- **Cross-device Paste**: Copy on one device, paste on another
 
 ### Cloud Integration
 
@@ -256,15 +303,15 @@ bun run db:studio
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Make your changes
-4. Run tests and linting (`bun run check`)
+4. Run tests and linting (`bun run check` or `flutter analyze`)
 5. Commit your changes (`git commit -m 'Add amazing feature'`)
 6. Push to the branch (`git push origin feature/amazing-feature`)
 7. Open a Pull Request
 
 ### Code Style
 
-- Follow TypeScript strict mode
-- Use ESLint and Prettier for code formatting
+- Follow TypeScript strict mode for web/CLI packages
+- Use Flutter strict linting with comprehensive rules
 - Write comprehensive tests for new features
 - Update documentation for API changes
 
@@ -272,25 +319,33 @@ bun run db:studio
 
 ### ✅ Complete
 
-- [x] Mobile app P2P file transfer
-- [x] Device discovery and pairing
-- [x] Cloud provider integration framework
+- [x] Flutter mobile app with P2P file transfer
+- [x] Device discovery (UDP broadcast, mDNS)
+- [x] QR code device pairing
+- [x] WebRTC peer-to-peer connections
+- [x] Clipboard synchronization service
+- [x] Chunked file transfer protocol
+- [x] BLoC state management architecture
+- [x] Clean Architecture implementation
 - [x] Web landing page and dashboard
 - [x] Database schema and migrations
 - [x] Authentication flow with OAuth2
 - [x] Shared UI Library (@syncstuff/ui)
 - [x] Admin dashboard completion
-- [x] R2 Storage integration
 
 ### 🔄 In Progress
 
-- [ ] Background service support
-- [ ] Email notification system
-- [ ] Desktop application (Electron/Tauri)
-- [ ] Integration Tests for P2P
+- [ ] Fix Flutter analyzer strict lint errors
+- [ ] Add unit tests for services and BLoCs
+- [ ] Add widget tests for UI components
+- [ ] Add app icons and splash screen
+- [ ] Build Windows desktop client
+- [ ] Update dependencies to latest versions
 
 ### ⚠️ Planned
 
+- [ ] Background service support
+- [ ] Email notification system
 - [ ] Conflict resolution strategies
 - [ ] Enterprise features (SSO, audit logs)
 - [ ] Performance optimization
@@ -306,10 +361,16 @@ bun run db:studio
 - Check devices are on same network or use QR code pairing
 - Verify firewall settings allow WebSocket connections
 
+**Flutter Build Errors**
+
+- Ensure Flutter 3.x and Dart 3.x are installed
+- Run `flutter clean` to clean build cache
+- Check Android SDK and build tools versions
+
 **Mobile Build Errors**
 
 - Ensure JDK 17 is installed and configured
-- Run `bun run gradle:clean` to clean build cache
+- Run `flutter clean` to clean build cache
 - Check Android SDK and build tools versions
 
 **Database Issues**
@@ -329,7 +390,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- **Ionic Team** for the excellent mobile framework
+- **Flutter Team** for the excellent cross-platform framework
+- **Ionic Team** for the previous mobile framework
 - **Cloudflare** for Workers and D1 database
 - **Simple Peer** for WebRTC implementation
 - **Tamagui** for the shared UI components

@@ -1,0 +1,31 @@
+# Dart/Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub/
+build/
+.idea/
+*.iml
+.vscode/
+
+# Native executables (when compiled)
+syncstuff*
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Lock files
+pubspec.lock
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temp
+*.tmp
+*.temp

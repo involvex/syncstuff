@@ -1,0 +1,45 @@
+# Analysis options for SyncStuff Flutter app
+# Uses Very Good Analysis for strict code quality
+
+include: package:very_good_analysis/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "build/**"
+    - "lib/generated/**"
+  errors:
+    invalid_annotation_target: ignore
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
+
+linter:
+  rules:
+    # Disable verbose info rules from Very Good Analysis
+    public_member_api_docs: false
+    sort_constructors_first: false
+    always_put_required_named_parameters_first: false
+    always_use_package_imports: false
+    directives_ordering: false
+    avoid_catches_without_on_clauses: false
+    avoid_redundant_argument_values: false
+    avoid_print: false  # Allow print for debugging
+    avoid_positional_boolean_parameters: false  # Allow for callbacks
+    one_member_abstracts: false  # Allow single abstract methods
+    lines_longer_than_80_chars: false
+    flutter_style_todos: false
+    unnecessary_lambdas: false
+    cascade_invocations: false
+    omit_local_variable_types: false
+    prefer_int_literals: false
+    sort_pub_dependencies: false
+    unnecessary_null_checks: false
+    prefer_const_constructors: false
+    avoid_void_async: false
+    avoid_slow_async_io: false
+    prefer_null_aware_method_calls: false
+    unawaited_futures: false
+    unnecessary_breaks: false
