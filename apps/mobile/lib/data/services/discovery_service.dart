@@ -53,26 +53,24 @@ class DiscoveryService {
         return;
       }
 
-      if (ip != null) {
-        _localIp = ip; // Store for filtering
-        final subnet = ip.substring(0, ip.lastIndexOf('.'));
-        developer.log(
-          'Phone IP=$ip, subnet=$subnet.*',
-          name: 'DiscoveryService',
-        );
+      _localIp = ip; // Store for filtering
+      final subnet = ip.substring(0, ip.lastIndexOf('.'));
+      developer.log(
+        'Phone IP=$ip, subnet=$subnet.*',
+        name: 'DiscoveryService',
+      );
 
-        // Start UDP broadcast listener (won't receive our own broadcasts)
-        await _startBroadcastListener();
+      // Start UDP broadcast listener (won't receive our own broadcasts)
+      await _startBroadcastListener();
 
-        // Broadcast presence
-        await _broadcastPresence(ip);
+      // Broadcast presence
+      await _broadcastPresence(ip);
 
-        // Scan local subnet for SyncStuff devices (excluding our own IP)
-        developer.log('Scanning subnet: $subnet.*', name: 'DiscoveryService');
-        await _scanSubnet(subnet);
-        developer.log('Discovery scan complete', name: 'DiscoveryService');
-      }
-    } catch (e) {
+      // Scan local subnet for SyncStuff devices (excluding our own IP)
+      developer.log('Scanning subnet: $subnet.*', name: 'DiscoveryService');
+      await _scanSubnet(subnet);
+      developer.log('Discovery scan complete', name: 'DiscoveryService');
+        } catch (e) {
       developer.log('Discovery error: $e', name: 'DiscoveryService');
     } finally {
       _isScanning = false;

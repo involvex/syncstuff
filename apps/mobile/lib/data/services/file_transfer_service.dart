@@ -8,7 +8,6 @@ import 'package:uuid/uuid.dart';
 
 import '../../domain/entities/transfer.dart';
 import 'p2p_service.dart';
-import 'discovery_service.dart';
 
 /// Progress callback for file transfers
 typedef TransferProgressCallback = void Function(double progress);
