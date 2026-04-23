@@ -1,16 +1,13 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'desktop_http_server.dart';
-
 class DesktopFileTransferService {
-  final DesktopHttpServer _httpServer;
   final _progressController =
       StreamController<Map<String, dynamic>>.broadcast();
 
   String _downloadPath = 'downloads';
 
-  DesktopFileTransferService(this._httpServer);
+  DesktopFileTransferService();
 
   Stream<Map<String, dynamic>> get progressStream => _progressController.stream;
   String get downloadPath => _downloadPath;
@@ -30,7 +27,6 @@ class DesktopFileTransferService {
     }
 
     final fileName = filePath.split(Platform.pathSeparator).last;
-    final fileSize = await file.length();
     final bytes = await file.readAsBytes();
 
     final client = HttpClient();

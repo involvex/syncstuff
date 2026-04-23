@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../services/desktop_discovery_service.dart';
 import '../../services/desktop_file_transfer_service.dart';
 import '../../services/desktop_http_server.dart';
+import '../../data/repositories/device_repository.dart';
+import '../../data/repositories/transfer_repository.dart';
 import '../../presentation/bloc/device/device_bloc.dart';
 import '../../presentation/bloc/transfer/transfer_bloc.dart';
 import '../../presentation/bloc/settings/settings_bloc.dart';
@@ -19,19 +21,23 @@ Future<void> setupServiceLocator() async {
     () => DesktopDiscoveryService(getIt<DesktopHttpServer>()),
   );
   getIt.registerLazySingleton<DesktopFileTransferService>(
-    () => DesktopFileTransferService(getIt<DesktopHttpServer>()),
+    () => DesktopFileTransferService(),
   );
+  getIt.registerLazySingleton<DeviceRepository>(() => DeviceRepository());
+  getIt.registerLazySingleton<TransferRepository>(() => TransferRepository());
 
   getIt.registerFactory<DeviceBloc>(
     () => DeviceBloc(
       discoveryService: getIt<DesktopDiscoveryService>(),
-      httpServer: getIt<DesktopHttpServer>(),
+      deviceRepository: getIt<DeviceRepository>(),
     ),
   );
 
   getIt.registerFactory<TransferBloc>(
-    () =>
-        TransferBloc(fileTransferService: getIt<DesktopFileTransferService>()),
+    () => TransferBloc(
+      fileTransferService: getIt<DesktopFileTransferService>(),
+      transferRepository: getIt<TransferRepository>(),
+    ),
   );
 
   getIt.registerFactory<SettingsBloc>(() => SettingsBloc(prefs));

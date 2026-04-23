@@ -1,3 +1,0 @@
-D:\msys64\mingw64\bin\cmake.exe -E rm -f CMakeFiles\desktop.dir/objects.a
-D:\msys64\mingw64\bin\ar.exe qc CMakeFiles\desktop.dir/objects.a @CMakeFiles\desktop.dir\objects1.rsp
-D:\msys64\mingw64\bin\c++.exe -g -mwindows -Wl,--whole-archive CMakeFiles\desktop.dir/objects.a -Wl,--no-whole-archive -o desktop.exe -Wl,--out-implib,libdesktop.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\desktop.dir\linkLibs.rsp

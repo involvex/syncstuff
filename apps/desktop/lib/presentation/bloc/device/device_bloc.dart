@@ -4,24 +4,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../domain/entities/device.dart';
 import '../../../data/repositories/device_repository.dart';
 import '../../../services/desktop_discovery_service.dart';
-import '../../../services/desktop_http_server.dart';
 import 'device_event.dart';
 import 'device_state.dart';
 
 class DeviceBloc extends Bloc<DeviceEvent, DeviceState> {
   final DesktopDiscoveryService _discoveryService;
-  final DesktopHttpServer _httpServer;
   final DeviceRepository _deviceRepository;
 
   StreamSubscription<Map<String, dynamic>>? _discoverySubscription;
 
   DeviceBloc({
     required DesktopDiscoveryService discoveryService,
-    required DesktopHttpServer httpServer,
-    DeviceRepository? deviceRepository,
+    required DeviceRepository deviceRepository,
   }) : _discoveryService = discoveryService,
-       _httpServer = httpServer,
-       _deviceRepository = deviceRepository ?? DeviceRepository(),
+       _deviceRepository = deviceRepository,
        super(const DeviceState()) {
     on<LoadDevices>(_onLoadDevices);
     on<StartDiscovery>(_onStartDiscovery);

@@ -1,3 +1,0 @@
-D:\msys64\mingw64\bin\cmake.exe -E rm -f CMakeFiles\tray_manager_plugin.dir/objects.a
-D:\msys64\mingw64\bin\ar.exe qc CMakeFiles\tray_manager_plugin.dir/objects.a @CMakeFiles\tray_manager_plugin.dir\objects1.rsp
-D:\msys64\mingw64\bin\c++.exe -g -shared -o libtray_manager_plugin.dll -Wl,--out-implib,libtray_manager_plugin.dll.a -Wl,--major-image-version,0,--minor-image-version,0 -Wl,--whole-archive CMakeFiles\tray_manager_plugin.dir/objects.a -Wl,--no-whole-archive @CMakeFiles\tray_manager_plugin.dir\linkLibs.rsp

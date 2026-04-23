@@ -10,6 +10,7 @@ import 'presentation/bloc/settings/settings_bloc.dart';
 import 'presentation/bloc/settings/settings_state.dart';
 import 'presentation/bloc/settings/settings_event.dart';
 import 'presentation/pages/home_page.dart';
+import 'presentation/theme/app_theme.dart';
 
 class SyncStuffDesktopApp extends StatelessWidget {
   const SyncStuffDesktopApp({super.key});
@@ -33,8 +34,8 @@ class SyncStuffDesktopApp extends StatelessWidget {
           return MaterialApp(
             title: 'SyncStuff',
             debugShowCheckedModeBanner: false,
-            theme: ThemeData.light(useMaterial3: true),
-            darkTheme: ThemeData.dark(useMaterial3: true),
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
             themeMode: state.isDarkMode ? ThemeMode.dark : ThemeMode.light,
             home: const HomePage(),
           );
