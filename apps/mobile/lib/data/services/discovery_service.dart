@@ -55,10 +55,7 @@ class DiscoveryService {
 
       _localIp = ip; // Store for filtering
       final subnet = ip.substring(0, ip.lastIndexOf('.'));
-      developer.log(
-        'Phone IP=$ip, subnet=$subnet.*',
-        name: 'DiscoveryService',
-      );
+      developer.log('Phone IP=$ip, subnet=$subnet.*', name: 'DiscoveryService');
 
       // Start UDP broadcast listener (won't receive our own broadcasts)
       await _startBroadcastListener();
@@ -70,7 +67,7 @@ class DiscoveryService {
       developer.log('Scanning subnet: $subnet.*', name: 'DiscoveryService');
       await _scanSubnet(subnet);
       developer.log('Discovery scan complete', name: 'DiscoveryService');
-        } catch (e) {
+    } catch (e) {
       developer.log('Discovery error: $e', name: 'DiscoveryService');
     } finally {
       _isScanning = false;

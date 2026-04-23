@@ -5,6 +5,8 @@ class SettingsState extends Equatable {
   final String deviceName;
   final bool autoSyncEnabled;
   final bool autoStartEnabled;
+  final String downloadPath;
+  final bool autoPairEnabled;
   final String? error;
 
   const SettingsState({
@@ -12,6 +14,8 @@ class SettingsState extends Equatable {
     this.deviceName = 'My Device',
     this.autoSyncEnabled = true,
     this.autoStartEnabled = false,
+    this.downloadPath = 'default',
+    this.autoPairEnabled = true,
     this.error,
   });
 
@@ -20,6 +24,8 @@ class SettingsState extends Equatable {
     String? deviceName,
     bool? autoSyncEnabled,
     bool? autoStartEnabled,
+    String? downloadPath,
+    bool? autoPairEnabled,
     String? error,
   }) {
     return SettingsState(
@@ -27,6 +33,8 @@ class SettingsState extends Equatable {
       deviceName: deviceName ?? this.deviceName,
       autoSyncEnabled: autoSyncEnabled ?? this.autoSyncEnabled,
       autoStartEnabled: autoStartEnabled ?? this.autoStartEnabled,
+      downloadPath: downloadPath ?? this.downloadPath,
+      autoPairEnabled: autoPairEnabled ?? this.autoPairEnabled,
       error: error,
     );
   }
@@ -37,6 +45,8 @@ class SettingsState extends Equatable {
     deviceName,
     autoSyncEnabled,
     autoStartEnabled,
+    downloadPath,
+    autoPairEnabled,
     error,
   ];
 }

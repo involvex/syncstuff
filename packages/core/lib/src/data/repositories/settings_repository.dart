@@ -1,5 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import '../datasources/settings_local_datasource.dart';
+import 'package:syncstuff_core/src/data/datasources/settings_local_datasource.dart';
 
 class SettingsRepository {
   late final SettingsLocalDataSource _localDataSource;

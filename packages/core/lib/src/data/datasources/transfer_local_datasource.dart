@@ -1,6 +1,6 @@
 import 'package:sqflite/sqflite.dart';
-import '../database_helper.dart';
-import '../../domain/entities/transfer.dart';
+import 'package:syncstuff_core/src/data/datasources/database_helper.dart';
+import 'package:syncstuff_core/src/domain/entities/transfer.dart';
 
 class TransferLocalDataSource {
   final DatabaseHelper _databaseHelper;

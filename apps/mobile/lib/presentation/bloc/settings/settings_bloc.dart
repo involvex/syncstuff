@@ -11,6 +11,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   static const String _keyDeviceName = 'device_name';
   static const String _keyAutoSync = 'auto_sync';
   static const String _keyAutoStart = 'auto_start';
+  static const String _keyDownloadPath = 'download_path';
+  static const String _keyAutoPair = 'auto_pair';
 
   SettingsBloc(this._prefs) : super(const SettingsState()) {
     on<LoadSettings>(_onLoadSettings);
@@ -18,6 +20,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     on<SetDeviceName>(_onSetDeviceName);
     on<SetAutoSync>(_onSetAutoSync);
     on<SetAutoStart>(_onSetAutoStart);
+    on<SetDownloadPath>(_onSetDownloadPath);
+    on<SetAutoPair>(_onSetAutoPair);
   }
 
   Future<void> _onLoadSettings(
@@ -28,6 +32,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     final deviceName = _prefs.getString(_keyDeviceName) ?? 'My Device';
     final autoSync = _prefs.getBool(_keyAutoSync) ?? true;
     final autoStart = _prefs.getBool(_keyAutoStart) ?? false;
+    final downloadPath = _prefs.getString(_keyDownloadPath) ?? 'default';
+    final autoPair = _prefs.getBool(_keyAutoPair) ?? true;
 
     emit(
       state.copyWith(
@@ -35,6 +41,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
         deviceName: deviceName,
         autoSyncEnabled: autoSync,
         autoStartEnabled: autoStart,
+        downloadPath: downloadPath,
+        autoPairEnabled: autoPair,
       ),
     );
   }
@@ -70,5 +78,21 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   ) async {
     await _prefs.setBool(_keyAutoStart, event.enabled);
     emit(state.copyWith(autoStartEnabled: event.enabled));
+  }
+
+  Future<void> _onSetDownloadPath(
+    SetDownloadPath event,
+    Emitter<SettingsState> emit,
+  ) async {
+    await _prefs.setString(_keyDownloadPath, event.path);
+    emit(state.copyWith(downloadPath: event.path));
+  }
+
+  Future<void> _onSetAutoPair(
+    SetAutoPair event,
+    Emitter<SettingsState> emit,
+  ) async {
+    await _prefs.setBool(_keyAutoPair, event.enabled);
+    emit(state.copyWith(autoPairEnabled: event.enabled));
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:file_picker/file_picker.dart';
 
 import '../bloc/settings/settings_bloc.dart';
 import '../bloc/settings/settings_event.dart';
@@ -16,7 +17,6 @@ class SettingsPage extends StatelessWidget {
         builder: (context, state) {
           return ListView(
             children: [
-              // Device Section
               _buildSectionHeader(context, 'Device'),
               _buildListTile(
                 context,
@@ -25,10 +25,18 @@ class SettingsPage extends StatelessWidget {
                 subtitle: state.deviceName,
                 onTap: () => _showDeviceNameDialog(context, state.deviceName),
               ),
+              _buildListTile(
+                context,
+                icon: Icons.folder,
+                title: 'Download Location',
+                subtitle: state.downloadPath == 'default'
+                    ? 'App Documents (default)'
+                    : state.downloadPath,
+                onTap: () => _pickDownloadLocation(context),
+              ),
 
               const Divider(),
 
-              // Appearance Section
               _buildSectionHeader(context, 'Appearance'),
               _buildSwitchTile(
                 context,
@@ -43,7 +51,6 @@ class SettingsPage extends StatelessWidget {
 
               const Divider(),
 
-              // Sync Section
               _buildSectionHeader(context, 'Sync'),
               _buildSwitchTile(
                 context,
@@ -65,10 +72,19 @@ class SettingsPage extends StatelessWidget {
                   context.read<SettingsBloc>().add(SetAutoStart(value));
                 },
               ),
+              _buildSwitchTile(
+                context,
+                icon: Icons.bluetooth_searching,
+                title: 'Auto Pair',
+                subtitle: 'Auto discover and connect to known devices',
+                value: state.autoPairEnabled,
+                onChanged: (value) {
+                  context.read<SettingsBloc>().add(SetAutoPair(value));
+                },
+              ),
 
               const Divider(),
 
-              // About Section
               _buildSectionHeader(context, 'About'),
               _buildListTile(
                 context,
@@ -81,9 +97,7 @@ class SettingsPage extends StatelessWidget {
                 icon: Icons.code,
                 title: 'Open Source',
                 subtitle: 'View source code',
-                onTap: () {
-                  // TODO: Open GitHub
-                },
+                onTap: () {},
               ),
               _buildListTile(
                 context,
@@ -187,5 +201,15 @@ class SettingsPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> _pickDownloadLocation(BuildContext context) async {
+    final result = await FilePicker.platform.getDirectoryPath();
+    if (result != null && context.mounted) {
+      context.read<SettingsBloc>().add(SetDownloadPath(result));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Download location set to: $result')),
+      );
+    }
   }
 }

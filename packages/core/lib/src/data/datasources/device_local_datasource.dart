@@ -1,6 +1,6 @@
 import 'package:sqflite/sqflite.dart';
-import '../database_helper.dart';
-import '../../domain/entities/device.dart';
+import 'package:syncstuff_core/src/data/datasources/database_helper.dart';
+import 'package:syncstuff_core/src/domain/entities/device.dart';
 
 class DeviceLocalDataSource {
   final DatabaseHelper _databaseHelper;

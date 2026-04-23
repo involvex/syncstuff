@@ -8,75 +8,65 @@ import '../bloc/transfer/transfer_event.dart';
 import '../bloc/transfer/transfer_state.dart';
 import '../bloc/device/device_bloc.dart';
 
-class TransfersPage extends StatelessWidget {
+class TransfersPage extends StatefulWidget {
   const TransfersPage({super.key});
+
+  @override
+  State<TransfersPage> createState() => _TransfersPageState();
+}
+
+class _TransfersPageState extends State<TransfersPage>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Transfers')),
+      appBar: AppBar(
+        title: const Text('Transfer Manager'),
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: const [
+            Tab(text: 'Active'),
+            Tab(text: 'Completed'),
+            Tab(text: 'Failed'),
+          ],
+        ),
+      ),
       body: BlocBuilder<TransferBloc, TransferState>(
         builder: (context, state) {
-          if (state.activeTransfers.isEmpty && state.transferHistory.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.swap_horiz,
-                    size: 80,
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.primary.withValues(alpha: 0.5),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'No transfers yet',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Send files to your paired devices',
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodyMedium?.copyWith(color: Colors.grey),
-                  ),
-                ],
-              ),
-            );
-          }
+          final activeTransfers = state.activeTransfers
+              .where((t) => t.status == TransferStatus.inProgress)
+              .toList();
+          final completedTransfers = state.transferHistory
+              .where((t) => t.status == TransferStatus.completed)
+              .toList();
+          final failedTransfers = state.transferHistory
+              .where(
+                (t) =>
+                    t.status == TransferStatus.failed ||
+                    t.status == TransferStatus.cancelled,
+              )
+              .toList();
 
-          return ListView(
+          return TabBarView(
+            controller: _tabController,
             children: [
-              // Active Transfers
-              if (state.activeTransfers.isNotEmpty) ...[
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
-                  child: Text(
-                    'Active Transfers',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                ...state.activeTransfers.map(
-                  (transfer) =>
-                      _buildTransferItem(context, transfer, isActive: true),
-                ),
-              ],
-
-              // Transfer History
-              if (state.transferHistory.isNotEmpty) ...[
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(16, 24, 16, 8),
-                  child: Text(
-                    'History',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                ...state.transferHistory.map(
-                  (transfer) =>
-                      _buildTransferItem(context, transfer, isActive: false),
-                ),
-              ],
+              _buildTransferList(context, activeTransfers, isActive: true),
+              _buildTransferList(context, completedTransfers, isActive: false),
+              _buildTransferList(context, failedTransfers, isActive: false),
             ],
           );
         },
@@ -86,6 +76,55 @@ class TransfersPage extends StatelessWidget {
         icon: const Icon(Icons.send),
         label: const Text('Send File'),
       ),
+    );
+  }
+
+  Widget _buildTransferList(
+    BuildContext context,
+    List<FileTransfer> transfers, {
+    required bool isActive,
+  }) {
+    if (transfers.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              isActive ? Icons.swap_horiz : Icons.history,
+              size: 80,
+              color: Theme.of(
+                context,
+              ).colorScheme.primary.withValues(alpha: 0.5),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              isActive ? 'No active transfers' : 'No transfers yet',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              isActive
+                  ? 'Send a file to start transferring'
+                  : 'Transfers will appear here',
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: Colors.grey),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      itemCount: transfers.length,
+      itemBuilder: (context, index) {
+        return _buildTransferItem(
+          context,
+          transfers[index],
+          isActive: isActive,
+        );
+      },
     );
   }
 

@@ -9,31 +9,30 @@ import 'package:uuid/uuid.dart';
 import '../../domain/entities/transfer.dart';
 import 'p2p_service.dart';
 
-/// Progress callback for file transfers
 typedef TransferProgressCallback = void Function(double progress);
 
-/// Service for handling file transfers
 class FileTransferService {
-  static const int _chunkSize = 16384; // 16KB chunks
+  static const int _chunkSize = 16384;
   static const Duration _chunkDelay = Duration(milliseconds: 10);
 
   final P2PService _p2pService;
   final _uuid = const Uuid();
 
-  // Active incoming transfers
   final Map<String, _IncomingTransfer> _incomingTransfers = {};
-
-  // Active outgoing transfers
   final Map<String, _OutgoingTransfer> _outgoingTransfers = {};
 
   final _progressController = StreamController<FileTransfer>.broadcast();
 
-  /// Stream of transfer progress updates
   Stream<FileTransfer> get progressStream => _progressController.stream;
 
+  String _downloadPath = 'default';
+
   FileTransferService(this._p2pService) {
-    // Listen for file chunks from P2P service
     _p2pService.fileChunks.listen(_handleFileChunk);
+  }
+
+  void setDownloadPath(String path) {
+    _downloadPath = path;
   }
 
   /// Send a file to connected peer
@@ -248,10 +247,15 @@ class FileTransferService {
     final incoming = _incomingTransfers[transferId];
     if (incoming == null) return;
 
-    // Save file to downloads directory
     try {
-      final directory = await getApplicationDocumentsDirectory();
-      final downloadsDir = Directory('${directory.path}/downloads');
+      Directory downloadsDir;
+      if (_downloadPath == 'default') {
+        final directory = await getApplicationDocumentsDirectory();
+        downloadsDir = Directory('${directory.path}/downloads');
+      } else {
+        downloadsDir = Directory(_downloadPath);
+      }
+
       if (!await downloadsDir.exists()) {
         await downloadsDir.create(recursive: true);
       }
@@ -260,7 +264,6 @@ class FileTransferService {
       final file = File(filePath);
       await file.writeAsBytes(incoming.fileData);
 
-      // Update transfer as completed
       final completedTransfer = incoming.transfer.copyWith(
         status: TransferStatus.completed,
         progress: 1.0,
