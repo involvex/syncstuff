@@ -1,8 +1,8 @@
 /// <reference types="vitest" />
 
-import react from "@vitejs/plugin-react";
 // import { tamaguiPlugin } from "@tamagui/vite-plugin";
-import path from "path";
+import path from "node:path";
+import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { nodePolyfills } from "vite-plugin-node-polyfills";
 

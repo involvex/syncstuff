@@ -1,1 +1,6 @@
-{"version":2,"entries":[{"package":"syncstuff_core","rootUri":"../","packageUri":"lib/"}]}
+{
+  "version": 2,
+  "entries": [
+    { "package": "syncstuff_core", "rootUri": "../", "packageUri": "lib/" }
+  ]
+}

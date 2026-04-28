@@ -1,6 +1,6 @@
-import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
 import { promises as fs } from "node:fs";
 import path from "node:path";
+import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
 
 const MIME_BY_EXT: Record<string, string> = {
   ".ts": "application/typescript; charset=utf-8",

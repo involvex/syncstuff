@@ -94,8 +94,9 @@ export const CloudAccounts: React.FC = () => {
 
       // Trigger device auto-registration when account is added
       try {
-        const { deviceDetectionService } =
-          await import("../../services/device/device-detection.service");
+        const { deviceDetectionService } = await import(
+          "../../services/device/device-detection.service"
+        );
         await deviceDetectionService.autoRegisterDevice();
       } catch (error) {
         console.warn("Failed to auto-register device:", error);
@@ -103,8 +104,9 @@ export const CloudAccounts: React.FC = () => {
 
       // Link account for Electron sync
       try {
-        const { electronSyncService } =
-          await import("../../services/electron/sync.service");
+        const { electronSyncService } = await import(
+          "../../services/electron/sync.service"
+        );
         await electronSyncService.linkAccount(account);
       } catch (error) {
         console.warn("Failed to link account for Electron sync:", error);
@@ -287,8 +289,9 @@ export const CloudAccounts: React.FC = () => {
 
       // Trigger device auto-registration when account is added
       try {
-        const { deviceDetectionService } =
-          await import("../../services/device/device-detection.service");
+        const { deviceDetectionService } = await import(
+          "../../services/device/device-detection.service"
+        );
         await deviceDetectionService.autoRegisterDevice();
       } catch (error) {
         console.warn("Failed to auto-register device:", error);
@@ -296,8 +299,9 @@ export const CloudAccounts: React.FC = () => {
 
       // Link account for Electron sync
       try {
-        const { electronSyncService } =
-          await import("../../services/electron/sync.service");
+        const { electronSyncService } = await import(
+          "../../services/electron/sync.service"
+        );
         await electronSyncService.linkAccount(account);
       } catch (error) {
         console.warn("Failed to link account for Electron sync:", error);
@@ -366,8 +370,9 @@ export const CloudAccounts: React.FC = () => {
 
               // Unlink account from Electron sync
               try {
-                const { electronSyncService } =
-                  await import("../../services/electron/sync.service");
+                const { electronSyncService } = await import(
+                  "../../services/electron/sync.service"
+                );
                 await electronSyncService.unlinkAccount(type);
               } catch (error) {
                 console.warn(
