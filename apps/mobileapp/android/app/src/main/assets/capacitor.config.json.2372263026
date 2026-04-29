@@ -1,6 +1,0 @@
-{
-	"appId": "com.syncstuff.app",
-	"appName": "Syncstuff",
-	"webDir": "dist",
-	"plugins": {}
-}

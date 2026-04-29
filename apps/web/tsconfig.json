@@ -35,12 +35,7 @@
       "@syncstuff/shared": ["../../packages/shared/src/index.ts"],
       "@syncstuff/shared/*": ["../../packages/shared/src/*"]
     },
-    "rootDirs": [
-      "packages/web/**",
-      "packages/app/**",
-      "packages/shared/**",
-      "packages/api/**"
-    ],
+    "rootDirs": ["apps/web/**", "packages/shared/**", "packages/api/**"],
     // Remix takes care of building everything in `remix build`.
     "noEmit": true
   },

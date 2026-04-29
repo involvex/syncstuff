@@ -12,7 +12,6 @@ export default [
       "ios/**",
       "**/.gradle/**",
       "packages/shared/dist/**",
-      "apps/mobileapp/node_modules/**",
       "packages/ui/dist/**",
       "packages/ui/*/**",
     ],

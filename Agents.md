@@ -1,158 +1,143 @@
 # SyncStuff Tech Stack Documentation
 
-This document provides a comprehensive overview of the SyncStuff project's technology stack, including key technologies, frameworks, libraries, and their purposes across the monorepo.
-
 ## Project Overview
 
-SyncStuff is a cross-platform application for synchronizing files and data across devices. The project is structured as a monorepo using pnpm workspaces, containing multiple applications and shared packages.
+SyncStuff is a cross-platform file synchronization application built as a monorepo. It uses Flutter for mobile/desktop, Dart for CLI, and Remix/Cloudflare Workers for web and API.
 
-## Overall Architecture
+## Monorepo Structure
 
-### Monorepo Management
-- **pnpm**: Package manager for workspace management and dependency resolution
-- **Turbo**: Build system for orchestrating tasks across the monorepo (build, dev, lint, etc.)
-- **TypeScript**: Primary programming language with strict type checking (for web/CLI packages)
-- **Dart/Flutter**: Primary mobile development stack
-- **Biome**: Code formatting and linting tool for TypeScript/JS code
-- **ESLint**: Additional linting with React-specific rules
-- **Prettier**: Code formatting with plugins for imports and Tailwind CSS
+```
+syncstuff-monorepo/
+├── apps/
+│   ├── mobile/       # Flutter mobile app (Android/iOS)
+│   ├── desktop/      # Flutter desktop app (Windows)
+│   ├── cli_dart/     # Dart CLI (compiled native executable)
+│   └── web/          # Web dashboard (Remix.js + Cloudflare Workers)
+├── packages/
+│   ├── core/         # Shared Dart/Flutter core (entities, services, utils)
+│   ├── ui/           # Shared React UI component library
+│   ├── api/          # Backend API (Cloudflare Workers)
+│   ├── database/     # Database schema and migrations (Cloudflare D1)
+│   ├── shared/       # Shared TypeScript types and utilities
+│   └── telemetry/   # OpenTelemetry workers
+└── docs/             # Documentation
+```
 
-### Runtime Environment
-- **Node.js**: Minimum version 20.0.0 required
-- **Bun**: Alternative runtime with version 1.0.0+ support, used for faster builds and development
-- **Dart 3.x**: Flutter programming language
+## Technology Stack
 
-### UI Framework
-- **Flutter**: Cross-platform UI toolkit for mobile (Android/iOS) and desktop (Windows)
-- **React**: Version 18.2.0 (for web application)
-- **Remix**: Full-stack React framework (web app)
-- **Tamagui**: Universal UI component library (legacy, migrated to Flutter)
-
-## Application Breakdown
-
-### Mobile Application (`apps/mobile`) - FLUTTER
-
-A Flutter-based cross-platform mobile app for iOS and Android with Windows desktop support. Replaced Ionic/React due to persistent routing and connectivity issues.
-
-**Key Technologies:**
+### Mobile & Desktop (Flutter)
 - **Flutter 3.x**: Cross-platform UI framework
 - **Dart 3.x**: Programming language
-- **flutter_bloc**: State management using BLoC pattern
+- **flutter_bloc**: State management (BLoC pattern)
 - **get_it**: Dependency injection
-- **equatable**: Value equality for BLoC states
-- **flutter_webrtc**: WebRTC for peer-to-peer connections
-- **qr_flutter**: QR code generation
-- **mobile_scanner**: QR code scanning
-- **file_picker**: File selection
-- **permission_handler**: Runtime permissions
-- **path_provider**: Local storage paths
-- **shared_preferences**: Key-value storage
-- **google_fonts**: Custom typography (Inter font)
+- **flutter_webrtc**: P2P connections
+- **qr_flutter / mobile_scanner**: QR code generation & scanning
+- **file_picker / permission_handler**: File & permission management
 
-**Core Services:**
-- **DiscoveryService**: Local network device discovery via UDP broadcast and mDNS
-- **P2PService**: WebRTC peer-to-peer connections with signaling
-- **FileTransferService**: Chunked file transfer protocol (16KB chunks)
-- **ClipboardSyncService**: Real-time clipboard synchronization
-- **QRCodeService**: QR code generation and parsing for device pairing
+### CLI (Dart)
+- **Dart**: Native compiled executable
+- No runtime dependency needed
 
-**Architecture:**
-- Clean Architecture (Presentation → Domain → Data layers)
-- BLoC pattern for state management
-- Repository pattern for data access
+### Web Application
+- **React 18**: UI framework
+- **Remix.js**: Full-stack React framework
+- **Cloudflare Workers**: Serverless runtime
+- **Tailwind CSS**: Styling
 
-**Purpose:** P2P file synchronization, device pairing, clipboard sharing across all platforms.
+### Backend
+- **Cloudflare Workers**: API runtime
+- **Cloudflare D1**: SQLite database
+- **Cloudflare KV**: Key-value storage (planned)
 
-### CLI Application (`apps/cli`)
+### Shared Packages
+- **packages/core**: Dart package shared by mobile, desktop, cli_dart
+- **packages/shared**: TypeScript utilities for web/api
+- **packages/ui**: React component library for web
 
-A command-line interface tool for managing SyncStuff operations.
+### Build & Tooling
+- **Bun**: Package manager and npm workspace runtime
+- **Turborepo**: Task orchestration across monorepo
+- **TypeScript**: Strict mode for all TS packages
+- **Biome**: Formatting and linting
+- **ESLint**: Additional code quality
 
-**Key Technologies:**
-- **Bun**: Runtime and build tool for the CLI
-- **TypeScript**: Type-safe development
-- **Inquirer**: Interactive command-line prompts
-- **Chalk**: Terminal string styling
-- **Ora**: Elegant terminal spinners
+## Development Commands
 
-**Purpose:** Provides a CLI interface for users to interact with SyncStuff services, manage devices, and perform administrative tasks.
+```bash
+# Install dependencies (npm workspace packages)
+bun install
 
-### Web Application (`apps/web`)
+# Build all npm packages (via Turborepo)
+bun run build
 
-A web-based interface deployed on Cloudflare Workers/Pages.
+# Build specific targets
+bun run build:web        # Web app (includes UI package)
+bun run build:mobile     # Flutter Android APK
+bun run build:mobile:ios # Flutter iOS
+bun run build:desktop     # Flutter Windows desktop
+bun run build:cli_dart    # Compile Dart CLI to native exe
+bun run build:ui          # Shared UI library only
+bun run build:shared      # Shared TS utilities only
 
-**Key Technologies:**
-- **Remix**: Full-stack React framework optimized for web standards
-- **Cloudflare Workers**: Serverless runtime for global deployment
-- **Tailwind CSS**: Utility-first CSS framework
+# Development servers
+bun run dev:web          # Remix dev server
+bun run dev:api          # Cloudflare Workers dev
+bun run dev:mobile       # Flutter run (connected device)
+bun run dev:desktop       # Flutter run -d windows
+bun run dev:cli_dart      # Dart run CLI
 
-**Purpose:** Web interface for SyncStuff, providing browser-based access to synchronization features and user management.
+# Testing
+bun run test              # Turbo test across npm packages
+bun run test:mobile       # Flutter test
+bun run test:desktop       # Flutter test
+bun run test:cli_dart      # Dart test
 
-### Shared UI Package (`packages/ui`)
+# Code quality
+bun run lint / lint:fix   # ESLint
+bun run format            # Biome format
+bun run typecheck         # TypeScript checking
+bun run check             # lint:fix + format + typecheck
 
-A reusable component library shared across React-based applications.
+# Deployment
+bun run deploy:web
+bun run deploy:api
+bun run deploy:telemetry
 
-**Key Technologies:**
-- **TypeScript**: Type definitions for components
-- **clsx**: Conditional CSS class utility
-- **Tailwind Merge**: Intelligent Tailwind CSS class merging
-- **Lucide React**: Icon library
+# Database
+bun run db:create
+bun run db:migrate
+```
 
-**Purpose:** Centralized UI components for web application consistency.
+## Flutter App Architecture (apps/mobile & apps/desktop)
 
-## Development Workflow
+Clean Architecture with BLoC pattern:
+```
+UI Components → BLoC/Cubit → Use Cases → Repositories → Data Sources
+```
 
-### Build and Development
-- **Turbo**: Parallel task execution across workspaces
-- **Flutter**: Cross-platform builds for mobile and desktop
-- **Bun**: Accelerated builds and package management for Node.js packages
+### Core Services (packages/core)
+- **DiscoveryService**: mDNS/UDP device discovery
+- **P2PService**: WebRTC peer-to-peer connections
+- **FileTransferService**: Chunked file transfer (16KB chunks)
+- **ClipboardSyncService**: Real-time clipboard sync
 
-### Quality Assurance
-- **Biome**: Fast linting and formatting for TypeScript/JS
-- **ESLint**: Advanced linting with React and TypeScript rules
-- **flutter analyze**: Dart/Flutter code analysis with strict rules
-- **Prettier**: Consistent code formatting
-- **TypeScript**: Compile-time type checking
-- **flutter test**: Unit and widget tests
-
-### Deployment
-- **Cloudflare Pages/Workers**: Web application hosting
-- **Flutter Build**: Mobile (APK/AAB/iOS) and desktop (Windows) builds
-- **Bun**: CLI tool distribution
-
-## Network Architecture
-
-### P2P Discovery Protocol
-- **Port 8765**: Device discovery service
-- **Port 8766**: UDP broadcast for device announcements
-- **Port 8767**: WebSocket signaling server
+### P2P Signaling
+- **Port 8765**: Discovery service
+- **Port 8766**: UDP broadcast
+- **Port 8767**: WebSocket signaling
 
 ### QR Code Pairing
-- **URI Scheme**: `syncstuff://connect`
-- **Parameters**: id, name, ip, port, platform, version
+- **URI**: `syncstuff://connect`
+- **Params**: id, name, ip, port, platform, version
 
-### File Transfer
-- **Protocol**: Chunked transfer over WebRTC data channels
-- **Chunk Size**: 16KB per chunk
+## Web Architecture (apps/web)
 
-## Cross-Platform Compatibility
+- Remix.js full-stack framework on Cloudflare Workers
+- D1 database for user management
+- OAuth2 authentication (GitHub, Discord)
 
-The tech stack is designed for maximum cross-platform compatibility:
-- **Mobile (Android/iOS)**: Flutter app with native performance
-- **Desktop (Windows)**: Flutter desktop build
-- **Web**: Browser-based access via Remix and Cloudflare
-- **CLI**: Terminal-based access via Bun
+## CLI (apps/cli_dart)
 
-This architecture enables SyncStuff to provide a seamless synchronization experience across all user devices and platforms.
-
-## Testing
-
-### Flutter Mobile Tests
-- Unit tests for domain entities (Device, Transfer, Clipboard)
-- Widget tests for UI components
-- Integration tests for P2P services
-- Run with `flutter test`
-
-### Legacy Tests (for React apps)
-- **Vitest**: Unit testing framework
-- **Cypress**: End-to-end testing
-- **Testing Library**: React component testing utilities
+- Dart-compiled native executable
+- Device discovery, file transfer, clipboard sync from terminal
+- No runtime dependency required

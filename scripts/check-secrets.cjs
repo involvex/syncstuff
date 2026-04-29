@@ -39,11 +39,7 @@ const sensitivePatterns = [
     name: "GitHub Client Secret",
     severity: "high",
   },
-  {
-    pattern: /IONIC_ACCESS_TOKEN\s*=\s*['"]?[a-zA-Z0-9_]{20,}['"]?/i,
-    name: "Ionic Access Token",
-    severity: "high",
-  },
+  
   {
     pattern: /password\s*[:=]\s*['"]?[^'"]{8,}['"]?/i,
     name: "Password",

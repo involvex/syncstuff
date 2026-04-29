@@ -29,7 +29,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Package manager lock files (using pnpm now)
+# Package manager lock files
 bun.lock
 bun.lock.backup
 
@@ -40,33 +40,32 @@ bun.lock.backup
 
 Warp.md
 
-# Legacy package paths (for backwards compatibility during migration)
-packages/app/node_modules
-packages/web/node_modules
-packages/api/node_modules
-packages/shared/node_modules
-packages/database/node_modules
-packages/ui/node_modules
-packages/cli/node_modules
-
-# New apps directory structure
+# Apps directory
 apps/*/node_modules
 apps/*/.env
 apps/*/.env.*
-apps/*/build
 apps/*/dist
 
-# Specific app directories
-apps/mobileapp/android/build
-apps/mobileapp/android/app/build
-apps/mobileapp/android/.gradle
-apps/mobileapp/electron/node_modules
-apps/mobileapp/electron/dist
-apps/desktop/node_modules
-apps/desktop/dist
+# Package build outputs and node_modules
+packages/database/node_modules/.bin/
+packages/database/node_modules/wrangler
+packages/ui/dist/
+packages/ui/node_modules/
+
+# Flutter/Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+packages/*/.dart_tool/
+apps/*/.dart_tool/
+apps/mobile/build/
+apps/desktop/build/
+apps/cli_dart/syncstuff
+apps/cli_dart/syncstuff.exe
+*.g.dart
+*.freezed.dart
 
 # Sensitive files
-apps/mobileapp/google_drive_client_secret.json
 **/google_drive_client_secret.json
 **/*_client_secret.json
 **/*.pem
@@ -74,12 +73,8 @@ apps/mobileapp/google_drive_client_secret.json
 **/*.key
 
 # Environment files (but NOT .env.example templates)
-packages/app/.env
-packages/web/.env
-packages/web/.dev.vars
 apps/web/.env
 apps/web/.dev.vars
-apps/mobileapp/.env
 packages/api/.env
 packages/api/.env.local
 packages/database/.env
@@ -89,28 +84,10 @@ packages/database/.env.local
 .wrangler/
 **/.wrangler/
 **/.dev.vars
-# Note: wrangler.toml files are tracked (they contain non-sensitive config)
-# Only .wrangler/ directory (local dev cache) is ignored
 
 # IMPORTANT: .env.example files ARE tracked - they contain templates only
 
-# Legacy paths (for backwards compatibility)
-packages/app/build
-packages/app/dist
-packages/app/Warp.md
-packages/app/android/build
-packages/app/android/app/build
-packages/app/android/.gradle
-packages/app/electron/node_modules
-packages/app/electron/dist
-packages/cli/node_modules
-packages/cli/dist
-packages/ui/node_modules
-packages/ui/dist
-
 .npmrc
-packages/cli/.npmrc
-apps/desktop/.npmrc
 
 .mcp.json
 
@@ -123,7 +100,7 @@ apps/web/dev.err
 apps/web/dev.err
 apps/web/*.err*.log
 
-
+# Telemetry package
 packages/telemetry/*.env
 packages/telemetry/*.env.local
 packages/telemetry/*.env.example

@@ -4,148 +4,133 @@ This document provides comprehensive technical context for AI assistants working
 
 ## Project Overview
 
-**Syncstuff** is a comprehensive file synchronization ecosystem built as a monorepo with multiple interconnected packages. The project enables secure peer-to-peer file transfer, clipboard synchronization, and cloud storage integration across mobile and web platforms.
+**Syncstuff** is a cross-platform file synchronization ecosystem built as a monorepo. The project enables secure peer-to-peer file transfer, clipboard synchronization, and cloud storage integration across mobile, desktop, web, and CLI platforms.
 
 ## Monorepo Structure
 
 ### Workspace Packages
 
-The project is organized into 5 main packages under `packages/`:
+The project is organized into 4 apps and 6 packages:
 
-#### 1. `packages/app` - Mobile Application
+#### Apps
 
-- **Technology**: Ionic 7 + React 18 + Capacitor 6
-- **Purpose**: Cross-platform mobile app (Android/iOS) with P2P file sync capabilities
-- **Key Features**:
-  - WebRTC-based peer-to-peer file transfers
-  - mDNS device discovery (Android only)
-  - QR code pairing and manual signaling
-  - Cloud provider integration (Google Drive, Mega)
-  - Clipboard synchronization
-- **Status**: ✅ MVP functional, needs auth integration
+1. **`apps/mobile`** - Flutter Mobile Application
+   - **Technology**: Flutter 3.x + Dart 3.x
+   - **Purpose**: Cross-platform mobile app (Android/iOS) with P2P file sync
+   - **Key Features**: WebRTC P2P transfers, mDNS discovery, QR pairing, clipboard sync, cloud integration
+   - **Architecture**: Clean Architecture with BLoC pattern
+   - **Shared Package**: Depends on `packages/core`
 
-#### 2. `packages/web` - Web Application
+2. **`apps/desktop`** - Flutter Desktop Application
+   - **Technology**: Flutter 3.x + Dart 3.x
+   - **Purpose**: Windows desktop app for P2P file sync
+   - **Shared Package**: Depends on `packages/core`
 
-- **Technology**: Remix.js + Cloudflare Workers
-- **Purpose**: Web dashboard and landing page
-- **Key Features**:
-  - User authentication and dashboard
-  - Admin interface for user management
-  - Landing page with marketing content
-- **Status**: ✅ Basic structure complete, auth integration in progress
+3. **`apps/cli_dart`** - Dart CLI
+   - **Technology**: Dart (compiled to native executable)
+   - **Purpose**: Command-line tool for device discovery, file transfer, clipboard sync
+   - **No runtime dependency required**
 
-#### 3. `packages/api` - Backend API
+4. **`apps/web`** - Web Application
+   - **Technology**: Remix.js + Cloudflare Workers + React 18
+   - **Purpose**: Web dashboard, landing page, and admin interface
+   - **Key Features**: User auth, dashboard, admin panel
+   - **Depends on**: `@syncstuff/ui`, `@syncstuff/shared`
 
-- **Technology**: Cloudflare Workers
-- **Purpose**: Authentication and user management API
-- **Key Features**:
-  - User CRUD operations
-  - OAuth2 integration (GitHub, Discord)
-  - Database integration with D1
-- **Status**: ⚠️ Basic structure, needs full implementation
+#### Packages
 
-#### 4. `packages/database` - Database Layer
+5. **`packages/core`** - Shared Dart/Flutter Core
+   - **Technology**: Dart
+   - **Purpose**: Shared entities, services, and utilities for Flutter apps and CLI
+   - **Used by**: mobile, desktop, cli_dart
 
-- **Technology**: Cloudflare D1 (SQLite)
-- **Purpose**: Database schema and migrations
-- **Key Features**:
-  - User management tables
-  - Notifications and cache tables
-  - Migration system
-- **Status**: ✅ Schema defined and deployed
+6. **`packages/ui`** - Shared UI Component Library
+   - **Technology**: React + TypeScript
+   - **Purpose**: Shared UI components for the web app
 
-#### 5. `packages/shared` - Shared Utilities
+7. **`packages/api`** - Backend API
+   - **Technology**: Cloudflare Workers
+   - **Purpose**: Authentication and user management API
 
-- **Technology**: TypeScript
-- **Purpose**: Shared types and utilities across packages
-- **Status**: ⚠️ Not yet implemented
+8. **`packages/database`** - Database Layer
+   - **Technology**: Cloudflare D1 (SQLite)
+   - **Purpose**: Database schema and migrations
+
+9. **`packages/shared`** - Shared TypeScript Utilities
+   - **Technology**: TypeScript
+   - **Purpose**: Shared types and utilities for web and API packages
+
+10. **`packages/telemetry`** - OpenTelemetry Workers
+    - **Technology**: Cloudflare Workers + OpenTelemetry
+    - **Purpose**: Request tracing and observability
 
 ## Technology Stack
 
 ### Frontend Technologies
 
-- **React 18**: UI framework across all packages
-- **Ionic 7**: Mobile UI components and theming
+- **Flutter 3.x**: Mobile and desktop UI framework
+- **Dart 3.x**: Programming language for mobile, desktop, CLI
+- **React 18**: Web UI framework
 - **Remix.js**: Web application framework
-- **Tailwind CSS**: Styling framework
-- **Zustand**: State management (mobile app)
+- **Tailwind CSS**: Styling
+- **Zustand**: State management (web)
 
 ### Backend Technologies
 
 - **Cloudflare Workers**: Serverless runtime
 - **Cloudflare D1**: SQLite database
 - **Cloudflare KV**: Key-value storage (planned)
-- **Socket.IO**: WebSocket signaling for P2P
 
-### Mobile Technologies
+### Mobile/Desktop Technologies
 
-- **Capacitor 6**: Native runtime for mobile
 - **WebRTC**: Peer-to-peer connections
-- **mDNS/Zeroconf**: Local network discovery
-- **React Router v5**: Navigation (required by Ionic)
+- **mDNS/UDP**: Local network discovery
+- **flutter_bloc**: State management
+- **sqflite**: Local SQLite storage
 
 ### Development Tools
 
 - **Bun**: Package manager and runtime
-- **Vite**: Build tool for mobile app
-- **TypeScript**: Type safety across all packages
-- **ESLint + Prettier**: Code quality and formatting
+- **Turborepo**: Task orchestration
+- **TypeScript**: Type safety for web packages
+- **Biome**: Formatting
+- **ESLint**: Code quality
 - **Wrangler**: Cloudflare Workers CLI
 
-## Current Implementation Status
+## Flutter App Architecture (apps/mobile & apps/desktop)
 
-### ✅ Complete
-
-- **Database Schema**: Users, notifications, cache tables defined
-- **Mobile App Core**: P2P file transfer, device discovery, cloud integration
-- **Web Landing Page**: Hero section, features, responsive design
-- **Authentication Flow**: GitHub OAuth implemented with local dev fallbacks
-- **Build System**: Monorepo structure with workspace dependencies
-
-### 🔄 In Progress
-
-- **API Implementation**: Auth routes structure exists, needs full CRUD
-- **Web Dashboard**: Basic dashboard exists, needs full feature integration
-- **Shared Types**: Package structure exists, needs implementation
-- **User Management**: Database schema exists, API endpoints needed
-
-### ⚠️ Pending
-
-- **Admin Dashboard**: UI structure exists, needs backend integration
-- **Email Workers**: Infrastructure ready, needs implementation
-- **Background Services**: Clipboard monitoring needs mobile background support
-- **Conflict Resolution**: Cloud sync versioning strategy needed
-
-## Key Architectural Patterns
-
-### 1. Service Layer Architecture (Mobile App)
-
+Clean Architecture with BLoC pattern:
 ```
-UI Components → Custom Hooks → Zustand Stores → Service Layer → Native APIs
+UI Components → BLoC/Cubit → Use Cases → Repositories → Data Sources
 ```
 
-**Service Categories**:
-
+**Service Categories** (in packages/core):
 - `network/`: mDNS discovery, WebRTC signaling
 - `storage/`: File I/O, local storage
 - `sync/`: File transfer protocol
 
-### 2. Dual Signaling Architecture
+### P2P Signaling
 
-- **Automated**: WebSocket server for same-network P2P connections
+- **Automated**: WebSocket server for same-network P2P
 - **Manual**: QR codes and manual signal exchange for cross-network
+- **Ports**: 8765 (discovery), 8766 (UDP), 8767 (WebSocket)
 
-### 3. Authentication Flow
+### QR Code Pairing
 
-- **OAuth2**: GitHub and Discord integration
-- **Session Management**: Cookie-based sessions with encryption
-- **Local Dev**: Mock authentication for development convenience
+- **URI**: `syncstuff://connect`
+- **Params**: id, name, ip, port, platform, version
 
-### 4. Database Design
+## Web Architecture (apps/web)
 
-- **SQLite Schema**: Matches mobile app requirements
-- **Cloudflare D1**: Serverless SQLite with migrations
-- **User Roles**: Support for user, admin, moderator roles
+- Remix.js on Cloudflare Workers
+- D1 database for user management
+- OAuth2 authentication (GitHub, Discord)
+
+## CLI (apps/cli_dart)
+
+- Dart-compiled native executable
+- Device discovery, file transfer, clipboard sync from terminal
+- No runtime dependency required
 
 ## Development Workflow
 
@@ -153,51 +138,71 @@ UI Components → Custom Hooks → Zustand Stores → Service Layer → Native A
 
 ```bash
 # Package Management
-bun install                    # Install dependencies
-bun run build                  # Build all packages
-bun run build:app              # Build mobile app
-bun run build:web              # Build web app
-bun run build:api              # Deploy API
+bun install                    # Install npm dependencies
 
-# Code Quality
-bun run lint                   # Run ESLint across all packages
-bun run lint:fix               # Auto-fix linting issues
-bun run typecheck              # TypeScript type checking
-bun run format                 # Format code with Prettier
+# Build (npm/turbo packages)
+bun run build                  # Build all npm packages via turbo
+bun run build:web              # Build web app
+bun run build:ui               # Build shared UI library
+
+# Build (Flutter/Dart)
+bun run build:mobile           # Build Android APK
+bun run build:mobile:ios       # Build iOS
+bun run build:desktop          # Build Windows desktop
+bun run build:cli_dart         # Compile CLI to native exe
 
 # Development
-bun run web                    # Start web dev server
-bun run api                    # Start API dev server
-bun run android                # Build and run Android app
-bun run start:signaling        # Start WebSocket signaling server
+bun run dev:web                # Start web dev server
+bun run dev:api                # Start API dev server
+bun run dev:mobile             # Flutter run (connected device)
+bun run dev:desktop            # Flutter run -d windows
+bun run dev:cli_dart           # Dart run CLI
+
+# Testing
+bun run test                   # Turbo test across npm packages
+bun run test:mobile            # Flutter test
+bun run test:desktop           # Flutter test
+bun run test:cli_dart          # Dart test
+
+# Code Quality
+bun run lint                   # ESLint across npm packages
+bun run lint:fix               # Auto-fix linting
+bun run format                 # Biome format
+bun run typecheck              # TypeScript checking
+bun run check                  # lint:fix + format + typecheck
+
+# Deployment
+bun run deploy:web             # Deploy web to Cloudflare
+bun run deploy:api             # Deploy API to Cloudflare
+bun run deploy:telemetry       # Deploy telemetry workers
 ```
 
 ### Testing Strategy
 
-- **Unit Tests**: Vitest for mobile app components
-- **E2E Tests**: Cypress for web application
-- **P2P Testing**: Requires three processes (signaling server, web, mobile)
+- **Dart/Flutter**: Unit tests via `flutter test`, widget tests
+- **TypeScript/Web**: Vitest for components, Cypress for E2E
+- **Integration**: Manual testing for P2P features
 
 ### Deployment Pipeline
 
 - **Web**: Cloudflare Workers with assets
 - **API**: Cloudflare Workers
 - **Database**: Cloudflare D1 with migrations
-- **Mobile**: Manual build and distribution
+- **Mobile**: APK built via CI/CD (GitHub Actions)
+- **Desktop**: Windows build via CI/CD (GitHub Actions)
 
-## Configuration Details
+## Configuration
 
 ### Environment Variables
 
 ```bash
 # API Configuration
-GITHUB_OAUTH_CLIENT_ID=Ov23li5ZRzCQoPWMN21O
-GITHUB_OAUTH_CLIENT_SECRET=your-secret-here
-SESSION_SECRET=your-session-secret
-API_URL=https://syncstuff-api.involvex.workers.dev
+GITHUB_OAUTH_CLIENT_ID=<client-id>
+GITHUB_OAUTH_CLIENT_SECRET=<secret>
+SESSION_SECRET=<session-secret>
 
-# Database
-DATABASE_URL=cloudflare-d1://syncstuff-db
+# Web
+API_URL=https://syncstuff-api.involvex.workers.dev
 ```
 
 ### Cloudflare Configuration
@@ -205,117 +210,29 @@ DATABASE_URL=cloudflare-d1://syncstuff-db
 - **Workers**: API and web application deployed separately
 - **D1 Database**: Single database shared across services
 - **KV Storage**: Planned for caching and temporary data
-- **Observability**: Full request tracing and logging enabled
-
-### Mobile App Configuration
-
-- **Capacitor**: Android and iOS native builds
-- **Java Version**: JDK 17 required for Android builds
-- **Native Plugins**: Barcode scanning, file system, network discovery
-
-## Dependencies and Their Purposes
-
-### Core Dependencies
-
-- `@ionic/react`: Mobile UI framework
-- `simple-peer`: WebRTC peer connections
-- `socket.io`: WebSocket signaling
-- `capacitor-zeroconf`: mDNS device discovery
-- `@capacitor-mlkit/barcode-scanning`: QR code scanning
-
-### Development Dependencies
-
-- `@types/*`: TypeScript type definitions
-- `eslint-*`: Code linting and quality
-- `prettier-*`: Code formatting
-- `wrangler`: Cloudflare Workers tooling
-
-## Current Blockers and Challenges
-
-### 1. Authentication Integration
-
-- Mobile app needs to integrate with `packages/api` auth system
-- Session management across mobile and web platforms
-- OAuth2 flow completion for all providers
-
-### 2. Database Access Patterns
-
-- Mobile app currently uses local SQLite
-- Need to implement API client for remote database access
-- Data synchronization strategy between local and remote
-
-### 3. Real-time Communication
-
-- WebSocket signaling server needs production deployment
-- P2P connection reliability across different network conditions
-- Background service support for clipboard monitoring
-
-### 4. Cloud Provider Integration
-
-- OAuth2 flows for Google Drive and Mega need completion
-- File conflict resolution strategies
-- Background sync capabilities
 
 ## Development Guidelines
 
 ### Code Style
 
-- **TypeScript**: Strict mode enabled across all packages
-- **ESLint**: Comprehensive rules for React, TypeScript, and accessibility
-- **Prettier**: Consistent formatting with Tailwind CSS plugin
-- **Import Organization**: Automatic import sorting and organization
+- **TypeScript**: Strict mode for all TS packages
+- **Dart**: Strict linting with very_good_analysis and flutter_lints
+- **ESLint**: Comprehensive rules for React, TypeScript
+- **Biome**: Consistent formatting
+- **Flutter**: Follow effective Dart and BLoC patterns
 
 ### Architecture Principles
 
-- **Separation of Concerns**: Clear boundaries between packages
+- **Separation of Concerns**: Clear boundaries between apps and packages
 - **Service Layer**: Business logic isolated from UI components
-- **Type Safety**: Comprehensive TypeScript coverage
-- **Mobile-First**: Responsive design with mobile optimization
+- **Type Safety**: Full TypeScript and Dart coverage
+- **Shared Core**: packages/core provides common Dart business logic
 
-### Testing Requirements
-
-- **Pre-commit**: Format, lint, and typecheck must pass
-- **Unit Tests**: Cover core business logic and utilities
-- **Integration Tests**: API endpoints and database operations
-- **E2E Tests**: Critical user journeys across platforms
-
-## Next Steps for Development
-
-### Immediate Priorities
-
-1. Complete API authentication endpoints
-2. Integrate mobile app with backend auth system
-3. Implement shared types package
-4. Deploy signaling server to production
-
-### Medium-term Goals
-
-1. Complete admin dashboard functionality
-2. Implement email notification system
-3. Add background service support for mobile
-4. Enhance cloud provider integrations
-
-### Long-term Vision
-
-1. Desktop application (Electron/Tauri)
-2. Advanced conflict resolution
-3. Enterprise features (SSO, audit logs)
-4. Performance optimization and scaling
-
-## Troubleshooting Guide
+## Troubleshooting
 
 ### Common Issues
 
-- **P2P Connection Failures**: Check signaling server is running
-- **Mobile Build Errors**: Ensure JDK 17 is installed
+- **Flutter Build Errors**: Ensure Flutter 3.x and Dart 3.x are installed; run `flutter clean`
 - **Database Migrations**: Run `bun run db:migrate` for schema updates
 - **TypeScript Errors**: Run `bun run typecheck` to identify issues
-
-### Development Tips
-
-- Always start signaling server before testing P2P features
-- Use local development fallbacks for OAuth during development
-- Test on actual devices for native feature validation
-- Monitor Cloudflare observability for production issues
-
-This reference provides the foundation for understanding and contributing to the Syncstuff monorepo project effectively.
+- **Bun Install Issues**: Delete `node_modules` and `bun.lock`, then `bun install`

@@ -1,7 +1,7 @@
 -- Migration number: 0001 	 2026-01-06T21:29:23.790Z
 
 -- Cloudflare D1 Database Schema
--- Matches SQLite schema from mobile app (packages/app/src/database/schema.ts)
+-- Matches SQLite schema from mobile app (apps/mobile)
 
 -- Users table
 CREATE TABLE IF NOT EXISTS users (

@@ -1,5 +1,5 @@
 -- Cloudflare D1 Database Schema
--- Matches SQLite schema from mobile app (packages/app/src/database/schema.ts)
+-- Matches SQLite schema from mobile app (apps/mobile)
 
 -- Users table
 CREATE TABLE IF NOT EXISTS users (

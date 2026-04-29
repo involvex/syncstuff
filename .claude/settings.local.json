@@ -104,7 +104,7 @@
       "Bash(timeout 15 bun run dev:*)",
       "Bash(tasklist:*)",
       "Bash(robocopy:*)",
-      "Bash(robocopy packages\\\\app apps\\\\mobileapp /E /MOVE /NFL /NDL /NJH /NJS)",
+      "Bash(robocopy packages\\\\app apps\\\\mobile /E /MOVE /NFL /NDL /NJH /NJS)",
       "Bash(pwsh:*)",
       "Bash(timeout 60 bun install:*)",
       "Bash(timeout 180 bun install:*)",

@@ -12,7 +12,7 @@
         ".env.production",
         ".env"
       ],
-      "outputs": ["dist/**", ".next/**", "build/**", "android/app/build/**"]
+      "outputs": ["dist/**", ".next/**", "build/**"]
     },
     "build:ui": {
       "outputs": ["dist/**"],
@@ -21,6 +21,22 @@
     "build:shared": {
       "outputs": ["dist/**"],
       "inputs": ["src/**", "tsconfig.json"]
+    },
+    "build:mobile": {
+      "cache": false,
+      "outputs": ["build/app/outputs/flutter-apk/**"]
+    },
+    "build:mobile:ios": {
+      "cache": false,
+      "outputs": ["build/ios/**"]
+    },
+    "build:desktop": {
+      "cache": false,
+      "outputs": ["build/windows/**"]
+    },
+    "build:cli_dart": {
+      "cache": false,
+      "outputs": ["syncstuff", "syncstuff.exe"]
     },
     "dev": {
       "inputs": [
@@ -51,6 +67,18 @@
     "typecheck": {
       "inputs": ["src/**", "tsconfig.json"],
       "outputs": []
+    },
+    "test": {
+      "cache": false
+    },
+    "test:mobile": {
+      "cache": false
+    },
+    "test:desktop": {
+      "cache": false
+    },
+    "test:cli_dart": {
+      "cache": false
     },
     "clean": {
       "cache": false
