@@ -27,13 +27,13 @@
     "ts-checked-fsm": "^1.1.0"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20260417.1",
+    "@cloudflare/workers-types": "^4.20260426.1",
     "@eslint/js": "10.0.1",
     "@typescript-eslint/eslint-plugin": "^8.58.2",
     "@typescript-eslint/parser": "^8.58.2",
     "eslint": "^9.39.4",
     "globals": "17.5.0",
     "typescript": "^6.0.3",
-    "wrangler": "^4.83.0"
+    "wrangler": "^4.86.0"
   }
 }
