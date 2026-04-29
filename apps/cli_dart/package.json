@@ -1,0 +1,17 @@
+{
+  "name": "@syncstuff/cli",
+  "version": "0.1.0",
+  "description": "SyncStuff CLI - P2P file sync command line tool",
+  "homepage": "https://syncstuff-web.involvex.workers.dev/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/involvex/syncstuff",
+    "directory": "apps/cli_dart"
+  },
+  "license": "MIT",
+  "bin": {
+    "syncstuff-cli": "./cli.js"
+  },
+  "files": ["cli.js", "syncstuff", "syncstuff.exe", "bin/"],
+  "keywords": ["p2p", "file-transfer", "sync", "cli"]
+}
