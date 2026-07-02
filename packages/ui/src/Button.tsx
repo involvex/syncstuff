@@ -8,8 +8,7 @@ function cn(...inputs: ClassValue[]) {
 }
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    TamaguiProps {
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>, TamaguiProps {
   variant?: "default" | "outline" | "ghost" | "destructive" | "secondary";
   size?: "default" | "sm" | "lg" | "icon";
   onPress?: (

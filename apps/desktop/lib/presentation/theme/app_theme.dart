@@ -207,8 +207,9 @@ class AppTheme {
       ),
       switchTheme: SwitchThemeData(
         thumbColor: WidgetStateProperty.resolveWith((states) {
-          if (states.contains(WidgetState.selected))
+          if (states.contains(WidgetState.selected)) {
             return AppColors.primaryDark;
+          }
           return AppColors.textMutedDark;
         }),
         trackColor: WidgetStateProperty.resolveWith((states) {
@@ -385,8 +386,9 @@ class AppTheme {
       ),
       switchTheme: SwitchThemeData(
         thumbColor: WidgetStateProperty.resolveWith((states) {
-          if (states.contains(WidgetState.selected))
+          if (states.contains(WidgetState.selected)) {
             return AppColors.primaryLight;
+          }
           return AppColors.textMutedLight;
         }),
         trackColor: WidgetStateProperty.resolveWith((states) {

@@ -64,8 +64,53 @@ syncstuff scan
 |---------|-------------|
 | `status` | Show system status |
 | `scan` | Discover local network devices |
-| `serve` | Start local API server |
+| `serve [port]` | Start local API server (default: 8765) |
+| `device` | List connected devices |
+| `device list` | List connected devices |
+| `transfer` | Manage file transfers |
+| `clipboard` | Clipboard operations |
+| `completions` | Generate shell completions |
 | `help` | Show help message |
+
+## Shell Completions
+
+The CLI supports shell completions for PowerShell, Bash, Zsh, and Fish.
+
+### PowerShell
+
+Generate and install PowerShell completions:
+
+```powershell
+# Generate completions
+syncstuff-cli completions powershell
+
+# Install to your PowerShell profile
+syncstuff-cli completions powershell | Out-File -Append $PROFILE
+
+# Reload your profile
+. $PROFILE
+```
+
+After installation, you can use tab completion:
+
+```powershell
+syncstuff-cli <TAB>              # Shows: status, scan, serve, device, etc.
+syncstuff-cli device <TAB>       # Shows: list
+syncstuff-cli completions <TAB>  # Shows: powershell, bash, zsh, fish
+```
+
+### Other Shells
+
+```bash
+# Bash
+syncstuff-cli completions bash | source
+
+# Zsh
+syncstuff-cli completions zsh > ~/.zsh/completions/_syncstuff-cli
+
+# Fish
+syncstuff-cli completions fish > ~/.config/fish/completions/syncstuff-cli.fish
+```
 
 ## Options
 

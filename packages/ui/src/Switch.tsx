@@ -2,8 +2,7 @@ import * as React from "react";
 import { cn, extractLayoutProps, type TamaguiProps } from "./utils";
 
 export interface SwitchProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    TamaguiProps {
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>, TamaguiProps {
   checked?: boolean;
   onCheckedChange?: (checked: boolean) => void;
   size?: string; // Shim for compatibility

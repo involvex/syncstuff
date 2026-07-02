@@ -14,7 +14,7 @@
     "build:mobile:ios": "cd apps/mobile && flutter build ios",
     "build:desktop": "cmd /c build_desktop.bat",
     "build:desktop:raw": "cd apps/desktop && flutter build windows",
-    "build:cli_dart": "cd apps/cli_dart && dart compile exe bin/main.dart -o syncstuff",
+    "build:cli_dart": "cd apps/cli_dart && dart compile exe bin/main.dart -o syncstuff.exe",
     "build:telemetry": "bun run --filter @syncstuff/telemetry typecheck",
     "dev": "turbo run dev",
     "dev:web": "bun run build:ui && bun run --filter @syncstuff/web dev",
@@ -80,7 +80,14 @@
     "ip": "2.0.1",
     "elliptic": "^6.6.1"
   },
-  "trustedDependencies": ["core-js", "esbuild", "protobufjs", "sharp", "unrs-resolver", "workerd"],
+  "trustedDependencies": [
+    "core-js",
+    "esbuild",
+    "protobufjs",
+    "sharp",
+    "unrs-resolver",
+    "workerd"
+  ],
   "dependencies": {
     "eslint": "10.2.1"
   }

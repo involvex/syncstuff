@@ -12,6 +12,9 @@
   "bin": {
     "syncstuff-cli": "./cli.js"
   },
-  "files": ["cli.js", "syncstuff", "syncstuff.exe", "bin/"],
+  "files": ["cli.js", "syncstuff", "syncstuff.exe", "bin/", "scripts/"],
+  "scripts": {
+    "completions": "node scripts/generate-completions.js"
+  },
   "keywords": ["p2p", "file-transfer", "sync", "cli"]
 }

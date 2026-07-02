@@ -1,4 +1,3 @@
-import 'package:syncstuff_cli/src/services/server_service.dart';
 
 enum AppView { status, devices, transfer, clipboard, server, help }
 

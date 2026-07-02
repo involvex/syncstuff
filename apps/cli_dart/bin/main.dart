@@ -56,7 +56,9 @@ class SyncStuffCLI {
       case 'transfer':
         await cmdTransfer(args);
       case 'clipboard':
-        await cmdClipboard(args);
+        await cmdClipboard(args.sublist(1));
+      case 'completions':
+        await cmdCompletions(args.sublist(1));
       case 'help':
         cmdHelp();
       default:
@@ -104,6 +106,8 @@ class SyncStuffCLI {
             await cmdTransfer(cmdArgs);
           case 'clipboard':
             await cmdClipboard(cmdArgs);
+          case 'completions':
+            await cmdCompletions(cmdArgs);
           case 'clear':
             print('\x1B[2J\x1B[H');
           default:
@@ -125,6 +129,7 @@ class SyncStuffCLI {
   device       List connected devices
   transfer     Manage file transfers
   clipboard   Clipboard operations
+  completions  Generate shell completions
   help         Show this help
   exit         Exit interactive mode
 
@@ -133,6 +138,7 @@ class SyncStuffCLI {
   > scan
   > serve 8080
   > device list
+  > completions powershell
 
 🔗 API Endpoints (when server running):
   http://localhost:8765/api/status
@@ -424,6 +430,188 @@ class SyncStuffCLI {
   Future<void> cmdClipboard(List<String> args) async {
     print('📋 Clipboard Operations');
     print('   (not implemented yet)');
+  }
+
+  Future<void> cmdCompletions(List<String> args) async {
+    final shell = args.isNotEmpty ? args[0].toLowerCase() : 'powershell';
+
+    switch (shell) {
+      case 'powershell':
+      case 'pwsh':
+        print(_generatePowerShellCompletions());
+        break;
+      case 'bash':
+        print(_generateBashCompletions());
+        break;
+      case 'zsh':
+        print(_generateZshCompletions());
+        break;
+      case 'fish':
+        print(_generateFishCompletions());
+        break;
+      default:
+        print('❌ Unsupported shell: $shell');
+        print('Supported shells: powershell, bash, zsh, fish');
+    }
+  }
+
+  String _generatePowerShellCompletions() {
+    return '''# PowerShell completions for syncstuff-cli
+# Add this to your PowerShell profile:
+# syncstuff-cli completions powershell | Out-File -Append \$PROFILE
+
+using namespace System.Management.Automation
+using namespace System.Management.Automation.Language
+
+Register-ArgumentCompleter -Native -CommandName 'syncstuff-cli' -ScriptBlock {
+    param(\$wordToComplete, \$commandAst, \$cursorPosition)
+
+    \$commandElements = \$commandAst.CommandElements
+    \$command = @()
+    \$subcommand = \$null
+
+    # Parse command elements
+    for (\$i = 1; \$i -lt \$commandElements.Count; \$i++) {
+        \$element = \$commandElements[\$i].Extent.Text
+        if (\$element -notlike '-*') {
+            if (-not \$subcommand) {
+                \$command = \$element
+            } else {
+                \$subcommand = \$element
+            }
+        }
+    }
+
+    # Complete main commands
+    if (-not \$command) {
+        \$commands = @(
+            [CompletionResult]::new('status', 'status', [CompletionResultType]::ParameterValue, 'Show system status')
+            [CompletionResult]::new('scan', 'scan', [CompletionResultType]::ParameterValue, 'Scan for devices on network')
+            [CompletionResult]::new('serve', 'serve', [CompletionResultType]::ParameterValue, 'Start HTTP server (default: 8765)')
+            [CompletionResult]::new('device', 'device', [CompletionResultType]::ParameterValue, 'List connected devices')
+            [CompletionResult]::new('transfer', 'transfer', [CompletionResultType]::ParameterValue, 'Manage file transfers')
+            [CompletionResult]::new('clipboard', 'clipboard', [CompletionResultType]::ParameterValue, 'Clipboard operations')
+            [CompletionResult]::new('completions', 'completions', [CompletionResultType]::ParameterValue, 'Generate shell completions')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Show this help')
+        )
+        \$commands | Where-Object { \$_.CompletionText -like "\$wordToComplete*" }
+        return
+    }
+
+    # Complete subcommands for specific commands
+    switch (\$command) {
+        'device' {
+            if (-not \$subcommand) {
+                \$subcommands = @(
+                    [CompletionResult]::new('list', 'list', [CompletionResultType]::ParameterValue, 'List devices')
+                )
+                \$subcommands | Where-Object { \$_.CompletionText -like "\$wordToComplete*" }
+            }
+        }
+        'completions' {
+            if (-not \$subcommand) {
+                \$subcommands = @(
+                    [CompletionResult]::new('powershell', 'powershell', [CompletionResultType]::ParameterValue, 'PowerShell completions')
+                    [CompletionResult]::new('bash', 'bash', [CompletionResultType]::ParameterValue, 'Bash completions')
+                    [CompletionResult]::new('zsh', 'zsh', [CompletionResultType]::ParameterValue, 'Zsh completions')
+                    [CompletionResult]::new('fish', 'fish', [CompletionResultType]::ParameterValue, 'Fish completions')
+                )
+                \$subcommands | Where-Object { \$_.CompletionText -like "\$wordToComplete*" }
+            }
+        }
+    }
+}
+''';
+  }
+
+  String _generateBashCompletions() {
+    return '''# Bash completions for syncstuff-cli
+# Add this to your ~/.bashrc:
+# eval "\$(syncstuff-cli completions bash)"
+
+_syncstuff_cli_completions() {
+    local cur prev words cword
+    _init_completion || return
+
+    case \${prev} in
+        syncstuff-cli)
+            COMPREPLY=(\$(compgen -W "status scan serve device transfer clipboard help completions" -- "\${cur}"))
+            ;;
+        device)
+            COMPREPLY=(\$(compgen -W "list" -- "\${cur}"))
+            ;;
+        completions)
+            COMPREPLY=(\$(compgen -W "powershell bash zsh fish" -- "\${cur}"))
+            ;;
+        *)
+            ;;
+    esac
+}
+
+complete -F _syncstuff_cli_completions syncstuff-cli
+''';
+  }
+
+  String _generateZshCompletions() {
+    return '''# Zsh completions for syncstuff-cli
+# Add this to your ~/.zshrc:
+# syncstuff-cli completions zsh > ~/.zsh/completions/_syncstuff-cli
+
+#compdef syncstuff-cli
+
+_syncstuff_cli() {
+    local -a commands
+    commands=(
+        'status:Show system status'
+        'scan:Scan for devices on network'
+        'serve:Start HTTP server'
+        'device:List connected devices'
+        'transfer:Manage file transfers'
+        'clipboard:Clipboard operations'
+        'help:Show this help'
+        'completions:Generate shell completions'
+    )
+
+    if (( CURRENT == 2 )); then
+        _describe 'command' commands
+    elif (( CURRENT == 3 )); then
+        case \${words[2]} in
+            device)
+                _describe 'subcommand' 'list:List devices'
+                ;;
+            completions)
+                _describe 'shell' 'powershell:PowerShell completions' 'bash:Bash completions' 'zsh:Zsh completions' 'fish:Fish completions'
+                ;;
+        esac
+    fi
+}
+
+_syncstuff_cli
+''';
+  }
+
+  String _generateFishCompletions() {
+    return '''# Fish completions for syncstuff-cli
+# Add this to your ~/.config/fish/completions/syncstuff-cli.fish:
+# syncstuff-cli completions fish > ~/.config/fish/completions/syncstuff-cli.fish
+
+complete -c syncstuff-cli -f
+
+complete -c syncstuff-cli -n '__fish_use_subcommand' -a status -d 'Show system status'
+complete -c syncstuff-cli -n '__fish_use_subcommand' -a scan -d 'Scan for devices on network'
+complete -c syncstuff-cli -n '__fish_use_subcommand' -a serve -d 'Start HTTP server'
+complete -c syncstuff-cli -n '__fish_use_subcommand' -a device -d 'List connected devices'
+complete -c syncstuff-cli -n '__fish_use_subcommand' -a transfer -d 'Manage file transfers'
+complete -c syncstuff-cli -n '__fish_use_subcommand' -a clipboard -d 'Clipboard operations'
+complete -c syncstuff-cli -n '__fish_use_subcommand' -a help -d 'Show this help'
+complete -c syncstuff-cli -n '__fish_use_subcommand' -a completions -d 'Generate shell completions'
+
+complete -c syncstuff-cli -n '__fish_seen_subcommand_from device' -a list -d 'List devices'
+complete -c syncstuff-cli -n '__fish_seen_subcommand_from completions' -a powershell -d 'PowerShell completions'
+complete -c syncstuff-cli -n '__fish_seen_subcommand_from completions' -a bash -d 'Bash completions'
+complete -c syncstuff-cli -n '__fish_seen_subcommand_from completions' -a zsh -d 'Zsh completions'
+complete -c syncstuff-cli -n '__fish_seen_subcommand_from completions' -a fish -d 'Fish completions'
+''';
   }
 }
 
