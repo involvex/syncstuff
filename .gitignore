@@ -80,6 +80,8 @@ packages/api/.env.local
 packages/database/.env
 packages/database/.env.local
 
+
+packages/api/node_modules
 # Wrangler local development
 .wrangler/
 **/.wrangler/
