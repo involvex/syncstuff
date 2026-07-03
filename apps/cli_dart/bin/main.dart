@@ -11,8 +11,14 @@ class SyncStuffCLI {
   final _uuid = const Uuid();
   HttpServer? _httpServer;
   ServerSocket? _tcpServer;
+  RawDatagramSocket? _udpSocket;
   final _devices = <Device>[];
   String _localIp = 'unknown';
+  String _clipboardContent = '';
+  DateTime? _lastClipboardUpdate;
+  Timer? _clipboardTimer;
+  Timer? _broadcastTimer;
+  bool _clipboardSyncEnabled = true;
 
   SyncStuffCLI(this.config);
 
@@ -37,9 +43,69 @@ class SyncStuffCLI {
     return _localIp;
   }
 
+  /// Get system clipboard content
+  Future<String> _getClipboard() async {
+    try {
+      if (Platform.isWindows) {
+        // Use PowerShell to get clipboard on Windows
+        final result = await Process.run('powershell', [
+          '-command',
+          'Get-Clipboard -Raw',
+        ]);
+        if (result.exitCode == 0) {
+          return (result.stdout as String).trim();
+        }
+      } else if (Platform.isLinux) {
+        // Use xclip on Linux
+        final result = await Process.run('xclip', [
+          '-selection',
+          'clipboard',
+          '-o',
+        ]);
+        if (result.exitCode == 0) {
+          return (result.stdout as String).trim();
+        }
+      } else if (Platform.isMacOS) {
+        // Use pbpaste on macOS
+        final result = await Process.run('pbpaste', []);
+        if (result.exitCode == 0) {
+          return (result.stdout as String).trim();
+        }
+      }
+    } catch (_) {}
+    return '';
+  }
+
+  /// Set system clipboard content
+  Future<void> _setClipboard(String content) async {
+    try {
+      if (Platform.isWindows) {
+        // Use PowerShell to set clipboard on Windows
+        await Process.run('powershell', [
+          '-command',
+          'Set-Clipboard -Value "$content"',
+        ]);
+      } else if (Platform.isLinux) {
+        // Use xclip on Linux
+        final process = await Process.start('xclip', [
+          '-selection',
+          'clipboard',
+        ]);
+        process.stdin.write(content);
+        await process.stdin.close();
+      } else if (Platform.isMacOS) {
+        // Use pbcopy on macOS
+        final process = await Process.start('pbcopy', []);
+        process.stdin.write(content);
+        await process.stdin.close();
+      }
+    } catch (_) {}
+  }
+
   Future<void> run(List<String> args) async {
     if (args.isEmpty) {
-      await interactiveMode();
+      // Auto-serve when launched without arguments
+      await cmdServe([]);
       return;
     }
 
@@ -50,7 +116,7 @@ class SyncStuffCLI {
       case 'scan':
         await cmdScan();
       case 'serve':
-        await cmdServe(args);
+        await cmdServe(args.sublist(1));
       case 'device':
         await cmdDevice(args);
       case 'transfer':
@@ -160,19 +226,71 @@ class SyncStuffCLI {
   Future<void> cmdScan() async {
     print('🔍 Scanning network...');
 
-    // Simulate scan - in real impl would do mDNS/UDP discovery
-    await Future.delayed(Duration(milliseconds: 500));
+    // Get local IP first
+    await _getLocalIp();
+    final subnet = _localIp.substring(0, _localIp.lastIndexOf('.'));
 
     _devices.clear();
-    _devices.add(Device('Android Phone', 'android', '192.168.1.100', true));
-    _devices.add(Device('Windows PC', 'windows', '192.168.1.101', false));
 
-    print('✅ Found ${_devices.length} devices:');
-    for (final d in _devices) {
-      print(
-        '   📱 ${d.name} (${d.platform}) - ${d.ip} ${d.connected ? "🟢" : "⚪"}',
-      );
+    // Scan in parallel batches
+    final futures = <Future<void>>[];
+    for (int i = 1; i <= 254; i += 10) {
+      final batch = <String>[];
+      for (int j = 0; j < 10 && i + j <= 254; j++) {
+        batch.add('$subnet.${i + j}');
+      }
+      futures.add(_scanBatch(batch));
     }
+
+    await Future.wait(futures);
+
+    if (_devices.isEmpty) {
+      print('No devices found on network');
+    } else {
+      print('✅ Found ${_devices.length} devices:');
+      for (final d in _devices) {
+        print(
+          '   📱 ${d.name} (${d.platform}) - ${d.ip} ${d.connected ? "🟢" : "⚪"}',
+        );
+      }
+    }
+  }
+
+  Future<void> _scanBatch(List<String> ips) async {
+    final futures = ips.map((ip) => _probeDevice(ip));
+    await Future.wait(futures);
+  }
+
+  Future<void> _probeDevice(String ip) async {
+    if (ip == _localIp) return;
+
+    try {
+      final client = HttpClient();
+      client.connectionTimeout = Duration(milliseconds: 200);
+      final request = await client.getUrl(
+        Uri.parse('http://$ip:8766/api/probe'),
+      );
+      final response = await request.close().timeout(
+        Duration(milliseconds: 200),
+      );
+
+      if (response.statusCode == 200) {
+        final body = await response.transform(utf8.decoder).join();
+        final data = jsonDecode(body) as Map<String, dynamic>;
+
+        if (data['id'] != deviceId) {
+          _devices.add(
+            Device(
+              data['name'] as String? ?? 'Unknown',
+              data['platform'] as String? ?? 'unknown',
+              ip,
+              true,
+            ),
+          );
+        }
+      }
+      client.close();
+    } catch (_) {}
   }
 
   Future<void> cmdServe(List<String> args) async {
@@ -195,12 +313,28 @@ class SyncStuffCLI {
       // HTTP server for API on next port
       _httpServer = await HttpServer.bind(InternetAddress.anyIPv4, port + 1);
 
+      // Start UDP broadcast listener
+      await _startBroadcastListener();
+
+      // Start clipboard sync
+      await _startClipboardSync();
+
+      // Broadcast presence periodically
+      _broadcastTimer = Timer.periodic(
+        Duration(seconds: 3),
+        (_) => _broadcastPresence(),
+      );
+
+      // Initial broadcast
+      await _broadcastPresence();
+
       print('''
 ✅ Server running!
 
    Local IP: $localIp
    Device Discovery: port $port (TCP)
    API: http://$localIp:${port + 1}/api/status
+   Clipboard Sync: ${_clipboardSyncEnabled ? '🟢 Enabled' : '🔴 Disabled'}
 
    Press Ctrl+C to stop...
 ''');
@@ -209,6 +343,151 @@ class SyncStuffCLI {
       await Future.wait([_handleTcpConnections(), _handleHttpRequests()]);
     } catch (e) {
       print('❌ Failed to start server: $e');
+    }
+  }
+
+  Future<void> _startBroadcastListener() async {
+    try {
+      _udpSocket = await RawDatagramSocket.bind(
+        InternetAddress.anyIPv4,
+        8767,
+        reuseAddress: true,
+      );
+      _udpSocket!.broadcastEnabled = true;
+
+      _udpSocket!.listen((event) {
+        if (event == RawSocketEvent.read) {
+          final datagram = _udpSocket!.receive();
+          if (datagram != null) {
+            _handleBroadcastMessage(datagram.data, datagram.address);
+          }
+        }
+      });
+    } catch (e) {
+      print('Failed to start broadcast listener: $e');
+    }
+  }
+
+  void _handleBroadcastMessage(List<int> data, InternetAddress address) {
+    // Ignore messages from our own IP
+    if (address.address == _localIp) return;
+
+    try {
+      final message = utf8.decode(data);
+      final info = jsonDecode(message) as Map<String, dynamic>;
+
+      if (info['type'] == 'announce') {
+        // Add to discovered devices if not already there
+        final exists = _devices.any((d) => d.ip == address.address);
+        if (!exists) {
+          _devices.add(
+            Device(
+              info['name'] as String? ?? 'Unknown',
+              info['platform'] as String? ?? 'unknown',
+              address.address,
+              true,
+            ),
+          );
+          print('📱 Discovered device: ${info['name']} at ${address.address}');
+        }
+      }
+    } catch (_) {}
+  }
+
+  Future<void> _broadcastPresence() async {
+    try {
+      final socket = await RawDatagramSocket.bind(
+        InternetAddress.anyIPv4,
+        0,
+        reuseAddress: true,
+      );
+      socket.broadcastEnabled = true;
+
+      final message = jsonEncode({
+        'type': 'announce',
+        'id': deviceId,
+        'name': 'SyncStuff CLI',
+        'platform': 'cli',
+        'ip': _localIp,
+        'port': 8765,
+        'version': '0.1.0',
+      });
+
+      // Broadcast to all devices on local network
+      final broadcastAddress = InternetAddress('255.255.255.255');
+      socket.send(utf8.encode(message), broadcastAddress, 8767);
+
+      // Also send to subnet broadcast
+      if (_localIp != 'localhost' && _localIp.contains('.')) {
+        final subnetParts = _localIp.split('.');
+        final subnetBroadcast =
+            '${subnetParts[0]}.${subnetParts[1]}.${subnetParts[2]}.255';
+        socket.send(
+          utf8.encode(message),
+          InternetAddress(subnetBroadcast),
+          8767,
+        );
+      }
+
+      socket.close();
+    } catch (e) {
+      print('Failed to broadcast presence: $e');
+    }
+  }
+
+  Future<void> _startClipboardSync() async {
+    // Get initial clipboard content
+    _clipboardContent = await _getClipboard();
+
+    // Poll clipboard every 2 seconds
+    _clipboardTimer = Timer.periodic(
+      Duration(seconds: 2),
+      (_) => _checkClipboard(),
+    );
+  }
+
+  Future<void> _checkClipboard() async {
+    if (!_clipboardSyncEnabled) return;
+
+    try {
+      final content = await _getClipboard();
+      if (content.isNotEmpty && content != _clipboardContent) {
+        _clipboardContent = content;
+        _lastClipboardUpdate = DateTime.now();
+        await _broadcastClipboard(content);
+      }
+    } catch (_) {}
+  }
+
+  Future<void> _broadcastClipboard(String content) async {
+    // Send to all known devices
+    for (final device in _devices) {
+      await _sendClipboardToPeer(device, content);
+    }
+  }
+
+  Future<void> _sendClipboardToPeer(Device peer, String content) async {
+    try {
+      final client = HttpClient();
+      client.connectionTimeout = Duration(seconds: 2);
+
+      final request = await client.postUrl(
+        Uri.parse('http://${peer.ip}:8766/api/clipboard'),
+      );
+
+      request.headers.contentType = ContentType.json;
+      request.write(
+        jsonEncode({
+          'content': content,
+          'deviceId': deviceId,
+          'deviceName': 'SyncStuff CLI',
+        }),
+      );
+
+      await request.close();
+      client.close();
+    } catch (e) {
+      // Peer unreachable
     }
   }
 
@@ -316,8 +595,6 @@ class SyncStuffCLI {
       } else if (path == '/api/upload' || path.startsWith('/api/upload?')) {
         // File upload endpoint
         print('📤 File upload request from $remoteIp');
-        final contentType =
-            request.headers.contentType?.mimeType ?? 'application/octet-stream';
 
         // Read the file data
         final data = await request.fold<List<int>>(
@@ -385,9 +662,34 @@ class SyncStuffCLI {
                 .toList(),
           }),
         );
-      } else if (path == '/api/clipboard') {
+      } else if (path == '/api/clipboard' && request.method == 'GET') {
         response.headers.contentType = ContentType.json;
-        response.write(jsonEncode({'clipboard': ''}));
+        response.write(
+          jsonEncode({
+            'content': _clipboardContent,
+            'lastUpdate': _lastClipboardUpdate?.toIso8601String(),
+          }),
+        );
+      } else if (path == '/api/clipboard' && request.method == 'POST') {
+        // Receive clipboard from peer
+        final body = await request.fold<List<int>>(
+          [],
+          (prev, chunk) => prev..addAll(chunk),
+        );
+        final data = jsonDecode(utf8.decode(body)) as Map<String, dynamic>;
+        final content = data['content'] as String? ?? '';
+        final deviceId = data['deviceId'] as String?;
+
+        // Don't apply our own clipboard updates
+        if (deviceId != this.deviceId && content != _clipboardContent) {
+          await _setClipboard(content);
+          _clipboardContent = content;
+          _lastClipboardUpdate = DateTime.now();
+          print('📋 Clipboard synced from peer');
+        }
+
+        response.headers.contentType = ContentType.json;
+        response.write(jsonEncode({'success': true}));
       } else if (path == '/' || path.isEmpty) {
         response.headers.contentType = ContentType.html;
         response.write('''
@@ -428,8 +730,43 @@ class SyncStuffCLI {
   }
 
   Future<void> cmdClipboard(List<String> args) async {
-    print('📋 Clipboard Operations');
-    print('   (not implemented yet)');
+    if (args.isEmpty || args[0] == 'status') {
+      print('📋 Clipboard Sync Status');
+      print('   Enabled: ${_clipboardSyncEnabled ? "🟢" : "🔴"}');
+      print('   Last Update: ${_lastClipboardUpdate ?? "Never"}');
+      print('   Content Length: ${_clipboardContent.length} chars');
+    } else if (args[0] == 'enable') {
+      _clipboardSyncEnabled = true;
+      print('📋 Clipboard sync enabled');
+    } else if (args[0] == 'disable') {
+      _clipboardSyncEnabled = false;
+      print('📋 Clipboard sync disabled');
+    } else if (args[0] == 'get') {
+      final content = await _getClipboard();
+      print('📋 Clipboard content:');
+      print(content);
+    } else if (args[0] == 'set' && args.length > 1) {
+      final content = args.sublist(1).join(' ');
+      await _setClipboard(content);
+      _clipboardContent = content;
+      _lastClipboardUpdate = DateTime.now();
+      print('📋 Clipboard updated');
+    } else {
+      print('📋 Clipboard Commands:');
+      print('   status   - Show clipboard sync status');
+      print('   enable   - Enable clipboard sync');
+      print('   disable  - Disable clipboard sync');
+      print('   get      - Get current clipboard content');
+      print('   set <text> - Set clipboard content');
+    }
+  }
+
+  void dispose() {
+    _clipboardTimer?.cancel();
+    _broadcastTimer?.cancel();
+    _udpSocket?.close();
+    _httpServer?.close();
+    _tcpServer?.close();
   }
 
   Future<void> cmdCompletions(List<String> args) async {

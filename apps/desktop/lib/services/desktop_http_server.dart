@@ -8,10 +8,14 @@ class DesktopHttpServer {
       StreamController<Map<String, dynamic>>.broadcast();
   final _fileUploadController =
       StreamController<Map<String, dynamic>>.broadcast();
+  final _clipboardUpdateController =
+      StreamController<Map<String, dynamic>>.broadcast();
 
   String? _localIp;
   final String _deviceId;
   final String _deviceName;
+  String _clipboardContent = '';
+  DateTime? _lastClipboardUpdate;
 
   DesktopHttpServer()
     : _deviceId = DateTime.now().millisecondsSinceEpoch.toString(),
@@ -20,10 +24,13 @@ class DesktopHttpServer {
   Stream<Map<String, dynamic>> get discoveredDevices =>
       _discoveredDevicesController.stream;
   Stream<Map<String, dynamic>> get fileUploads => _fileUploadController.stream;
+  Stream<Map<String, dynamic>> get clipboardUpdates =>
+      _clipboardUpdateController.stream;
   String? get localIp => _localIp;
   String get deviceId => _deviceId;
   String get deviceName => _deviceName;
   bool get isRunning => _server != null;
+  String get clipboardContent => _clipboardContent;
 
   Future<void> start([int port = 8766]) async {
     if (_server != null) return;
@@ -56,6 +63,10 @@ class DesktopHttpServer {
         await _handleUpload(request);
       } else if (request.method == 'GET' && path == '/api/status') {
         await _handleStatus(request);
+      } else if (request.method == 'GET' && path == '/api/clipboard') {
+        await _handleGetClipboard(request);
+      } else if (request.method == 'POST' && path == '/api/clipboard') {
+        await _handleSetClipboard(request);
       } else {
         request.response.statusCode = 404;
         await request.response.close();
@@ -116,6 +127,48 @@ class DesktopHttpServer {
     await request.response.close();
   }
 
+  Future<void> _handleGetClipboard(HttpRequest request) async {
+    request.response.statusCode = 200;
+    request.response.headers.contentType = ContentType.json;
+    request.response.write(
+      jsonEncode({
+        'content': _clipboardContent,
+        'lastUpdate': _lastClipboardUpdate?.toIso8601String(),
+      }),
+    );
+    await request.response.close();
+  }
+
+  Future<void> _handleSetClipboard(HttpRequest request) async {
+    try {
+      final body = await request.fold<List<int>>(
+        [],
+        (prev, chunk) => prev..addAll(chunk),
+      );
+      final data = jsonDecode(utf8.decode(body)) as Map<String, dynamic>;
+      final content = data['content'] as String? ?? '';
+
+      _clipboardContent = content;
+      _lastClipboardUpdate = DateTime.now();
+
+      // Notify listeners
+      _clipboardUpdateController.add({
+        'content': content,
+        'deviceId': _deviceId,
+        'deviceName': _deviceName,
+        'timestamp': _lastClipboardUpdate!.toIso8601String(),
+      });
+
+      request.response.statusCode = 200;
+      request.response.headers.contentType = ContentType.json;
+      request.response.write(jsonEncode({'success': true}));
+    } catch (e) {
+      request.response.statusCode = 400;
+      request.response.write(jsonEncode({'error': e.toString()}));
+    }
+    await request.response.close();
+  }
+
   Future<void> stop() async {
     await _server?.close();
     _server = null;
@@ -125,5 +178,6 @@ class DesktopHttpServer {
     _server?.close();
     _discoveredDevicesController.close();
     _fileUploadController.close();
+    _clipboardUpdateController.close();
   }
 }

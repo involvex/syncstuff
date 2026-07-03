@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../services/desktop_discovery_service.dart';
 import '../../services/desktop_file_transfer_service.dart';
 import '../../services/desktop_http_server.dart';
+import '../../services/desktop_clipboard_sync_service.dart';
 import '../../data/repositories/device_repository.dart';
 import '../../data/repositories/transfer_repository.dart';
 import '../../presentation/bloc/device/device_bloc.dart';
@@ -22,6 +23,12 @@ Future<void> setupServiceLocator() async {
   );
   getIt.registerLazySingleton<DesktopFileTransferService>(
     () => DesktopFileTransferService(),
+  );
+  getIt.registerLazySingleton<DesktopClipboardSyncService>(
+    () => DesktopClipboardSyncService(
+      httpServer: getIt<DesktopHttpServer>(),
+      discoveryService: getIt<DesktopDiscoveryService>(),
+    ),
   );
   getIt.registerLazySingleton<DeviceRepository>(() => DeviceRepository());
   getIt.registerLazySingleton<TransferRepository>(() => TransferRepository());
