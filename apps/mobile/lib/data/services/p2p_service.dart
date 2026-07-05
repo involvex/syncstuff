@@ -36,7 +36,7 @@ class P2PService {
   RTCDataChannel? _fileChannel;
 
   Socket? _signalingSocket;
-  final _localDeviceId = const Uuid().v4();
+  final String _localDeviceId = const Uuid().v4();
 
   String? _connectedPeerId;
   bool _isConnected = false;
@@ -85,10 +85,12 @@ class P2PService {
 
     // Handle ICE candidates
     _peerConnection!.onIceCandidate = (candidate) {
-      _sendSignalingMessage({
-        'type': P2PMessageType.ice,
-        'candidate': candidate.toMap(),
-      });
+      unawaited(
+        _sendSignalingMessage({
+          'type': P2PMessageType.ice,
+          'candidate': candidate.toMap(),
+        }),
+      );
     };
 
     // Handle connection state changes
@@ -323,20 +325,20 @@ class P2PService {
           final from = data['from'] as String?;
           if (sdpMap != null && from != null) {
             final sdpString = jsonEncode(sdpMap);
-            handleOffer(sdpString, from);
+            unawaited(handleOffer(sdpString, from));
           }
           break;
         case P2PMessageType.answer:
           final sdpMap = data['sdp'] as Map<String, dynamic>?;
           if (sdpMap != null) {
             final sdpString = jsonEncode(sdpMap);
-            handleAnswer(sdpString);
+            unawaited(handleAnswer(sdpString));
           }
           break;
         case P2PMessageType.ice:
           final candidate = data['candidate'] as Map<String, dynamic>?;
           if (candidate != null) {
-            handleIceCandidate(candidate);
+            unawaited(handleIceCandidate(candidate));
           }
           break;
       }
@@ -356,10 +358,10 @@ class P2PService {
   }
 
   void dispose() {
-    disconnect();
+    unawaited(disconnect());
     _signalingSocket?.destroy();
-    _connectionController.close();
-    _messageController.close();
-    _fileChunkController.close();
+    unawaited(_connectionController.close());
+    unawaited(_messageController.close());
+    unawaited(_fileChunkController.close());
   }
 }

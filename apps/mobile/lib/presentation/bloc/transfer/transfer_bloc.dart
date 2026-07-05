@@ -226,7 +226,7 @@ class TransferBloc extends Bloc<TransferEvent, TransferState> {
 
   @override
   Future<void> close() {
-    _progressSubscription?.cancel();
+    unawaited(_progressSubscription?.cancel());
     _fileTransferService?.dispose();
     return super.close();
   }

@@ -12,35 +12,38 @@ import 'presentation/bloc/settings/settings_event.dart';
 import 'presentation/pages/home_page.dart';
 import 'presentation/theme/app_theme.dart';
 
-class SyncStuffDesktopApp extends StatelessWidget {
-  const SyncStuffDesktopApp({super.key});
+class SyncStuffDesktopApp extends StatelessWidget
+{
+    const SyncStuffDesktopApp({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<DeviceBloc>(
-          create: (_) => getIt<DeviceBloc>()..add(LoadDevices()),
-        ),
-        BlocProvider<TransferBloc>(
-          create: (_) => getIt<TransferBloc>()..add(LoadTransfers()),
-        ),
-        BlocProvider<SettingsBloc>(
-          create: (_) => getIt<SettingsBloc>()..add(LoadSettings()),
-        ),
-      ],
-      child: BlocBuilder<SettingsBloc, SettingsState>(
-        builder: (context, state) {
-          return MaterialApp(
-            title: 'SyncStuff',
-            debugShowCheckedModeBanner: false,
-            theme: AppTheme.lightTheme,
-            darkTheme: AppTheme.darkTheme,
-            themeMode: state.isDarkMode ? ThemeMode.dark : ThemeMode.light,
-            home: const HomePage(),
-          );
-        },
-      ),
-    );
-  }
+    @override
+    Widget build(BuildContext context) 
+    {
+        return MultiBlocProvider(
+            providers: [
+                BlocProvider<DeviceBloc>(
+                    create: (_) => getIt<DeviceBloc>()..add(LoadDevices())
+                ),
+                BlocProvider<TransferBloc>(
+                    create: (_) => getIt<TransferBloc>()..add(LoadTransfers())
+                ),
+                BlocProvider<SettingsBloc>(
+                    create: (_) => getIt<SettingsBloc>()..add(LoadSettings())
+                )
+            ],
+            child: BlocBuilder<SettingsBloc, SettingsState>(
+                builder: (context, state)
+                {
+                    return MaterialApp(
+                        title: 'SyncStuff',
+                        debugShowCheckedModeBanner: false,
+                        theme: AppTheme.lightTheme,
+                        darkTheme: AppTheme.darkTheme,
+                        themeMode: state.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+                        home: const HomePage()
+                    );
+                }
+            )
+        );
+    }
 }

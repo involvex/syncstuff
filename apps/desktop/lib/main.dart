@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'app.dart';
 import 'core/di/service_locator.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+void main() async
+{
+    WidgetsFlutterBinding.ensureInitialized();
 
-  await setupServiceLocator();
+    await setupServiceLocator();
 
-  runApp(const SyncStuffDesktopApp());
+    runApp(const SyncStuffDesktopApp());
 }

@@ -13,39 +13,40 @@ import '../../presentation/bloc/settings/settings_bloc.dart';
 
 final getIt = GetIt.instance;
 
-Future<void> setupServiceLocator() async {
-  final prefs = await SharedPreferences.getInstance();
-  getIt.registerSingleton<SharedPreferences>(prefs);
+Future<void> setupServiceLocator() async
+{
+    final prefs = await SharedPreferences.getInstance();
+    getIt.registerSingleton<SharedPreferences>(prefs);
 
-  getIt.registerLazySingleton<DesktopHttpServer>(() => DesktopHttpServer());
-  getIt.registerLazySingleton<DesktopDiscoveryService>(
-    () => DesktopDiscoveryService(getIt<DesktopHttpServer>()),
-  );
-  getIt.registerLazySingleton<DesktopFileTransferService>(
-    () => DesktopFileTransferService(),
-  );
-  getIt.registerLazySingleton<DesktopClipboardSyncService>(
-    () => DesktopClipboardSyncService(
-      httpServer: getIt<DesktopHttpServer>(),
-      discoveryService: getIt<DesktopDiscoveryService>(),
-    ),
-  );
-  getIt.registerLazySingleton<DeviceRepository>(() => DeviceRepository());
-  getIt.registerLazySingleton<TransferRepository>(() => TransferRepository());
+    getIt.registerLazySingleton<DesktopHttpServer>(() => DesktopHttpServer());
+    getIt.registerLazySingleton<DesktopDiscoveryService>(
+        () => DesktopDiscoveryService(getIt<DesktopHttpServer>())
+    );
+    getIt.registerLazySingleton<DesktopFileTransferService>(
+        () => DesktopFileTransferService()
+    );
+    getIt.registerLazySingleton<DesktopClipboardSyncService>(
+        () => DesktopClipboardSyncService(
+            httpServer: getIt<DesktopHttpServer>(),
+            discoveryService: getIt<DesktopDiscoveryService>()
+        )
+    );
+    getIt.registerLazySingleton<DeviceRepository>(() => DeviceRepository());
+    getIt.registerLazySingleton<TransferRepository>(() => TransferRepository());
 
-  getIt.registerFactory<DeviceBloc>(
-    () => DeviceBloc(
-      discoveryService: getIt<DesktopDiscoveryService>(),
-      deviceRepository: getIt<DeviceRepository>(),
-    ),
-  );
+    getIt.registerFactory<DeviceBloc>(
+        () => DeviceBloc(
+            discoveryService: getIt<DesktopDiscoveryService>(),
+            deviceRepository: getIt<DeviceRepository>()
+        )
+    );
 
-  getIt.registerFactory<TransferBloc>(
-    () => TransferBloc(
-      fileTransferService: getIt<DesktopFileTransferService>(),
-      transferRepository: getIt<TransferRepository>(),
-    ),
-  );
+    getIt.registerFactory<TransferBloc>(
+        () => TransferBloc(
+            fileTransferService: getIt<DesktopFileTransferService>(),
+            transferRepository: getIt<TransferRepository>()
+        )
+    );
 
-  getIt.registerFactory<SettingsBloc>(() => SettingsBloc(prefs));
+    getIt.registerFactory<SettingsBloc>(() => SettingsBloc(prefs));
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:file_picker/file_picker.dart';
 
-import '../../../domain/entities/transfer.dart';
+import '../../domain/entities/transfer.dart';
 import '../bloc/transfer/transfer_bloc.dart';
 import '../bloc/transfer/transfer_event.dart';
 import '../bloc/transfer/transfer_state.dart';
@@ -214,7 +214,7 @@ class _TransfersPageState extends State<TransfersPage>
       return;
     }
 
-    final result = await FilePicker.platform.pickFiles();
+    final result = await FilePicker.pickFiles();
     if (result != null && context.mounted) {
       final file = result.files.first;
       // For demo, send to first paired device

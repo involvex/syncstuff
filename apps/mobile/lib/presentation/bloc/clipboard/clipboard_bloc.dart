@@ -54,7 +54,7 @@ class ClipboardBloc extends Bloc<ClipboardEvent, ClipboardState> {
     emit(state.copyWith(items: [item, ...state.items]));
 
     // Update device clipboard
-    _clipboardService?.setClipboardContent(event.content);
+    unawaited(_clipboardService?.setClipboardContent(event.content));
 
     // If sync is enabled, broadcast to paired devices
     if (state.syncEnabled) {
@@ -128,12 +128,12 @@ class ClipboardBloc extends Bloc<ClipboardEvent, ClipboardState> {
     emit(state.copyWith(items: [receivedItem, ...state.items]));
 
     // Set system clipboard
-    _clipboardService?.setClipboardContent(event.item.content);
+    unawaited(_clipboardService?.setClipboardContent(event.item.content));
   }
 
   @override
   Future<void> close() {
-    _clipboardSubscription?.cancel();
+    unawaited(_clipboardSubscription?.cancel());
     _clipboardService?.dispose();
     return super.close();
   }

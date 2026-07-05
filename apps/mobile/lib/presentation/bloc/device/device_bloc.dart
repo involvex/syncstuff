@@ -279,7 +279,7 @@ class DeviceBloc extends Bloc<DeviceEvent, DeviceState> {
 
   @override
   Future<void> close() {
-    _discoverySubscription?.cancel();
+    unawaited(_discoverySubscription?.cancel());
     _discoveryService.dispose();
     _p2pService.dispose();
     return super.close();

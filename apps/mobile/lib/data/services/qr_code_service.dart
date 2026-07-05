@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../domain/entities/device.dart';
+import '../../domain/entities/device.dart';
 
 /// Service for QR code generation and parsing
 class QRCodeService {

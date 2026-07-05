@@ -90,9 +90,13 @@ class ClipboardSyncService {
     }
   }
 
-  void _checkClipboard() async {
+  void _checkClipboard() {
     if (!_isEnabled) return;
 
+    unawaited(_checkClipboardAsync());
+  }
+
+  Future<void> _checkClipboardAsync() async {
     try {
       final content = await getClipboardContent();
       if (content != null &&
@@ -131,7 +135,7 @@ class ClipboardSyncService {
 
     // Update clipboard and emit event
     _lastClipboardContent = content;
-    setClipboardContent(content);
+    unawaited(setClipboardContent(content));
 
     final item = ClipboardItem(
       id: _uuid.v4(),
@@ -147,6 +151,6 @@ class ClipboardSyncService {
 
   void dispose() {
     disable();
-    _clipboardController.close();
+    unawaited(_clipboardController.close());
   }
 }

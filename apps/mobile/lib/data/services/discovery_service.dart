@@ -224,67 +224,6 @@ class DiscoveryService {
     }
   }
 
-  /// Check device via TCP (legacy - not used anymore)
-  Future<void> _checkDevice(String ip) async {
-    // Skip our own IP to avoid self-discovery
-    if (ip == _localIp) {
-      developer.log('Skipping own IP: $ip', name: 'DiscoveryService');
-      return;
-    }
-
-    developer.log('Checking device at: $ip', name: 'DiscoveryService');
-
-    try {
-      developer.log(
-        'Trying TCP $ip:$_discoveryPort...',
-        name: 'DiscoveryService',
-      );
-
-      final socket = await Socket.connect(
-        ip,
-        _discoveryPort,
-        timeout: const Duration(milliseconds: 200),
-      );
-
-      developer.log(
-        'Connected to $ip, sending probe...',
-        name: 'DiscoveryService',
-      );
-
-      // Send discovery probe
-      socket.write(jsonEncode({'type': 'probe'}));
-      await socket.flush();
-
-      // Wait for response
-      final response = await socket
-          .timeout(const Duration(milliseconds: 500))
-          .first;
-
-      if (response.isEmpty) return;
-
-      final data = utf8.decode(response);
-      final deviceInfo = jsonDecode(data) as Map<String, dynamic>;
-
-      if (deviceInfo['type'] == 'announce') {
-        developer.log(
-          'Found device at $ip: ${deviceInfo['name']}',
-          name: 'DiscoveryService',
-        );
-        final device = _parseDevice(deviceInfo, ip);
-        _discoveryController.add(device);
-      } else {
-        developer.log(
-          'Unknown response from $ip: $deviceInfo',
-          name: 'DiscoveryService',
-        );
-      }
-
-      await socket.close();
-    } catch (e) {
-      // Device not available or not a SyncStuff device
-    }
-  }
-
   void _handleDiscoveryMessage(List<int> data, InternetAddress address) {
     // Ignore messages from our own IP
     if (address.address == _localIp) return;
@@ -337,7 +276,7 @@ class DiscoveryService {
   }
 
   void dispose() {
-    stopDiscovery();
-    _discoveryController.close();
+    unawaited(stopDiscovery());
+    unawaited(_discoveryController.close());
   }
 }

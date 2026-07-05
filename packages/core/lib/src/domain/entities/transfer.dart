@@ -1,3 +1,5 @@
+import 'package:equatable/equatable.dart';
+
 enum TransferType {
   file,
   folder;

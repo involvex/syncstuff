@@ -1,0 +1,11 @@
+{
+	"InstallScripts" : 
+	[
+		"D:/repos/ionic/syncstuff/apps/desktop/windows/cmake_install.cmake",
+		"D:/repos/ionic/syncstuff/apps/desktop/windows/flutter/cmake_install.cmake",
+		"D:/repos/ionic/syncstuff/apps/desktop/windows/runner/cmake_install.cmake",
+		"D:/repos/ionic/syncstuff/apps/desktop/windows/plugins/jni/cmake_install.cmake",
+		"D:/repos/ionic/syncstuff/apps/desktop/windows/plugins/jni/shared/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

@@ -1,34 +1,52 @@
+import 'dart:io';
 import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-class DatabaseHelper {
-  static final DatabaseHelper _instance = DatabaseHelper._internal();
-  static Database? _database;
+class DatabaseHelper
+{
+    static final DatabaseHelper _instance = DatabaseHelper._internal();
+    static Database? _database;
+    static bool _initialized = false;
 
-  factory DatabaseHelper() => _instance;
+    factory DatabaseHelper() => _instance;
 
-  DatabaseHelper._internal();
+    DatabaseHelper._internal();
 
-  Future<Database> get database async {
-    if (_database != null) return _database!;
-    _database = await _initDatabase();
-    return _database!;
-  }
+    static void _initFfi() 
+    {
+        if (!_initialized &&
+            (Platform.isWindows || Platform.isLinux || Platform.isMacOS)) 
+        {
+            sqfliteFfiInit();
+            databaseFactory = databaseFactoryFfi;
+            _initialized = true;
+        }
+    }
 
-  Future<Database> _initDatabase() async {
-    final databasesPath = await getDatabasesPath();
-    final path = join(databasesPath, 'syncstuff.db');
+    Future<Database> get database async
+    {
+        _initFfi();
+        if (_database != null) return _database!;
+        _database = await _initDatabase();
+        return _database!;
+    }
 
-    return await openDatabase(
-      path,
-      version: 1,
-      onCreate: _onCreate,
-      onUpgrade: _onUpgrade,
-    );
-  }
+    Future<Database> _initDatabase() async
+    {
+        final databasesPath = await getDatabasesPath();
+        final path = join(databasesPath, 'syncstuff.db');
 
-  Future<void> _onCreate(Database db, int version) async {
-    await db.execute('''
+        return await openDatabase(
+            path,
+            version: 1,
+            onCreate: _onCreate,
+            onUpgrade: _onUpgrade
+        );
+    }
+
+    Future<void> _onCreate(Database db, int version) async
+    {
+        await db.execute('''
       CREATE TABLE transfers (
         id TEXT PRIMARY KEY,
         fileName TEXT NOT NULL,
@@ -46,7 +64,7 @@ class DatabaseHelper {
       )
     ''');
 
-    await db.execute('''
+        await db.execute('''
       CREATE TABLE devices (
         id TEXT PRIMARY KEY,
         name TEXT NOT NULL,
@@ -58,7 +76,7 @@ class DatabaseHelper {
       )
     ''');
 
-    await db.execute('''
+        await db.execute('''
       CREATE TABLE clipboard_items (
         id TEXT PRIMARY KEY,
         content TEXT NOT NULL,
@@ -70,13 +88,15 @@ class DatabaseHelper {
       )
     ''');
 
-    await db.execute('''
+        await db.execute('''
       CREATE TABLE settings (
         key TEXT PRIMARY KEY,
         value TEXT NOT NULL
       )
     ''');
-  }
+    }
 
-  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {}
+    Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async
+    {
+    }
 }

@@ -25,14 +25,10 @@ class FileTransferService {
 
   Stream<FileTransfer> get progressStream => _progressController.stream;
 
-  String _downloadPath = 'default';
+  String downloadPath = 'default';
 
   FileTransferService(this._p2pService) {
     _p2pService.fileChunks.listen(_handleFileChunk);
-  }
-
-  void setDownloadPath(String path) {
-    _downloadPath = path;
   }
 
   /// Send a file to connected peer
@@ -249,11 +245,11 @@ class FileTransferService {
 
     try {
       Directory downloadsDir;
-      if (_downloadPath == 'default') {
+      if (downloadPath == 'default') {
         final directory = await getApplicationDocumentsDirectory();
         downloadsDir = Directory('${directory.path}/downloads');
       } else {
-        downloadsDir = Directory(_downloadPath);
+        downloadsDir = Directory(downloadPath);
       }
 
       if (!await downloadsDir.exists()) {
@@ -317,7 +313,7 @@ class FileTransferService {
   }
 
   void dispose() {
-    _progressController.close();
+    unawaited(_progressController.close());
   }
 }
 

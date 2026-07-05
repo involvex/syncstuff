@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('App renders without crashing', (WidgetTester tester) async {
+  testWidgets('App renders without crashing', (tester) async {
     // Simple test to verify the app can be built
     // Full integration tests require SharedPreferences mock
     await tester.pumpWidget(

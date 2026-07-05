@@ -1,3 +1,5 @@
+import 'package:equatable/equatable.dart';
+
 class ClipboardItem extends Equatable {
   final String id;
   final String content;

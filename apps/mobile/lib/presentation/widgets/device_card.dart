@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../domain/entities/device.dart';
+import '../../domain/entities/device.dart';
 
 class DeviceCard extends StatelessWidget {
   final SyncDevice device;

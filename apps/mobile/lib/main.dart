@@ -19,7 +19,7 @@ import 'presentation/bloc/settings/settings_event.dart';
 import 'presentation/bloc/settings/settings_state.dart';
 import 'presentation/pages/home_page.dart';
 
-final getIt = GetIt.instance;
+final GetIt getIt = GetIt.instance;
 
 Future<void> setupDependencies() async {
   // Services
