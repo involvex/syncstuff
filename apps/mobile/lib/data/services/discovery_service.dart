@@ -19,8 +19,10 @@ class DiscoveryService {
 
   bool _isScanning = false;
   String? _localIp;
+  String? _deviceId;
   final _discoveryController = StreamController<SyncDevice>.broadcast();
   final List<RawDatagramSocket> _sockets = [];
+  HttpServer? _httpServer;
 
   /// Stream of discovered devices
   Stream<SyncDevice> get discoveredDevices => _discoveryController.stream;
@@ -54,8 +56,12 @@ class DiscoveryService {
       }
 
       _localIp = ip; // Store for filtering
+      _deviceId ??= _uuid.v4(); // Initialize stable device ID once
       final subnet = ip.substring(0, ip.lastIndexOf('.'));
       developer.log('Phone IP=$ip, subnet=$subnet.*', name: 'DiscoveryService');
+
+      // Start HTTP server on port 8766 so desktop can discover us
+      await _startHttpServer(ip);
 
       // Start UDP broadcast listener (won't receive our own broadcasts)
       await _startBroadcastListener();
@@ -82,6 +88,8 @@ class DiscoveryService {
       socket.close();
     }
     _sockets.clear();
+    await _httpServer?.close();
+    _httpServer = null;
   }
 
   /// Get device's own info for sharing
@@ -123,6 +131,46 @@ class DiscoveryService {
     }
   }
 
+  Future<void> _startHttpServer(String localIp) async {
+    try {
+      _httpServer = await HttpServer.bind(
+        InternetAddress.anyIPv4,
+        _httpDiscoveryPort,
+      );
+      developer.log(
+        'HTTP server started on port $_httpDiscoveryPort',
+        name: 'DiscoveryService',
+      );
+
+      _httpServer!.listen((request) async {
+        final path = request.uri.path;
+        if (request.method == 'GET' && path == '/api/probe') {
+          request.response.statusCode = 200;
+          request.response.headers.contentType = ContentType.json;
+          request.response.write(
+            jsonEncode({
+              'id': _deviceId,
+              'name': 'Flutter Device',
+              'platform': 'android',
+              'ip': localIp,
+              'port': _httpDiscoveryPort,
+              'version': '1.0.0',
+            }),
+          );
+          await request.response.close();
+        } else {
+          request.response.statusCode = 404;
+          await request.response.close();
+        }
+      });
+    } catch (e) {
+      developer.log(
+        'Failed to start HTTP server: $e',
+        name: 'DiscoveryService',
+      );
+    }
+  }
+
   Future<void> _broadcastPresence(String localIp) async {
     try {
       final socket = await RawDatagramSocket.bind(InternetAddress.anyIPv4, 0);
@@ -131,7 +179,7 @@ class DiscoveryService {
 
       final message = jsonEncode({
         'type': 'announce',
-        'id': _uuid.v4(),
+        'id': _deviceId,
         'name': 'Flutter Device',
         'platform': 'android',
         'ip': localIp,
@@ -205,7 +253,7 @@ class DiscoveryService {
         final deviceInfo = jsonDecode(data) as Map<String, dynamic>;
         developer.log('Parsed JSON: $deviceInfo', name: 'DiscoveryService');
 
-        if (deviceInfo['type'] == 'announce') {
+        if (deviceInfo['id'] != null) {
           developer.log(
             'Found device via HTTP: $ip - ${deviceInfo['name']}',
             name: 'DiscoveryService',

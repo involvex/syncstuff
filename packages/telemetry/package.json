@@ -27,7 +27,7 @@
     "ts-checked-fsm": "^1.1.0"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^5.20260703.1",
+    "@cloudflare/workers-types": "^5.20260705.1",
     "@eslint/js": "10.0.1",
     "@typescript-eslint/eslint-plugin": "^8.62.1",
     "@typescript-eslint/parser": "^8.62.1",
