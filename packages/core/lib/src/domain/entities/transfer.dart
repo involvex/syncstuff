@@ -51,6 +51,26 @@ enum TransferDirection {
   }
 }
 
+enum TransferPriority {
+  low,
+  normal,
+  high,
+  urgent;
+
+  String get displayName {
+    switch (this) {
+      case TransferPriority.low:
+        return 'Low';
+      case TransferPriority.normal:
+        return 'Normal';
+      case TransferPriority.high:
+        return 'High';
+      case TransferPriority.urgent:
+        return 'Urgent';
+    }
+  }
+}
+
 class FileTransfer extends Equatable {
   final String id;
   final String fileName;
@@ -65,6 +85,7 @@ class FileTransfer extends Equatable {
   final DateTime createdAt;
   final DateTime? completedAt;
   final String? error;
+  final TransferPriority priority;
 
   const FileTransfer({
     required this.id,
@@ -80,6 +101,7 @@ class FileTransfer extends Equatable {
     required this.createdAt,
     this.completedAt,
     this.error,
+    this.priority = TransferPriority.normal,
   });
 
   String get formattedSize {
@@ -108,6 +130,7 @@ class FileTransfer extends Equatable {
     DateTime? createdAt,
     DateTime? completedAt,
     String? error,
+    TransferPriority? priority,
   }) {
     return FileTransfer(
       id: id ?? this.id,
@@ -123,6 +146,7 @@ class FileTransfer extends Equatable {
       createdAt: createdAt ?? this.createdAt,
       completedAt: completedAt ?? this.completedAt,
       error: error ?? this.error,
+      priority: priority ?? this.priority,
     );
   }
 
@@ -141,6 +165,7 @@ class FileTransfer extends Equatable {
       'createdAt': createdAt.toIso8601String(),
       'completedAt': completedAt?.toIso8601String(),
       'error': error,
+      'priority': priority.name,
     };
   }
 
@@ -170,6 +195,10 @@ class FileTransfer extends Equatable {
           ? DateTime.parse(json['completedAt'] as String)
           : null,
       error: json['error'] as String?,
+      priority: TransferPriority.values.firstWhere(
+        (e) => e.name == json['priority'],
+        orElse: () => TransferPriority.normal,
+      ),
     );
   }
 
@@ -188,5 +217,6 @@ class FileTransfer extends Equatable {
     createdAt,
     completedAt,
     error,
+    priority,
   ];
 }
