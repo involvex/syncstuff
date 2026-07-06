@@ -78,6 +78,7 @@ class SyncStuffApp extends StatelessWidget {
           create: (context) => DeviceGroupBloc(
             repository: DeviceGroupRepository(),
             transferBloc: context.read<TransferBloc>(),
+            deviceBloc: context.read<DeviceBloc>(),
           )..add(LoadDeviceGroups()),
         ),
         BlocProvider<ClipboardBloc>(
