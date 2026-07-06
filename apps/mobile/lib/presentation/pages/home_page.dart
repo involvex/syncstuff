@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'devices_page.dart';
 import 'transfers_page.dart';
+import 'device_groups_page.dart';
 import 'clipboard_page.dart';
 import 'settings_page.dart';
 
@@ -17,6 +18,7 @@ class _HomePageState extends State<HomePage> {
 
   final List<Widget> _pages = const [
     DevicesPage(),
+    DeviceGroupsPage(),
     TransfersPage(),
     ClipboardPage(),
     SettingsPage(),
@@ -38,6 +40,11 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.devices_outlined),
             selectedIcon: Icon(Icons.devices),
             label: 'Devices',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.group_outlined),
+            selectedIcon: Icon(Icons.group),
+            label: 'Groups',
           ),
           NavigationDestination(
             icon: Icon(Icons.swap_vert_outlined),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:syncstuff_core_flutter/syncstuff_core_flutter.dart';
 
 import 'core/theme/app_theme.dart';
 import 'data/services/discovery_service.dart';
@@ -14,6 +15,8 @@ import 'presentation/bloc/transfer/transfer_bloc.dart';
 import 'presentation/bloc/transfer/transfer_event.dart';
 import 'presentation/bloc/clipboard/clipboard_bloc.dart';
 import 'presentation/bloc/clipboard/clipboard_event.dart';
+import 'presentation/bloc/device_group/device_group_bloc.dart';
+import 'presentation/bloc/device_group/device_group_event.dart';
 import 'presentation/bloc/settings/settings_bloc.dart';
 import 'presentation/bloc/settings/settings_event.dart';
 import 'presentation/bloc/settings/settings_state.dart';
@@ -61,6 +64,12 @@ class SyncStuffApp extends StatelessWidget {
           create: (context) =>
               TransferBloc(p2pService: getIt<P2PService>())
                 ..add(LoadTransfers()),
+        ),
+        BlocProvider<DeviceGroupBloc>(
+          create: (context) => DeviceGroupBloc(
+            repository: DeviceGroupRepository(),
+            transferBloc: context.read<TransferBloc>(),
+          )..add(LoadDeviceGroups()),
         ),
         BlocProvider<ClipboardBloc>(
           create: (context) => ClipboardBloc(
