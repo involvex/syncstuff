@@ -1,5 +1,5 @@
-import 'package:syncstuff_core/src/data/datasources/device_local_datasource.dart';
-import 'package:syncstuff_core/src/domain/entities/device.dart';
+import 'package:syncstuff_core_flutter/src/data/datasources/device_local_datasource.dart';
+import 'package:syncstuff_core/syncstuff_core.dart';
 
 class DeviceRepository {
   final DeviceLocalDataSource _localDataSource;

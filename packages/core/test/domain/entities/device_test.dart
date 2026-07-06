@@ -1,5 +1,5 @@
-import 'package:flutter_test/flutter_test.dart';
-import 'package:syncstuff_mobile/domain/entities/device.dart';
+import 'package:test/test.dart';
+import 'package:syncstuff_core/syncstuff_core.dart';
 
 void main() {
   group('SyncDevice', () {

@@ -2,13 +2,12 @@ import 'dart:io';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:syncstuff_core_flutter/syncstuff_core_flutter.dart';
 
 import '../../services/desktop_discovery_service.dart';
 import '../../services/desktop_file_transfer_service.dart';
 import '../../services/desktop_http_server.dart';
 import '../../services/desktop_clipboard_sync_service.dart';
-import '../../data/repositories/device_repository.dart';
-import '../../data/repositories/transfer_repository.dart';
 import '../../presentation/bloc/device/device_bloc.dart';
 import '../../presentation/bloc/transfer/transfer_bloc.dart';
 import '../../presentation/bloc/settings/settings_bloc.dart';

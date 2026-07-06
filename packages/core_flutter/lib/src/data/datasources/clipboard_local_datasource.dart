@@ -1,5 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:syncstuff_core/src/domain/entities/clipboard.dart';
+import 'package:syncstuff_core/syncstuff_core.dart';
+
 import 'dart:convert';
 
 class ClipboardLocalDataSource {

@@ -1,5 +1,5 @@
-import 'package:syncstuff_core/src/data/datasources/transfer_local_datasource.dart';
-import 'package:syncstuff_core/src/domain/entities/transfer.dart';
+import 'package:syncstuff_core_flutter/src/data/datasources/transfer_local_datasource.dart';
+import 'package:syncstuff_core/syncstuff_core.dart';
 
 class TransferRepository {
   final TransferLocalDataSource _localDataSource;

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
-import 'package:syncstuff_core/syncstuff_core.dart';
+import 'package:syncstuff_core_flutter/syncstuff_core_flutter.dart';
 
 import '../../../data/services/clipboard_sync_service.dart';
 import '../../../data/services/p2p_service.dart';

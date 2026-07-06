@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:uuid/uuid.dart';
-import 'package:syncstuff_core/syncstuff_core.dart';
+import 'package:syncstuff_core_flutter/syncstuff_core_flutter.dart';
 
 import 'desktop_http_server.dart';
 import 'desktop_discovery_service.dart';

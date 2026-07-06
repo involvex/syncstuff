@@ -1,5 +1,5 @@
-import 'package:syncstuff_core/src/data/datasources/clipboard_local_datasource.dart';
-import 'package:syncstuff_core/src/domain/entities/clipboard.dart';
+import 'package:syncstuff_core_flutter/src/data/datasources/clipboard_local_datasource.dart';
+import 'package:syncstuff_core/syncstuff_core.dart';
 
 class ClipboardRepository {
   final ClipboardLocalDataSource _localDataSource;

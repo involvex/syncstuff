@@ -17,66 +17,132 @@ class HelpView extends StatelessComponent {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Header
-            Text(
-              'Help & Keyboard Shortcuts',
-              style: SyncStuffTheme.titleStyle,
-            ),
+            Text('Help & Keyboard Shortcuts', style: SyncStuffTheme.titleStyle),
             const Divider(height: 1),
             const SizedBox(height: 1),
-            
-            # SyncStuff CLI - Help
 
-## Navigation
-- **↑/↓** or **j/k** - Navigate between views
-- **1-6** - Jump directly to a view
-- **Enter** - Activate selected item
-- **Esc** - Close menu/palette or quit
+            // Navigation section
+            _buildSection('Navigation', [
+              _buildItem('↑/↓ or j/k', 'Navigate between views'),
+              _buildItem('1-6', 'Jump directly to a view'),
+              _buildItem('Enter', 'Activate selected item'),
+              _buildItem('Esc', 'Close menu/palette or quit'),
+            ]),
 
-## Views
-- **1 📊 Status** - System overview and server status
-- **2 📱 Devices** - Discovered and connected devices
-- **3 📁 Transfer** - File transfer operations
-- **4 📋 Clipboard** - Clipboard sharing controls
-- **5 🖥️ Server** - Server control and logs
-- **6 ❓ Help** - This help screen
+            // Views section
+            _buildSection('Views', [
+              _buildItem('1 📊 Status', 'System overview and server status'),
+              _buildItem('2 📱 Devices', 'Discovered and connected devices'),
+              _buildItem('3 📁 Transfer', 'File transfer operations'),
+              _buildItem('4 📋 Clipboard', 'Clipboard sharing controls'),
+              _buildItem('5 🖥️ Server', 'Server control and logs'),
+              _buildItem('6 ❓ Help', 'This help screen'),
+            ]),
 
-## Actions
-- **s** - Scan for devices on local network
-- **t** - Toggle server on/off
-- **:** - Open command palette (VSCode-style)
-- **Esc** - Quit application
+            // Actions section
+            _buildSection('Actions', [
+              _buildItem('s', 'Scan for devices on local network'),
+              _buildItem('t', 'Toggle server on/off'),
+              _buildItem(':', 'Open command palette (VSCode-style)'),
+              _buildItem('Esc', 'Quit application'),
+            ]),
 
-## Command Palette (:-prefix)
-Once opened with `:`, you can:
-- **↑/↓** - Navigate commands
-- **Enter** - Execute selected command
-- **Esc** - Close palette
+            // Command Palette section
+            _buildSection('Command Palette (:-prefix)', [
+              _buildItem('↑/↓', 'Navigate commands'),
+              _buildItem('Enter', 'Execute selected command'),
+              _buildItem('Esc', 'Close palette'),
+              const SizedBox(height: 1),
+              Text('Available commands:', style: SyncStuffTheme.mutedStyle),
+              _buildItem('', 'Scan for devices'),
+              _buildItem('', 'Start/Stop/Toggle server'),
+              _buildItem('', 'Get/Set clipboard'),
+              _buildItem('', 'Show help'),
+              _buildItem('', 'Quit application'),
+            ]),
 
-Available commands:
-- Scan for devices
-- Start/Stop/Toggle server
-- Get/Set clipboard
-- Show help
-- Quit application
+            // Device Connection section
+            _buildSection('Device Connection', [
+              Text(
+                'When devices are discovered:',
+                style: SyncStuffTheme.bodyStyle,
+              ),
+              _buildItem('🟢', 'Green indicator = Connected'),
+              _buildItem('⚪', 'White indicator = Discovered but not connected'),
+            ]),
 
-## Device Connection
-When devices are discovered:
-- Green indicator (🟢) = Connected
-- White indicator (⚪) = Discovered but not connected
+            // Server Information section
+            _buildSection('Server Information', [
+              Text('When server is running:', style: SyncStuffTheme.bodyStyle),
+              _buildItem('', 'HTTP API available on port+1'),
+              _buildItem('', 'TCP device discovery on main port'),
+              _buildItem('', 'WebSocket endpoint for real-time updates'),
+            ]),
 
-## Server Information
-When server is running:
-- HTTP API available on port+1
-- TCP device discovery on main port
-- WebSocket endpoint for real-time updates
+            // File Transfer section
+            _buildSection('File Transfer', [
+              Text(
+                'Select a device from the devices view to initiate file transfers.',
+                style: SyncStuffTheme.bodyStyle,
+              ),
+            ]),
 
-## File Transfer
-Select a device from the devices view to initiate file transfers.
+            // Clipboard Sync section
+            _buildSection('Clipboard Sync', [
+              Text(
+                'Enable clipboard synchronization in settings for real-time sharing.',
+                style: SyncStuffTheme.bodyStyle,
+              ),
+            ]),
 
-## Clipboard Sync
-Enable clipboard synchronization in settings for real-time sharing.
+            // Notes section
+            _buildSection('Notes', [
+              Text(
+                '• This TUI requires a proper terminal that supports ANSI colors',
+                style: SyncStuffTheme.mutedStyle,
+              ),
+              Text(
+                '• Some IDE terminals may not support all features',
+                style: SyncStuffTheme.mutedStyle,
+              ),
+              Text(
+                '• For best experience, use PowerShell, CMD, Windows Terminal, or similar',
+                style: SyncStuffTheme.mutedStyle,
+              ),
+            ]),
+          ],
+        ),
+      ),
+    );
+  }
 
-## Notes
-- This TUI requires a proper terminal that supports ANSI colors
-- Some IDE terminals may not support all features
-- For best experience, use PowerShell, CMD, Windows Terminal, or similar
+  Component _buildSection(String title, List<Component> children) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 2),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title, style: SyncStuffTheme.titleStyle),
+          const SizedBox(height: 1),
+          ...children,
+        ],
+      ),
+    );
+  }
+
+  Component _buildItem(String shortcut, String description) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 1),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (shortcut.isNotEmpty) ...[
+            Text(shortcut.padRight(20), style: SyncStuffTheme.infoStyle),
+            const SizedBox(width: 1),
+          ],
+          Expanded(child: Text(description, style: SyncStuffTheme.bodyStyle)),
+        ],
+      ),
+    );
+  }
+}
