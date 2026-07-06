@@ -32,7 +32,6 @@ dependencies:
 
   # File Handling
   file_picker: ^11.0.2
-  permission_handler: ^11.4.0
   share_plus: ^12.0.2
 
   # Notifications

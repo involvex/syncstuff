@@ -2,7 +2,8 @@ import 'dart:io';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'package:syncstuff_core_flutter/syncstuff_core_flutter.dart';
+import 'package:syncstuff_core_flutter/syncstuff_core_flutter.dart'
+    hide DeviceGroupRepository;
 
 import '../../services/desktop_discovery_service.dart';
 import '../../services/desktop_file_transfer_service.dart';
@@ -11,6 +12,7 @@ import '../../services/desktop_clipboard_sync_service.dart';
 import '../../presentation/bloc/device/device_bloc.dart';
 import '../../presentation/bloc/transfer/transfer_bloc.dart';
 import '../../presentation/bloc/settings/settings_bloc.dart';
+import '../../data/repositories/device_group_repository.dart';
 
 final getIt = GetIt.instance;
 
@@ -45,8 +47,12 @@ Future<void> setupServiceLocator() async {
       discoveryService: getIt<DesktopDiscoveryService>(),
     ),
   );
+  getIt.registerLazySingleton<NotificationService>(() => NotificationService());
   getIt.registerLazySingleton<DeviceRepository>(() => DeviceRepository());
   getIt.registerLazySingleton<TransferRepository>(() => TransferRepository());
+  getIt.registerLazySingleton<DeviceGroupRepository>(
+    () => DeviceGroupRepository(),
+  );
 
   getIt.registerFactory<DeviceBloc>(
     () => DeviceBloc(
@@ -59,6 +65,7 @@ Future<void> setupServiceLocator() async {
     () => TransferBloc(
       fileTransferService: getIt<DesktopFileTransferService>(),
       transferRepository: getIt<TransferRepository>(),
+      notificationService: getIt<NotificationService>(),
     ),
   );
 
