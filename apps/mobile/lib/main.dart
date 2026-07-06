@@ -42,13 +42,21 @@ void main() async {
   final prefs = await SharedPreferences.getInstance();
   await setupDependencies();
 
-  runApp(SyncStuffApp(prefs: prefs));
+  final notificationService = NotificationService();
+  await notificationService.requestPermission();
+
+  runApp(SyncStuffApp(prefs: prefs, notificationService: notificationService));
 }
 
 class SyncStuffApp extends StatelessWidget {
   final SharedPreferences prefs;
+  final NotificationService notificationService;
 
-  const SyncStuffApp({super.key, required this.prefs});
+  const SyncStuffApp({
+    super.key,
+    required this.prefs,
+    required this.notificationService,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +71,7 @@ class SyncStuffApp extends StatelessWidget {
         BlocProvider<TransferBloc>(
           create: (context) => TransferBloc(
             p2pService: getIt<P2PService>(),
-            notificationService: NotificationService(),
+            notificationService: notificationService,
           )..add(LoadTransfers()),
         ),
         BlocProvider<DeviceGroupBloc>(

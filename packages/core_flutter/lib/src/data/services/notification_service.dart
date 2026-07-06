@@ -10,6 +10,34 @@ class NotificationService {
 
   bool get isInitialized => _initialized;
 
+  Future<bool> requestPermission() async {
+    if (!_initialized) await init();
+
+    final android = _plugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
+    if (android != null) {
+      final granted = await android.requestNotificationsPermission();
+      return granted ?? false;
+    }
+
+    final ios = _plugin
+        .resolvePlatformSpecificImplementation<
+          IOSFlutterLocalNotificationsPlugin
+        >();
+    if (ios != null) {
+      final granted = await ios.requestPermissions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+      return granted ?? false;
+    }
+
+    return true;
+  }
+
   Future<void> init() async {
     if (_initialized) return;
 
