@@ -12,3 +12,4 @@ export 'src/data/repositories/settings_repository.dart';
 export 'src/data/repositories/clipboard_repository.dart';
 export 'src/data/repositories/device_group_repository.dart';
 export 'src/data/services/transfer_queue.dart';
+export 'src/data/services/notification_service.dart';
