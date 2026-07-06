@@ -107,6 +107,15 @@ class DequeueTransfer extends TransferEvent {
   List<Object?> get props => [transferId];
 }
 
+class UpdateQueueOrder extends TransferEvent {
+  final List<FileTransfer> reorderedQueue;
+
+  const UpdateQueueOrder(this.reorderedQueue);
+
+  @override
+  List<Object?> get props => [reorderedQueue];
+}
+
 class ReceiveFile extends TransferEvent {
   final String deviceId;
   final String transferId;

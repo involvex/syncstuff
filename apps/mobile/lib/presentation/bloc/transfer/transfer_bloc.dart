@@ -32,6 +32,7 @@ class TransferBloc extends Bloc<TransferEvent, TransferState> {
     on<ReceiveFile>(_onReceiveFile);
     on<EnqueueTransfer>(_onEnqueue);
     on<DequeueTransfer>(_onDequeue);
+    on<UpdateQueueOrder>(_onUpdateQueueOrder);
 
     // Listen to file transfer progress
     _progressSubscription = _fileTransferService!.progressStream.listen((
@@ -280,6 +281,13 @@ class TransferBloc extends Bloc<TransferEvent, TransferState> {
 
     emit(state.copyWith(queuedTransfers: updated));
     _transferQueue?.onCancel(event.transferId);
+  }
+
+  void _onUpdateQueueOrder(
+    UpdateQueueOrder event,
+    Emitter<TransferState> emit,
+  ) {
+    emit(state.copyWith(queuedTransfers: event.reorderedQueue));
   }
 
   @override
