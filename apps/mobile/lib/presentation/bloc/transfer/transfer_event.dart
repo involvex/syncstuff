@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../domain/entities/transfer.dart';
+
 abstract class TransferEvent extends Equatable {
   const TransferEvent();
 
@@ -77,6 +79,32 @@ class TransferFailed extends TransferEvent {
 
   @override
   List<Object?> get props => [transferId, error];
+}
+
+class EnqueueTransfer extends TransferEvent {
+  final String filePath;
+  final String deviceIp;
+  final String? deviceId;
+  final TransferPriority priority;
+
+  const EnqueueTransfer({
+    required this.filePath,
+    required this.deviceIp,
+    this.deviceId,
+    this.priority = TransferPriority.normal,
+  });
+
+  @override
+  List<Object?> get props => [filePath, deviceIp, deviceId, priority];
+}
+
+class DequeueTransfer extends TransferEvent {
+  final String transferId;
+
+  const DequeueTransfer(this.transferId);
+
+  @override
+  List<Object?> get props => [transferId];
 }
 
 class ReceiveFile extends TransferEvent {

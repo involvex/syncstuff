@@ -3,9 +3,9 @@ import 'dart:developer' as developer;
 import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:syncstuff_core_flutter/syncstuff_core_flutter.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../domain/entities/transfer.dart';
 import '../../../data/services/file_transfer_service.dart';
 import '../../../data/services/p2p_service.dart';
 import 'transfer_event.dart';
@@ -13,11 +13,15 @@ import 'transfer_state.dart';
 
 class TransferBloc extends Bloc<TransferEvent, TransferState> {
   final FileTransferService? _fileTransferService;
+  final TransferQueue? _transferQueue;
 
   StreamSubscription<FileTransfer>? _progressSubscription;
+  StreamSubscription<List<FileTransfer>>? _queueSubscription;
+  StreamSubscription<List<FileTransfer>>? _activeSubscription;
 
-  TransferBloc({P2PService? p2pService})
+  TransferBloc({P2PService? p2pService, TransferQueue? transferQueue})
     : _fileTransferService = FileTransferService(p2pService ?? P2PService()),
+      _transferQueue = transferQueue,
       super(const TransferState()) {
     on<LoadTransfers>(_onLoadTransfers);
     on<StartTransfer>(_onStartTransfer);
@@ -26,6 +30,8 @@ class TransferBloc extends Bloc<TransferEvent, TransferState> {
     on<TransferCompleted>(_onTransferCompleted);
     on<TransferFailed>(_onTransferFailed);
     on<ReceiveFile>(_onReceiveFile);
+    on<EnqueueTransfer>(_onEnqueue);
+    on<DequeueTransfer>(_onDequeue);
 
     // Listen to file transfer progress
     _progressSubscription = _fileTransferService!.progressStream.listen((
@@ -35,10 +41,22 @@ class TransferBloc extends Bloc<TransferEvent, TransferState> {
         add(UpdateTransferProgress(transfer.id, transfer.progress));
       } else if (transfer.status == TransferStatus.completed) {
         add(TransferCompleted(transfer.id, filePath: transfer.filePath));
+        _transferQueue?.onComplete(transfer.id);
       } else if (transfer.status == TransferStatus.failed) {
         add(TransferFailed(transfer.id, transfer.error ?? 'Unknown error'));
+        _transferQueue?.onComplete(transfer.id);
       }
     });
+
+    // Listen to queue changes
+    if (_transferQueue != null) {
+      _queueSubscription = _transferQueue!.queueStream.listen((queue) {
+        emit(state.copyWith(queuedTransfers: List.unmodifiable(queue)));
+      });
+      _activeSubscription = _transferQueue!.activeStream.listen((active) {
+        emit(state.copyWith(activeTransfers: List.unmodifiable(active)));
+      });
+    }
   }
 
   Future<void> _onLoadTransfers(
@@ -224,10 +242,53 @@ class TransferBloc extends Bloc<TransferEvent, TransferState> {
     );
   }
 
+  Future<void> _onEnqueue(
+    EnqueueTransfer event,
+    Emitter<TransferState> emit,
+  ) async {
+    final file = File(event.filePath);
+    final fileSize = await file.length();
+    final fileName = event.filePath.split(Platform.pathSeparator).last;
+
+    final transfer = FileTransfer(
+      id: const Uuid().v4(),
+      fileName: fileName,
+      fileSize: fileSize,
+      filePath: event.filePath,
+      type: TransferType.file,
+      status: TransferStatus.pending,
+      direction: TransferDirection.sent,
+      deviceId: event.deviceId,
+      progress: 0,
+      priority: event.priority,
+      createdAt: DateTime.now(),
+    );
+
+    emit(
+      state.copyWith(
+        queuedTransfers: [...state.queuedTransfers, transfer],
+      ),
+    );
+
+    _transferQueue?.enqueue(transfer);
+  }
+
+  void _onDequeue(DequeueTransfer event, Emitter<TransferState> emit) {
+    final updated = state.queuedTransfers
+        .where((t) => t.id != event.transferId)
+        .toList();
+
+    emit(state.copyWith(queuedTransfers: updated));
+    _transferQueue?.onCancel(event.transferId);
+  }
+
   @override
   Future<void> close() {
     unawaited(_progressSubscription?.cancel());
+    unawaited(_queueSubscription?.cancel());
+    unawaited(_activeSubscription?.cancel());
     _fileTransferService?.dispose();
+    _transferQueue?.dispose();
     return super.close();
   }
 }
