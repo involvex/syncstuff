@@ -61,9 +61,10 @@ class SyncStuffApp extends StatelessWidget {
           )..add(LoadDevices()),
         ),
         BlocProvider<TransferBloc>(
-          create: (context) =>
-              TransferBloc(p2pService: getIt<P2PService>())
-                ..add(LoadTransfers()),
+          create: (context) => TransferBloc(
+            p2pService: getIt<P2PService>(),
+            notificationService: NotificationService(),
+          )..add(LoadTransfers()),
         ),
         BlocProvider<DeviceGroupBloc>(
           create: (context) => DeviceGroupBloc(

@@ -14,15 +14,20 @@ import 'transfer_state.dart';
 class TransferBloc extends Bloc<TransferEvent, TransferState> {
   final FileTransferService? _fileTransferService;
   final TransferQueue? _transferQueue;
+  final NotificationService? _notificationService;
 
   StreamSubscription<FileTransfer>? _progressSubscription;
   StreamSubscription<List<FileTransfer>>? _queueSubscription;
   StreamSubscription<List<FileTransfer>>? _activeSubscription;
 
-  TransferBloc({P2PService? p2pService, TransferQueue? transferQueue})
-    : _fileTransferService = FileTransferService(p2pService ?? P2PService()),
-      _transferQueue = transferQueue,
-      super(const TransferState()) {
+  TransferBloc({
+    P2PService? p2pService,
+    TransferQueue? transferQueue,
+    NotificationService? notificationService,
+  }) : _fileTransferService = FileTransferService(p2pService ?? P2PService()),
+       _transferQueue = transferQueue,
+       _notificationService = notificationService,
+       super(const TransferState()) {
     on<LoadTransfers>(_onLoadTransfers);
     on<StartTransfer>(_onStartTransfer);
     on<CancelTransfer>(_onCancelTransfer);
@@ -149,6 +154,11 @@ class TransferBloc extends Bloc<TransferEvent, TransferState> {
         isTransferring: active.isNotEmpty,
       ),
     );
+
+    // Cancel progress notification
+    unawaited(
+      _notificationService?.cancelNotification(event.transferId.hashCode),
+    );
   }
 
   void _onUpdateProgress(
@@ -163,6 +173,13 @@ class TransferBloc extends Bloc<TransferEvent, TransferState> {
     }).toList();
 
     emit(state.copyWith(activeTransfers: updated));
+
+    // Show progress notification
+    final transfer = updated.firstWhere(
+      (t) => t.id == event.transferId,
+      orElse: () => updated.first,
+    );
+    unawaited(_notificationService?.showTransferProgress(transfer));
   }
 
   void _onTransferCompleted(
@@ -195,6 +212,12 @@ class TransferBloc extends Bloc<TransferEvent, TransferState> {
         isTransferring: activeTransfers.isNotEmpty,
       ),
     );
+
+    // Show completion notification
+    for (final transfer in completedTransfers) {
+      unawaited(_notificationService?.showTransferComplete(transfer));
+      unawaited(_notificationService?.cancelNotification(transfer.id.hashCode));
+    }
   }
 
   void _onTransferFailed(TransferFailed event, Emitter<TransferState> emit) {
@@ -220,6 +243,12 @@ class TransferBloc extends Bloc<TransferEvent, TransferState> {
         error: event.error,
       ),
     );
+
+    // Show failure notification
+    for (final transfer in failedTransfers) {
+      unawaited(_notificationService?.showTransferFailed(transfer));
+      unawaited(_notificationService?.cancelNotification(transfer.id.hashCode));
+    }
   }
 
   void _onReceiveFile(ReceiveFile event, Emitter<TransferState> emit) {
@@ -297,6 +326,7 @@ class TransferBloc extends Bloc<TransferEvent, TransferState> {
     unawaited(_activeSubscription?.cancel());
     _fileTransferService?.dispose();
     _transferQueue?.dispose();
+    unawaited(_notificationService?.cancelAll());
     return super.close();
   }
 }
