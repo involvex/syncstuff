@@ -55,3 +55,11 @@ class SetAutoPair extends SettingsEvent {
   @override
   List<Object?> get props => [enabled];
 }
+
+class ToggleNotifications extends SettingsEvent {}
+
+class ToggleTransferCompleteNotification extends SettingsEvent {}
+
+class ToggleTransferFailedNotification extends SettingsEvent {}
+
+class ToggleTransferProgressNotification extends SettingsEvent {}

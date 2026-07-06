@@ -7,6 +7,10 @@ class SettingsState extends Equatable {
   final bool autoStartEnabled;
   final String downloadPath;
   final bool autoPairEnabled;
+  final bool notificationsEnabled;
+  final bool transferCompleteNotificationEnabled;
+  final bool transferFailedNotificationEnabled;
+  final bool transferProgressNotificationEnabled;
   final String? error;
 
   const SettingsState({
@@ -16,6 +20,10 @@ class SettingsState extends Equatable {
     this.autoStartEnabled = false,
     this.downloadPath = 'default',
     this.autoPairEnabled = true,
+    this.notificationsEnabled = true,
+    this.transferCompleteNotificationEnabled = true,
+    this.transferFailedNotificationEnabled = true,
+    this.transferProgressNotificationEnabled = true,
     this.error,
   });
 
@@ -26,6 +34,10 @@ class SettingsState extends Equatable {
     bool? autoStartEnabled,
     String? downloadPath,
     bool? autoPairEnabled,
+    bool? notificationsEnabled,
+    bool? transferCompleteNotificationEnabled,
+    bool? transferFailedNotificationEnabled,
+    bool? transferProgressNotificationEnabled,
     String? error,
   }) {
     return SettingsState(
@@ -35,6 +47,16 @@ class SettingsState extends Equatable {
       autoStartEnabled: autoStartEnabled ?? this.autoStartEnabled,
       downloadPath: downloadPath ?? this.downloadPath,
       autoPairEnabled: autoPairEnabled ?? this.autoPairEnabled,
+      notificationsEnabled: notificationsEnabled ?? this.notificationsEnabled,
+      transferCompleteNotificationEnabled:
+          transferCompleteNotificationEnabled ??
+          this.transferCompleteNotificationEnabled,
+      transferFailedNotificationEnabled:
+          transferFailedNotificationEnabled ??
+          this.transferFailedNotificationEnabled,
+      transferProgressNotificationEnabled:
+          transferProgressNotificationEnabled ??
+          this.transferProgressNotificationEnabled,
       error: error,
     );
   }
@@ -47,6 +69,10 @@ class SettingsState extends Equatable {
     autoStartEnabled,
     downloadPath,
     autoPairEnabled,
+    notificationsEnabled,
+    transferCompleteNotificationEnabled,
+    transferFailedNotificationEnabled,
+    transferProgressNotificationEnabled,
     error,
   ];
 }

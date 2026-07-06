@@ -87,6 +87,58 @@ class SettingsPage extends StatelessWidget {
 
               const Divider(),
 
+              _buildSectionHeader(context, 'Notifications'),
+              _buildSwitchTile(
+                context,
+                icon: Icons.notifications,
+                title: 'Enable Notifications',
+                subtitle: 'Show notifications for transfer events',
+                value: state.notificationsEnabled,
+                onChanged: (_) {
+                  context.read<SettingsBloc>().add(ToggleNotifications());
+                },
+              ),
+              if (state.notificationsEnabled) ...[
+                _buildSwitchTile(
+                  context,
+                  icon: Icons.check_circle_outline,
+                  title: 'Transfer Complete',
+                  subtitle: 'Notify when transfer finishes',
+                  value: state.transferCompleteNotificationEnabled,
+                  onChanged: (_) {
+                    context.read<SettingsBloc>().add(
+                      ToggleTransferCompleteNotification(),
+                    );
+                  },
+                ),
+                _buildSwitchTile(
+                  context,
+                  icon: Icons.error_outline,
+                  title: 'Transfer Failed',
+                  subtitle: 'Notify when transfer fails',
+                  value: state.transferFailedNotificationEnabled,
+                  onChanged: (_) {
+                    context.read<SettingsBloc>().add(
+                      ToggleTransferFailedNotification(),
+                    );
+                  },
+                ),
+                _buildSwitchTile(
+                  context,
+                  icon: Icons.trending_up,
+                  title: 'Transfer Progress',
+                  subtitle: 'Show progress notifications',
+                  value: state.transferProgressNotificationEnabled,
+                  onChanged: (_) {
+                    context.read<SettingsBloc>().add(
+                      ToggleTransferProgressNotification(),
+                    );
+                  },
+                ),
+              ],
+
+              const Divider(),
+
               _buildSectionHeader(context, 'About'),
               _buildListTile(
                 context,
