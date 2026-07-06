@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
+import 'package:syncstuff_core/syncstuff_core.dart';
 
-import '../../../domain/entities/clipboard.dart';
 import '../../../data/services/clipboard_sync_service.dart';
 import '../../../data/services/p2p_service.dart';
 import 'clipboard_event.dart';
@@ -11,6 +11,7 @@ import 'clipboard_state.dart';
 
 class ClipboardBloc extends Bloc<ClipboardEvent, ClipboardState> {
   final ClipboardSyncService? _clipboardService;
+  final ClipboardRepository _clipboardRepository;
   final _uuid = const Uuid();
 
   StreamSubscription<ClipboardItem>? _clipboardSubscription;
@@ -18,8 +19,10 @@ class ClipboardBloc extends Bloc<ClipboardEvent, ClipboardState> {
   ClipboardBloc({
     ClipboardSyncService? clipboardService,
     P2PService? p2pService,
+    ClipboardRepository? clipboardRepository,
   }) : _clipboardService =
            clipboardService ?? ClipboardSyncService(p2pService ?? P2PService()),
+       _clipboardRepository = clipboardRepository ?? ClipboardRepository(),
        super(const ClipboardState()) {
     on<LoadClipboardItems>(_onLoadItems);
     on<AddClipboardItem>(_onAddItem);
@@ -28,7 +31,6 @@ class ClipboardBloc extends Bloc<ClipboardEvent, ClipboardState> {
     on<SyncClipboardToDevices>(_onSyncToDevices);
     on<ClipboardReceived>(_onClipboardReceived);
 
-    // Listen for incoming clipboard from P2P
     _clipboardSubscription = _clipboardService!.clipboardStream.listen((item) {
       add(ClipboardReceived(item));
     });
@@ -38,33 +40,42 @@ class ClipboardBloc extends Bloc<ClipboardEvent, ClipboardState> {
     LoadClipboardItems event,
     Emitter<ClipboardState> emit,
   ) async {
-    // TODO: Load from local storage
-    emit(state.copyWith(items: []));
+    final items = await _clipboardRepository.getHistory(limit: 100);
+    emit(state.copyWith(items: items));
   }
 
-  void _onAddItem(AddClipboardItem event, Emitter<ClipboardState> emit) {
+  Future<void> _onAddItem(
+    AddClipboardItem event,
+    Emitter<ClipboardState> emit,
+  ) async {
     final item = ClipboardItem(
       id: _uuid.v4(),
       content: event.content,
       contentType: event.contentType,
       createdAt: DateTime.now(),
+      deviceId: null,
+      deviceName: null,
       synced: false,
     );
 
-    emit(state.copyWith(items: [item, ...state.items]));
+    await _clipboardRepository.addItem(item);
+    final items = await _clipboardRepository.getHistory(limit: 100);
+    emit(state.copyWith(items: items));
 
-    // Update device clipboard
     unawaited(_clipboardService?.setClipboardContent(event.content));
 
-    // If sync is enabled, broadcast to paired devices
     if (state.syncEnabled) {
       add(SyncClipboardToDevices(item.id));
     }
   }
 
-  void _onDeleteItem(DeleteClipboardItem event, Emitter<ClipboardState> emit) {
-    final updated = state.items.where((i) => i.id != event.id).toList();
-    emit(state.copyWith(items: updated));
+  Future<void> _onDeleteItem(
+    DeleteClipboardItem event,
+    Emitter<ClipboardState> emit,
+  ) async {
+    await _clipboardRepository.deleteItem(event.id);
+    final items = await _clipboardRepository.getHistory(limit: 100);
+    emit(state.copyWith(items: items));
   }
 
   void _onToggleSync(ToggleClipboardSync event, Emitter<ClipboardState> emit) {
@@ -100,10 +111,8 @@ class ClipboardBloc extends Bloc<ClipboardEvent, ClipboardState> {
       return;
     }
 
-    // Broadcast to connected peers
     await _clipboardService?.broadcastClipboard(item.content);
 
-    // Mark as synced
     final updated = state.items.map((i) {
       if (i.id == event.itemId) {
         return i.copyWith(synced: true);
@@ -117,17 +126,16 @@ class ClipboardBloc extends Bloc<ClipboardEvent, ClipboardState> {
   void _onClipboardReceived(
     ClipboardReceived event,
     Emitter<ClipboardState> emit,
-  ) {
-    // Check if we already have this content
+  ) async {
     if (state.items.any((i) => i.content == event.item.content)) {
       return;
     }
 
-    // Add the received item
     final receivedItem = event.item.copyWith(synced: true);
-    emit(state.copyWith(items: [receivedItem, ...state.items]));
+    await _clipboardRepository.addItem(receivedItem);
+    final items = await _clipboardRepository.getHistory(limit: 100);
+    emit(state.copyWith(items: items));
 
-    // Set system clipboard
     unawaited(_clipboardService?.setClipboardContent(event.item.content));
   }
 

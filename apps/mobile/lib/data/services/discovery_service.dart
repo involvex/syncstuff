@@ -4,6 +4,7 @@ import 'dart:developer' as developer;
 import 'dart:io';
 
 import 'package:network_info_plus/network_info_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../domain/entities/device.dart';
@@ -20,6 +21,7 @@ class DiscoveryService {
   bool _isScanning = false;
   String? _localIp;
   String? _deviceId;
+  String? _deviceName;
   final _discoveryController = StreamController<SyncDevice>.broadcast();
   final List<RawDatagramSocket> _sockets = [];
   HttpServer? _httpServer;
@@ -55,8 +57,16 @@ class DiscoveryService {
         return;
       }
 
+      // Load or generate stable device ID
+      final prefs = await SharedPreferences.getInstance();
+      _deviceId = prefs.getString('device_id');
+      if (_deviceId == null || _deviceId!.isEmpty) {
+        _deviceId = _uuid.v4();
+        await prefs.setString('device_id', _deviceId!);
+      }
+      _deviceName = prefs.getString('device_name') ?? 'Mobile Device';
+
       _localIp = ip; // Store for filtering
-      _deviceId ??= _uuid.v4(); // Initialize stable device ID once
       final subnet = ip.substring(0, ip.lastIndexOf('.'));
       developer.log('Phone IP=$ip, subnet=$subnet.*', name: 'DiscoveryService');
 
@@ -150,7 +160,7 @@ class DiscoveryService {
           request.response.write(
             jsonEncode({
               'id': _deviceId,
-              'name': 'Flutter Device',
+              'name': _deviceName,
               'platform': 'android',
               'ip': localIp,
               'port': _httpDiscoveryPort,
@@ -180,7 +190,7 @@ class DiscoveryService {
       final message = jsonEncode({
         'type': 'announce',
         'id': _deviceId,
-        'name': 'Flutter Device',
+        'name': _deviceName,
         'platform': 'android',
         'ip': localIp,
         'port': _discoveryPort,

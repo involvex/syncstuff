@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:file_picker/file_picker.dart';
@@ -71,10 +72,22 @@ class _TransfersPageState extends State<TransfersPage>
           );
         },
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _pickAndSendFile(context),
-        icon: const Icon(Icons.send),
-        label: const Text('Send File'),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FloatingActionButton.small(
+            heroTag: 'folder',
+            onPressed: () => _pickAndSendFolder(context),
+            child: const Icon(Icons.folder),
+          ),
+          const SizedBox(height: 8),
+          FloatingActionButton.extended(
+            heroTag: 'files',
+            onPressed: () => _pickAndSendFiles(context),
+            icon: const Icon(Icons.send),
+            label: const Text('Send Files'),
+          ),
+        ],
       ),
     );
   }
@@ -203,7 +216,7 @@ class _TransfersPageState extends State<TransfersPage>
     );
   }
 
-  Future<void> _pickAndSendFile(BuildContext context) async {
+  Future<void> _pickAndSendFiles(BuildContext context) async {
     final deviceState = context.read<DeviceBloc>().state;
     if (deviceState.pairedDevices.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -214,21 +227,59 @@ class _TransfersPageState extends State<TransfersPage>
       return;
     }
 
-    final result = await FilePicker.pickFiles();
-    if (result != null && context.mounted) {
-      final file = result.files.first;
-      // For demo, send to first paired device
+    final result = await FilePicker.pickFiles(allowMultiple: true);
+    if (result != null && result.files.isNotEmpty && context.mounted) {
       final device = deviceState.pairedDevices.first;
       final deviceId = device.id;
-      final deviceIp = device.ipAddress ?? '192.168.178.69'; // fallback
+      final deviceIp = device.ipAddress ?? '';
 
-      context.read<TransferBloc>().add(
-        StartTransfer(
-          deviceId: deviceId,
-          deviceIp: deviceIp,
-          filePath: file.path ?? file.name,
+      for (final file in result.files) {
+        if (file.path != null) {
+          context.read<TransferBloc>().add(
+            StartTransfer(
+              deviceId: deviceId,
+              deviceIp: deviceIp,
+              filePath: file.path!,
+            ),
+          );
+        }
+      }
+    }
+  }
+
+  Future<void> _pickAndSendFolder(BuildContext context) async {
+    final deviceState = context.read<DeviceBloc>().state;
+    if (deviceState.pairedDevices.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('No paired devices. Pair a device first.'),
         ),
       );
+      return;
+    }
+
+    final directoryPath = await FilePicker.getDirectoryPath();
+    if (directoryPath != null && context.mounted) {
+      final device = deviceState.pairedDevices.first;
+      final deviceId = device.id;
+      final deviceIp = device.ipAddress ?? '';
+
+      final dir = Directory(directoryPath);
+      if (await dir.exists()) {
+        await for (final entity in dir.list(recursive: true)) {
+          if (entity is File) {
+            if (context.mounted) {
+              context.read<TransferBloc>().add(
+                StartTransfer(
+                  deviceId: deviceId,
+                  deviceIp: deviceIp,
+                  filePath: entity.path,
+                ),
+              );
+            }
+          }
+        }
+      }
     }
   }
 }
