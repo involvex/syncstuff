@@ -116,6 +116,24 @@ class UpdateQueueOrder extends TransferEvent {
   List<Object?> get props => [reorderedQueue];
 }
 
+class QueueUpdated extends TransferEvent {
+  final List<FileTransfer> queue;
+
+  const QueueUpdated(this.queue);
+
+  @override
+  List<Object?> get props => [queue];
+}
+
+class ActiveTransfersUpdated extends TransferEvent {
+  final List<FileTransfer> active;
+
+  const ActiveTransfersUpdated(this.active);
+
+  @override
+  List<Object?> get props => [active];
+}
+
 class ReceiveFile extends TransferEvent {
   final String deviceId;
   final String transferId;

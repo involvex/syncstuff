@@ -38,6 +38,8 @@ class TransferBloc extends Bloc<TransferEvent, TransferState> {
     on<EnqueueTransfer>(_onEnqueue);
     on<DequeueTransfer>(_onDequeue);
     on<UpdateQueueOrder>(_onUpdateQueueOrder);
+    on<QueueUpdated>(_onQueueUpdated);
+    on<ActiveTransfersUpdated>(_onActiveTransfersUpdated);
 
     // Listen to file transfer progress
     _progressSubscription = _fileTransferService!.progressStream.listen((
@@ -56,11 +58,11 @@ class TransferBloc extends Bloc<TransferEvent, TransferState> {
 
     // Listen to queue changes
     if (_transferQueue != null) {
-      _queueSubscription = _transferQueue!.queueStream.listen((queue) {
-        emit(state.copyWith(queuedTransfers: List.unmodifiable(queue)));
+      _queueSubscription = _transferQueue.queueStream.listen((queue) {
+        add(QueueUpdated(queue));
       });
-      _activeSubscription = _transferQueue!.activeStream.listen((active) {
-        emit(state.copyWith(activeTransfers: List.unmodifiable(active)));
+      _activeSubscription = _transferQueue.activeStream.listen((active) {
+        add(ActiveTransfersUpdated(active));
       });
     }
   }
@@ -317,6 +319,17 @@ class TransferBloc extends Bloc<TransferEvent, TransferState> {
     Emitter<TransferState> emit,
   ) {
     emit(state.copyWith(queuedTransfers: event.reorderedQueue));
+  }
+
+  void _onQueueUpdated(QueueUpdated event, Emitter<TransferState> emit) {
+    emit(state.copyWith(queuedTransfers: List.unmodifiable(event.queue)));
+  }
+
+  void _onActiveTransfersUpdated(
+    ActiveTransfersUpdated event,
+    Emitter<TransferState> emit,
+  ) {
+    emit(state.copyWith(activeTransfers: List.unmodifiable(event.active)));
   }
 
   @override
