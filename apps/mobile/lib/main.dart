@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncstuff_core_flutter/syncstuff_core_flutter.dart';
@@ -9,23 +8,11 @@ import 'data/services/discovery_service.dart';
 import 'data/services/p2p_service.dart';
 import 'data/services/file_transfer_service.dart';
 import 'data/services/clipboard_sync_service.dart';
-import 'presentation/bloc/device/device_bloc.dart';
-import 'presentation/bloc/device/device_event.dart';
-import 'presentation/bloc/transfer/transfer_bloc.dart';
-import 'presentation/bloc/transfer/transfer_event.dart';
-import 'presentation/bloc/clipboard/clipboard_bloc.dart';
-import 'presentation/bloc/clipboard/clipboard_event.dart';
-import 'presentation/bloc/device_group/device_group_bloc.dart';
-import 'presentation/bloc/device_group/device_group_event.dart';
-import 'presentation/bloc/settings/settings_bloc.dart';
-import 'presentation/bloc/settings/settings_event.dart';
-import 'presentation/bloc/settings/settings_state.dart';
-import 'presentation/pages/home_page.dart';
+import 'presentation/pages/splash_page.dart';
 
 final GetIt getIt = GetIt.instance;
 
 Future<void> setupDependencies() async {
-  // Services
   getIt.registerLazySingleton<DiscoveryService>(() => DiscoveryService());
   getIt.registerLazySingleton<P2PService>(() => P2PService());
   getIt.registerLazySingleton<FileTransferService>(
@@ -60,48 +47,14 @@ class SyncStuffApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<DeviceBloc>(
-          create: (context) => DeviceBloc(
-            discoveryService: getIt<DiscoveryService>(),
-            p2pService: getIt<P2PService>(),
-          )..add(LoadDevices()),
-        ),
-        BlocProvider<TransferBloc>(
-          create: (context) => TransferBloc(
-            p2pService: getIt<P2PService>(),
-            notificationService: notificationService,
-          )..add(LoadTransfers()),
-        ),
-        BlocProvider<DeviceGroupBloc>(
-          create: (context) => DeviceGroupBloc(
-            repository: DeviceGroupRepository(),
-            transferBloc: context.read<TransferBloc>(),
-            deviceBloc: context.read<DeviceBloc>(),
-          )..add(LoadDeviceGroups()),
-        ),
-        BlocProvider<ClipboardBloc>(
-          create: (context) => ClipboardBloc(
-            clipboardService: getIt<ClipboardSyncService>(),
-            p2pService: getIt<P2PService>(),
-          )..add(LoadClipboardItems()),
-        ),
-        BlocProvider<SettingsBloc>(
-          create: (context) => SettingsBloc(prefs)..add(LoadSettings()),
-        ),
-      ],
-      child: BlocBuilder<SettingsBloc, SettingsState>(
-        builder: (context, state) {
-          return MaterialApp(
-            title: 'SyncStuff',
-            debugShowCheckedModeBanner: false,
-            theme: AppTheme.lightTheme,
-            darkTheme: AppTheme.darkTheme,
-            themeMode: state.isDarkMode ? ThemeMode.dark : ThemeMode.light,
-            home: const HomePage(),
-          );
-        },
+    return MaterialApp(
+      title: 'SyncStuff',
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      home: SplashPage(
+        prefs: prefs,
+        notificationService: notificationService,
       ),
     );
   }

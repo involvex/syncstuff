@@ -42,9 +42,9 @@ class DiscoveryService {
     developer.log('=== Starting discovery ===', name: 'DiscoveryService');
 
     try {
-      // Get local IP address
+      // Get local IP address with timeout
       developer.log('Getting WiFi IP...', name: 'DiscoveryService');
-      final ip = await _networkInfo.getWifiIP();
+      final ip = await _getWifiIPWithTimeout();
       developer.log('Got WiFi IP: $ip', name: 'DiscoveryService');
 
       // Ensure we got an IP
@@ -57,14 +57,28 @@ class DiscoveryService {
         return;
       }
 
-      // Load or generate stable device ID
-      final prefs = await SharedPreferences.getInstance();
-      _deviceId = prefs.getString('device_id');
+      // Load or generate stable device ID with timeout
+      _deviceId = await _getSharedPreferencesWithTimeout();
       if (_deviceId == null || _deviceId!.isEmpty) {
         _deviceId = _uuid.v4();
-        await prefs.setString('device_id', _deviceId!);
       }
-      _deviceName = prefs.getString('device_name') ?? 'Mobile Device';
+      // Get device name separately with timeout
+      try {
+        final prefs = await SharedPreferences.getInstance().timeout(
+          const Duration(seconds: 3),
+          onTimeout: () => throw TimeoutException('prefs'),
+        );
+        _deviceName = prefs.getString('device_name') ?? 'Mobile Device';
+        if (_deviceId != null) {
+          await prefs.setString('device_id', _deviceId!);
+        }
+      } catch (e) {
+        developer.log(
+          'Failed to load device name: $e',
+          name: 'DiscoveryService',
+        );
+        _deviceName = 'Mobile Device';
+      }
 
       _localIp = ip; // Store for filtering
       final subnet = ip.substring(0, ip.lastIndexOf('.'));
@@ -309,6 +323,49 @@ class DiscoveryService {
       port: info['port'] as int? ?? _discoveryPort,
       lastSeen: DateTime.now(),
     );
+  }
+
+  Future<String?> _getWifiIPWithTimeout() async {
+    try {
+      return await _networkInfo.getWifiIP().timeout(
+        const Duration(seconds: 5),
+        onTimeout: () {
+          developer.log(
+            'getWifiIP timed out after 5 seconds',
+            name: 'DiscoveryService',
+          );
+          return null;
+        },
+      );
+    } catch (e) {
+      developer.log(
+        'getWifiIP failed: $e',
+        name: 'DiscoveryService',
+      );
+      return null;
+    }
+  }
+
+  Future<String?> _getSharedPreferencesWithTimeout() async {
+    try {
+      final prefs = await SharedPreferences.getInstance().timeout(
+        const Duration(seconds: 5),
+        onTimeout: () {
+          developer.log(
+            'SharedPreferences timed out after 5 seconds',
+            name: 'DiscoveryService',
+          );
+          throw TimeoutException('SharedPreferences init');
+        },
+      );
+      return prefs.getString('device_id');
+    } catch (e) {
+      developer.log(
+        'SharedPreferences failed: $e',
+        name: 'DiscoveryService',
+      );
+      return null;
+    }
   }
 
   DevicePlatform _parsePlatform(String? platform) {
