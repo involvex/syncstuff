@@ -220,14 +220,8 @@ class _HomePageWrapper extends StatelessWidget {
           create: (context) => TransferBloc(
             p2pService: getIt<P2PService>(),
             notificationService: notificationService,
+            discoveryService: getIt<DiscoveryService>(),
           )..add(LoadTransfers()),
-        ),
-        BlocProvider<DeviceGroupBloc>(
-          create: (context) => DeviceGroupBloc(
-            repository: DeviceGroupRepository(),
-            transferBloc: context.read<TransferBloc>(),
-            deviceBloc: context.read<DeviceBloc>(),
-          )..add(LoadDeviceGroups()),
         ),
         BlocProvider<ClipboardBloc>(
           create: (context) => ClipboardBloc(
@@ -239,15 +233,28 @@ class _HomePageWrapper extends StatelessWidget {
           create: (context) => SettingsBloc(prefs)..add(LoadSettings()),
         ),
       ],
-      child: BlocBuilder<SettingsBloc, SettingsState>(
-        builder: (context, state) {
-          return MaterialApp(
-            title: 'SyncStuff',
-            debugShowCheckedModeBanner: false,
-            theme: AppTheme.lightTheme,
-            darkTheme: AppTheme.darkTheme,
-            themeMode: state.isDarkMode ? ThemeMode.dark : ThemeMode.light,
-            home: const HomePage(),
+      child: Builder(
+        builder: (context) {
+          return BlocProvider<DeviceGroupBloc>(
+            create: (context) => DeviceGroupBloc(
+              repository: DeviceGroupRepository(),
+              transferBloc: context.read<TransferBloc>(),
+              deviceBloc: context.read<DeviceBloc>(),
+            )..add(LoadDeviceGroups()),
+            child: BlocBuilder<SettingsBloc, SettingsState>(
+              builder: (context, state) {
+                return MaterialApp(
+                  title: 'SyncStuff',
+                  debugShowCheckedModeBanner: false,
+                  theme: AppTheme.lightTheme,
+                  darkTheme: AppTheme.darkTheme,
+                  themeMode: state.isDarkMode
+                      ? ThemeMode.dark
+                      : ThemeMode.light,
+                  home: const HomePage(),
+                );
+              },
+            ),
           );
         },
       ),

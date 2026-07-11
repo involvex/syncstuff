@@ -4,6 +4,7 @@ import 'dart:developer' as developer;
 import 'dart:io';
 
 import 'package:network_info_plus/network_info_plus.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
@@ -23,14 +24,29 @@ class DiscoveryService {
   String? _deviceId;
   String? _deviceName;
   final _discoveryController = StreamController<SyncDevice>.broadcast();
+  final _fileUploadController =
+      StreamController<Map<String, dynamic>>.broadcast();
   final List<RawDatagramSocket> _sockets = [];
   HttpServer? _httpServer;
+  String _downloadPath = 'downloads';
 
   /// Stream of discovered devices
   Stream<SyncDevice> get discoveredDevices => _discoveryController.stream;
 
   /// Whether currently scanning
   bool get isScanning => _isScanning;
+
+  /// Stream of file uploads received via HTTP
+  Stream<Map<String, dynamic>> get fileUploads => _fileUploadController.stream;
+
+  /// Set the download directory for received files
+  Future<void> setDownloadPath(String path) async {
+    _downloadPath = path;
+    final dir = Directory(_downloadPath);
+    if (!await dir.exists()) {
+      await dir.create(recursive: true);
+    }
+  }
 
   /// Start discovering devices on the network
   Future<void> startDiscovery() async {
@@ -86,6 +102,10 @@ class DiscoveryService {
 
       // Start HTTP server on port 8766 so desktop can discover us
       await _startHttpServer(ip);
+
+      // Initialize download path
+      final documentsDir = await getApplicationDocumentsDirectory();
+      await setDownloadPath('${documentsDir.path}/downloads');
 
       // Start UDP broadcast listener (won't receive our own broadcasts)
       await _startBroadcastListener();
@@ -167,24 +187,42 @@ class DiscoveryService {
       );
 
       _httpServer!.listen((request) async {
-        final path = request.uri.path;
-        if (request.method == 'GET' && path == '/api/probe') {
-          request.response.statusCode = 200;
-          request.response.headers.contentType = ContentType.json;
-          request.response.write(
-            jsonEncode({
-              'id': _deviceId,
-              'name': _deviceName,
-              'platform': 'android',
-              'ip': localIp,
-              'port': _httpDiscoveryPort,
-              'version': '1.0.0',
-            }),
+        try {
+          final path = request.uri.path;
+          developer.log(
+            'HTTP request: ${request.method} $path',
+            name: 'DiscoveryService',
           );
-          await request.response.close();
-        } else {
-          request.response.statusCode = 404;
-          await request.response.close();
+          if (request.method == 'GET' && path == '/api/probe') {
+            request.response.statusCode = 200;
+            request.response.headers.contentType = ContentType.json;
+            request.response.write(
+              jsonEncode({
+                'id': _deviceId,
+                'name': _deviceName,
+                'platform': 'android',
+                'ip': localIp,
+                'port': _httpDiscoveryPort,
+                'version': '1.0.0',
+              }),
+            );
+            await request.response.close();
+          } else if (request.method == 'POST' && path == '/api/upload') {
+            await _handleUpload(request);
+          } else {
+            request.response.statusCode = 404;
+            await request.response.close();
+          }
+        } catch (e, stack) {
+          developer.log(
+            'HTTP request handler error: $e\n$stack',
+            name: 'DiscoveryService',
+          );
+          try {
+            request.response.statusCode = 500;
+            request.response.write('Internal error');
+            await request.response.close();
+          } catch (_) {}
         }
       });
     } catch (e) {
@@ -192,6 +230,46 @@ class DiscoveryService {
         'Failed to start HTTP server: $e',
         name: 'DiscoveryService',
       );
+    }
+  }
+
+  Future<void> _handleUpload(HttpRequest request) async {
+    developer.log(
+      'Received upload request: ${request.method} ${request.uri}',
+      name: 'DiscoveryService',
+    );
+    try {
+      final fileName = request.uri.queryParameters['name'] ?? 'unknown';
+      final downloadsDir = Directory(_downloadPath);
+      if (!await downloadsDir.exists()) {
+        await downloadsDir.create(recursive: true);
+      }
+      final file = File('${downloadsDir.path}/$fileName');
+      final sink = file.openWrite();
+      await for (final chunk in request) {
+        sink.add(chunk);
+      }
+      await sink.close();
+
+      _fileUploadController.add({
+        'name': fileName,
+        'path': file.path,
+        'size': await file.length(),
+      });
+
+      request.response.statusCode = 200;
+      request.response.headers.contentType = ContentType.json;
+      request.response.write(jsonEncode({'success': true, 'path': file.path}));
+    } catch (e) {
+      developer.log('Upload failed: $e', name: 'DiscoveryService');
+      request.response.statusCode = 500;
+      request.response.headers.contentType = ContentType.json;
+      request.response.write(jsonEncode({'error': e.toString()}));
+    }
+    try {
+      await request.response.close();
+    } catch (e) {
+      developer.log('Response close failed: $e', name: 'DiscoveryService');
     }
   }
 
@@ -393,5 +471,6 @@ class DiscoveryService {
   void dispose() {
     unawaited(stopDiscovery());
     unawaited(_discoveryController.close());
+    unawaited(_fileUploadController.close());
   }
 }

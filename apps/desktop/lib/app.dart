@@ -11,6 +11,8 @@ import 'presentation/bloc/settings/settings_state.dart';
 import 'presentation/bloc/settings/settings_event.dart';
 import 'presentation/bloc/device_group/device_group_bloc.dart';
 import 'presentation/bloc/device_group/device_group_event.dart';
+import 'presentation/bloc/clipboard/clipboard_bloc.dart';
+import 'presentation/bloc/clipboard/clipboard_event.dart';
 import 'data/repositories/device_group_repository.dart';
 import 'presentation/pages/home_page.dart';
 import 'presentation/theme/app_theme.dart';
@@ -37,6 +39,9 @@ class SyncStuffDesktopApp extends StatelessWidget {
             transferBloc: context.read<TransferBloc>(),
             deviceBloc: context.read<DeviceBloc>(),
           )..add(LoadDeviceGroups()),
+        ),
+        BlocProvider<ClipboardBloc>(
+          create: (_) => getIt<ClipboardBloc>()..add(LoadClipboardItems()),
         ),
       ],
       child: BlocBuilder<SettingsBloc, SettingsState>(

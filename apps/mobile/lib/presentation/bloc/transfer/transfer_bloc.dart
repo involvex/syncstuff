@@ -7,6 +7,7 @@ import 'package:syncstuff_core_flutter/syncstuff_core_flutter.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../data/services/file_transfer_service.dart';
+import '../../../data/services/discovery_service.dart';
 import '../../../data/services/p2p_service.dart';
 import 'transfer_event.dart';
 import 'transfer_state.dart';
@@ -15,18 +16,24 @@ class TransferBloc extends Bloc<TransferEvent, TransferState> {
   final FileTransferService? _fileTransferService;
   final TransferQueue? _transferQueue;
   final NotificationService? _notificationService;
+  final DiscoveryService? _discoveryService;
+
+  final Map<String, String> _deviceIpMap = {};
 
   StreamSubscription<FileTransfer>? _progressSubscription;
   StreamSubscription<List<FileTransfer>>? _queueSubscription;
   StreamSubscription<List<FileTransfer>>? _activeSubscription;
+  StreamSubscription<Map<String, dynamic>>? _fileUploadSubscription;
 
   TransferBloc({
     P2PService? p2pService,
     TransferQueue? transferQueue,
     NotificationService? notificationService,
+    DiscoveryService? discoveryService,
   }) : _fileTransferService = FileTransferService(p2pService ?? P2PService()),
        _transferQueue = transferQueue,
        _notificationService = notificationService,
+       _discoveryService = discoveryService,
        super(const TransferState()) {
     on<LoadTransfers>(_onLoadTransfers);
     on<StartTransfer>(_onStartTransfer);
@@ -61,8 +68,39 @@ class TransferBloc extends Bloc<TransferEvent, TransferState> {
       _queueSubscription = _transferQueue.queueStream.listen((queue) {
         add(QueueUpdated(queue));
       });
-      _activeSubscription = _transferQueue.activeStream.listen((active) {
+      _activeSubscription = _transferQueue.activeStream.listen((active) async {
         add(ActiveTransfersUpdated(active));
+        // Start each newly activated queued transfer
+        for (final transfer in active) {
+          if (transfer.direction == TransferDirection.sent &&
+              transfer.status == TransferStatus.pending) {
+            final peerIp = _getPeerIpForTransfer(transfer);
+            if (peerIp != null) {
+              add(
+                StartTransfer(
+                  deviceId: transfer.deviceId ?? '',
+                  deviceIp: peerIp,
+                  filePath: transfer.filePath ?? '',
+                  fileName: transfer.fileName,
+                ),
+              );
+            }
+          }
+        }
+      });
+    }
+
+    // Listen for incoming file uploads
+    if (_discoveryService != null) {
+      _fileUploadSubscription = _discoveryService.fileUploads.listen((upload) {
+        add(
+          ReceiveFile(
+            transferId: const Uuid().v4(),
+            fileName: upload['name'] as String,
+            fileSize: upload['size'] as int,
+            deviceId: 'desktop',
+          ),
+        );
       });
     }
   }
@@ -302,6 +340,7 @@ class TransferBloc extends Bloc<TransferEvent, TransferState> {
       ),
     );
 
+    _deviceIpMap[transfer.id] = event.deviceIp;
     _transferQueue?.enqueue(transfer);
   }
 
@@ -332,11 +371,16 @@ class TransferBloc extends Bloc<TransferEvent, TransferState> {
     emit(state.copyWith(activeTransfers: List.unmodifiable(event.active)));
   }
 
+  String? _getPeerIpForTransfer(FileTransfer transfer) {
+    return _deviceIpMap[transfer.id];
+  }
+
   @override
   Future<void> close() {
     unawaited(_progressSubscription?.cancel());
     unawaited(_queueSubscription?.cancel());
     unawaited(_activeSubscription?.cancel());
+    unawaited(_fileUploadSubscription?.cancel());
     _fileTransferService?.dispose();
     _transferQueue?.dispose();
     unawaited(_notificationService?.cancelAll());

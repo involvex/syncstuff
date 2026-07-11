@@ -1,56 +1,76 @@
 import 'package:equatable/equatable.dart';
 
-abstract class DeviceEvent extends Equatable
-{
-    const DeviceEvent();
-    @override
-    List<Object?> get props => [];
+abstract class DeviceEvent extends Equatable {
+  const DeviceEvent();
+  @override
+  List<Object?> get props => [];
 }
 
-class LoadDevices extends DeviceEvent
-{
+class LoadDevices extends DeviceEvent {}
+
+class StartDiscovery extends DeviceEvent {}
+
+class StopDiscovery extends DeviceEvent {}
+
+class DeviceDiscovered extends DeviceEvent {
+  final Map<String, dynamic> device;
+  const DeviceDiscovered(this.device);
+  @override
+  List<Object?> get props => [device];
 }
 
-class StartDiscovery extends DeviceEvent
-{
+class PairDevice extends DeviceEvent {
+  final String deviceId;
+  const PairDevice(this.deviceId);
+  @override
+  List<Object?> get props => [deviceId];
 }
 
-class StopDiscovery extends DeviceEvent
-{
+class UnpairDevice extends DeviceEvent {
+  final String deviceId;
+  const UnpairDevice(this.deviceId);
+  @override
+  List<Object?> get props => [deviceId];
 }
 
-class DeviceDiscovered extends DeviceEvent
-{
-    final Map<String, dynamic> device;
-    const DeviceDiscovered(this.device);
-    @override
-    List<Object?> get props => [device];
+class ConnectToDevice extends DeviceEvent {
+  final String deviceId;
+  const ConnectToDevice(this.deviceId);
+  @override
+  List<Object?> get props => [deviceId];
 }
 
-class PairDevice extends DeviceEvent
-{
-    final String deviceId;
-    const PairDevice(this.deviceId);
-    @override
-    List<Object?> get props => [deviceId];
+class DisconnectFromDevice extends DeviceEvent {
+  final String deviceId;
+  const DisconnectFromDevice(this.deviceId);
+  @override
+  List<Object?> get props => [deviceId];
 }
 
-class ConnectToDevice extends DeviceEvent
-{
-    final String deviceId;
-    const ConnectToDevice(this.deviceId);
-    @override
-    List<Object?> get props => [deviceId];
+class AutoConnectOnStart extends DeviceEvent {}
+
+class DevicePairedByRemote extends DeviceEvent {
+  final String deviceId;
+  final String deviceName;
+
+  const DevicePairedByRemote({
+    required this.deviceId,
+    required this.deviceName,
+  });
+
+  @override
+  List<Object?> get props => [deviceId, deviceName];
 }
 
-class DisconnectFromDevice extends DeviceEvent
-{
-    final String deviceId;
-    const DisconnectFromDevice(this.deviceId);
-    @override
-    List<Object?> get props => [deviceId];
-}
+class DeviceUnpairedByRemote extends DeviceEvent {
+  final String deviceId;
+  final String deviceName;
 
-class AutoConnectOnStart extends DeviceEvent
-{
+  const DeviceUnpairedByRemote({
+    required this.deviceId,
+    required this.deviceName,
+  });
+
+  @override
+  List<Object?> get props => [deviceId, deviceName];
 }

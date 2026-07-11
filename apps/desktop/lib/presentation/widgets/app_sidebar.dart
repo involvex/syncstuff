@@ -108,11 +108,19 @@ class AppSidebar extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         _NavItem(
+          icon: Icons.content_paste_outlined,
+          selectedIcon: Icons.content_paste,
+          label: 'Clipboard',
+          isSelected: selectedIndex == 3,
+          onTap: () => onDestinationSelected(3),
+        ),
+        const SizedBox(height: 4),
+        _NavItem(
           icon: Icons.settings_outlined,
           selectedIcon: Icons.settings,
           label: 'Settings',
-          isSelected: selectedIndex == 3,
-          onTap: () => onDestinationSelected(3),
+          isSelected: selectedIndex == 4,
+          onTap: () => onDestinationSelected(4),
         ),
       ],
     );

@@ -12,6 +12,7 @@ import '../../services/desktop_clipboard_sync_service.dart';
 import '../../presentation/bloc/device/device_bloc.dart';
 import '../../presentation/bloc/transfer/transfer_bloc.dart';
 import '../../presentation/bloc/settings/settings_bloc.dart';
+import '../../presentation/bloc/clipboard/clipboard_bloc.dart';
 import '../../data/repositories/device_group_repository.dart';
 
 final getIt = GetIt.instance;
@@ -58,6 +59,7 @@ Future<void> setupServiceLocator() async {
     () => DeviceBloc(
       discoveryService: getIt<DesktopDiscoveryService>(),
       deviceRepository: getIt<DeviceRepository>(),
+      httpServer: getIt<DesktopHttpServer>(),
     ),
   );
 
@@ -70,4 +72,8 @@ Future<void> setupServiceLocator() async {
   );
 
   getIt.registerFactory<SettingsBloc>(() => SettingsBloc(prefs));
+
+  getIt.registerFactory<ClipboardBloc>(
+    () => ClipboardBloc(clipboardService: getIt<DesktopClipboardSyncService>()),
+  );
 }

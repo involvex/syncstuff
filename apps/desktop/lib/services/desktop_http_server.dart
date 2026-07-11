@@ -10,12 +10,15 @@ class DesktopHttpServer {
       StreamController<Map<String, dynamic>>.broadcast();
   final _clipboardUpdateController =
       StreamController<Map<String, dynamic>>.broadcast();
+  final _pairingUpdateController =
+      StreamController<Map<String, dynamic>>.broadcast();
 
   String? _localIp;
   final String deviceId;
   final String deviceName;
   String _clipboardContent = '';
   DateTime? _lastClipboardUpdate;
+  String _downloadPath = 'downloads';
 
   DesktopHttpServer({String? deviceId, String? deviceName})
     : deviceId = deviceId ?? DateTime.now().millisecondsSinceEpoch.toString(),
@@ -26,9 +29,15 @@ class DesktopHttpServer {
   Stream<Map<String, dynamic>> get fileUploads => _fileUploadController.stream;
   Stream<Map<String, dynamic>> get clipboardUpdates =>
       _clipboardUpdateController.stream;
+  Stream<Map<String, dynamic>> get pairingUpdates =>
+      _pairingUpdateController.stream;
   String? get localIp => _localIp;
   bool get isRunning => _server != null;
   String get clipboardContent => _clipboardContent;
+  String get downloadPath => _downloadPath;
+  void setDownloadPath(String path) {
+    _downloadPath = path;
+  }
 
   Future<void> start([int port = 8766]) async {
     if (_server != null) return;
@@ -65,6 +74,10 @@ class DesktopHttpServer {
         await _handleGetClipboard(request);
       } else if (request.method == 'POST' && path == '/api/clipboard') {
         await _handleSetClipboard(request);
+      } else if (request.method == 'POST' && path == '/api/pair') {
+        await _handlePairNotification(request);
+      } else if (request.method == 'POST' && path == '/api/unpair') {
+        await _handleUnpairNotification(request);
       } else {
         request.response.statusCode = 404;
         await request.response.close();
@@ -92,7 +105,7 @@ class DesktopHttpServer {
     try {
       final uri = request.uri;
       final fileName = uri.queryParameters['name'] ?? 'unknown';
-      final downloadsDir = Directory('downloads');
+      final downloadsDir = Directory(_downloadPath);
       if (!await downloadsDir.exists()) {
         await downloadsDir.create(recursive: true);
       }
@@ -167,6 +180,56 @@ class DesktopHttpServer {
     await request.response.close();
   }
 
+  Future<void> _handlePairNotification(HttpRequest request) async {
+    try {
+      final body = await request.fold<List<int>>(
+        [],
+        (prev, chunk) => prev..addAll(chunk),
+      );
+      final data = jsonDecode(utf8.decode(body)) as Map<String, dynamic>;
+
+      _pairingUpdateController.add({
+        'type': 'pair',
+        'deviceId': data['deviceId'] as String?,
+        'deviceName': data['deviceName'] as String?,
+        'timestamp': DateTime.now().toIso8601String(),
+      });
+
+      request.response.statusCode = 200;
+      request.response.headers.contentType = ContentType.json;
+      request.response.write(jsonEncode({'success': true}));
+    } catch (e) {
+      request.response.statusCode = 400;
+      request.response.write(jsonEncode({'error': e.toString()}));
+    }
+    await request.response.close();
+  }
+
+  Future<void> _handleUnpairNotification(HttpRequest request) async {
+    try {
+      final body = await request.fold<List<int>>(
+        [],
+        (prev, chunk) => prev..addAll(chunk),
+      );
+      final data = jsonDecode(utf8.decode(body)) as Map<String, dynamic>;
+
+      _pairingUpdateController.add({
+        'type': 'unpair',
+        'deviceId': data['deviceId'] as String?,
+        'deviceName': data['deviceName'] as String?,
+        'timestamp': DateTime.now().toIso8601String(),
+      });
+
+      request.response.statusCode = 200;
+      request.response.headers.contentType = ContentType.json;
+      request.response.write(jsonEncode({'success': true}));
+    } catch (e) {
+      request.response.statusCode = 400;
+      request.response.write(jsonEncode({'error': e.toString()}));
+    }
+    await request.response.close();
+  }
+
   Future<void> stop() async {
     await _server?.close();
     _server = null;
@@ -177,5 +240,6 @@ class DesktopHttpServer {
     _discoveredDevicesController.close();
     _fileUploadController.close();
     _clipboardUpdateController.close();
+    _pairingUpdateController.close();
   }
 }

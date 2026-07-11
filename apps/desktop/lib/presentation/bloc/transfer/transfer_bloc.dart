@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
@@ -57,10 +58,16 @@ class TransferBloc extends Bloc<TransferEvent, TransferState> {
     StartTransfer event,
     Emitter<TransferState> emit,
   ) async {
+    final file = File(event.filePath);
+    final fileName = file.uri.pathSegments.isNotEmpty
+        ? file.uri.pathSegments.last
+        : event.filePath.split(Platform.pathSeparator).last;
+    final fileSize = await file.exists() ? await file.length() : 0;
+
     final transfer = FileTransfer(
       id: _uuid.v4(),
-      fileName: event.filePath.split('/').last,
-      fileSize: 0,
+      fileName: fileName,
+      fileSize: fileSize,
       filePath: event.filePath,
       type: TransferType.file,
       status: TransferStatus.inProgress,
@@ -81,6 +88,7 @@ class TransferBloc extends Bloc<TransferEvent, TransferState> {
       await _fileTransferService.sendFile(
         filePath: event.filePath,
         peerIp: event.deviceIp,
+        transferId: transfer.id,
         onProgress: (progress) {},
       );
       add(TransferCompleted(transfer.id));

@@ -8,6 +8,7 @@ import '../widgets/app_sidebar.dart';
 import 'devices_page.dart';
 import 'transfers_page.dart';
 import 'device_groups_page.dart';
+import 'clipboard_page.dart';
 import 'settings_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -44,6 +45,7 @@ class _HomePageState extends State<HomePage> {
                     DevicesPage(),
                     TransfersPage(),
                     DeviceGroupsPage(),
+                    ClipboardPage(),
                     SettingsPage(),
                   ],
                 ),
