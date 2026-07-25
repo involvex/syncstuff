@@ -33,6 +33,8 @@ class SetAutoPair extends SettingsEvent {
 
 class ToggleNotifications extends SettingsEvent {}
 
+class ToggleMinimizeToTray extends SettingsEvent {}
+
 class ToggleTransferCompleteNotification extends SettingsEvent {}
 
 class ToggleTransferFailedNotification extends SettingsEvent {}

@@ -5,6 +5,7 @@ class SettingsState extends Equatable {
   final String deviceName;
   final String downloadPath;
   final bool autoPairEnabled;
+  final bool minimizeToTrayEnabled;
   final bool notificationsEnabled;
   final bool transferCompleteNotificationEnabled;
   final bool transferFailedNotificationEnabled;
@@ -16,6 +17,7 @@ class SettingsState extends Equatable {
     this.deviceName = 'My PC',
     this.downloadPath = 'downloads',
     this.autoPairEnabled = true,
+    this.minimizeToTrayEnabled = true,
     this.notificationsEnabled = true,
     this.transferCompleteNotificationEnabled = true,
     this.transferFailedNotificationEnabled = true,
@@ -28,6 +30,7 @@ class SettingsState extends Equatable {
     String? deviceName,
     String? downloadPath,
     bool? autoPairEnabled,
+    bool? minimizeToTrayEnabled,
     bool? notificationsEnabled,
     bool? transferCompleteNotificationEnabled,
     bool? transferFailedNotificationEnabled,
@@ -39,6 +42,8 @@ class SettingsState extends Equatable {
       deviceName: deviceName ?? this.deviceName,
       downloadPath: downloadPath ?? this.downloadPath,
       autoPairEnabled: autoPairEnabled ?? this.autoPairEnabled,
+      minimizeToTrayEnabled:
+          minimizeToTrayEnabled ?? this.minimizeToTrayEnabled,
       notificationsEnabled: notificationsEnabled ?? this.notificationsEnabled,
       transferCompleteNotificationEnabled:
           transferCompleteNotificationEnabled ??
@@ -59,6 +64,7 @@ class SettingsState extends Equatable {
     deviceName,
     downloadPath,
     autoPairEnabled,
+    minimizeToTrayEnabled,
     notificationsEnabled,
     transferCompleteNotificationEnabled,
     transferFailedNotificationEnabled,

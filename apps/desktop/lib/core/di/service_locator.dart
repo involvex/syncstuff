@@ -9,6 +9,7 @@ import '../../services/desktop_discovery_service.dart';
 import '../../services/desktop_file_transfer_service.dart';
 import '../../services/desktop_http_server.dart';
 import '../../services/desktop_clipboard_sync_service.dart';
+import '../../services/system_tray_service.dart';
 import '../../presentation/bloc/device/device_bloc.dart';
 import '../../presentation/bloc/transfer/transfer_bloc.dart';
 import '../../presentation/bloc/settings/settings_bloc.dart';
@@ -54,6 +55,7 @@ Future<void> setupServiceLocator() async {
   getIt.registerLazySingleton<DeviceGroupRepository>(
     () => DeviceGroupRepository(),
   );
+  getIt.registerLazySingleton<SystemTrayService>(() => SystemTrayService());
 
   getIt.registerFactory<DeviceBloc>(
     () => DeviceBloc(

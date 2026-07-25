@@ -12,6 +12,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   static const String _keyDeviceName = 'device_name';
   static const String _keyDownloadPath = 'download_path';
   static const String _keyAutoPair = 'auto_pair';
+  static const String _keyMinimizeToTray = 'minimize_to_tray';
 
   SettingsBloc(this._prefs) : super(const SettingsState()) {
     on<LoadSettings>(_onLoadSettings);
@@ -19,6 +20,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     on<SetDeviceName>(_onSetDeviceName);
     on<SetDownloadPath>(_onSetDownloadPath);
     on<SetAutoPair>(_onSetAutoPair);
+    on<ToggleMinimizeToTray>(_onToggleMinimizeToTray);
     on<ToggleNotifications>(_onToggleNotifications);
     on<ToggleTransferCompleteNotification>(
       _onToggleTransferCompleteNotification,
@@ -39,6 +41,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
         deviceName: _prefs.getString(_keyDeviceName) ?? 'My PC',
         downloadPath: _prefs.getString(_keyDownloadPath) ?? 'downloads',
         autoPairEnabled: _prefs.getBool(_keyAutoPair) ?? true,
+        minimizeToTrayEnabled: _prefs.getBool(_keyMinimizeToTray) ?? true,
         notificationsEnabled:
             _prefs.getBool(SettingsKeys.notificationsEnabled) ?? true,
         transferCompleteNotificationEnabled:
@@ -82,6 +85,15 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   ) async {
     await _prefs.setBool(_keyAutoPair, event.enabled);
     emit(state.copyWith(autoPairEnabled: event.enabled));
+  }
+
+  Future<void> _onToggleMinimizeToTray(
+    ToggleMinimizeToTray event,
+    Emitter<SettingsState> emit,
+  ) async {
+    final newValue = !state.minimizeToTrayEnabled;
+    await _prefs.setBool(_keyMinimizeToTray, newValue);
+    emit(state.copyWith(minimizeToTrayEnabled: newValue));
   }
 
   Future<void> _onToggleNotifications(

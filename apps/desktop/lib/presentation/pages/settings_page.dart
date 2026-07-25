@@ -64,6 +64,19 @@ class SettingsPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 32),
+              const SectionHeader(title: 'Behavior'),
+              const SizedBox(height: 8),
+              _SettingsTile(
+                icon: Icons.minimize,
+                title: 'Minimize to Tray',
+                subtitle: 'Keep app running in system tray when closed',
+                trailing: Switch(
+                  value: state.minimizeToTrayEnabled,
+                  onChanged: (_) =>
+                      context.read<SettingsBloc>().add(ToggleMinimizeToTray()),
+                ),
+              ),
+              const SizedBox(height: 32),
               const SectionHeader(title: 'Notifications'),
               const SizedBox(height: 8),
               _SettingsTile(
