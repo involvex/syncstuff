@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 import 'package:syncstuff_core_flutter/syncstuff_core_flutter.dart';
@@ -59,10 +60,15 @@ class TransferBloc extends Bloc<TransferEvent, TransferState> {
     Emitter<TransferState> emit,
   ) async {
     final file = File(event.filePath);
+    final exists = await file.exists();
     final fileName = file.uri.pathSegments.isNotEmpty
         ? file.uri.pathSegments.last
         : event.filePath.split(Platform.pathSeparator).last;
-    final fileSize = await file.exists() ? await file.length() : 0;
+    final fileSize = exists ? await file.length() : 0;
+
+    debugPrint(
+      '[DesktopTransferBloc] StartTransfer: deviceIp=${event.deviceIp}, file=$fileName, size=$fileSize, exists=$exists',
+    );
 
     final transfer = FileTransfer(
       id: _uuid.v4(),
@@ -85,14 +91,19 @@ class TransferBloc extends Bloc<TransferEvent, TransferState> {
     );
 
     try {
+      debugPrint(
+        '[DesktopTransferBloc] Calling sendFile to ${event.deviceIp}:8766',
+      );
       await _fileTransferService.sendFile(
         filePath: event.filePath,
         peerIp: event.deviceIp,
         transferId: transfer.id,
         onProgress: (progress) {},
       );
+      debugPrint('[DesktopTransferBloc] Transfer completed: ${transfer.id}');
       add(TransferCompleted(transfer.id));
     } catch (e) {
+      debugPrint('[DesktopTransferBloc] Transfer failed: $e');
       add(TransferFailed(transfer.id, e.toString()));
     }
   }

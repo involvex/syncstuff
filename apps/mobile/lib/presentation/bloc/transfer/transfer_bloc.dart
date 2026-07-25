@@ -54,12 +54,6 @@ class TransferBloc extends Bloc<TransferEvent, TransferState> {
     ) {
       if (transfer.status == TransferStatus.inProgress) {
         add(UpdateTransferProgress(transfer.id, transfer.progress));
-      } else if (transfer.status == TransferStatus.completed) {
-        add(TransferCompleted(transfer.id, filePath: transfer.filePath));
-        _transferQueue?.onComplete(transfer.id);
-      } else if (transfer.status == TransferStatus.failed) {
-        add(TransferFailed(transfer.id, transfer.error ?? 'Unknown error'));
-        _transferQueue?.onComplete(transfer.id);
       }
     });
 
@@ -70,7 +64,6 @@ class TransferBloc extends Bloc<TransferEvent, TransferState> {
       });
       _activeSubscription = _transferQueue.activeStream.listen((active) async {
         add(ActiveTransfersUpdated(active));
-        // Start each newly activated queued transfer
         for (final transfer in active) {
           if (transfer.direction == TransferDirection.sent &&
               transfer.status == TransferStatus.pending) {
@@ -80,6 +73,7 @@ class TransferBloc extends Bloc<TransferEvent, TransferState> {
                 StartTransfer(
                   deviceId: transfer.deviceId ?? '',
                   deviceIp: peerIp,
+                  transferId: transfer.id,
                   filePath: transfer.filePath ?? '',
                   fileName: transfer.fileName,
                 ),
@@ -93,6 +87,9 @@ class TransferBloc extends Bloc<TransferEvent, TransferState> {
     // Listen for incoming file uploads
     if (_discoveryService != null) {
       _fileUploadSubscription = _discoveryService.fileUploads.listen((upload) {
+        print(
+          '[TransferBloc] File upload received: ${upload['name']} (${upload['size']} bytes) from ${upload['path']}',
+        );
         add(
           ReceiveFile(
             transferId: const Uuid().v4(),
@@ -120,13 +117,40 @@ class TransferBloc extends Bloc<TransferEvent, TransferState> {
     StartTransfer event,
     Emitter<TransferState> emit,
   ) async {
+    developer.log(
+      'StartTransfer: deviceId=${event.deviceId}, deviceIp=${event.deviceIp}, '
+      'filePath=${event.filePath}, transferId=${event.transferId}',
+      name: 'TransferBloc',
+    );
+
     final file = File(event.filePath);
+    final exists = await file.exists();
+    developer.log(
+      'StartTransfer: file exists=$exists',
+      name: 'TransferBloc',
+    );
+    if (!exists) {
+      developer.log(
+        'StartTransfer: ERROR file not found: ${event.filePath}',
+        name: 'TransferBloc',
+      );
+      add(
+        TransferFailed(
+          event.transferId ?? 'unknown',
+          'File not found: ${event.filePath}',
+        ),
+      );
+      return;
+    }
+
     final fileSize = await file.length();
     final fileName =
         event.fileName ?? event.filePath.split(Platform.pathSeparator).last;
 
+    final transferId = event.transferId ?? const Uuid().v4();
+
     final transfer = FileTransfer(
-      id: const Uuid().v4(),
+      id: transferId,
       fileName: fileName,
       fileSize: fileSize,
       filePath: event.filePath,
@@ -148,7 +172,7 @@ class TransferBloc extends Bloc<TransferEvent, TransferState> {
     // Start the file transfer via HTTP (not WebRTC)
     try {
       developer.log(
-        'Starting HTTP transfer to ${event.deviceIp}',
+        'Starting HTTP transfer: $fileName ($fileSize bytes) to ${event.deviceIp}',
         name: 'TransferBloc',
       );
 
@@ -156,14 +180,18 @@ class TransferBloc extends Bloc<TransferEvent, TransferState> {
         filePath: event.filePath,
         peerIp: event.deviceIp,
         onProgress: (progress) {
-          add(UpdateTransferProgress(transfer.id, progress));
+          add(UpdateTransferProgress(transferId, progress));
         },
       );
 
-      add(TransferCompleted(transfer.id));
+      developer.log(
+        'HTTP transfer completed successfully: $transferId',
+        name: 'TransferBloc',
+      );
+      add(TransferCompleted(transferId));
     } catch (e) {
       developer.log('HTTP transfer failed: $e', name: 'TransferBloc');
-      add(TransferFailed(transfer.id, e.toString()));
+      add(TransferFailed(transferId, e.toString()));
     }
   }
 
@@ -292,22 +320,27 @@ class TransferBloc extends Bloc<TransferEvent, TransferState> {
   }
 
   void _onReceiveFile(ReceiveFile event, Emitter<TransferState> emit) {
+    developer.log(
+      'ReceiveFile: ${event.fileName} (${event.fileSize} bytes) from ${event.deviceId}',
+      name: 'TransferBloc',
+    );
+
     final transfer = FileTransfer(
       id: event.transferId,
       fileName: event.fileName,
       fileSize: event.fileSize,
       type: TransferType.file,
-      status: TransferStatus.inProgress,
+      status: TransferStatus.completed,
       direction: TransferDirection.received,
       deviceId: event.deviceId,
-      progress: 0,
+      progress: 1.0,
       createdAt: DateTime.now(),
+      completedAt: DateTime.now(),
     );
 
     emit(
       state.copyWith(
-        activeTransfers: [...state.activeTransfers, transfer],
-        isTransferring: true,
+        transferHistory: [...state.transferHistory, transfer],
       ),
     );
   }

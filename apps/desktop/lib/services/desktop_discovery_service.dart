@@ -96,7 +96,7 @@ class DesktopDiscoveryService {
           'id': info['id'],
           'name': info['name'],
           'platform': info['platform'],
-          'ip': address.address,
+          'ipAddress': address.address,
           'port': info['port'],
           'version': info['version'],
         };
@@ -119,7 +119,7 @@ class DesktopDiscoveryService {
         'id': _httpServer.deviceId,
         'name': _httpServer.deviceName,
         'platform': 'windows',
-        'ip': _localIp,
+        'ipAddress': _localIp,
         'port': 8766,
         'version': '1.0.0',
       });

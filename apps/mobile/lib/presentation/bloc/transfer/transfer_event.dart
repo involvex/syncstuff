@@ -13,8 +13,9 @@ class LoadTransfers extends TransferEvent {}
 
 class StartTransfer extends TransferEvent {
   final String deviceId;
-  final String deviceIp; // CLI's IP address
+  final String deviceIp;
   final String filePath;
+  final String? transferId;
   final String? fileName;
   final int? fileSize;
 
@@ -22,12 +23,20 @@ class StartTransfer extends TransferEvent {
     required this.deviceId,
     required this.deviceIp,
     required this.filePath,
+    this.transferId,
     this.fileName,
     this.fileSize,
   });
 
   @override
-  List<Object?> get props => [deviceId, deviceIp, filePath, fileName, fileSize];
+  List<Object?> get props => [
+    deviceId,
+    deviceIp,
+    filePath,
+    transferId,
+    fileName,
+    fileSize,
+  ];
 }
 
 class CancelTransfer extends TransferEvent {

@@ -53,14 +53,23 @@ class DeviceBloc extends Bloc<DeviceEvent, DeviceState> {
     LoadDevices event,
     Emitter<DeviceState> emit,
   ) async {
+    developer.log(
+      'LoadDevices: emitting empty state (paired devices TODO)',
+      name: 'DeviceBloc',
+    );
     // TODO: Load paired devices from local storage
     emit(state.copyWith(discoveredDevices: [], pairedDevices: []));
+
+    developer.log('LoadDevices: auto-starting discovery', name: 'DeviceBloc');
+    add(StartDiscovery());
   }
 
   Future<void> _onStartDiscovery(
     StartDiscovery event,
     Emitter<DeviceState> emit,
   ) async {
+    developer.log('Starting discovery...', name: 'DeviceBloc');
+
     // Clear previous discoveries before starting new scan
     emit(
       state.copyWith(
@@ -71,6 +80,7 @@ class DeviceBloc extends Bloc<DeviceEvent, DeviceState> {
 
     await _discoveryService.startDiscovery();
 
+    developer.log('Discovery completed', name: 'DeviceBloc');
     emit(state.copyWith(discoveryStatus: DiscoveryStatus.idle));
   }
 

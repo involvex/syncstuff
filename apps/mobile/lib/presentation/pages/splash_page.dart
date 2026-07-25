@@ -9,7 +9,6 @@ import 'package:syncstuff_core_flutter/syncstuff_core_flutter.dart';
 import '../../data/services/clipboard_sync_service.dart';
 import '../../data/services/discovery_service.dart';
 import '../../data/services/p2p_service.dart';
-import '../../data/services/file_transfer_service.dart';
 import '../../core/theme/app_theme.dart';
 import '../bloc/device/device_bloc.dart';
 import '../bloc/device/device_event.dart';
@@ -50,7 +49,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    _startInitialization();
+    unawaited(_startInitialization());
   }
 
   @override
@@ -89,12 +88,12 @@ class _SplashPageState extends State<SplashPage> {
 
   Future<void> _initializeServices() async {
     _updateStatus('Setting up services...');
-    await Future.delayed(const Duration(milliseconds: 100));
+    await Future<void>.delayed(const Duration(milliseconds: 100));
   }
 
   Future<void> _initializeBLoCs() async {
     _updateStatus('Loading settings...');
-    await Future.delayed(const Duration(milliseconds: 100));
+    await Future<void>.delayed(const Duration(milliseconds: 100));
   }
 
   void _updateStatus(String message) {
@@ -107,7 +106,7 @@ class _SplashPageState extends State<SplashPage> {
 
   void _navigateToHome() {
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
+      MaterialPageRoute<void>(
         builder: (context) => _HomePageWrapper(
           prefs: widget.prefs,
           notificationService: widget.notificationService,
@@ -173,7 +172,7 @@ class _SplashPageState extends State<SplashPage> {
                         _errorMessage = '';
                         _statusMessage = 'Retrying...';
                       });
-                      _startInitialization();
+                      unawaited(_startInitialization());
                     },
                     icon: const Icon(Icons.refresh),
                     label: const Text('Retry'),
@@ -217,11 +216,18 @@ class _HomePageWrapper extends StatelessWidget {
           )..add(LoadDevices()),
         ),
         BlocProvider<TransferBloc>(
-          create: (context) => TransferBloc(
-            p2pService: getIt<P2PService>(),
-            notificationService: notificationService,
-            discoveryService: getIt<DiscoveryService>(),
-          )..add(LoadTransfers()),
+          create: (context) {
+            final discoveryService = getIt<DiscoveryService>();
+            final transferBloc = TransferBloc(
+              p2pService: getIt<P2PService>(),
+              transferQueue: TransferQueue(),
+              notificationService: notificationService,
+              discoveryService: discoveryService,
+            );
+            print('[SplashPage] TransferBloc created with discoveryService');
+            print('[SplashPage] DiscoveryService fileUploads listener set');
+            return transferBloc..add(LoadTransfers());
+          },
         ),
         BlocProvider<ClipboardBloc>(
           create: (context) => ClipboardBloc(

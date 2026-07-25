@@ -143,35 +143,76 @@ class FileTransferService {
     // Send via HTTP POST to /api/upload
     try {
       developer.log(
-        'Sending file $fileName to $peerIp via HTTP',
+        'sendFileHttp: Sending file $fileName ($fileSize bytes) to $peerIp via HTTP',
         name: 'FileTransfer',
       );
 
-      // Read file bytes
-      final bytes = await file.readAsBytes();
-
-      // Create HTTP client and request with filename in query
       final client = HttpClient();
-      final uri = Uri.parse('http://$peerIp:8766/api/upload?name=$fileName');
-      final request = await client.postUrl(uri);
-      request.headers.contentType = ContentType('application', 'octet-stream');
-      request.write(bytes);
+      client.connectionTimeout = const Duration(seconds: 60);
+      client.idleTimeout = const Duration(minutes: 30);
 
-      final response = await request.close();
-
-      if (response.statusCode == 200) {
-        // Mark as completed
-        final completedTransfer = transfer.copyWith(
-          status: TransferStatus.completed,
-          progress: 1.0,
-          completedAt: DateTime.now(),
+      try {
+        final uri = Uri.http('$peerIp:8766', '/api/upload', {'name': fileName});
+        developer.log('sendFileHttp: POST to $uri', name: 'FileTransfer');
+        final request = await client.postUrl(uri);
+        request.headers.contentType = ContentType(
+          'application',
+          'octet-stream',
         );
-        _progressController.add(completedTransfer);
-        return transferId;
-      } else {
-        throw Exception('Upload failed: ${response.statusCode}');
+        request.contentLength = fileSize;
+
+        final bytes = await file.readAsBytes();
+        developer.log(
+          'sendFileHttp: Writing ${bytes.length} bytes to request...',
+          name: 'FileTransfer',
+        );
+        request.add(bytes);
+
+        developer.log(
+          'sendFileHttp: Waiting for response...',
+          name: 'FileTransfer',
+        );
+        final response = await request.close().timeout(
+          const Duration(minutes: 5),
+          onTimeout: () {
+            developer.log(
+              'sendFileHttp: Response timeout - cancelling',
+              name: 'FileTransfer',
+            );
+            throw TimeoutException('Response timeout after 5 minutes');
+          },
+        );
+        developer.log(
+          'sendFileHttp: Response status=${response.statusCode}',
+          name: 'FileTransfer',
+        );
+
+        await response.drain<void>();
+
+        if (response.statusCode == 200) {
+          developer.log(
+            'sendFileHttp: Upload successful',
+            name: 'FileTransfer',
+          );
+          final completedTransfer = transfer.copyWith(
+            status: TransferStatus.completed,
+            progress: 1.0,
+            completedAt: DateTime.now(),
+          );
+          _progressController.add(completedTransfer);
+          return transferId;
+        } else {
+          developer.log(
+            'sendFileHttp: Upload failed with status: ${response.statusCode}',
+            name: 'FileTransfer',
+          );
+          throw Exception('Upload failed: ${response.statusCode}');
+        }
+      } finally {
+        client.close();
       }
     } catch (e) {
+      developer.log('sendFileHttp: Upload error: $e', name: 'FileTransfer');
       final failedTransfer = transfer.copyWith(status: TransferStatus.failed);
       _progressController.add(failedTransfer);
       rethrow;

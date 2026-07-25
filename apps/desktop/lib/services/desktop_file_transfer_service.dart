@@ -39,19 +39,20 @@ class DesktopFileTransferService {
           : filePath.split(Platform.pathSeparator).last;
       final fileSize = await file.length();
       developer.log(
-        'Sending file: name=$fileName, size=$fileSize, to=$peerIp:8766',
+        'sendFile: name=$fileName, size=$fileSize bytes, to=$peerIp:8766',
         name: 'FileTransfer',
       );
 
       final client = HttpClient();
-      client.connectionTimeout = const Duration(seconds: 30);
+      client.connectionTimeout = const Duration(seconds: 60);
+      client.idleTimeout = const Duration(minutes: 30);
 
       try {
-        final uri = Uri.parse('http://$peerIp:8766/api/upload?name=$fileName');
-        developer.log('Opening HTTP POST to $uri', name: 'FileTransfer');
+        final uri = Uri.http('$peerIp:8766', '/api/upload', {'name': fileName});
+        developer.log('sendFile: POST to $uri', name: 'FileTransfer');
         final request = await client.postUrl(uri);
         developer.log(
-          'HTTP POST opened, setting headers',
+          'sendFile: HTTP POST opened, setting headers',
           name: 'FileTransfer',
         );
         request.headers.contentType = ContentType(

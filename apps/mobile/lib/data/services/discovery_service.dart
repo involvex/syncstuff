@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer' as developer;
 import 'dart:io';
+import 'dart:isolate';
 
 import 'package:network_info_plus/network_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
@@ -9,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../domain/entities/device.dart';
+import 'file_helper.dart';
 
 /// Service for discovering devices on the local network
 class DiscoveryService {
@@ -103,9 +105,19 @@ class DiscoveryService {
       // Start HTTP server on port 8766 so desktop can discover us
       await _startHttpServer(ip);
 
-      // Initialize download path
-      final documentsDir = await getApplicationDocumentsDirectory();
-      await setDownloadPath('${documentsDir.path}/downloads');
+      // Initialize download path from user settings
+      final prefs = await SharedPreferences.getInstance();
+      final savedPath = prefs.getString('download_path');
+      if (savedPath != null && savedPath != 'default' && savedPath.isNotEmpty) {
+        developer.log(
+          'Using user-selected download path: $savedPath',
+          name: 'DiscoveryService',
+        );
+        await setDownloadPath(savedPath);
+      } else {
+        final documentsDir = await getApplicationDocumentsDirectory();
+        await setDownloadPath('${documentsDir.path}/downloads');
+      }
 
       // Start UDP broadcast listener (won't receive our own broadcasts)
       await _startBroadcastListener();
@@ -143,7 +155,7 @@ class DiscoveryService {
       'id': _uuid.v4(),
       'name': 'Flutter Device', // TODO: Get from settings
       'platform': 'android',
-      'ip': ip,
+      'ipAddress': ip,
       'port': _discoveryPort,
       'version': '1.0.0',
     };
@@ -177,6 +189,10 @@ class DiscoveryService {
 
   Future<void> _startHttpServer(String localIp) async {
     try {
+      developer.log(
+        'Starting HTTP server on port $_httpDiscoveryPort (localIp=$localIp)...',
+        name: 'DiscoveryService',
+      );
       _httpServer = await HttpServer.bind(
         InternetAddress.anyIPv4,
         _httpDiscoveryPort,
@@ -193,6 +209,9 @@ class DiscoveryService {
             'HTTP request: ${request.method} $path',
             name: 'DiscoveryService',
           );
+          print(
+            '[DiscoveryService] HTTP ${request.method} $path from ${request.connectionInfo?.remoteAddress.address}',
+          );
           if (request.method == 'GET' && path == '/api/probe') {
             request.response.statusCode = 200;
             request.response.headers.contentType = ContentType.json;
@@ -201,7 +220,7 @@ class DiscoveryService {
                 'id': _deviceId,
                 'name': _deviceName,
                 'platform': 'android',
-                'ip': localIp,
+                'ipAddress': localIp,
                 'port': _httpDiscoveryPort,
                 'version': '1.0.0',
               }),
@@ -234,42 +253,97 @@ class DiscoveryService {
   }
 
   Future<void> _handleUpload(HttpRequest request) async {
+    final stopwatch = Stopwatch()..start();
     developer.log(
-      'Received upload request: ${request.method} ${request.uri}',
+      'Upload received: ${request.method} ${request.uri} from ${request.connectionInfo?.remoteAddress.address}',
       name: 'DiscoveryService',
     );
     try {
       final fileName = request.uri.queryParameters['name'] ?? 'unknown';
+      developer.log(
+        'Upload: name=$fileName, saving to=$_downloadPath',
+        name: 'DiscoveryService',
+      );
       final downloadsDir = Directory(_downloadPath);
       if (!await downloadsDir.exists()) {
         await downloadsDir.create(recursive: true);
       }
       final file = File('${downloadsDir.path}/$fileName');
-      final sink = file.openWrite();
-      await for (final chunk in request) {
-        sink.add(chunk);
+      final sink = file.openWrite(mode: FileMode.write);
+
+      try {
+        int bytesReceived = 0;
+        await for (final chunk in request) {
+          sink.add(chunk);
+          bytesReceived += chunk.length;
+        }
+        await sink.flush();
+        await sink.close();
+        stopwatch.stop();
+        developer.log(
+          'Upload complete: $fileName ($bytesReceived bytes) in ${stopwatch.elapsedMilliseconds}ms',
+          name: 'DiscoveryService',
+        );
+
+        // Copy to public Downloads directory in a background isolate
+        String publicPath = file.path;
+        try {
+          // Extract relative path from user's download path
+          // e.g. /storage/emulated/0/Download/Browser -> Browser
+          String? relativePath;
+          if (_downloadPath.contains('/Download/')) {
+            relativePath = _downloadPath.split('/Download/').last;
+          } else if (_downloadPath.contains('/Download')) {
+            relativePath = null; // Directly in Download, no subfolder
+          }
+
+          final result = await Isolate.run(() async {
+            return FileHelper.copyToDownloads(
+              filePath: file.path,
+              fileName: fileName,
+              relativePath: relativePath,
+            );
+          });
+          publicPath = result;
+          developer.log(
+            'File copied to public Downloads: $publicPath',
+            name: 'DiscoveryService',
+          );
+        } catch (e) {
+          developer.log(
+            'Failed to copy to public Downloads (file still in private storage): $e',
+            name: 'DiscoveryService',
+          );
+        }
+
+        _fileUploadController.add({
+          'name': fileName,
+          'path': publicPath,
+          'size': bytesReceived,
+        });
+
+        request.response.statusCode = 200;
+        request.response.headers.contentType = ContentType.json;
+        request.response.write(
+          jsonEncode({
+            'success': true,
+            'path': publicPath,
+            'size': bytesReceived,
+          }),
+        );
+        await request.response.close();
+      } catch (e) {
+        await sink.close();
+        rethrow;
       }
-      await sink.close();
-
-      _fileUploadController.add({
-        'name': fileName,
-        'path': file.path,
-        'size': await file.length(),
-      });
-
-      request.response.statusCode = 200;
-      request.response.headers.contentType = ContentType.json;
-      request.response.write(jsonEncode({'success': true, 'path': file.path}));
     } catch (e) {
       developer.log('Upload failed: $e', name: 'DiscoveryService');
-      request.response.statusCode = 500;
-      request.response.headers.contentType = ContentType.json;
-      request.response.write(jsonEncode({'error': e.toString()}));
-    }
-    try {
-      await request.response.close();
-    } catch (e) {
-      developer.log('Response close failed: $e', name: 'DiscoveryService');
+      try {
+        request.response.statusCode = 500;
+        request.response.headers.contentType = ContentType.json;
+        request.response.write(jsonEncode({'error': e.toString()}));
+        await request.response.close();
+      } catch (_) {}
     }
   }
 
@@ -284,7 +358,7 @@ class DiscoveryService {
         'id': _deviceId,
         'name': _deviceName,
         'platform': 'android',
-        'ip': localIp,
+        'ipAddress': localIp,
         'port': _discoveryPort,
       });
 
@@ -310,16 +384,19 @@ class DiscoveryService {
   }
 
   Future<void> _scanSubnet(String subnet) async {
-    // Scan common IP ranges in parallel - only common ones
     final futures = <Future<void>>[];
-
-    // Scan only 10 IPs for testing quickly
-    final scanIps = [1, 10, 20, 30, 40, 50, 60, 69, 70, 80];
-
-    for (final i in scanIps) {
-      futures.add(_checkDeviceHttp('$subnet.$i'));
+    for (int i = 1; i <= 254; i += 10) {
+      final batch = <String>[];
+      for (int j = 0; j < 10 && i + j <= 254; j++) {
+        batch.add('$subnet.${i + j}');
+      }
+      futures.add(_scanBatch(batch));
     }
+    await Future.wait(futures);
+  }
 
+  Future<void> _scanBatch(List<String> ips) async {
+    final futures = ips.map((ip) => _checkDeviceHttp(ip));
     await Future.wait(futures);
   }
 
@@ -397,7 +474,7 @@ class DiscoveryService {
       name: info['name'] as String? ?? 'Unknown Device',
       platform: _parsePlatform(info['platform'] as String?),
       status: DeviceStatus.online,
-      ipAddress: info['ip'] as String? ?? ip,
+      ipAddress: info['ipAddress'] as String? ?? ip,
       port: info['port'] as int? ?? _discoveryPort,
       lastSeen: DateTime.now(),
     );

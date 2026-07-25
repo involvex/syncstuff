@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+
 class DesktopHttpServer {
   HttpServer? _server;
   final _discoveredDevicesController =
@@ -18,7 +20,9 @@ class DesktopHttpServer {
   final String deviceName;
   String _clipboardContent = '';
   DateTime? _lastClipboardUpdate;
-  String _downloadPath = 'downloads';
+  String _downloadPath = Platform.environment['USERPROFILE'] != null
+      ? '${Platform.environment['USERPROFILE']}\\Downloads'
+      : 'downloads';
 
   DesktopHttpServer({String? deviceId, String? deviceName})
     : deviceId = deviceId ?? DateTime.now().millisecondsSinceEpoch.toString(),
@@ -40,10 +44,15 @@ class DesktopHttpServer {
   }
 
   Future<void> start([int port = 8766]) async {
-    if (_server != null) return;
+    if (_server != null) {
+      debugPrint('[DesktopHttpServer] Already running on port $port');
+      return;
+    }
 
     _localIp = await _getLocalIp();
+    debugPrint('[DesktopHttpServer] Starting on $_localIp:$port');
     _server = await HttpServer.bind(InternetAddress.anyIPv4, port);
+    debugPrint('[DesktopHttpServer] Server started successfully on port $port');
     _handleHttpRequests();
   }
 
@@ -93,7 +102,7 @@ class DesktopHttpServer {
         'id': deviceId,
         'name': deviceName,
         'platform': 'windows',
-        'ip': _localIp,
+        'ipAddress': _localIp,
         'port': 8766,
         'version': '1.0.0',
       }),
@@ -102,25 +111,61 @@ class DesktopHttpServer {
   }
 
   Future<void> _handleUpload(HttpRequest request) async {
+    final stopwatch = Stopwatch()..start();
     try {
       final uri = request.uri;
       final fileName = uri.queryParameters['name'] ?? 'unknown';
+      debugPrint(
+        '[DesktopHttpServer] Upload received: name=$fileName, from=${request.connectionInfo?.remoteAddress.address}',
+      );
       final downloadsDir = Directory(_downloadPath);
       if (!await downloadsDir.exists()) {
         await downloadsDir.create(recursive: true);
       }
+      debugPrint(
+        '[DesktopHttpServer] Saving to: ${downloadsDir.path}/$fileName',
+      );
       final file = File('${downloadsDir.path}/$fileName');
-      final sink = file.openWrite();
-      await for (final chunk in request) {
-        sink.add(chunk);
+      final sink = file.openWrite(mode: FileMode.write);
+
+      try {
+        int bytesReceived = 0;
+        await for (final chunk in request) {
+          sink.add(chunk);
+          bytesReceived += chunk.length;
+        }
+        await sink.close();
+        stopwatch.stop();
+        debugPrint(
+          '[DesktopHttpServer] Upload complete: $fileName ($bytesReceived bytes) in ${stopwatch.elapsedMilliseconds}ms',
+        );
+        _fileUploadController.add({
+          'name': fileName,
+          'path': file.path,
+          'size': bytesReceived,
+        });
+        request.response.statusCode = 200;
+        request.response.headers.contentType = ContentType.json;
+        request.response.write(
+          jsonEncode({
+            'success': true,
+            'path': file.path,
+            'size': bytesReceived,
+          }),
+        );
+        await request.response.close();
+      } catch (e) {
+        await sink.close();
+        rethrow;
       }
-      await sink.close();
-      _fileUploadController.add({'name': fileName, 'path': file.path});
-      request.response.statusCode = 200;
-      await request.response.close();
     } catch (e) {
-      request.response.statusCode = 500;
-      await request.response.close();
+      debugPrint('[DesktopHttpServer] Upload failed: $e');
+      try {
+        request.response.statusCode = 500;
+        request.response.headers.contentType = ContentType.json;
+        request.response.write(jsonEncode({'error': e.toString()}));
+        await request.response.close();
+      } catch (_) {}
     }
   }
 
